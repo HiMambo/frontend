@@ -6,8 +6,8 @@ type HoverWrapperProps = {
 
 export default function HoverWrapper({ children }: HoverWrapperProps) {
   return (
-    <div className="hover:text-white hover:scale-103">
+    <span className="hover:text-white hover:scale-103">
       {children}
-    </div>
+    </span>
   );
 }
