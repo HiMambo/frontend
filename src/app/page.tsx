@@ -2,11 +2,13 @@ import ExperienceCard from "@/components/ExperienceCard";
 import FilterSidebar from "@/components/FilterSidebar";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import Search from "@/components/Search";
 
 export default function Home() {
   return (
     <>
       <Header />
+      <Search />
       <main className="bg-white min-h-screen p-8">
         {/* <h1 className="text-4xl font-bold text-center">Welcome to hiMAMBO!</h1>
         <p className="text-center text-gray-600 mt-4">

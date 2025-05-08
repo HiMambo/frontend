@@ -34,13 +34,20 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
 
       {/* Content */}
       <div className="p-4 flex flex-col justify-between w-full md:w-3/4">
-        <div>
-          {/* Title & Location */}
-          <h3 className="text-xl font-bold text-gray-800">{title}</h3>
-          <p className="text-sm text-gray-600">{location}</p>
+        <div className="flex  justify-between">
+          {" "}
+          <div>
+            {/* Title & Location */}
+            <h3 className="text-xl font-bold text-gray-800">{title}</h3>
+            <p className="text-sm text-gray-600">{location}</p>
 
-          {/* Description */}
-          <p className="text-gray-500 text-sm mt-2">{description}</p>
+            {/* Description */}
+            <p className="text-gray-500 text-sm mt-2">{description}</p>
+          </div>
+          {/* Rating */}
+          <div className="flex items-center space-x-1">
+            <span className="text-yellow-400">⭐⭐⭐⭐⭐</span>
+          </div>
         </div>
 
         <div className="flex items-center justify-between mt-4">
@@ -53,15 +60,10 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
               </span>
             )}
           </p>
-
-          {/* Rating */}
-          <div className="flex items-center space-x-1">
-            <span className="text-yellow-400">⭐⭐⭐⭐⭐</span>
-          </div>
         </div>
         <div className="flex  justify-between">
           <div className="flex items-center justify-start space-x-2 mt-4">
-            <button className="flex items-center space-x-2 p-2  text-blue-700 rounded-md">
+            <button className="flex items-center space-x-2 p-2  text-blue-900 rounded-md">
               <Image
                 className="p-4"
                 src="/assets/shopping.svg" // Path to your SVG inside the public folder
@@ -71,7 +73,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
                 objectFit="cover" // Ensure the image covers the container area
               />
             </button>
-            <button className="flex items-center space-x-2 p-2 text-blue-700 rounded-md">
+            <button className="flex items-center space-x-2 p-2 text-blue-900 rounded-md">
               <Image
                 className="p-4"
                 src="/assets/Like.svg" // Path to your SVG inside the public folder
@@ -81,7 +83,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
                 objectFit="cover" // Ensure the image covers the container area
               />
             </button>
-            <button className="flex items-center space-x-2 p-2  text-blue-700 rounded-md">
+            <button className="flex items-center space-x-2 p-2  text-blue-900 rounded-md">
               <Image
                 className="p-4"
                 src="/assets/Magnifier.svg" // Path to your SVG inside the public folder
