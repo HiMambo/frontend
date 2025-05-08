@@ -3,26 +3,60 @@ import FilterSidebar from "@/components/FilterSidebar";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
-export default function SearchPage() {
+export default function Home() {
   return (
     <>
       <Header />
-      <div className="flex min-h-screen">
-        <FilterSidebar />
-        <main className="flex-1 p-6 space-y-4">
-          <h2 className="text-2xl font-semibold">Search Results</h2>
-          <ExperienceCard
-            title="Hidden Caves & Mountain Trekking"
-            location="Chiapas, Mexico"
-            price={55}
-          />
-          <ExperienceCard
-            title="Jungle River Floating"
-            location="Minca, Colombia"
-            price={50}
-          />
-        </main>
-      </div>
+      <main className="bg-brand-yellow min-h-screen p-8">
+        <h1 className="text-4xl font-bold text-center">Welcome to hiMAMBO!</h1>
+        <p className="text-center text-gray-600 mt-4">
+          Real experiences, real sustainability.
+        </p>
+
+        {/* Main layout with filter sidebar and experience cards */}
+        <div className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Filter Sidebar */}
+          <div className="md:col-span-1">
+            <FilterSidebar />
+          </div>
+
+          {/* Experience Cards */}
+          <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <ExperienceCard
+              title="Hidden Caves & Mountain Trekking"
+              price={55.0}
+              location="Chiapas, Mexico"
+              image="https://via.placeholder.com/400"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              discount={75.0}
+            />
+            <ExperienceCard
+              title="Jungle River Floating & Waterfall"
+              price={50.0}
+              location="Minca, Colombia"
+              image="https://via.placeholder.com/400"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              discount={null}
+            />
+            <ExperienceCard
+              title="Traditional Indigo Weaving with Artisans"
+              price={90.0}
+              location="Sapa, Vietnam"
+              image="https://via.placeholder.com/400"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              discount={100.0}
+            />
+            <ExperienceCard
+              title="Cacao Harvest & Chocolate-Making"
+              price={30.0}
+              location="Manabi, Ecuador"
+              image="https://via.placeholder.com/400"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              discount={45.0}
+            />
+          </div>
+        </div>
+      </main>
       <Footer />
     </>
   );
