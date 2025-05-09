@@ -1,6 +1,7 @@
 "use client"; // Add this line at the top to indicate it's a client component
 
 import React, { useState } from "react";
+import { Range } from "react-range";
 
 const FilterSidebar: React.FC = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -31,6 +32,16 @@ const FilterSidebar: React.FC = () => {
     const newPrice = [...selectedPrice];
     newPrice[0] = parseInt(event.target.value);
     setSelectedPrice(newPrice as [number, number]);
+  };
+
+  const handleMinChange = (e) => {
+    const value = Math.min(Number(e.target.value), selectedPrice[1] - 50);
+    setSelectedPrice([value, selectedPrice[1]]);
+  };
+
+  const handleMaxChange = (e) => {
+    const value = Math.max(Number(e.target.value), selectedPrice[0] + 50);
+    setSelectedPrice([selectedPrice[0], value]);
   };
 
   const handleDiscountChange = (discount: string) => {
@@ -125,22 +136,36 @@ const FilterSidebar: React.FC = () => {
       </div>
 
       {/* Price Filter */}
-      <div className="mb-6">
+       <div className="mb-6">
         <h3 className="font-semibold text-lg text-blue-800 mb-2">
           Price Filter
         </h3>
-        <input
-          type="range"
-          min="0"
-          max="1000"
-          step="50"
-          value={selectedPrice[0]}
-          onChange={handlePriceChange}
-          className="w-full"
-        />
-        <div className="flex justify-between text-sm text-gray-700">
+        <div className="relative h-6">
+          {/* Min Slider */}
+          <input
+            type="range"
+            min="0"
+            max="1000"
+            step="50"
+            value={selectedPrice[0]}
+            onChange={handleMinChange}
+            className="w-full absolute z-10 pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto"
+          />
+
+          {/* Max Slider */}
+          <input
+            type="range"
+            min="0"
+            max="1000"
+            step="50"
+            value={selectedPrice[1]}
+            onChange={handleMaxChange}
+            className="w-full absolute z-20 pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto"
+          />
+        </div>
+        <div className="flex justify-between text-sm text-gray-700 mt-2">
           <span>€ {selectedPrice[0]}</span>
-          <span>€ 1.000</span>
+          <span>€ {selectedPrice[1]}</span>
         </div>
       </div>
 
