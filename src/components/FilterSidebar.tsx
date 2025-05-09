@@ -1,7 +1,6 @@
 "use client"; // Add this line at the top to indicate it's a client component
 
 import React, { useState } from "react";
-import { Range } from "react-range";
 
 const FilterSidebar: React.FC = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -28,19 +27,13 @@ const FilterSidebar: React.FC = () => {
     );
   };
 
-  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newPrice = [...selectedPrice];
-    newPrice[0] = parseInt(event.target.value);
-    setSelectedPrice(newPrice as [number, number]);
-  };
-
-  const handleMinChange = (e) => {
-    const value = Math.min(Number(e.target.value), selectedPrice[1] - 50);
+  const handleMinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Math.min(Number(event.target.value), selectedPrice[1] - 50);
     setSelectedPrice([value, selectedPrice[1]]);
   };
 
-  const handleMaxChange = (e) => {
-    const value = Math.max(Number(e.target.value), selectedPrice[0] + 50);
+  const handleMaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Math.max(Number(event.target.value), selectedPrice[0] + 50);
     setSelectedPrice([selectedPrice[0], value]);
   };
 

@@ -28,7 +28,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
         <Image
           className=" p-4 "
           src="/assets/Rectangle.png" // Path to image inside the assets folder
-          alt={title}
+          alt={image}
           layout="fill" // Ensure the image fills the container
           objectFit="cover" // Make sure the image covers the div area
         />

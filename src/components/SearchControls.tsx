@@ -1,5 +1,5 @@
 // components/SearchControls.js
-'use client';
+"use client";
 
 import { useState } from 'react';
 
@@ -12,7 +12,7 @@ const SearchControls = () => {
     <div className="flex flex-col lg:flex-row justify-between items-center bg-white p-4 shadow-md">
       {/* Left Section - Heading */}
       <div className="text-xl font-semibold text-blue-900 mb-4 lg:mb-0">
-        Let's find the right experience for you!
+        Let&apos;s find the right experience for you!
       </div>
 
       {/* Right Section - Controls */}

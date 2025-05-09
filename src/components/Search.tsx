@@ -5,8 +5,8 @@ import { useState } from 'react';
 const SearchInput = () => {
   const [query, setQuery] = useState('');
 
-  const handleInputChange = (e: any) => {
-    setQuery(e.target.value);
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
   };
 
   return (
