@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
@@ -27,6 +26,8 @@ import {
 } from 'react-icons/fa';
 import { SiSololearn } from 'react-icons/si';
 import { X as XIcon } from 'lucide-react';
+
+import Image from 'next/image';
 
 // Register ChartJS components
 ChartJS.register(
@@ -363,7 +364,7 @@ export default function MamboWallet() {
               <span className="opacity-75">Powered by</span>
               <div className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-md">
                 <span className="font-semibold">Onramper</span>
-                <img 
+                <Image 
                   src="/onramper.png" 
                   alt="Onramper" 
                   className="h-3.5 w-auto object-contain brightness-0 invert"
@@ -372,7 +373,7 @@ export default function MamboWallet() {
             </div>
             
             <p className="text-[11px] leading-tight text-white/70 text-center mt-2">
-              By clicking 'Send To Bank', you will be able to send your money to your bank or any other preferred destination. You will be also able to select your currency of choice.
+              By clicking &apos;Send To Bank&apos;, you will be able to send your money to your bank or any other preferred destination. You will be also able to select your currency of choice.
             </p>
           </div>
         </div>
@@ -419,7 +420,7 @@ export default function MamboWallet() {
               <li className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="p-1 bg-white rounded-full shadow-sm">
-                    <img 
+                    <Image 
                       src="/solana.png" 
                       alt="Solana" 
                       className="w-5 h-5"

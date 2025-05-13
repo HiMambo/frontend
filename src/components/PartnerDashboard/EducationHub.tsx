@@ -52,7 +52,6 @@ export default function EducationHub() {
 
   // Add these new state declarations after the existing ones
   const [showPremiumModal, setShowPremiumModal] = useState<boolean>(false);
-  const [favorites, setFavorites] = useState<CardType[]>([]);
 
   // Add this after your existing state declarations
   const [favoriteCards, setFavoriteCards] = useState<Set<string>>(new Set());
@@ -307,7 +306,7 @@ export default function EducationHub() {
           <div className="p-2 bg-white rounded-lg shadow-md">
             <h2 className="text-xs font-semibold mb-1">Filters</h2>
             <div className="flex items-center gap-1 w-full">
-              {Object.entries(filterData).map(([filter, contentType]) => (
+              {Object.entries(filterData).map(([filter]) => (
                 <button
                   key={filter}
                   className={`px-3 py-1 rounded text-[11px] ${
@@ -576,7 +575,7 @@ export default function EducationHub() {
               <div className="text-center p-4">
                 <h3 className="text-xl font-semibold mb-4">Premium Content</h3>
                 <p className="text-gray-700">
-                  To access HiMambo's Education Hub Premium Content, {' '}
+                  To access HiMambo&apos;s Education Hub Premium Content, {' '}
                   <a 
                     href="#" 
                     className="text-[#FF8C00] hover:text-[#e67e00] underline font-medium"

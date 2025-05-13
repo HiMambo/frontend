@@ -6,33 +6,6 @@ import MamboWallet from "@/components/PartnerDashboard/MamboWallet";
 import EducationHub from "@/components/PartnerDashboard/EducationHub";
 import { FaGraduationCap, FaWallet, FaStore, FaBullhorn, FaRobot, FaUserTie } from 'react-icons/fa';
 
-const sidebarSections = [
-  {
-    id: "business-page",
-    title: "Business Page",
-    icon: <FaStore className="w-5 h-5" />,
-    subItems: []
-  },
-  {
-    id: "marketing-tools",
-    title: "Marketing Tools",
-    icon: <FaBullhorn className="w-5 h-5" />,
-    subItems: []
-  },
-  {
-    id: "education-hub",
-    title: "Education Hub",
-    icon: <FaGraduationCap className="w-5 h-5" />,
-    subItems: []
-  },
-  {
-    id: "mambo-wallet",
-    title: "MamboWallet",
-    icon: <FaWallet className="w-5 h-5" />,
-    subItems: []
-  }
-];
-
 export default function Home() {
   const [selectedSection, setSelectedSection] = useState("dashboard");
 

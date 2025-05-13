@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from 'react';
-
+import Image from 'next/image';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,7 +37,7 @@ export default function Header() {
 
           <div className="flex-1 flex justify-center">
             <div className="flex items-center space-x-2">
-              <img
+              <Image
                 src="Logo.svg" 
                 alt="hiMAMBO logo"
                 className="w-40 h-12" 

@@ -1,6 +1,7 @@
 // components/SearchInput.js
 "use client";
 import { useState } from 'react';
+import Image from 'next/image';
 
 const SearchInput = () => {
   const [query, setQuery] = useState('');
@@ -13,7 +14,7 @@ const SearchInput = () => {
     <div className="bg-yellow-400 py-10 px-4 flex justify-center">
       <div className="flex items-center space-x-4 bg-white rounded-full px-4 py-2 shadow-md w-full max-w-xl">
  
-        <img src="search.svg" alt='search' className='w-6 h-6'/>
+        <Image src="search.svg" alt='search' className='w-6 h-6'/>
         <input
           type="text"
           value={query}
