@@ -68,7 +68,7 @@ export default function Header() {
         {/* Sign-up Button */}
         <Link
           href="/signup"
-          className="bg-orange-500 text-white shadow-lg py-2 px-4 rounded-xs text-center w-25 hover:bg-orange-600 sm:text-sm sm:w-40 md:text-lg"
+          className="bg-primary text-white shadow-lg py-2 px-4 rounded-xs text-center w-25 hover:bg-orange-600 sm:text-sm sm:w-40 md:text-lg"
         >
           Sign up
         </Link>

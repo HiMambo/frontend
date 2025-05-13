@@ -27,7 +27,7 @@ export function AccordionStep({
         )}
       >
         <span className="font-semibold">{title}</span>
-        {completed && <span className="text-xs text-muted-foreground">✓ Completed</span>}
+        {completed && <span className="text-xs text-green-600">✓</span>}
       </button>
 
       {show && <div className="p-6">{children}</div>}

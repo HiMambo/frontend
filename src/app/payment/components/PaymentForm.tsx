@@ -9,10 +9,12 @@ export function PaymentForm({
   disabled,
   method,
   onMethodChange,
+  onComplete, 
 }: {
   disabled: boolean;
   method: 'credit' | 'crypto';
   onMethodChange: (m: 'credit' | 'crypto') => void;
+  onComplete: () => void; 
 }) {
   return (
     <div style={{ opacity: disabled ? 0.5 : 1 }}>
@@ -46,7 +48,13 @@ export function PaymentForm({
           {method === 'credit' && <CreditCardForm />}
           {method === 'crypto' && <CryptoPaymentForm />}
 
-          <Button className="w-full" disabled={disabled}>Complete booking</Button>
+          <Button
+            className="w-full"
+            disabled={disabled}
+            onClick={onComplete}
+          >
+            Review booking
+          </Button>
         </CardContent>
       </Card>
     </div>
