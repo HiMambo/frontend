@@ -14,7 +14,12 @@ const SearchInput = () => {
     <div className="bg-yellow-400 py-10 px-4 flex justify-center">
       <div className="flex items-center space-x-4 bg-white rounded-full px-4 py-2 shadow-md w-full max-w-xl">
  
-        <Image src="search.svg" alt='search' className='w-6 h-6'/>
+        <Image 
+        src="search.svg" alt='search' className='w-6 h-6' 
+        layout="intrinsic" // Scales based on intrinsic dimensions
+        width={100} // Pixel width
+        height={50} // Pixel height 
+        />
         <input
           type="text"
           value={query}

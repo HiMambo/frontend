@@ -40,6 +40,9 @@ export default function Header() {
               <Image
                 src="Logo.svg" 
                 alt="hiMAMBO logo"
+                layout="intrinsic" // Scales based on intrinsic dimensions
+                width={50} // Pixel width
+                height={25} // Pixel height
                 className="w-40 h-12" 
               />
             </div>

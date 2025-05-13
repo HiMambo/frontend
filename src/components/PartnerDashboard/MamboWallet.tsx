@@ -367,6 +367,9 @@ export default function MamboWallet() {
                 <Image 
                   src="/onramper.png" 
                   alt="Onramper" 
+                  layout="intrinsic" // Scales based on intrinsic dimensions
+                  width={30} // Pixel width
+                  height={10} // Pixel height
                   className="h-3.5 w-auto object-contain brightness-0 invert"
                 />
               </div>
@@ -424,6 +427,9 @@ export default function MamboWallet() {
                       src="/solana.png" 
                       alt="Solana" 
                       className="w-5 h-5"
+                      layout="intrinsic" // Makes the image responsive
+                      width={100} // Pixel width
+                      height={50} // Pixel height
                       style={{
                         filter: "hue-rotate(220deg) brightness(1.2)",
                         mixBlendMode: "multiply"
