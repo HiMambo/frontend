@@ -585,7 +585,7 @@ export default function EducationHub() {
                       console.log('Navigate to subscription page');
                     }}
                   >
-                    subscribe to our Premium Plan now
+                    Subscribe to our Premium Plan now
                   </a>
                 </p>
               </div>
