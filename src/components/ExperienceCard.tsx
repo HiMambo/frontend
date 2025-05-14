@@ -9,6 +9,7 @@ interface ExperienceCardProps {
   image: string;
   description: string;
   discount: number | null;
+  rating: number; 
 }
 
 const ExperienceCard: React.FC<ExperienceCardProps> = ({
@@ -18,6 +19,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   image,
   description,
   discount,
+  rating= 4,
 }) => {
   return (
     <div className="border-t-indigo-50 rounded-lg shadow-lg  overflow-hidden flex flex-col md:flex-row">
@@ -26,27 +28,29 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
         <Image
           className=" p-4 "
           src="/assets/Rectangle.png" // Path to image inside the assets folder
-          alt={title}
+          alt={image} // Dummy to use image in the mean time
           layout="fill" // Ensure the image fills the container
           objectFit="cover" // Make sure the image covers the div area
         />
       </div>
 
       {/* Content */}
-      <div className="p-4 flex flex-col justify-between w-full md:w-3/4">
+      <div className="p-6 flex flex-col justify-between w-full md:w-3/4 ">
         <div className="flex  justify-between">
           {" "}
-          <div>
+          <div className="pt-3">
             {/* Title & Location */}
-            <h3 className="text-xl font-bold text-gray-800">{title}</h3>
+            <h3 className="mb-4 text-xl font-bold text-gray-800">{title}</h3>
             <p className="text-sm text-gray-600">{location}</p>
 
             {/* Description */}
             <p className="text-gray-500 text-sm mt-2">{description}</p>
           </div>
           {/* Rating */}
-          <div className="flex items-center space-x-1">
-            <span className="text-yellow-400">⭐⭐⭐⭐⭐</span>
+          <div className="flex pt-3 space-x-1">
+            {Array.from({ length: rating }, (_, index) => (
+              <span key={index} className="text-yellow-400">⭐</span>
+            ))}
           </div>
         </div>
 

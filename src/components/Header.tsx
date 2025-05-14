@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -36,7 +37,14 @@ export default function Header() {
 
           <div className="flex-1 flex justify-center">
             <div className="flex items-center space-x-2">
-              <img src="Logo.svg" alt="hiMAMBO logo" className="w-40 h-12" />
+              <Image
+                src="Logo.svg"
+                alt="hiMAMBO logo"
+                layout="intrinsic" // Scales based on intrinsic dimensions
+                width={50} // Pixel width
+                height={25} // Pixel height
+                className="w-40 h-12"
+              />
             </div>
           </div>
         </div>
@@ -75,7 +83,7 @@ export default function Header() {
         {/* Sign-up Button */}
         <Link
           href="/signup"
-          className="bg-orange-500 text-white shadow-lg py-2 px-4 rounded-xs text-center w-25 hover:bg-orange-600 sm:text-sm sm:w-40 md:text-lg"
+          className="bg-primary text-white shadow-lg py-2 px-4 rounded-xs text-center w-25 hover:bg-orange-600 sm:text-sm sm:w-40 md:text-lg"
         >
           Sign up
         </Link>

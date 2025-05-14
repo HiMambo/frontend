@@ -29,6 +29,7 @@ export default function Home() {
               image="https://via.placeholder.com/400"
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               discount={75.0}
+              rating={4}
             />
             <ExperienceCard
               title="Jungle River Floating & Waterfall"
@@ -37,6 +38,7 @@ export default function Home() {
               image="https://via.placeholder.com/400"
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               discount={null}
+              rating={4}
             />
             <ExperienceCard
               title="Traditional Indigo Weaving with Artisans"
@@ -45,6 +47,7 @@ export default function Home() {
               image="https://via.placeholder.com/400"
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               discount={100.0}
+              rating={4}
             />
             <ExperienceCard
               title="Cacao Harvest & Chocolate-Making"
@@ -53,6 +56,7 @@ export default function Home() {
               image="https://via.placeholder.com/400"
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               discount={45.0}
+              rating={4}
             />
           </div>
         </div>

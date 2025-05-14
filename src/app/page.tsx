@@ -33,6 +33,7 @@ export default function Home() {
               image="/assets/Rectangle_32.png" // Use the correct path to the image
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               discount={75.0}
+              rating={4}
             />
             <ExperienceCard
               title="Jungle River Floating & Waterfall"
@@ -41,6 +42,7 @@ export default function Home() {
               image="/assets/Rectangle_32.png" // Same here, replace with your image
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               discount={null}
+              rating={5}
             />
             <ExperienceCard
               title="Traditional Indigo Weaving with Artisans"
@@ -49,6 +51,7 @@ export default function Home() {
               image="/assets/Rectangle.png" // Replace with the correct image path
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               discount={100.0}
+              rating={4}
             />
             <ExperienceCard
               title="Cacao Harvest & Chocolate-Making"
@@ -57,6 +60,7 @@ export default function Home() {
               image="/src/assets/Rectangle.png" // Correct image path
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               discount={45.0}
+              rating={5}
             />
           </div>
         </div>
