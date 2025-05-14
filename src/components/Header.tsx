@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from 'react';
-
+import { useState } from "react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,8 +9,8 @@ export default function Header() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="bg-white shadow-md">
-      <div className="container mx-auto flex justify-between items-center p-4">
+    <header className="bg-white px-14 shadow-md">
+      <div className="p-4 flex justify-between items-center p-4">
         {/* Logo Section and Hamburger Menu */}
         <div className="flex items-center justify-between w-full lg:w-auto">
           {/* Hamburger Menu Button */}
@@ -37,27 +36,35 @@ export default function Header() {
 
           <div className="flex-1 flex justify-center">
             <div className="flex items-center space-x-2">
-              <img
-                src="Logo.svg" 
-                alt="hiMAMBO logo"
-                className="w-40 h-12" 
-              />
+              <img src="Logo.svg" alt="hiMAMBO logo" className="w-40 h-12" />
             </div>
           </div>
         </div>
 
         {/* Normal Navigation Links */}
         <nav className="hidden lg:flex space-x-6">
-          <Link href="/" className="text-gray-700 no-underline hover:underline mr-15 hover:text-indigo-600">
+          <Link
+            href="/"
+            className="text-gray-700 no-underline hover:underline mr-15 hover:text-indigo-600"
+          >
             Home
           </Link>
-          <Link href="/about" className="text-gray-700 mr-15 hover:text-indigo-600">
+          <Link
+            href="/about"
+            className="text-gray-700 mr-15 hover:text-indigo-600"
+          >
             About
           </Link>
-          <Link href="/hiPartners" className="text-gray-700 mr-15 hover:text-indigo-600">
+          <Link
+            href="/hiPartners"
+            className="text-gray-700 mr-15 hover:text-indigo-600"
+          >
             hiPartners
           </Link>
-          <Link href="/blog" className="text-gray-700 mr-15 hover:text-indigo-600">
+          <Link
+            href="/blog"
+            className="text-gray-700 mr-15 hover:text-indigo-600"
+          >
             Blog
           </Link>
           <Link href="/contact" className="text-gray-700 hover:text-indigo-600">
@@ -76,13 +83,12 @@ export default function Header() {
 
       {/* Mobile Navigation Links */}
       <div
-        className={`lg:hidden fixed inset-0 bg-gray-800 bg-opacity-50 z-50 transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}
+        className={`lg:hidden fixed inset-0 bg-gray-800 bg-opacity-50 z-50 transform ${
+          isMenuOpen ? "translate-x-0" : "-translate-x-full"
+        } transition-transform duration-300 ease-in-out`}
       >
         <div className="flex justify-end p-4">
-          <button
-            onClick={toggleMenu}
-            className="text-white text-3xl"
-          >
+          <button onClick={toggleMenu} className="text-white text-3xl">
             &times;
           </button>
         </div>
@@ -90,21 +96,32 @@ export default function Header() {
           <Link href="/" className="text-white text-2xl hover:text-indigo-400">
             Home
           </Link>
-          <Link href="/about" className="text-white text-2xl hover:text-indigo-400">
+          <Link
+            href="/about"
+            className="text-white text-2xl hover:text-indigo-400"
+          >
             About
           </Link>
-          <Link href="/hiPartners" className="text-white text-2xl hover:text-indigo-400">
+          <Link
+            href="/hiPartners"
+            className="text-white text-2xl hover:text-indigo-400"
+          >
             hiPartners
           </Link>
-          <Link href="/blog" className="text-white text-2xl hover:text-indigo-400">
+          <Link
+            href="/blog"
+            className="text-white text-2xl hover:text-indigo-400"
+          >
             Blog
           </Link>
-          <Link href="/contact" className="text-white text-2xl hover:text-indigo-400">
+          <Link
+            href="/contact"
+            className="text-white text-2xl hover:text-indigo-400"
+          >
             Contact us
           </Link>
         </div>
       </div>
     </header>
   );
-};
-
+}

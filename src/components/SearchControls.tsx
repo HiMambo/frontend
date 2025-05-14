@@ -1,15 +1,15 @@
 // components/SearchControls.js
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 const SearchControls = () => {
-  const [perPage, setPerPage] = useState('');
-  const [sortBy, setSortBy] = useState('Best Match');
-  const [view, setView] = useState('grid');
+  const [perPage, setPerPage] = useState("");
+  const [sortBy, setSortBy] = useState("Best Match");
+  const [view, setView] = useState("grid");
 
   return (
-    <div className="flex flex-col lg:flex-row justify-between items-center bg-white p-4 shadow-md">
+    <div className="flex flex-col px-16 lg:flex-row justify-between items-center bg-white p-4 shadow-md">
       {/* Left Section - Heading */}
       <div className="text-xl font-semibold text-blue-900 mb-4 lg:mb-0">
         Let's find the right experience for you!
@@ -50,21 +50,47 @@ const SearchControls = () => {
           <div className="flex items-center space-x-2">
             {/* Grid View Button */}
             <button
-              onClick={() => setView('grid')}
-              className={`w-8 h-8 flex items-center justify-center border rounded-lg ${view === 'grid' ? 'bg-pink-100' : 'bg-white'}`}
+              onClick={() => setView("grid")}
+              className={`w-8 h-8 flex items-center justify-center border rounded-lg ${
+                view === "grid" ? "bg-pink-100" : "bg-white"
+              }`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 text-gray-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"
+                />
               </svg>
             </button>
 
             {/* List View Button */}
             <button
-              onClick={() => setView('list')}
-              className={`w-8 h-8 flex items-center justify-center border rounded-lg ${view === 'list' ? 'bg-pink-100' : 'bg-white'}`}
+              onClick={() => setView("list")}
+              className={`w-8 h-8 flex items-center justify-center border rounded-lg ${
+                view === "list" ? "bg-pink-100" : "bg-white"
+              }`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 text-gray-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             </button>
           </div>

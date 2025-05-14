@@ -3,20 +3,22 @@ import FilterSidebar from "@/components/FilterSidebar";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Search from "@/components/Search";
+import SearchControls from "@/components/SearchControls";
 
 export default function Home() {
   return (
     <>
       <Header />
       <Search />
-      <main className="bg-white min-h-screen p-8">
+      <SearchControls />
+      <main className="bg-white min-h-screen p-12">
         {/* <h1 className="text-4xl font-bold text-center">Welcome to hiMAMBO!</h1>
         <p className="text-center text-gray-600 mt-4">
           Real experiences, real sustainability.
         </p> */}
 
         {/* Main layout with filter sidebar and experience cards */}
-        <div className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="  p-4 grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Filter Sidebar */}
           <div className="md:col-span-1">
             <FilterSidebar />
