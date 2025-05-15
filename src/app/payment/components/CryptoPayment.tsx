@@ -4,10 +4,6 @@ import { useEffect, useState } from 'react';
 import { CountdownTimer } from '@/components/CountdownTimer';
 import QRCode from 'react-qr-code';
 
-type PaymentInfo = {
-  price: number;          
-  currency: string;   
-}
 
 type PaymentSession = {
   session_id: string;
@@ -22,8 +18,8 @@ type PaymentSession = {
 
 type Currency = 'USDC' | 'SOL';
 
-let T_PERIOD_CHECK_PAYMENT = 3000; // in milliseconds
-let MAX_ATTEMPTS_CHECK_PAYMENT = 20; // in times
+const T_PERIOD_CHECK_PAYMENT = 3000; // in milliseconds
+const MAX_ATTEMPTS_CHECK_PAYMENT = 20; // in times
 
 // Add props for integration
 type CryptoPaymentProps = {
@@ -31,9 +27,7 @@ type CryptoPaymentProps = {
   onPaymentComplete?: () => void;
 };
 
-export default function CryptoPayment({ onClose, onPaymentComplete }: CryptoPaymentProps) {
-  const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | null>(null);
-  const [price, setPrice] = useState<string>('0.00');
+export default function CryptoPayment({}: CryptoPaymentProps) {
   const [payment, setPayment] = useState<PaymentSession | null>(null);
   const [loading, setLoading] = useState(true);
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
@@ -143,7 +137,6 @@ export default function CryptoPayment({ onClose, onPaymentComplete }: CryptoPaym
     if (!payment || (payment.status !== 'pending' && payment.status !== 'checked') || !payment.session_id) return;
   
     let attempts = 0;
-    let intervalId: NodeJS.Timeout;
   
     const checkPaymentStatus = async () => {
       try {
@@ -185,7 +178,7 @@ export default function CryptoPayment({ onClose, onPaymentComplete }: CryptoPaym
       }
     };
   
-    intervalId = setInterval(checkPaymentStatus, T_PERIOD_CHECK_PAYMENT); // Poll every x seconds
+    const intervalId = setInterval(checkPaymentStatus, T_PERIOD_CHECK_PAYMENT); // Poll every x seconds
   
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, [payment?.status, payment?.session_id, API_URL]);
@@ -334,7 +327,7 @@ export default function CryptoPayment({ onClose, onPaymentComplete }: CryptoPaym
     );
   }
   
-  if (!price) {
+  if (!payment?.price_data) {
     return <div className="min-h-screen flex items-center justify-center">No payment data</div>;
   }
 
