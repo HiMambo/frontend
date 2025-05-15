@@ -3,7 +3,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CreditCardForm } from "./CreditCardForm";
-import { CryptoPaymentForm } from "./CryptoPaymentForm";
 
 export function PaymentForm({
   disabled,
@@ -44,9 +43,8 @@ export function PaymentForm({
             </Button>
           </div>
 
-          {/* Conditional payment form */}
+          {/* Only show CreditCardForm when credit card method is selected */}
           {method === 'credit' && <CreditCardForm />}
-          {method === 'crypto' && <CryptoPaymentForm />}
 
           <Button
             className="w-full"

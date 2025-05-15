@@ -1,6 +1,8 @@
 'use client';
 
-import { Button } from "@/components/ui/button"; 
+import { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import CryptoPayment from "./CryptoPayment";
 
 type ReviewAndConfirmProps = {
   paymentMethod: 'credit' | 'crypto';
@@ -13,6 +15,39 @@ export default function ReviewAndConfirm({
   onConfirm,
   onBackToPayment
 }: ReviewAndConfirmProps) {
+  const [showCryptoPayment, setShowCryptoPayment] = useState(false);
+
+  const handleConfirm = () => {
+    if (paymentMethod === 'crypto') {
+      // Show crypto payment flow
+      setShowCryptoPayment(true);
+    } else {
+      // For credit card payment, proceed with regular confirmation
+      onConfirm();
+    }
+  };
+
+  const handleCryptoPaymentComplete = () => {
+    // Hide crypto payment modal and notify parent component
+    setShowCryptoPayment(false);
+    onConfirm();
+  };
+
+  const handleCryptoPaymentClose = () => {
+    // Just hide the crypto payment modal if user exits
+    setShowCryptoPayment(false);
+  };
+
+  // Show crypto payment component if active
+  if (showCryptoPayment) {
+    return (
+      <CryptoPayment 
+        onClose={handleCryptoPaymentClose}
+        onPaymentComplete={handleCryptoPaymentComplete}
+      />
+    );
+  }
+
   return (
     <div className="space-y-4">
       <div>
@@ -32,7 +67,7 @@ export default function ReviewAndConfirm({
 
       {/* Confirm Booking Button */}
       <Button
-        onClick={onConfirm}
+        onClick={handleConfirm}
         className="w-full mt-4"
       >
         Confirm and Pay
