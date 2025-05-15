@@ -87,17 +87,25 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
             />
           </div>
 
-          {/* Sustainability Icons (optional placeholder or real logic) */}
+          {/* Sustainability Icons */}
           <div className="flex items-center space-x-2 mt-4">
             {sustainabilityGoal?.length ? (
-              sustainabilityGoal.map((goal, index) => (
-                <div
-                  key={index}
-                  className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded"
-                >
-                  {goal}
-                </div>
-              ))
+              sustainabilityGoal.map((goal, index) => {
+                // Extract the goal number from the format "E-WEB-Goal-XX"
+                const imagePath = `/assets/sdg/E-WEB-Goal-${goal.padStart(2, "0")}.png`; // Dynamically generate the image path
+                console.log("imagePath", imagePath)
+                return (
+                  <div key={index} className="flex items-center">
+                    <Image
+                      src={imagePath}
+                      alt={`Sustainability Goal ${goal}`}
+                      width={50}
+                      height={50}
+                      className="rounded"
+                    />
+                  </div>
+                );
+              })
             ) : (
               <>
                 <Image
