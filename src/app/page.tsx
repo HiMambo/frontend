@@ -67,32 +67,6 @@ export default function Home() {
                 sustainabilityGoal={exp.sustainability_goal}
               />
             ))}
-{/* {experiences.map((exp) => (
-              <ExperienceCard
-                key={exp.id}
-                title={exp.name}
-                price={parseFloat(exp.experience_price)}
-                location={`${exp.experience_city}, ${exp.experience_country}`}
-                image={exp.experience_promo_image}
-                description={exp.experience_description}
-                discount={null} // Optional: handle discounts if available later
-                rating={exp.rating_avg}
-                sustainabilityGoal={exp.sustainability_goal}
-              />
-            ))} */}
-{/* {experiences.map((exp) => (
-              <ExperienceCard
-                key={exp.id}
-                title={exp.name}
-                price={parseFloat(exp.experience_price)}
-                location={`${exp.experience_city}, ${exp.experience_country}`}
-                image={exp.experience_promo_image}
-                description={exp.experience_description}
-                discount={null} // Optional: handle discounts if available later
-                rating={exp.rating_avg}
-                sustainabilityGoal={exp.sustainability_goal}
-              />
-            ))} */}
           </div>
         </div>
       </main>

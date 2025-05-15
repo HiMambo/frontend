@@ -46,10 +46,10 @@ export default function ReviewAndConfirm({
   const handleApplyPromoCode = () => {
     // Example promo code validation logic
     if (promoCode === "COLOSSEUM") {
-      setDiscount(99.99); //
+      setDiscount(99.90); //
       setError(null);
     } else if (promoCode === "JAGER") {
-      setDiscount(99.99); // Apply a $20 discount
+      setDiscount(99.90); // Apply a $20 discount
       setError(null);
     } else {
       setError("Invalid promo code");
