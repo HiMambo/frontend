@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import CryptoPayment from "./CryptoPayment";
+import { useCart } from "@/context/Cart"; // Import the Cart context
 
 type ReviewAndConfirmProps = {
   paymentMethod: 'credit' | 'crypto';
@@ -15,6 +16,9 @@ export default function ReviewAndConfirm({
   onConfirm,
   onBackToPayment
 }: ReviewAndConfirmProps) {
+  const { discount, setDiscount } = useCart(); // Access discount and setDiscount from the Cart context
+  const [promoCode, setPromoCode] = useState(""); // State for promo code
+  const [error, setError] = useState<string | null>(null); // State for promo code errors
   const [showCryptoPayment, setShowCryptoPayment] = useState(false);
 
   const handleConfirm = () => {
@@ -36,6 +40,20 @@ export default function ReviewAndConfirm({
   const handleCryptoPaymentClose = () => {
     // Just hide the crypto payment modal if user exits
     setShowCryptoPayment(false);
+  };
+
+  const handleApplyPromoCode = () => {
+    // Example promo code validation logic
+    if (promoCode === "COLOSSEUM") {
+      setDiscount(99.99); //
+      setError(null);
+    } else if (promoCode === "JAGER") {
+      setDiscount(99.99); // Apply a $20 discount
+      setError(null);
+    } else {
+      setError("Invalid promo code");
+      setDiscount(0); // Reset discount if promo code is invalid
+    }
   };
 
   // Show crypto payment component if active
@@ -64,6 +82,28 @@ export default function ReviewAndConfirm({
       >
         Change Payment Method
       </Button>
+
+      {/* Promo Code Section */}
+      <div className="space-y-2">
+        <label htmlFor="promoCode" className="block text-sm font-medium text-gray-700">
+          Promo Code
+        </label>
+        <div className="flex space-x-2">
+          <input
+            id="promoCode"
+            type="text"
+            value={promoCode}
+            onChange={(e) => setPromoCode(e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2"
+            placeholder="Enter promo code"
+          />
+          <Button onClick={handleApplyPromoCode} className="px-4">
+            Apply
+          </Button>
+        </div>
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {discount > 0 && <p className="text-green-500 text-sm">Discount applied: {discount}%</p>}
+      </div>
 
       {/* Confirm Booking Button */}
       <Button

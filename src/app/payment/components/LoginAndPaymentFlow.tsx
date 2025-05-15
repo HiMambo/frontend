@@ -45,7 +45,7 @@ export default function LoginAndPaymentFlow({ setCurrentStep }: Props) {
   };
 
   return (
-    <div className="max-w-md mx-auto space-y-4">
+    <div className="mx-auto space-y-4">
       {/* Step 1: Auth */}
       <AccordionStep
         title={isLoggedIn ? 'Logged in' : 'Step 1: Login/Signup'}

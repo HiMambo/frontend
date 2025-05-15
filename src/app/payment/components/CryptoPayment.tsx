@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { CountdownTimer } from '@/components/CountdownTimer';
 import QRCode from 'react-qr-code';
 
+import { useCart } from "@/context/Cart"; // Import the Cart context
 
 type PaymentSession = {
   session_id: string;
@@ -29,6 +30,7 @@ type CryptoPaymentProps = {
 };
 
 export default function CryptoPayment({}: CryptoPaymentProps) {
+  const { price, experienceId, discount, number_of_people} = useCart();
   const [payment, setPayment] = useState<PaymentSession | null>(null);
   const [loading, setLoading] = useState(true);
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
@@ -40,6 +42,13 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
 
+  // Calculate the total price based on the discount
+  const calculateTotalPrice = () => {
+    if (!price) return 0;
+    const discountMultiplier = (100 - discount) / 100; // Convert discount percentage to multiplier
+    return price * discountMultiplier * number_of_people;
+  };
+  
   // * Starting the payment session * // 
   useEffect(() => {
     const fetchPaymentData = async () => {
@@ -48,7 +57,11 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
         setError(null); // Clear any previous errors
   
         console.log('API URL:', API_URL); // Debugging: Log the API URL
-        const response = await fetch(`${API_URL}/experience/1234/start_pay_session`);
+
+        const totalPrice = calculateTotalPrice(); // Calculate the total price
+        console.log('Total Price (after discount):', totalPrice); // Debugging: Log the total price
+
+        const response = await fetch(`${API_URL}/experience/${experienceId}/start_pay_session/price/${totalPrice}`);
         if (!response.ok) {
           console.error('Response status for starting payment session:', response.status); // Debugging: Log the response status
           throw new Error('Failed to fetch payment session data');

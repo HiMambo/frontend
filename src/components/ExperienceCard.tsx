@@ -1,7 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 
+import { useRouter } from "next/navigation";
+import { useCart } from "@/context/Cart";
+
 interface ExperienceCardProps {
+  id: number;
   title: string;
   price: number;
   location: string;
@@ -13,6 +19,7 @@ interface ExperienceCardProps {
 }
 
 const ExperienceCard: React.FC<ExperienceCardProps> = ({
+  id,
   title,
   price,
   location,
@@ -25,8 +32,21 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   const imageSrc = image ?? "/assets/Rectangle.png"; // fallback image
   const safeRating = rating ?? 4;
 
+  const router = useRouter();
+  const { setPrice, setExperienceId } = useCart();
+
+  const handleCardClick = () => {
+    setPrice(price); // Set the price in the Cart context
+    setExperienceId(id);
+    console.log("Selected experience with ExperienceCard");
+    console.log("Id:", id);
+    router.push("/payment"); // Navigate to the /payment page
+  };
+
   return (
-    <div className="border-t-indigo-50 max-h-72 rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">
+    <div className="border-t-indigo-50 max-h-72 rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row"
+      onClick={handleCardClick} // Add the click handler
+    >
       {/* Image */}
       <div className="w-full md:w-1/4 relative min-h-[200px]">
         <Image
