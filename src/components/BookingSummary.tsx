@@ -5,9 +5,27 @@ import React, { useEffect, useState } from "react";
 import { useCart } from "@/context/Cart";
 import { fetchExperienceById } from "@/lib/api";
 
+
+
+// Define the type for the experience object
+interface Experience {
+  id: number;
+  name: string;
+  experience_description: string;
+  experience_price: number;
+  experience_promo_image: string;
+  experience_city: string;
+  experience_country: string;
+  travelDate?: string;
+  departure?: string;
+  travellers?: number;
+  duration?: string;
+  refundable?: string;
+}
+
 const BookingSummary: React.FC = () => {
   const { experienceId } = useCart(); // Get the selected experience ID from the Cart context
-  const [experience, setExperience] = useState<any | null>(null); // State to store the fetched experience
+  const [experience, setExperience] = useState<Experience | null>(null); // State to store the fetched experience
   const [loading, setLoading] = useState(true); // State for loading
   const [error, setError] = useState<string | null>(null); // State for error handling
 
