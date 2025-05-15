@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent } from "@/components/ui/card";
+import CenteredCard from "./CenteredCard"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,10 +13,8 @@ export function AuthForm({ onSuccess }: { onSuccess: () => void }) {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   return (
-    <div className="flex justify-center">
-      <Card className="w-[400px] min-h-[520px] flex flex-col justify-start">
-        <CardContent className="space-y-4 p-6">
-          <div className="flex justify-around mb-6">
+    <CenteredCard>
+      <div className="flex justify-around mb-6">
             <button
               className={`text-sm font-medium ${tab === 'signup' ? 'border-b-2 border-black' : 'text-muted-foreground'}`}
               onClick={() => setTab('signup')}
@@ -82,8 +80,6 @@ export function AuthForm({ onSuccess }: { onSuccess: () => void }) {
               <Button className="w-full" onClick={onSuccess}>Login</Button>
             </div>
           )}
-        </CardContent>
-      </Card>
-    </div>
+    </CenteredCard>
   );
 }

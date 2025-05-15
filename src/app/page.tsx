@@ -39,7 +39,7 @@ export default function Home() {
           </div>
 
           {/* Experience Cards */}
-          <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-8">
+          <div className="md:col-span-3 flex flex-col gap-8">
             {experiences.map((exp) => (
               <ExperienceCard
                 key={exp.id}

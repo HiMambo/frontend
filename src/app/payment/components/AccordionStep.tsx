@@ -30,7 +30,11 @@ export function AccordionStep({
         {completed && <span className="text-xs text-green-600">✓</span>}
       </button>
 
-      {show && <div className="p-6">{children}</div>}
+      {show && (
+        <div className="p-6 min-h-[300px] transition-all duration-500 ease-in-out">
+          {children}
+        </div>
+      )}
     </div>
   );
 }

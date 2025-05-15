@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import CryptoPayment from "./CryptoPayment";
+import CenteredCard from "./CenteredCard"
 import { useCart } from "@/context/Cart"; // Import the Cart context
 
 type ReviewAndConfirmProps = {
@@ -67,51 +68,53 @@ export default function ReviewAndConfirm({
   }
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h3 className="text-lg font-semibold">Review your details</h3>
-        <p><strong>Payment Method:</strong> {paymentMethod === 'credit' ? 'Credit Card' : 'Cryptocurrency'}</p>
-        {/* email, booking dates, totals, etc. */}
-      </div>
-
-      {/* Back to Payment Button */}
-      <Button
-        onClick={onBackToPayment}
-        variant="outline"
-        className="w-full mt-4"
-      >
-        Change Payment Method
-      </Button>
-
-      {/* Promo Code Section */}
-      <div className="space-y-2">
-        <label htmlFor="promoCode" className="block text-sm font-medium text-gray-700">
-          Promo Code
-        </label>
-        <div className="flex space-x-2">
-          <input
-            id="promoCode"
-            type="text"
-            value={promoCode}
-            onChange={(e) => setPromoCode(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2"
-            placeholder="Enter promo code"
-          />
-          <Button onClick={handleApplyPromoCode} className="px-4">
-            Apply
-          </Button>
+    <CenteredCard>
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-lg font-semibold">Review your details</h3>
+          <p><strong>Payment Method:</strong> {paymentMethod === 'credit' ? 'Credit Card' : 'Cryptocurrency'}</p>
+          {/* email, booking dates, totals, etc. */}
         </div>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        {discount > 0 && <p className="text-green-500 text-sm">Discount applied: {discount}%</p>}
-      </div>
 
-      {/* Confirm Booking Button */}
-      <Button
-        onClick={handleConfirm}
-        className="w-full mt-4"
-      >
-        Confirm and Pay
-      </Button>
-    </div>
+        {/* Back to Payment Button */}
+        <Button
+          onClick={onBackToPayment}
+          variant="outline"
+          className="w-full mt-4"
+        >
+          Change Payment Method
+        </Button>
+
+        {/* Promo Code Section */}
+        <div className="space-y-2">
+          <label htmlFor="promoCode" className="block text-sm font-medium text-gray-700">
+            Promo Code
+          </label>
+          <div className="flex space-x-2">
+            <input
+              id="promoCode"
+              type="text"
+              value={promoCode}
+              onChange={(e) => setPromoCode(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
+              placeholder="Enter promo code"
+            />
+            <Button onClick={handleApplyPromoCode} className="px-4">
+              Apply
+            </Button>
+          </div>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {discount > 0 && <p className="text-green-500 text-sm">Discount applied: {discount}%</p>}
+        </div>
+
+        {/* Confirm Booking Button */}
+        <Button
+          onClick={handleConfirm}
+          className="w-full mt-4"
+        >
+          Confirm and Pay
+        </Button>
+      </div>
+    </CenteredCard>
   );
 }

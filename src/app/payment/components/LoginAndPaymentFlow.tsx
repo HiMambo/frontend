@@ -45,7 +45,7 @@ export default function LoginAndPaymentFlow({ setCurrentStep }: Props) {
   };
 
   return (
-    <div className="mx-auto space-y-4">
+    <div className="mx-auto space-y-4 max-w-xl min-h-[500px] transition-all duration-500">
       {/* Step 1: Auth */}
       <AccordionStep
         title={isLoggedIn ? 'Logged in' : 'Step 1: Login/Signup'}
@@ -71,7 +71,7 @@ export default function LoginAndPaymentFlow({ setCurrentStep }: Props) {
 
       {/* Step 3: Review */}
       <AccordionStep
-        title={bookingConfirmed ? "Booking confirmed!" : 'Step 3: Review & Confirm'}
+        title={bookingConfirmed ? "Payment Received!" : 'Step 3: Review & Pay'}
         show={reviewOpen && !bookingConfirmed}
         completed={bookingConfirmed}
       >
