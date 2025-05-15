@@ -51,7 +51,7 @@ export function PaymentForm({
             disabled={disabled}
             onClick={onComplete}
           >
-            Review booking
+            Proceed to pay
           </Button>
         </CardContent>
       </Card>
