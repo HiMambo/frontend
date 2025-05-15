@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { CountdownTimer } from '@/components/CountdownTimer';
 import QRCode from 'react-qr-code';
@@ -272,11 +273,13 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
             />
             <h2 className="text-2xl font-bold text-green-600">Payment Successful!</h2>
             <p className="text-gray-600">Thank you for your payment. Your transaction has been confirmed.</p>
-            <button
-              className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-            >
-              To your bookings
-            </button>
+            <Link href="/mybookings">
+              <button
+                className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+              >
+                To your bookings
+              </button>
+            </Link>
           </div>
         ) : payment?.status === 'checked' ? (
           // Success state

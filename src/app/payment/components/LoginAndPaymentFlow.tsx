@@ -57,7 +57,7 @@ export default function LoginAndPaymentFlow({ setCurrentStep }: Props) {
 
       {/* Step 2: Payment */}
       <AccordionStep
-        title={reviewOpen ? 'Payment Added' : 'Step 2: Choose Payment method'}
+        title={reviewOpen ? 'Payment Method Added' : 'Step 2: Choose Payment method'}
         show={isLoggedIn && !reviewOpen}
         completed={reviewOpen}
       >
