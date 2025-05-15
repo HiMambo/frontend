@@ -10,8 +10,21 @@ import SearchControls from "@/components/SearchControls";
 import { fetchExperiences } from "@/lib/api";
 import { useCart } from "@/context/Cart"; // Import the Cart context
 
+// Define the type for an Experience object
+interface Experience {
+  id: number;
+  name: string;
+  experience_description: string;
+  experience_price: string; // Assuming price is returned as a string from the API
+  experience_promo_image: string;
+  experience_city: string;
+  experience_country: string;
+  rating_avg: number;
+  sustainability_goal: string[];
+}
+
 export default function Home() {
-  const [experiences, setExperiences] = useState([]); // State to store experiences
+  const [experiences, setExperiences] = useState<Experience[]>([]); // State to store experiences
   const { setPax } = useCart(); // Access the setPax function from the Cart context
 
   // Fetch experiences and set default number_of_people
