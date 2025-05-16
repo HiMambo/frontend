@@ -43,8 +43,25 @@ export async function fetchExperienceById(id: number): Promise<Experience> {
   return res.json();
 }
 
+// Define the type for booking data
+export interface BookingData {
+  experience_id: number;
+  booking_date: string;
+  client_id: number;
+  duration_days: number;
+  number_of_people: number;
+  total_price: number;
+  created_at: string;
+  updated_at: string;
+  discount: number;
+  currency: string;
+  experience_date: string;
+  payment_type: string;
+  confirmation_code: string;
+  status: string;
+}
 
-export async function createBooking(bookingData: any) {
+export async function createBooking(bookingData: BookingData) {
 
   console.log(`${API_BASE_URL}/bookings/new`);
   const response = await fetch(`${API_BASE_URL}/bookings/new`, {

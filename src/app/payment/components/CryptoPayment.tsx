@@ -207,6 +207,14 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
     if (!payment) return;
 
     const now = new Date(); 
+
+    // Ensure experienceId is not null
+    if (!experienceId) {
+      console.error("Experience ID is null. Cannot create booking.");
+      setError("Experience ID is missing. Please try again.");
+      return;
+    }
+
     try {
       const bookingData = {
         experience_id: experienceId,
@@ -229,6 +237,7 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
 
       const response = await createBooking(bookingData);
       console.log("Booking created successfully:", response);
+      setIsBookingCreated(true);
     } catch (err) {
       console.error("Error creating booking:", err);
       setError("Failed to create booking. Please contact support.");
