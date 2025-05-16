@@ -10,8 +10,10 @@ type PriceContextType = {
   setExperienceId: (id: number) => void;
   discount: number; // Add discount to the context type
   setDiscount: (discount: number) => void;
-  number_of_people: number; // Add discount to the context type
-  setPax: (discount: number) => void;
+  number_of_people: number;
+  setPax: (number_of_people: number) => void;
+  booking_date: Date;
+  setBookingDate: (booking_date: Date) => void;
 };
 
 const PriceContext = createContext<PriceContextType | undefined>(undefined);
@@ -20,10 +22,15 @@ export const Cart = ({ children }: { children: ReactNode }) => {
   const [price, setPrice] = useState<number | null>(null);
   const [experienceId, setExperienceId] = useState<number | null>(null);
   const [discount, setDiscount] = useState<number>(0); // Default discount is 0
-  const [number_of_people, setPax] = useState<number>(1); // Default discount is 0
+  const [number_of_people, setPax] = useState<number>(1);
+  const [booking_date, setBookingDate] = useState<Date>(new Date());
 
   return (
-    <PriceContext.Provider value={{ price, setPrice, experienceId, setExperienceId, discount, setDiscount, number_of_people, setPax }}>
+    <PriceContext.Provider value={{ price, setPrice, 
+                                    experienceId, setExperienceId, 
+                                    discount, setDiscount, 
+                                    number_of_people, setPax,
+                                    booking_date, setBookingDate  }}>
       {children}
     </PriceContext.Provider>
   );

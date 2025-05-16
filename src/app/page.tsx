@@ -25,7 +25,7 @@ interface Experience {
 
 export default function Home() {
   const [experiences, setExperiences] = useState<Experience[]>([]); // State to store experiences
-  const { setPax } = useCart(); // Access the setPax function from the Cart context
+  const { setPax, setBookingDate } = useCart(); // Access the setPax function from the Cart context
 
   // Fetch experiences and set default number_of_people
   useEffect(() => {
@@ -37,8 +37,14 @@ export default function Home() {
     fetchData();
     setPax(2); // Set the default value for number_of_people
     console.log("Default number_of_people set to 2");
-  }, [setPax]);
 
+
+    const hardcodedDate = new Date("2025-06-13T09:30:00Z"); 
+    setBookingDate(hardcodedDate)
+    console.log(`Default Date set to ${hardcodedDate}`);
+  }, [setPax, setBookingDate]);
+
+  
   return (
     <>
       <Header />

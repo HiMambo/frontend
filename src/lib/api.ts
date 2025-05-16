@@ -3,6 +3,7 @@
 // const API_BASE_URL = "https://backend-production-97ab.up.railway.app"; // For Trung deployment
 const API_BASE_URL = "https://backend-production-f498.up.railway.app"; // For HiMambo deployment
 
+// const API_BASE_URL = "http://0.0.0.0:8000";
 
 export interface Experience {
   id: number;
@@ -40,4 +41,24 @@ export async function fetchExperienceById(id: number): Promise<Experience> {
   }
 
   return res.json();
+}
+
+
+export async function createBooking(bookingData: any) {
+
+  console.log(`${API_BASE_URL}/bookings/new`);
+  const response = await fetch(`${API_BASE_URL}/bookings/new`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bookingData),
+  })
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.message || 'Booking creation failed')
+  }
+
+  return response.json()
 }

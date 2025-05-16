@@ -7,6 +7,9 @@ import QRCode from 'react-qr-code';
 
 import { useCart } from "@/context/Cart"; // Import the Cart context
 
+import { createBooking } from "@/lib/api"; // Import the createBooking function
+
+
 type PaymentSession = {
   session_id: string;
   experience_id: string;
@@ -30,13 +33,15 @@ type CryptoPaymentProps = {
 };
 
 export default function CryptoPayment({}: CryptoPaymentProps) {
-  const { price, experienceId, discount, number_of_people} = useCart();
+  const { price, experienceId, discount, number_of_people, booking_date} = useCart();
   const [payment, setPayment] = useState<PaymentSession | null>(null);
   const [loading, setLoading] = useState(true);
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>('USDC');
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [isBookingCreated, setIsBookingCreated] = useState(false); // Flag to prevent duplicate bookings
+
   
   const [isPaymentSessionInitialized, setIsPaymentSessionInitialized] = useState(false); // Tracks whether the session is initialized
 
@@ -198,6 +203,44 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
   }, [payment?.status, payment?.session_id, API_URL]);
 
 
+  const handleCreateBooking = async () => {
+    if (!payment) return;
+
+    const now = new Date(); 
+    try {
+      const bookingData = {
+        experience_id: experienceId,
+        booking_date: now.toISOString(),
+        client_id: 5,
+        duration_days: 2,
+        number_of_people: number_of_people,
+        total_price: calculateTotalPrice(),
+        created_at: now.toISOString(),
+        updated_at: now.toISOString(),
+        discount: discount,
+        currency: payment.final_currency,
+        experience_date : booking_date.toISOString(),
+        payment_type: "crypto",
+        confirmation_code : "asij1823nasd",
+        status: "paid"
+      };
+
+      console.log("Creating booking with data:", bookingData);
+
+      const response = await createBooking(bookingData);
+      console.log("Booking created successfully:", response);
+    } catch (err) {
+      console.error("Error creating booking:", err);
+      setError("Failed to create booking. Please contact support.");
+    }
+  };
+
+  // Automatically call createBooking when payment status is 'success'
+  useEffect(() => {
+    if (payment?.status === "success" && !isBookingCreated) {
+      handleCreateBooking();
+    }
+  }, [payment?.status, isBookingCreated]);
 
 
 

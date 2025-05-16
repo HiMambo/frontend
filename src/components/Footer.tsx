@@ -66,7 +66,7 @@ export default function Footer() {
 
           {/* Description Text */}
           <p className="max-w-md">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            A new way of exploring the world!
           </p>
 
           {/* Navigation Links */}
