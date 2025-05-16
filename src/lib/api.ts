@@ -2,7 +2,6 @@
 // Define the base URL for the API
 // const API_BASE_URL = "https://backend-production-97ab.up.railway.app"; // For Trung deployment
 const API_BASE_URL = "https://backend-production-f498.up.railway.app"; // For HiMambo deployment
-
 // const API_BASE_URL = "http://0.0.0.0:8000";
 
 export interface Experience {
@@ -18,32 +17,29 @@ export interface Experience {
 }
 
 export async function fetchExperiences(): Promise<Experience[]> {
-
   console.log("API URL for fetching experiences:");
-  console.log(`${API_BASE_URL}/experiences`);
-  
-  const res = await fetch(`${API_BASE_URL}/experiences`, {
+  console.log(`${API_BASE_URL}/experiences/`); // Added trailing slash
+  const res = await fetch(`${API_BASE_URL}/experiences/`, { // Added trailing slash
     next: { revalidate: 60 }, // Optional: caching for SSR
   });
-
+  
   if (!res.ok) {
     throw new Error("Failed to fetch experiences");
   }
-
+  
   return res.json();
 }
 
 export async function fetchExperienceById(id: number): Promise<Experience> {
-  console.log(`${API_BASE_URL}/experiences/${id}`);
-
-  const res = await fetch(`${API_BASE_URL}/experiences/${id}`, {
+  console.log(`${API_BASE_URL}/experiences/${id}/`); // Added trailing slash
+  const res = await fetch(`${API_BASE_URL}/experiences/${id}/`, { // Added trailing slash
     next: { revalidate: 60 }, // Optional: caching for SSR
   });
-
+  
   if (!res.ok) {
     throw new Error(`Failed to fetch experience with ID: ${id}`);
   }
-
+  
   return res.json();
 }
 
@@ -66,21 +62,20 @@ export interface BookingData {
 }
 
 export async function createBooking(bookingData: BookingData) {
-
-  console.log(`${API_BASE_URL}/bookings/new`);
-  const response = await fetch(`${API_BASE_URL}/bookings/new`, {
+  console.log(`${API_BASE_URL}/bookings/new/`); // Added trailing slash
+  const response = await fetch(`${API_BASE_URL}/bookings/new/`, { // Added trailing slash
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(bookingData),
   })
-
+  
   if (!response.ok) {
     const error = await response.json()
     throw new Error(error.message || 'Booking creation failed')
   }
-
+  
   return response.json()
 }
 
