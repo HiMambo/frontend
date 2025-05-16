@@ -18,6 +18,10 @@ export interface Experience {
 }
 
 export async function fetchExperiences(): Promise<Experience[]> {
+
+  console.log("API URL for fetching experiences:");
+  console.log(`${API_BASE_URL}/experiences`);
+  
   const res = await fetch(`${API_BASE_URL}/experiences`, {
     next: { revalidate: 60 }, // Optional: caching for SSR
   });

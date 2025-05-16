@@ -26,12 +26,19 @@ interface Experience {
 export default function Home() {
   const [experiences, setExperiences] = useState<Experience[]>([]); // State to store experiences
   const { setPax, setBookingDate } = useCart(); // Access the setPax function from the Cart context
-
+  const [error, setError] = useState<string | null>(null); // State to store error messages
+  
   // Fetch experiences and set default number_of_people
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchExperiences();
-      setExperiences(data); // Set the fetched experiences
+      try {
+        const data = await fetchExperiences();
+        setExperiences(data); // Set the fetched experiences
+        setError(null); // Clear any previous errors
+      } catch (err) {
+        console.error("Error fetching experiences:", err);
+        setError("Failed to load experiences. Please try again later.");
+      }
     };
 
     fetchData();
@@ -59,20 +66,26 @@ export default function Home() {
 
           {/* Experience Cards */}
           <div className="md:col-span-3 flex flex-col gap-8">
-            {experiences.map((exp) => (
-              <ExperienceCard
-                key={exp.id}
-                id={exp.id}
-                title={exp.name}
-                price={parseFloat(exp.experience_price)}
-                location={`${exp.experience_city}, ${exp.experience_country}`}
-                image={exp.experience_promo_image}
-                description={exp.experience_description}
-                discount={null} // Optional: handle discounts if available later
-                rating={exp.rating_avg}
-                sustainabilityGoal={exp.sustainability_goal}
-              />
-            ))}
+            {error ? (
+              <div className="text-red-500 text-center">
+                {error} {/* Display error message */}
+              </div>
+            ) : (
+              experiences.map((exp) => (
+                <ExperienceCard
+                  key={exp.id}
+                  id={exp.id}
+                  title={exp.name}
+                  price={parseFloat(exp.experience_price)}
+                  location={`${exp.experience_city}, ${exp.experience_country}`}
+                  image={exp.experience_promo_image}
+                  description={exp.experience_description}
+                  discount={null} // Optional: handle discounts if available later
+                  rating={exp.rating_avg}
+                  sustainabilityGoal={exp.sustainability_goal}
+                />
+              ))
+            )}
           </div>
         </div>
       </main>
