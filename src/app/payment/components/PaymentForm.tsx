@@ -6,7 +6,6 @@ import { CryptoIcon } from '@/components/IconComponents';;
 import { Button } from "@/components/ui/button";
 import { CreditCardForm } from "./CreditCardForm";
 import CenteredCard from "./CenteredCard"
-
 export function PaymentForm({
   disabled,
   method,
@@ -18,6 +17,7 @@ export function PaymentForm({
   onMethodChange: (m: 'credit' | 'crypto') => void;
   onComplete: () => void; 
 }) {
+
   return (
     <div style={{ opacity: disabled ? 0.5 : 1 }}>
       <CenteredCard>

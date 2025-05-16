@@ -25,6 +25,7 @@ type Currency = 'USDC' | 'SOL';
 
 const T_PERIOD_CHECK_PAYMENT = 3000; // in milliseconds
 const MAX_ATTEMPTS_CHECK_PAYMENT = 20; // in times
+const SHARE_PERCENTAGE_HIMAMBO = 0.1
 
 // Add props for integration
 type CryptoPaymentProps = {
@@ -50,8 +51,10 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
   // Calculate the total price based on the discount
   const calculateTotalPrice = () => {
     if (!price) return 0;
+
+    // Total price 
     const discountMultiplier = (100 - discount) / 100; // Convert discount percentage to multiplier
-    return price * discountMultiplier * number_of_people;
+    return price * discountMultiplier * number_of_people ;
   };
   
   // * Starting the payment session * // 
@@ -222,7 +225,7 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
         client_id: 5,
         duration_days: 2,
         number_of_people: number_of_people,
-        total_price: calculateTotalPrice(),
+        total_price: calculateTotalPrice()*(1-SHARE_PERCENTAGE_HIMAMBO),
         created_at: now.toISOString(),
         updated_at: now.toISOString(),
         discount: discount,

@@ -29,6 +29,8 @@ import { X as XIcon } from 'lucide-react';
 
 import Image from 'next/image';
 
+import { fetchTotalPaymentPartnerById } from "@/lib/api";
+
 // Register ChartJS components
 ChartJS.register(
   CategoryScale,
@@ -46,6 +48,13 @@ type PaymentData = {
   totalExperiences: number;
   average: number;
 };
+
+type PaymentDataCrypto = {
+  totalValue: number;
+  totalExperiences: number;
+  converted: number;
+};
+
 
 type GraphOptions = {
   responsive: boolean;
@@ -142,7 +151,18 @@ export default function MamboWallet() {
   const [selectedReceiveCurrency, setSelectedReceiveCurrency] = useState({ code: "BTC", flag: "₿" });
   const [receiveAmount, setReceiveAmount] = useState("0.00303431");
   const [showExpandedTransactions, setShowExpandedTransactions] = useState(false);
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [summaryPaymentFiat, setSummaryPaymentFiat] = useState<Record<TimeView, PaymentData>>({
+                                        "This Month":   { totalValue: 0.00, totalExperiences: 0, average: 0 },
+                                        "This Year":    { totalValue: 0.00, totalExperiences: 0, average: 0 },
+                                        "Forever View": { totalValue: 0.00, totalExperiences: 0, average: 0 },
+                                      });
+  const [summaryPaymentCrypto, setSummaryPaymentCrypto] = useState<Record<TimeView, PaymentDataCrypto>>({
+                                        "This Month":   { totalValue: 0.00, totalExperiences: 0, converted: 0 },
+                                        "This Year":    { totalValue: 0.00, totalExperiences: 0, converted: 0 },
+                                        "Forever View": { totalValue: 0.00, totalExperiences: 0, converted: 0 },
+                                      });
   useEffect(() => {
     setIsClient(true); // Set to true once the component is mounted on the client
   }, []);
@@ -159,17 +179,57 @@ export default function MamboWallet() {
     };
   }, [showBankModal, showExpandedTransactions]);
 
-  const paymentValues: Record<TimeView, PaymentData> = {
-    "This Month": { totalValue: 0.11, totalExperiences: 15, average: 21 },
-    "This Year": { totalValue: 0.27, totalExperiences: 18, average: 17 },
-    "Forever View": { totalValue: 0.53, totalExperiences: 72, average: 16 },
-  };
+  useEffect(() => {
+    const fetchPaymentData = async () => {
+      try {
+        setLoading(true);
+        const partnerId = 11; // Replace with the actual partner ID
+        const data = await fetchTotalPaymentPartnerById(partnerId);
 
-  const cryptoPaymentValues = {
-    "This Month": { totalValue: 0.1118, totalExperiences: 120, converted: 10 },
-    "This Year": { totalValue: 0.3338, totalExperiences: 250, converted: 33 },
-    "Forever View": { totalValue: 0.6565, totalExperiences: 80, converted: 51 },
-  };
+        console.log("Data from API")
+        console.log(data)
+
+        // For fiat
+        const dataDisplay = {
+          "This Month": { totalValue: data.total_payments_USDC, 
+                          totalExperiences: 2, 
+                          average: 21 },
+          "This Year": {  totalValue: data.total_payments_USDC, 
+                          totalExperiences: 18, 
+                          average: 17 },
+          "Forever View": { totalValue: data.total_payments_USDC, 
+                            totalExperiences: 72, 
+                            average: 16 },
+        };
+        setSummaryPaymentFiat(dataDisplay)
+
+        // For crypto
+        const dataDisplayCrypto = {
+          "This Month": { totalValue: data.total_payments_SOL, 
+                          totalExperiences: 1, 
+                          converted: 0.35 },
+          "This Year": {  totalValue: data.total_payments_SOL, 
+                          totalExperiences: 30, 
+                          converted: 0.4 },
+          "Forever View": { totalValue: data.total_payments_SOL, 
+                            totalExperiences: 45, 
+                            converted: 0.2 },
+        };
+        setSummaryPaymentCrypto(dataDisplayCrypto)
+
+
+        setError(null); // Clear any previous errors
+      } catch (err) {
+        console.error("Error fetching payment data:", err);
+        setError("Failed to load payment data. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPaymentData();
+  }, []);
+
 
   const refundValues = {
     "This Month": { totalRefunds: 1, refundRate: 6.67 },
@@ -177,8 +237,14 @@ export default function MamboWallet() {
     "Forever View": { totalRefunds: 4, refundRate: 6.67 },
   };
 
-  const currentValues = paymentValues[view];
-  const currentCryptoValues = cryptoPaymentValues[view];
+  console.log("summaryPaymentFiat")
+  console.log(summaryPaymentFiat)
+  const currentValues = summaryPaymentFiat[view];
+
+  console.log("summaryPaymentCrypto")
+  console.log(summaryPaymentCrypto)
+  const currentCryptoValues = summaryPaymentCrypto[view];
+
   const currentRefundValues = refundValues[view];
 
   const graphData = {
@@ -213,6 +279,14 @@ export default function MamboWallet() {
       },
     },
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
 
   return (
     <div className={`ml-16 p-8 relative${showBankModal || showExpandedTransactions ? ' overflow-hidden' : ''}`}> {/* Changed from <main> to <div> */}
@@ -285,10 +359,10 @@ export default function MamboWallet() {
           </p>
           <p className="text-sm text-gray-500">Total Payments Value</p>
           <div className="mt-4 text-sm text-gray-600">
-            <div className="flex justify-between">
-              <span>Total Exp. Purchased:</span>
-              <span>{currentValues.totalExperiences.toLocaleString()}</span>
-            </div>
+            {/* <div className="flex justify-between"> */}
+              {/* <span>Total Exp. Purchased:</span> */}
+              {/* <span>{currentValues.totalExperiences.toLocaleString()}</span> */}
+            {/* </div> */}
             <div className="flex justify-between">
               <span>Average Per Experience:</span>
               <span>
@@ -321,15 +395,15 @@ export default function MamboWallet() {
           </p>
           <p className="text-sm text-gray-500">Total Payments Value</p>
           <div className="mt-4 text-sm text-gray-600">
-            <div className="flex justify-between">
+            {/* <div className="flex justify-between">
               <span>Total Exp. Purchased:</span>
               <span>{currentCryptoValues.totalExperiences.toLocaleString()}</span>
-            </div>
+            </div> */}
             <div className="flex justify-between">
               <span>Total Converted To Local Currency:</span>
               <span>
                 <span className="text-xs text-purple-600 mr-1">SOL</span>
-                {currentCryptoValues.converted.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 })}
+                {currentCryptoValues.converted.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 4 })}
               </span>
             </div>
           </div>

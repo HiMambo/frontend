@@ -64,7 +64,7 @@ export default function Header() {
             About
           </Link>
           <Link
-            href="/hiPartners"
+            href="/partner-dashboard"
             className="text-gray-700 mr-15 hover:text-indigo-600"
           >
             hiPartners

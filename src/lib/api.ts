@@ -83,3 +83,26 @@ export async function createBooking(bookingData: BookingData) {
 
   return response.json()
 }
+
+
+// Define the partner finance info
+export interface PartnerFinanceInfo {
+  experience_id:  number;
+  total_payments_USDC: number;
+  total_payments_SOL: number;
+}
+
+export async function fetchTotalPaymentPartnerById(id: number): Promise<PartnerFinanceInfo> {
+  const URL_CALL = `${API_BASE_URL}/partners/${id}/get_total_payments`
+  console.log(URL_CALL);
+
+  const res = await fetch(URL_CALL, {
+    next: { revalidate: 60 }, // Optional: caching for SSR
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch experience with ID: ${id}`);
+  }
+
+  return res.json();
+}

@@ -80,10 +80,10 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
         {/* Price */}
         <div className="flex items-center justify-between mt-4">
           <p className="text-lg font-semibold text-brand-yellow">
-            € {price.toFixed(2)}
+            $ {price.toFixed(2)}
             {discount && (
               <span className="line-through text-gray-500 ml-2">
-                € {discount.toFixed(2)}
+                $ {discount.toFixed(2)}
               </span>
             )}
           </p>

@@ -5,8 +5,6 @@ import React, { useEffect, useState } from "react";
 import { useCart } from "@/context/Cart";
 import { fetchExperienceById } from "@/lib/api";
 
-
-
 // Define the type for the experience object
 interface Experience {
   id: number;
@@ -24,13 +22,14 @@ interface Experience {
 }
 
 const BookingSummary: React.FC = () => {
-  const { experienceId } = useCart(); // Get the selected experience ID from the Cart context
+  const { experienceId, number_of_people, payment_type } = useCart(); // Get the selected experience ID from the Cart context
   const [experience, setExperience] = useState<Experience | null>(null); // State to store the fetched experience
   const [loading, setLoading] = useState(true); // State for loading
   const [error, setError] = useState<string | null>(null); // State for error handling
+  const [multiplierCrypto, setMultiplierCrypto] = useState(1.0); // Multiplier for crypto discount
+  const [totalPrice, setTotalPrice] = useState(0.0); // Total price
 
-  const [totalPrice, setTotalPrice] = useState(0.0);
-
+  // Fetch experience data
   useEffect(() => {
     console.log("BookingSummary mounted");
     console.log("Selected experienceId:", experienceId);
@@ -46,12 +45,12 @@ const BookingSummary: React.FC = () => {
       try {
         console.log("Fetching experience with ID:", experienceId);
         setLoading(true);
-        const data = await fetchExperienceById(experienceId); 
+        const data = await fetchExperienceById(experienceId);
         const parsedData = {
           ...data,
           experience_price: parseFloat(data.experience_price),
         };
-        setTotalPrice(Number(data.experience_price) * 2);
+
         console.log("Fetched experience data:", parsedData);
         setExperience(parsedData);
       } catch (err) {
@@ -69,6 +68,26 @@ const BookingSummary: React.FC = () => {
 
     fetchExperience();
   }, [experienceId]);
+
+  // Update multiplier and total price when payment type or experience changes
+  useEffect(() => {
+    if (payment_type === "crypto") {
+      setMultiplierCrypto(0.9); // Apply a 10% discount for crypto
+      console.log("Discount for crypto applied");
+    } else {
+      setMultiplierCrypto(1.0); // No discount for fiat
+      console.log("No discount with fiat");
+    }
+  }, [payment_type]);
+
+  useEffect(() => {
+    if (experience) {
+      const calculatedPrice =
+        experience.experience_price * number_of_people * multiplierCrypto;
+      setTotalPrice(calculatedPrice);
+      console.log("Total price updated:", calculatedPrice);
+    }
+  }, [experience, number_of_people, multiplierCrypto]);
 
   if (loading) {
     console.log("Loading experience data...");
@@ -108,10 +127,7 @@ const BookingSummary: React.FC = () => {
         {/* Location + SDG badges */}
         <div className="flex justify-between items-center text-sm mb-4">
           <div className="flex items-center space-x-2">
-            <span className="text-gray-600">{ `${experience.experience_city}, ${experience.experience_country}` || "Unknown Location"}</span>
-          </div>
-          <div>
-          
+            <span className="text-gray-600">{`${experience.experience_city}, ${experience.experience_country}` || "Unknown Location"}</span>
           </div>
         </div>
 

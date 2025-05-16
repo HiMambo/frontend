@@ -14,6 +14,8 @@ type PriceContextType = {
   setPax: (number_of_people: number) => void;
   booking_date: Date;
   setBookingDate: (booking_date: Date) => void;
+  payment_type: ('crypto' | 'credit');
+  setPaymentType: (payment_type: 'crypto' | 'credit') => void;
 };
 
 const PriceContext = createContext<PriceContextType | undefined>(undefined);
@@ -24,13 +26,16 @@ export const Cart = ({ children }: { children: ReactNode }) => {
   const [discount, setDiscount] = useState<number>(0); // Default discount is 0
   const [number_of_people, setPax] = useState<number>(1);
   const [booking_date, setBookingDate] = useState<Date>(new Date());
+  const [payment_type, setPaymentType] = useState<'crypto' | 'credit'>('crypto');
+
 
   return (
     <PriceContext.Provider value={{ price, setPrice, 
                                     experienceId, setExperienceId, 
                                     discount, setDiscount, 
                                     number_of_people, setPax,
-                                    booking_date, setBookingDate  }}>
+                                    booking_date, setBookingDate, 
+                                    payment_type, setPaymentType}}>
       {children}
     </PriceContext.Provider>
   );

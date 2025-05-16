@@ -6,6 +6,8 @@ import { AuthForm } from './AuthForm';
 import { PaymentForm } from './PaymentForm';
 import ReviewAndConfirm from './ReviewAndConfirm';
 
+import { useCart } from "@/context/Cart"; // Import the Cart context
+
 type Props = {
   setCurrentStep: (step: number) => void;
 };
@@ -16,6 +18,8 @@ export default function LoginAndPaymentFlow({ setCurrentStep }: Props) {
   const [reviewOpen, setReviewOpen] = useState(false);
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
+  const { setPaymentType } = useCart(); // Access the Cart context
+  
   // Update current step
   useEffect(() => {
     if (!isLoggedIn) {
@@ -44,6 +48,14 @@ export default function LoginAndPaymentFlow({ setCurrentStep }: Props) {
     setBookingConfirmed(true);
   };
 
+  // Changing the payment method
+  const handleMethodChange = (m: 'credit' | 'crypto') => {
+    console.log('Changing payment method to:', m);
+    setPaymentMethod(m); // Update the local state
+    setPaymentType(m); // Update the Cart payment method
+  };
+  
+
   return (
     <div className="mx-auto space-y-4 max-w-xl min-h-[500px] transition-all duration-500">
       {/* Step 1: Auth */}
@@ -64,7 +76,7 @@ export default function LoginAndPaymentFlow({ setCurrentStep }: Props) {
         <PaymentForm
           disabled={!isLoggedIn}
           method={paymentMethod}
-          onMethodChange={setPaymentMethod}
+          onMethodChange={handleMethodChange}
           onComplete={handlePaymentComplete}
         />
       </AccordionStep>

@@ -52,8 +52,8 @@ const InfoTooltip = ({ text }: { text: string }) => (
 
 export default function UserProfileDashboard() {
     const [profile, setProfile] = useState({
-        name: "Sophia Schulz",
-        email: "sophia.schulz@gmail.com",
+        name: "Enrique Maldonado",
+        email: "enrique@ghimambo.com",
         password: "",
         profilePic: "/profile.jpg",
     });
@@ -428,7 +428,7 @@ export default function UserProfileDashboard() {
                                             </span>
                                         </div>
                                         <div className="text-center font-medium text-green-600 text-xs px-3">
-                                            €{index === 0 ? "200" : index === 1 ? "150" : "300"}
+                                            ${index === 0 ? "200" : index === 1 ? "150" : "300"}
                                         </div>
                                         <div className="text-center px-3">
                                             <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${index === 0 ? 'bg-blue-100 text-blue-800' : 'text-gray-500'

@@ -121,7 +121,7 @@ export default function Home() {
                 <div className="w-8 h-8 bg-purple-100 rounded-full overflow-hidden flex items-center justify-center">
                   <span className="text-sm font-semibold text-purple-700">HN</span>
                 </div>
-                <span className="text-sm font-medium text-gray-700">Harriet Nunez</span>
+                <span className="text-sm font-medium text-gray-700">Enrique Maldonado</span>
                 <span className="text-xs text-gray-400 ml-2">ID: HM-2025-0501</span>
                 <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
