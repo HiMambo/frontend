@@ -8,14 +8,17 @@ import Header from "@/components/Header";
 import Search from "@/components/Search";
 import SearchControls from "@/components/SearchControls";
 import { fetchExperiences } from "@/lib/api";
-import { useCart } from "@/context/Cart"; // Import the Cart context
+import { useCart } from "@/context/Cart";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Filter } from "lucide-react";
 
 // Define the type for an Experience object
 interface Experience {
   id: number;
   name: string;
   experience_description: string;
-  experience_price: string; // Assuming price is returned as a string from the API
+  experience_price: string;
   experience_promo_image: string;
   experience_city: string;
   experience_country: string;
@@ -24,17 +27,16 @@ interface Experience {
 }
 
 export default function Home() {
-  const [experiences, setExperiences] = useState<Experience[]>([]); // State to store experiences
-  const { setPax, setBookingDate } = useCart(); // Access the setPax function from the Cart context
-  const [error, setError] = useState<string | null>(null); // State to store error messages
-  
-  // Fetch experiences and set default number_of_people
+  const [experiences, setExperiences] = useState<Experience[]>([]);
+  const { setPax, setBookingDate } = useCart();
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchExperiences();
-        setExperiences(data); // Set the fetched experiences
-        setError(null); // Clear any previous errors
+        setExperiences(data);
+        setError(null);
       } catch (err) {
         console.error("Error fetching experiences:", err);
         setError("Failed to load experiences. Please try again later.");
@@ -42,34 +44,47 @@ export default function Home() {
     };
 
     fetchData();
-    setPax(2); // Set the default value for number_of_people
-    console.log("Default number_of_people set to 2");
-
-
-    const hardcodedDate = new Date("2025-06-13T09:30:00Z"); 
-    setBookingDate(hardcodedDate)
-    console.log(`Default Date set to ${hardcodedDate}`);
+    setPax(2);
+    const hardcodedDate = new Date("2025-06-13T09:30:00Z");
+    setBookingDate(hardcodedDate);
   }, [setPax, setBookingDate]);
 
-  
   return (
     <>
       <Header />
       <Search />
       <SearchControls />
-      <main className="bg-white min-h-screen p-12">
-        <div className="p-4 grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Filter Sidebar */}
-          <div className="md:col-span-1">
+      <main className="bg-white min-h-screen p-4 sm:p-6 md:p-8 xl:p-12">
+        {/* Filter Toggle for Mobile */}
+        <div className="xl:hidden mb-4 flex justify-end">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Filter className="w-4 h-4" />
+                Filters
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[90vw] sm:w-[400px] overflow-auto">
+              <SheetHeader>
+                <SheetTitle>Filter Experiences</SheetTitle>
+              </SheetHeader>
+              <div className="mt-4">
+                <FilterSidebar />
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        <div className="grid grid-cols-1 xl:grid-cols-4 xl:gap-8 gap-4">
+          {/* Filter Sidebar - visible only on large screens */}
+          <div className="hidden xl:block xl:col-span-1">
             <FilterSidebar />
           </div>
 
           {/* Experience Cards */}
-          <div className="md:col-span-3 flex flex-col gap-8">
+          <div className="xl:col-span-3 flex flex-col gap-8">
             {error ? (
-              <div className="text-red-500 text-center">
-                {error} {/* Display error message */}
-              </div>
+              <div className="text-red-500 text-center">{error}</div>
             ) : (
               experiences.map((exp) => (
                 <ExperienceCard
@@ -80,7 +95,7 @@ export default function Home() {
                   location={`${exp.experience_city}, ${exp.experience_country}`}
                   image={exp.experience_promo_image}
                   description={exp.experience_description}
-                  discount={null} // Optional: handle discounts if available later
+                  discount={null}
                   rating={exp.rating_avg}
                   sustainabilityGoal={exp.sustainability_goal}
                 />
