@@ -115,33 +115,35 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
               {/* Cart */}
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Image
-                    src="/assets/shopping.svg"
-                    alt="Add to cart"
-                    width={33}
-                    height={33}
-                    className="cursor-pointer transition-transform duration-150 hover:scale-110"
-                    onClick={handleCartClick}
-                  />
+                  <div className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors cursor-pointer">
+                    <Image
+                      src="/assets/shopping.svg"
+                      alt="Add to cart"
+                      width={25}
+                      height={25}
+                      onClick={handleCartClick}
+                    />
+                  </div>
                 </TooltipTrigger>
-                <TooltipContent sideOffset={-2}>Proceed to checkout</TooltipContent>
+                <TooltipContent>Proceed to checkout</TooltipContent>
               </Tooltip>
 
               {/* Heart */}
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Image
-                    src={
-                      isFavorited
-                        ? "/assets/HeartFilled.svg"
-                        : "/assets/Heart.svg"
-                    }
-                    alt="Like"
-                    width={25}
-                    height={25}
-                    className="cursor-pointer transition-transform duration-150 hover:scale-110"
-                    onClick={handleFavoriteClick}
-                  />
+                  <div className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors cursor-pointer">
+                    <Image
+                      src={
+                        isFavorited
+                          ? "/assets/HeartFilled.svg"
+                          : "/assets/Heart.svg"
+                      }
+                      alt="Like"
+                      width={20}
+                      height={20}
+                      onClick={handleFavoriteClick}
+                    />
+                  </div>
                 </TooltipTrigger>
                 <TooltipContent>
                   {isFavorited ? "Remove from favorites" : "Add to favorites"}
@@ -151,14 +153,15 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
               {/* Magnifier */}
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Image
-                    src="/assets/Magnifier.svg"
-                    alt="View details"
-                    width={25}
-                    height={25}
-                    className="cursor-pointer transition-transform duration-150 hover:scale-110"
-                    onClick={handleMagnifierClick}
-                  />
+                  <div className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors cursor-pointer">
+                    <Image
+                      src="/assets/Magnifier.svg"
+                      alt="View details"
+                      width={19}
+                      height={19}
+                      onClick={handleMagnifierClick}
+                    />
+                  </div>
                 </TooltipTrigger>
                 <TooltipContent>View details</TooltipContent>
               </Tooltip>
