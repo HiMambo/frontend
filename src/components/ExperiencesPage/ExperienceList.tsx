@@ -38,7 +38,7 @@ export default function ExperienceList({ experiences, loading, error, view }: Ex
     <div
       className={
         view === "grid"
-          ? "grid grid-cols-1 sm:grid-cols-2 gap-6"
+          ? "grid grid-cols-1 lg:grid-cols-2 gap-6"
           : "flex flex-col gap-6"
       }
     >
