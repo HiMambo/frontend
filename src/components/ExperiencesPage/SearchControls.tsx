@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 
-const SearchControls = () => {
+type SearchControlsProps = {
+  view: "grid" | "list";
+  setView: (view: "grid" | "list") => void;
+};
+
+export const SearchControls = ({ view, setView }: SearchControlsProps) => {
   const [perPage, setPerPage] = useState("");
   const [sortBy, setSortBy] = useState("Best Match");
-  const [view, setView] = useState("grid");
 
   return (
     <div className="bg-white shadow-md p-4 sm:p-6 md:p-8">
@@ -102,5 +106,3 @@ const SearchControls = () => {
     </div>
   );
 };
-
-export default SearchControls;

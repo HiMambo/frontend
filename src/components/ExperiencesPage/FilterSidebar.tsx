@@ -1,6 +1,6 @@
 "use client"; // Add this line at the top to indicate it's a client component
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const FilterSidebar: React.FC = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
