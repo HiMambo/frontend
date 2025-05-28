@@ -2,8 +2,8 @@
 
 import { useExperiences } from "@/hooks/useExperiences";
 import { useEffect, useState } from "react";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+import Footer from "@/components/shared/Footer";
+import Header from "@/components/shared/Header";
 import Search from "@/components/ExperiencesPage/Search";
 import { SearchControls } from "@/components/ExperiencesPage/SearchControls";
 import { useCart } from "@/context/Cart";

@@ -1,7 +1,7 @@
 'use client';
 
-import { CreditCardIcon } from '@/components/IconComponents';
-import { CryptoIcon } from '@/components/IconComponents';;
+import { CreditCardIcon } from '@/components/shared/IconComponents';
+import { CryptoIcon } from '@/components/shared/IconComponents';;
 
 import { Button } from "@/components/ui/button";
 import { CreditCardForm } from "./CreditCardForm";

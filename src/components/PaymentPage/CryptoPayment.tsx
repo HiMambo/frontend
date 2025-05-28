@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { CountdownTimer } from '@/components/CountdownTimer';
+import { CountdownTimer } from '@/components/PaymentPage/CountdownTimer';
 import QRCode from 'react-qr-code';
 
 import { useCart } from "@/context/Cart"; // Import the Cart context

@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import BookingSummary from "@/components/BookingSummary";
-import LoginAndPaymentFlow from "./components/LoginAndPaymentFlow";
-import ProgressBar from "./components/ProgressBar";
+import Header from "@/components/shared/Header";
+import Footer from "@/components/shared/Footer";
+import BookingSummary from "@/components/PaymentPage/BookingSummary";
+import LoginAndPaymentFlow from "@/components/PaymentPage/LoginAndPaymentFlow";
+import ProgressBar from "@/components/PaymentPage/ProgressBar";
 import { useCart } from "@/context/Cart"; // Import the Cart context
 
 export default function PaymentPage() {
