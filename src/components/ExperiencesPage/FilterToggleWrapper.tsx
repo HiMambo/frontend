@@ -1,11 +1,21 @@
 "use client";
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";
-import FilterSidebar from "@/components/ExperiencesPage/FilterSidebar";
+import React from "react";
 
-export default function FilterToggle() {
+interface FilterToggleWrapperProps {
+  children: React.ReactNode;
+}
+
+const FilterToggleWrapper: React.FC<FilterToggleWrapperProps> = ({ children }) => {
   return (
     <div className="xl:hidden mb-4 flex justify-end">
       <Sheet>
@@ -20,10 +30,12 @@ export default function FilterToggle() {
             <SheetTitle>Filter Experiences</SheetTitle>
           </SheetHeader>
           <div className="mt-4">
-            <FilterSidebar />
+            {children}
           </div>
         </SheetContent>
       </Sheet>
     </div>
   );
-}
+};
+
+export default FilterToggleWrapper;

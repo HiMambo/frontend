@@ -24,13 +24,13 @@ export default function PaymentPage() {
       <div className="justify-center w-full px-4">
         <ProgressBar currentStep={currentStep} />
       </div>
-      <main className="grid md:grid-cols-3 gap-6 p-6">
+      <main className="grid md:grid-cols-5 gap-6 p-6">
         {/* Make LoginAndPaymentFlow span 2 columns */}
-        <div className="md:col-span-2">
+        <div className="md:col-span-3">
           <LoginAndPaymentFlow setCurrentStep={setCurrentStep} />
         </div>
         {/* BookingSummary stays in 1 column */}
-        <div className="md:col-span-1">
+        <div className="md:col-span-2">
           <BookingSummary />
         </div>
       </main>
