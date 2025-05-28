@@ -12,6 +12,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+import { Star, StarOff } from "./shared/IconComponents";
+
 interface ExperienceCardProps {
   id: number;
   title: string;
@@ -90,9 +92,15 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
             </div>
 
             {/* Rating */}
-            <div className="flex pt-3 sm:pt-0 sm:pl-4 space-x-1">
-              {Array.from({ length: safeRating }, (_, index) => (
-                <span key={index} className="text-yellow-400">⭐</span>
+            <div className="flex pt-3 sm:pt-0 sm:pl-4 space-x-1 text-yellow-400">
+              {Array.from({ length: 5 }, (_, index) => (
+                <span key={index}>
+                  {index < safeRating ? (
+                    <Star className="w-5 h-5" />
+                  ) : (
+                    <StarOff className="w-5 h-5" />
+                  )}
+                </span>
               ))}
             </div>
           </div>
