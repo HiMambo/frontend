@@ -10,7 +10,7 @@ import { useCart } from "@/context/Cart";
 
 import FilterToggleWrapper from "@/components/ExperiencesPage/FilterToggleWrapper"
 import ExperienceList from "@/components/ExperiencesPage/ExperienceList";
-import FilterSidebar from "@/components/ExperiencesPage/FilterSidebar";
+import FilterManager from "@/components/ExperiencesPage/FilterManager";
 
 export default function Home() {
   const [view, setView] = useState<"list" | "grid">("list");
@@ -31,13 +31,13 @@ export default function Home() {
       <SearchControls view={view} setView={setView} />
       <main className="bg-white min-h-screen p-4 sm:p-6 md:p-8 xl:p-12">
         <FilterToggleWrapper>
-          <FilterSidebar />
+          <FilterManager />
         </FilterToggleWrapper>
 
         <div className="grid grid-cols-1 xl:grid-cols-4 xl:gap-8 gap-4">
           {/* Filter Sidebar - visible only on large screens */}
           <div className="hidden xl:block xl:col-span-1">
-            <FilterSidebar />
+            <FilterManager />
           </div>
 
           {/* Experience Cards */}
