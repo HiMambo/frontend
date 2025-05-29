@@ -2,134 +2,92 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { Menu } from "lucide-react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
   return (
-    <header className="bg-white px-14 shadow-md">
-      <div className="p-4 flex justify-between items-center p-4">
-        {/* Logo Section and Hamburger Menu */}
-        <div className="flex items-center justify-between w-full lg:w-auto">
-          {/* Hamburger Menu Button */}
-          <button
-            onClick={toggleMenu}
-            className="lg:hidden text-gray-800 focus:outline-none"
-          >
-            <svg
-              xmlns="https://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+    <header className="bg-white px-6 sm:px-10 shadow-md">
+      <div className="flex items-center justify-between py-4 relative">
+        {/* Mobile: Menu toggle */}
+        <div className="lg:hidden">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button
+                aria-label="Toggle menu"
+                className="p-2 rounded-md text-gray-800 hover:bg-gray-100 transition-colors"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+            </PopoverTrigger>
 
-          <div className="flex-1 flex justify-center">
-            <div className="flex items-center space-x-2">
-              <Image
-                src="Logo.svg"
-                alt="hiMAMBO logo"
-                layout="intrinsic" // Scales based on intrinsic dimensions
-                width={50} // Pixel width
-                height={25} // Pixel height
-                className="w-40 h-12"
-              />
-            </div>
-          </div>
+            <PopoverContent
+              align="start"
+              sideOffset={10}
+              className="backdrop-blur-md bg-white/90 rounded-xl shadow-xl px-6 py-4 flex flex-col items-center text-center space-y-4 w-auto max-w-[90vw]"
+            >
+              <NavLink href="/">Home</NavLink>
+              <NavLink href="/about">About</NavLink>
+              <NavLink href="/partner-dashboard">hiPartners</NavLink>
+              <NavLink href="/blog">Blog</NavLink>
+              <NavLink href="/contact">Contact us</NavLink>
+            </PopoverContent>
+          </Popover>
         </div>
 
-        {/* Normal Navigation Links */}
-        <nav className="hidden lg:flex space-x-6">
-          <Link
-            href="/"
-            className="text-gray-700 no-underline hover:underline mr-15 hover:text-indigo-600"
-          >
-            Home
+
+        {/* Logo */}
+        <div className="flex-1 flex justify-center lg:justify-start">
+          <Link href="/" className="flex items-center space-x-2">
+            <Image
+              src="/Logo.svg"
+              alt="hiMAMBO logo"
+              width={160}
+              height={48}
+              className="h-12 w-auto"
+              priority
+            />
           </Link>
-          <Link
-            href="/about"
-            className="text-gray-700 mr-15 hover:text-indigo-600"
-          >
-            About
-          </Link>
-          <Link
-            href="/partner-dashboard"
-            className="text-gray-700 mr-15 hover:text-indigo-600"
-          >
-            hiPartners
-          </Link>
-          <Link
-            href="/blog"
-            className="text-gray-700 mr-15 hover:text-indigo-600"
-          >
-            Blog
-          </Link>
-          <Link href="/contact" className="text-gray-700 hover:text-indigo-600">
-            Contact us
-          </Link>
+        </div>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center space-x-10 absolute left-1/2 -translate-x-1/2">
+          <NavLink href="/">Home</NavLink>
+          <NavLink href="/about">About</NavLink>
+          <NavLink href="/partner-dashboard">hiPartners</NavLink>
+          <NavLink href="/blog">Blog</NavLink>
+          <NavLink href="/contact">Contact us</NavLink>
         </nav>
 
-        {/* Sign-up Button */}
+        {/* Sign Up Button */}
         <Link
           href="/signup"
-          className="bg-primary text-white shadow-lg py-2 px-4 rounded-xs text-center w-25 hover:bg-orange-600 sm:text-sm sm:w-40 md:text-lg"
-        >
+          className="bg-primary text-white shadow-lg py-2 px-4 rounded-xs text-center w-25 hover:bg-[#e18533] sm:w-35 text-lg">
           Sign up
         </Link>
-      </div>
-
-      {/* Mobile Navigation Links */}
-      <div
-        className={`lg:hidden fixed inset-0 bg-gray-800 bg-opacity-50 z-50 transform ${
-          isMenuOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out`}
-      >
-        <div className="flex justify-end p-4">
-          <button onClick={toggleMenu} className="text-white text-3xl">
-            &times;
-          </button>
-        </div>
-        <div className="flex flex-col items-center space-y-6 mt-10">
-          <Link href="/" className="text-white text-2xl hover:text-indigo-400">
-            Home
-          </Link>
-          <Link
-            href="/about"
-            className="text-white text-2xl hover:text-indigo-400"
-          >
-            About
-          </Link>
-          <Link
-            href="/hiPartners"
-            className="text-white text-2xl hover:text-indigo-400"
-          >
-            hiPartners
-          </Link>
-          <Link
-            href="/blog"
-            className="text-white text-2xl hover:text-indigo-400"
-          >
-            Blog
-          </Link>
-          <Link
-            href="/contact"
-            className="text-white text-2xl hover:text-indigo-400"
-          >
-            Contact us
-          </Link>
-        </div>
       </div>
     </header>
   );
 }
+
+function NavLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className="text-gray-700 text-lg hover:text-indigo-600 hover:scale-103 transition-colors"
+    >
+      {children}
+    </Link>
+  );
+}
+
