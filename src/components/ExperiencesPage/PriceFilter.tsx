@@ -29,7 +29,6 @@ export default function PriceFilter({
   const [isDragging, setIsDragging] = useState<number | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  // Clamp helpers
   const clampMin = (val: number) => Math.max(min, Math.min(val, maxValue - minDistance));
   const clampMax = (val: number) => Math.min(max, Math.max(val, minValue + minDistance));
 
@@ -67,9 +66,7 @@ export default function PriceFilter({
 
   const handleMouseMove = (e: MouseEvent) => {
     if (isDragging === null) return;
-    
     const newValue = getPositionFromEvent(e);
-
     if (isDragging === 0) {
       const newMin = Math.min(newValue, maxValue - minDistance);
       handleRangeChange(newMin, maxValue);
@@ -79,9 +76,7 @@ export default function PriceFilter({
     }
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(null);
-  };
+  const handleMouseUp = () => setIsDragging(null);
 
   useEffect(() => {
     if (isDragging !== null) {
@@ -112,11 +107,11 @@ export default function PriceFilter({
       <div className="relative mb-4">
         <div
           ref={sliderRef}
-          className="relative h-2 w-full rounded bg-gray-300 cursor-pointer"
+          className="relative h-1 w-full rounded bg-filter-secondary/30 cursor-pointer"
         >
           {/* Active track */}
           <div
-            className="absolute h-2 bg-blue-500 rounded"
+            className="absolute h-1 rounded bg-filter-secondary"
             style={{
               left: getTrackFillLeft(),
               width: getTrackFillWidth(),
@@ -125,14 +120,14 @@ export default function PriceFilter({
 
           {/* Min thumb */}
           <div
-            className="absolute h-5 w-5 bg-white border-2 border-blue-500 rounded-full shadow cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 top-1/2"
+            className="absolute h-5 w-5 bg-filter-primary rounded-full shadow cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 top-1/2"
             style={{ left: getThumbPosition(minValue) }}
             onMouseDown={handleMouseDown(0)}
           />
 
           {/* Max thumb */}
           <div
-            className="absolute h-5 w-5 bg-white border-2 border-blue-500 rounded-full shadow cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 top-1/2"
+            className="absolute h-5 w-5 bg-filter-primary rounded-full shadow cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 top-1/2"
             style={{ left: getThumbPosition(maxValue) }}
             onMouseDown={handleMouseDown(1)}
           />
@@ -151,7 +146,7 @@ export default function PriceFilter({
             step={step}
             value={minValue}
             onChange={(e) => handleMinInput(Number(e.target.value))}
-            className="border rounded p-2 h-10 w-24 text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border rounded p-2 h-10 w-24 text-center focus:outline-none focus:ring-2 focus:ring-filter-primary"
           />
         </div>
         <div className="flex flex-col items-center">
@@ -164,7 +159,7 @@ export default function PriceFilter({
             step={step}
             value={maxValue}
             onChange={(e) => handleMaxInput(Number(e.target.value))}
-            className="border rounded p-2 h-10 w-24 text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border rounded p-2 h-10 w-24 text-center focus:outline-none focus:ring-2 focus:ring-filter-primary"
           />
         </div>
       </div>

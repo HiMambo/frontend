@@ -14,6 +14,10 @@
   --color-footer-inputPlaceholder: #9A9AB0;
   --color-footer-button: #FA9439;
   --color-footer-socialIcon: #573E3E;
+
+  /* Filter Sidebar */
+  --color-filter-primary: #FFCC2E;
+  --color-filter-secondary: #FFC722;
 }
 
 @theme inline {
