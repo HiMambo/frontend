@@ -3,7 +3,6 @@
 import {
   Sheet,
   SheetContent,
-  SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
@@ -25,11 +24,9 @@ const FilterToggleWrapper: React.FC<FilterToggleWrapperProps> = ({ children }) =
             Filters
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-[90vw] sm:w-[400px] overflow-auto">
-          <SheetHeader>
-            <SheetTitle>Filter Experiences</SheetTitle>
-          </SheetHeader>
-          <div className="mt-4">
+        <SheetContent side="left" className="w-[90vw] sm:w-[400px] overflow-auto p-6">
+          <SheetTitle className="text-2xl font-bold text-blue-800 mb-1">Filters</SheetTitle>
+          <div>
             {children}
           </div>
         </SheetContent>

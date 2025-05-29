@@ -37,7 +37,10 @@ export default function Home() {
         <div className="grid grid-cols-1 xl:grid-cols-4 xl:gap-8 gap-4">
           {/* Filter Sidebar - visible only on large screens */}
           <div className="hidden xl:block xl:col-span-1">
-            <FilterManager />
+            <div className="bg-white p-6 text-gray-600 rounded-lg shadow-md w-full">
+              <h2 className="text-2xl font-bold text-blue-800 mb-6">Filters</h2>
+              <FilterManager />
+            </div>
           </div>
 
           {/* Experience Cards */}

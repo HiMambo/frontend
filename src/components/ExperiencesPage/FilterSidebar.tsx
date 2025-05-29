@@ -34,9 +34,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onSDGChange,
 }) => {
   return (
-    <div className="bg-white p-6 text-gray-600 rounded-lg shadow-md w-full md:w-3/4">
-      <h2 className="text-2xl font-bold text-blue-800 mb-6">Filters</h2>
-
+    <div className="text-gray-600 w-full">
+      
       {/* Categories */}
       <FilterSection
         title="Categories"
