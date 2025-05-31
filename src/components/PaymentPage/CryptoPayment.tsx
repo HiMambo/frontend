@@ -1,14 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { CountdownTimer } from '@/components/PaymentPage/CountdownTimer';
-import QRCode from 'react-qr-code';
-
 import { useCart } from "@/context/Cart"; // Import the Cart context
-
 import { createBooking } from "@/lib/api"; // Import the createBooking function
-
+import { CryptoPaymentUI } from './CryptoPaymentUI';
 
 type PaymentSession = {
   session_id: string;
@@ -161,44 +156,53 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
     let attempts = 0;
   
     const checkPaymentStatus = async () => {
-      try {
-        console.log('Checking payment status...');
-        const response = await fetch(`${API_URL}/payment_session/${payment.session_id}/status`, {
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache',
-          },
-        });
-  
-        if (!response.ok) {
-          throw new Error('Failed to check payment status');
-        }
-  
-        const data = await response.json();
-        console.log('Payment Status Response:', data.status); // Debugging: Log the API response
+  try {
+    console.log('Checking payment status...');
+    const response = await fetch(`${API_URL}/payment_session/${payment.session_id}/status`, {
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+      },
+    });
 
-        setPayment((prev) => {
-          if (!prev) return null; // Ensure the previous state exists
-          return {
-            ...prev,
-            status: data.status || prev.status, // Update the status field
-          };
-        });
+    if (!response.ok) {
+      throw new Error('Failed to check payment status');
+    }
 
-        if (data.status === 'success') {
-          console.log('Payment successful!');
-          clearInterval(intervalId); // Stop polling if payment is successful
-        }
-      } catch (err) {
-        attempts += 1;
-        console.error(`Payment status check failed (attempt ${attempts}):`, err);
-  
-        if (attempts >= MAX_ATTEMPTS_CHECK_PAYMENT) {
-          clearInterval(intervalId);
-          setError('Maximum attempts reached. Please try again later.');
-        }
+    const data = await response.json();
+    console.log('Payment Status Response:', data.status);
+
+    // ONLY update if the status has actually changed
+    setPayment((prev) => {
+      if (!prev) return null;
+      
+      // Compare current status with new status
+      if (prev.status === data.status) {
+        console.log('Status unchanged, skipping update');
+        return prev; // Return the same object reference - no re-render
       }
-    };
+      
+      console.log(`Status changed from ${prev.status} to ${data.status}`);
+      return {
+        ...prev,
+        status: data.status || prev.status,
+      };
+    });
+
+    if (data.status === 'success') {
+      console.log('Payment successful!');
+      clearInterval(intervalId);
+    }
+  } catch (err) {
+    attempts += 1;
+    console.error(`Payment status check failed (attempt ${attempts}):`, err);
+
+    if (attempts >= MAX_ATTEMPTS_CHECK_PAYMENT) {
+      clearInterval(intervalId);
+      setError('Maximum attempts reached. Please try again later.');
+    }
+  }
+};
   
     const intervalId = setInterval(checkPaymentStatus, T_PERIOD_CHECK_PAYMENT); // Poll every x seconds
   
@@ -254,8 +258,6 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
     }
   }, [payment?.status, isBookingCreated]);
 
-
-
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
       setCopySuccess('Copied to clipboard!'); // Set success message
@@ -269,192 +271,46 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
     return price.toFixed(digits); // Format the price based on the number of digits
   };
 
-  const PaymentModal = () => (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 space-y-6 relative">
+  const handleRetry = () => {
+    window.location.reload();
+  };
+
+  const handleCloseModal = () => {
+    setShowPaymentModal(false);
+  };
+
+  const handleCurrencySelect = (currency: Currency) => {
+    setSelectedCurrency(currency);
+  };
+
+  const handleProceedClick = async () => {
+    if (isPaymentSessionInitialized) {
+      try {
+        handleProceedToPayment()
+      } catch (err) {
+        console.error('Error with the API call', err);
+        setError('Failed to initiate our payment session with MamboPay. Please try again.');
+        return;
+      } finally {
         
-       <button
-          onClick={() => setShowPaymentModal(false)}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-        >
-          ✕
-       </button>
-  
-        {payment?.status === 'pending' ?  (
-          // Waiting state
-          <>
-            <h2 className="text-2xl font-bold text-center">Pay {getAmount()} {selectedCurrency}</h2>
-  
-            {payment && (
-              <CountdownTimer
-                expiresAt={payment.expires_at}
-                onExpire={() => {
-                  setShowPaymentModal(false);
-                  setError('Payment time expired');
-                }}
-              />
-            )}
-  
-            <div className="bg-gray-50 p-6 rounded-2xl">
-              <div className="w-full aspect-square bg-gray-200 rounded-lg mb-4">
-                <QRCode
-                  value={payment.public_key}
-                  style={{ width: '100%', height: '100%' }} // Make QR code fill the parent div
-              />
-              </div>
-  
-              <div className="space-y-2">
-                <label className="text-sm text-gray-600">Payment Address</label>
-                <div className="flex items-center space-x-2">
-                  <input
-                    readOnly
-                    value={payment?.public_key}
-                    className="bg-white rounded-lg px-4 py-2 w-full text-sm font-mono"
-                  />
-                  <button
-                    onClick={() => handleCopy(payment?.public_key || '')}
-                    className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
-                  >
-                    Copy
-                  </button>
-                </div>
-                {copySuccess && (
-                  <p className="text-green-600 text-sm">✓ {copySuccess}</p>
-                )}
-              </div>
-            </div>
-            <div className="flex justify-center space-x-2">
-              <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce"></div>
-              <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-              <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-            </div>
-          </>
+      }
+    }
+  };
 
-        ) : payment?.status === 'success' ? (
-          console.log('Payment successful from the PaymentModal'),
-          // Success state
-          <div className="text-center space-y-4">
-            <img
-              src="/happy-face.png"
-              alt="Happy Face"
-              className="w-24 h-24 mx-auto"
-            />
-            <h2 className="text-2xl font-bold text-green-600">Payment Successful!</h2>
-            <p className="text-gray-600">Thank you for your payment. Your transaction has been confirmed.</p>
-            <Link href="/mybookings">
-              <button
-                className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-              >
-                To your bookings
-              </button>
-            </Link>
-          </div>
-        ) : payment?.status === 'checked' ? (
-          // Success state
-          <div className="text-center space-y-4">
-            <img
-              src="/paper-plane.png"
-              alt="Paper Plane"
-              className="w-24 h-24 mx-auto"
-            />
-            <h2 className="text-2xl font-bold text-green-600">Just a bit longer</h2>
-            <p className="text-gray-600">We are letting our HiMambo partner know 
-              you are on your way!</p>
-          </div>
-        ) : (
-          // Loading state
-          <div className="text-center space-y-4">
-            <div className="flex justify-center space-x-2">
-              <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce"></div>
-              <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-              <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-            </div>
-            <p className="text-gray-600">Processing payment...</p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-
-  // Handle loading, error, and no payment data states
-  if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-  }
-  
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <p className="text-red-600 text-lg font-medium">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
-  
-  if (!payment?.price_data) {
-    return <div className="min-h-screen flex items-center justify-center">No payment data</div>;
-  }
-
-  // Render the main content
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
-        <div className="max-w-md mx-auto space-y-8">
-          <div className="bg-white rounded-2xl p-6 shadow-xl">
-          <div className="flex justify-center space-x-2 mb-8">
-            {['USDC', 'SOL'].map((currency) => (
-              <button
-                key={currency}
-                onClick={() => setSelectedCurrency(currency as Currency)} // Update selectedCurrency
-                className={`px-4 py-2 rounded-lg ${
-                  selectedCurrency === currency
-                    ? 'bg-yellow-500 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {currency}
-              </button>
-            ))}
-          </div>
-
-            <div className="text-center mb-8">
-              <p className="text-sm text-gray-600 mb-2">Total Amount</p>
-              <p className="text-4xl font-bold">
-                {getAmount()} {selectedCurrency}
-              </p>
-            </div>
-
-            <button
-              onClick={async () => {
-                if (isPaymentSessionInitialized) {
-                  try {
-                    handleProceedToPayment()
-                  } catch (err) {
-                    console.error('Error with the API call', err);
-                    setError('Failed to initiate our payment session with MamboPay. Please try again.');
-                    return;
-                  } finally {
-                    
-                  }
-                }
-              }}
-              className="w-full bg-yellow-500 text-white py-4 rounded-xl text-lg font-medium hover:bg-yellow-600 transition-colors"
-            >
-              Proceed to Payment
-            </button>
-            
-          </div>
-        </div>
-      </div>
-
-      {showPaymentModal && <PaymentModal />}
-    </>
+    <CryptoPaymentUI
+      loading={loading}
+      error={error}
+      payment={payment}
+      selectedCurrency={selectedCurrency}
+      showPaymentModal={showPaymentModal}
+      copySuccess={copySuccess}
+      getAmount={getAmount}
+      onRetry={handleRetry}
+      onCloseModal={handleCloseModal}
+      onCurrencySelect={handleCurrencySelect}
+      onProceedClick={handleProceedClick}
+      onCopy={handleCopy}
+    />
   );
 }
