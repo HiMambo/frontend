@@ -34,25 +34,26 @@ export default function Home() {
           <FilterManager />
         </FilterToggleWrapper>
 
-        <div className="grid grid-cols-1 xl:grid-cols-4 xl:gap-8 gap-4">
-          {/* Filter Sidebar - visible only on large screens */}
-          <div className="hidden xl:block xl:col-span-1">
-            <div className="bg-white p-6 text-gray-600 rounded-lg shadow-md w-full">
-              <h2 className="text-2xl font-bold text-blue-800 mb-6">Filters</h2>
-              <FilterManager />
-            </div>
-          </div>
+<div className="grid grid-cols-1 lg:grid-cols-4 lg:gap-8 gap-4">
+  {/* Filter Sidebar - visible only on large screens */}
+  <div className="hidden lg:block lg:col-span-1">
+    <div className="bg-white p-6 text-gray-600 rounded-lg shadow-md w-full">
+      <h2 className="text-2xl font-bold text-blue-800 mb-6">Filters</h2>
+      <FilterManager />
+    </div>
+  </div>
 
-          {/* Experience Cards */}
-          <div className="xl:col-span-3 flex flex-col gap-8">
-            <ExperienceList
-              experiences={experiences}
-              loading={loading}
-              error={error}
-              view={view}
-            />
-          </div>
-        </div>
+  {/* Experience Cards */}
+  <div className="lg:col-span-3 flex flex-col gap-8">
+    <ExperienceList
+      experiences={experiences}
+      loading={loading}
+      error={error}
+      view={view}
+    />
+  </div>
+</div>
+
       </main>
       <Footer />
     </>
