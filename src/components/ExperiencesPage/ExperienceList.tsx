@@ -1,17 +1,6 @@
 import { Loader2 } from "lucide-react";
 import ExperienceCard from "@/components/ExperienceCard";
-
-interface Experience {
-  id: number;
-  name: string;
-  experience_description: string;
-  experience_price: string;
-  experience_promo_image: string;
-  experience_city: string;
-  experience_country: string;
-  rating_avg: number;
-  sustainability_goal: string[];
-}
+import { Experience } from "@/types/experience";
 
 interface ExperienceListProps {
   experiences: Experience[];

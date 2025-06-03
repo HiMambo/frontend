@@ -1,13 +1,13 @@
-// components/SearchInput.js
 "use client";
-import { useState } from 'react';
-import Image from 'next/image';
+
+import { useFilter } from "@/context/FilterContext";
+import Image from "next/image";
 
 const SearchInput = () => {
-  const [query, setQuery] = useState('');
+  const { searchQuery, setSearchQuery } = useFilter();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setSearchQuery(event.target.value);
   };
 
   return (
@@ -16,13 +16,13 @@ const SearchInput = () => {
  
         <Image 
         src="search.svg" alt='search' className='w-6 h-6' 
-        layout="intrinsic" // Scales based on intrinsic dimensions
-        width={100} // Pixel width
-        height={50} // Pixel height 
+        layout="intrinsic" 
+        width={100} 
+        height={50}
         />
         <input
           type="text"
-          value={query}
+          value={searchQuery}
           onChange={handleInputChange}
           placeholder="Search with AI! Just tell us what you want!"
           className="w-full bg-transparent text-xs text-[#FF2AAA] placeholder-[#FF2AAA]-500 focus:outline-none sm:text-lg"

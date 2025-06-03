@@ -1,41 +1,26 @@
-import React from "react";
+"use client";
 
+import React from "react";
+import { useFilter } from "@/context/FilterContext";
 import PriceFilter from "./PriceFilter";
 
-interface FilterSidebarProps {
-  selectedCategories: string[];
-  onCategoryChange: (category: string) => void;
+const FilterSidebar: React.FC = () => {
+  const {
+    selectedCategories,
+    toggleCategory,
+    selectedRating,
+    toggleRating,
+    selectedPrice,
+    setMinPrice,
+    setMaxPrice,
+    selectedDiscount,
+    toggleDiscount,
+    selectedSDG,
+    toggleSDG,
+  } = useFilter();
 
-  selectedRating: number[];
-  onRatingChange: (rating: number) => void;
-
-  selectedPrice: [number, number];
-  onMinPriceChange: (min: number) => void;
-  onMaxPriceChange: (max: number) => void;
-
-  selectedDiscount: string[];
-  onDiscountChange: (discount: string) => void;
-
-  selectedSDG: string[];
-  onSDGChange: (sdg: string) => void;
-}
-
-const FilterSidebar: React.FC<FilterSidebarProps> = ({
-  selectedCategories,
-  onCategoryChange,
-  selectedRating,
-  onRatingChange,
-  selectedPrice,
-  onMinPriceChange,
-  onMaxPriceChange,
-  selectedDiscount,
-  onDiscountChange,
-  selectedSDG,
-  onSDGChange,
-}) => {
   return (
     <div className="text-gray-600 w-full">
-      
       {/* Categories */}
       <FilterSection
         title="Categories"
@@ -48,7 +33,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           "Food & Gastronomy",
         ]}
         selected={selectedCategories}
-        onToggle={onCategoryChange}
+        onToggle={toggleCategory}
       />
 
       {/* Discount Offer */}
@@ -56,7 +41,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         title="Discount Offer"
         options={["20% Cashback", "5% Cashback Offer", "25% Discount Offer"]}
         selected={selectedDiscount}
-        onToggle={onDiscountChange}
+        onToggle={toggleDiscount}
       />
 
       {/* Rating */}
@@ -64,7 +49,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         title="Rating Item"
         options={[5, 4, 3, 2]}
         selected={selectedRating}
-        onToggle={onRatingChange}
+        onToggle={toggleRating}
         renderLabel={(val) => `${val} Stars`}
       />
 
@@ -74,16 +59,16 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         <PriceFilter
           minValue={selectedPrice[0]}
           maxValue={selectedPrice[1]}
-          onMinPriceChange={onMinPriceChange}
-          onMaxPriceChange={onMaxPriceChange}
+          onMinPriceChange={setMinPrice}
+          onMaxPriceChange={setMaxPrice}
         />
       </div>
 
-      {/* Special Features (Placeholder - not hooked up) */}
+      {/* Special Features (placeholder) */}
       <FilterSection
         title="Special Features"
         options={["For families", "Pet friendly", "LGBTQI+"]}
-        selected={[]} // Not implemented
+        selected={[]}
         onToggle={() => {}}
         disabled
       />
@@ -97,7 +82,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           "SDG 11: Sustainable Cities",
         ]}
         selected={selectedSDG}
-        onToggle={onSDGChange}
+        onToggle={toggleSDG}
       />
     </div>
   );
