@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogOverlay } from "@/components/ui/dialog";
+import Image from 'next/image';
 
 type PaymentSession = {
   session_id: string;
@@ -35,7 +36,7 @@ type CryptoPaymentUIProps = {
   onCopy: (text: string) => void;
 };
 
-// Move PaymentModal outside of the main component to prevent recreation on re-renders
+// PaymentModal outside of the main component to prevent recreation on re-renders
 const PaymentModal = ({ 
   showPaymentModal, 
   onCloseModal, 
@@ -115,10 +116,12 @@ const PaymentModal = ({
             </DialogTitle>
           </DialogHeader>
           <div className="text-center space-y-4 py-2">
-            <img
+            <Image
               src="/happy-face.png"
               alt="Happy Face"
-              className="w-16 h-16 mx-auto"
+              width={64}
+              height={64}
+              className="mx-auto"
             />
             <p className="text-sm text-muted-foreground">
               Thank you for your payment. Your transaction has been confirmed.
@@ -138,10 +141,12 @@ const PaymentModal = ({
             </DialogTitle>
           </DialogHeader>
           <div className="text-center space-y-4 py-2">
-            <img
+            <Image
               src="/paper-plane.png"
               alt="Paper Plane"
-              className="w-16 h-16 mx-auto"
+              width={64}
+              height={64}
+              className="mx-auto"
             />
             <p className="text-sm text-muted-foreground">
               We are letting our HiMambo partner know you are on your way!
@@ -232,7 +237,7 @@ export function CryptoPaymentUI({
     <>
       <CenteredCard>
         <div className="space-y-6">
-          {/* Currency Selection - kept as simple buttons */}
+          {/* Currency Selection */}
           <div>
             <Label className="mb-3 block text-sm font-medium">Select Currency</Label>
             <div className="flex gap-2">
@@ -252,7 +257,7 @@ export function CryptoPaymentUI({
             </div>
           </div>
 
-          {/* Simplified Amount Display - removed Card wrapper */}
+          {/* Amount Display */}
           <div className="bg-muted/30 rounded-lg p-6 text-center space-y-2">
             <Label className="text-sm text-muted-foreground">Total Amount</Label>
             <div className="text-3xl font-bold text-foreground">

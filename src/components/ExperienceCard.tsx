@@ -160,11 +160,11 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
               <div className="flex items-center gap-[2px]">
                 {sustainabilityGoal.length > 0 && (
                   <>
-                    {sustainabilityGoal.slice(0, 3).map((goal, idx) => {
+                    {sustainabilityGoal.slice(0, 3).map((goal, index) => {
                       const imagePath = `/assets/sdg/E-WEB-Goal-${goal.padStart(2, "0")}.png`;
                       return (
                         <Image
-                          key={idx}
+                          key={index}
                           src={imagePath}
                           alt={`SDG ${goal}`}
                           width={30}

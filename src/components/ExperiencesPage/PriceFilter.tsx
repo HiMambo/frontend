@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
 
 const STEP = 50;
 const MIN = 0;
@@ -29,54 +35,78 @@ export default function PriceFilter({
   const [isDragging, setIsDragging] = useState<number | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const clampMin = (val: number) => Math.max(min, Math.min(val, maxValue - minDistance));
-  const clampMax = (val: number) => Math.min(max, Math.max(val, minValue + minDistance));
+  const clampMin = useCallback(
+    (val: number) => Math.max(min, Math.min(val, maxValue - minDistance)),
+    [min, maxValue, minDistance]
+  );
 
-  const getPositionFromEvent = (e: React.MouseEvent | MouseEvent): number => {
-    if (!sliderRef.current) return minValue;
-    const rect = sliderRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(1, x / rect.width));
-    return Math.round((percentage * (max - min) + min) / step) * step;
-  };
+  const clampMax = useCallback(
+    (val: number) => Math.min(max, Math.max(val, minValue + minDistance)),
+    [max, minValue, minDistance]
+  );
 
-  const handleRangeChange = (newMin: number, newMax: number) => {
-    if (newMax - newMin >= minDistance) {
-      if (newMin !== minValue) onMinPriceChange(newMin);
-      if (newMax !== maxValue) onMaxPriceChange(newMax);
-    }
-  };
+  const getPositionFromEvent = useCallback(
+    (e: MouseEvent | React.MouseEvent): number => {
+      if (!sliderRef.current) return minValue;
+      const rect = sliderRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percentage = Math.max(0, Math.min(1, x / rect.width));
+      return Math.round((percentage * (max - min) + min) / step) * step;
+    },
+    [minValue, min, max, step]
+  );
 
-  const handleMinInput = (val: number) => {
-    if (isNaN(val)) return;
-    const clamped = clampMin(val);
-    handleRangeChange(clamped, maxValue);
-  };
+  const handleRangeChange = useCallback(
+    (newMin: number, newMax: number) => {
+      if (newMax - newMin >= minDistance) {
+        if (newMin !== minValue) onMinPriceChange(newMin);
+        if (newMax !== maxValue) onMaxPriceChange(newMax);
+      }
+    },
+    [minValue, maxValue, minDistance, onMinPriceChange, onMaxPriceChange]
+  );
 
-  const handleMaxInput = (val: number) => {
-    if (isNaN(val)) return;
-    const clamped = clampMax(val);
-    handleRangeChange(minValue, clamped);
-  };
+  const handleMinInput = useCallback(
+    (val: number) => {
+      if (isNaN(val)) return;
+      const clamped = clampMin(val);
+      handleRangeChange(clamped, maxValue);
+    },
+    [clampMin, handleRangeChange, maxValue]
+  );
+
+  const handleMaxInput = useCallback(
+    (val: number) => {
+      if (isNaN(val)) return;
+      const clamped = clampMax(val);
+      handleRangeChange(minValue, clamped);
+    },
+    [clampMax, handleRangeChange, minValue]
+  );
 
   const handleMouseDown = (index: number) => (e: React.MouseEvent) => {
     e.preventDefault();
     setIsDragging(index);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging === null) return;
-    const newValue = getPositionFromEvent(e);
-    if (isDragging === 0) {
-      const newMin = Math.min(newValue, maxValue - minDistance);
-      handleRangeChange(newMin, maxValue);
-    } else {
-      const newMax = Math.max(newValue, minValue + minDistance);
-      handleRangeChange(minValue, newMax);
-    }
-  };
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (isDragging === null) return;
+      const newValue = getPositionFromEvent(e);
+      if (isDragging === 0) {
+        const newMin = Math.min(newValue, maxValue - minDistance);
+        handleRangeChange(newMin, maxValue);
+      } else {
+        const newMax = Math.max(newValue, minValue + minDistance);
+        handleRangeChange(minValue, newMax);
+      }
+    },
+    [isDragging, getPositionFromEvent, handleRangeChange, minValue, maxValue, minDistance]
+  );
 
-  const handleMouseUp = () => setIsDragging(null);
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(null);
+  }, []);
 
   useEffect(() => {
     if (isDragging !== null) {
@@ -87,19 +117,20 @@ export default function PriceFilter({
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [isDragging, minValue, maxValue]);
+  }, [isDragging, handleMouseMove, handleMouseUp]);
 
-  const getThumbPosition = (value: number): string => {
-    return `${((value - min) / (max - min)) * 100}%`;
-  };
+  const getThumbPosition = useCallback(
+    (value: number): string => `${((value - min) / (max - min)) * 100}%`,
+    [min, max]
+  );
 
-  const getTrackFillWidth = (): string => {
-    return `${((maxValue - minValue) / (max - min)) * 100}%`;
-  };
-
-  const getTrackFillLeft = (): string => {
+  const trackFillLeft = useMemo(() => {
     return `${((minValue - min) / (max - min)) * 100}%`;
-  };
+  }, [minValue, min, max]);
+
+  const trackFillWidth = useMemo(() => {
+    return `${((maxValue - minValue) / (max - min)) * 100}%`;
+  }, [minValue, maxValue, min, max]);
 
   return (
     <div className="p-4 mb-6">
@@ -112,10 +143,7 @@ export default function PriceFilter({
           {/* Active track */}
           <div
             className="absolute h-1 rounded bg-filter-secondary"
-            style={{
-              left: getTrackFillLeft(),
-              width: getTrackFillWidth(),
-            }}
+            style={{ left: trackFillLeft, width: trackFillWidth }}
           />
 
           {/* Min thumb */}

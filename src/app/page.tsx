@@ -50,7 +50,7 @@ function MainContent({ view }: { view: "list" | "grid" }) {
 export default function Home() {
   const [view, setView] = useState<"list" | "grid">("list");
   const { setPax, setBookingDate } = useCart();
-  const { experiences, loading, error } = useExperiences();
+  const { experiences } = useExperiences();
 
   useEffect(() => {
     setPax(2);
