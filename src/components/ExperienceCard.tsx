@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Image from "next/image";
 import React from "react";
@@ -41,7 +40,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   const imageSrc = image ?? "/assets/Rectangle.png";
   const safeRating = rating ?? 4;
   const router = useRouter();
-  const { setPrice, setExperienceId } = useCart();
+  const { setPrice, setExperienceId, setExperience } = useCart();
   const [isFavorited, setIsFavorited] = useState(false);
 
   const handleFavoriteClick = async () => {
@@ -58,8 +57,29 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   };
 
   const handleCartClick = () => {
+    // Create the experience object from the card props
+    const experienceObject = {
+      id: id,
+      name: title,
+      experience_description: description,
+      experience_price: price,
+      experience_promo_image: imageSrc,
+      experience_city: location.split(',')[0]?.trim() || location, // Extract city from location
+      experience_country: location.split(',')[1]?.trim() || '', // Extract country from location
+      travelDate: undefined,
+      departure: undefined,
+      travellers: undefined,
+      duration: undefined,
+      refundable: undefined,
+    };
+
+    console.log("Adding experience to cart:", experienceObject);
+    
+    // Set all the cart context values
     setPrice(price);
     setExperienceId(id);
+    setExperience(experienceObject);
+    
     router.push("/payment");
   };
 

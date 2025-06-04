@@ -1,9 +1,7 @@
 "use client";
-
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useCart } from "@/context/Cart";
-import { fetchExperienceById } from "@/lib/api";
 
 // Define the type for the experience object
 interface Experience {
@@ -22,52 +20,19 @@ interface Experience {
 }
 
 const BookingSummary: React.FC = () => {
-  const { experienceId, number_of_people, payment_type } = useCart(); // Get the selected experience ID from the Cart context
-  const [experience, setExperience] = useState<Experience | null>(null); // State to store the fetched experience
-  const [loading, setLoading] = useState(true); // State for loading
-  const [error, setError] = useState<string | null>(null); // State for error handling
+  const { experience, number_of_people, payment_type } = useCart(); // Get the experience from the Cart context
   const [multiplierCrypto, setMultiplierCrypto] = useState(1.0); // Multiplier for crypto discount
   const [totalPrice, setTotalPrice] = useState(0.0); // Total price
 
-  // Fetch experience data
+  // Component mount and data check
   useEffect(() => {
     console.log("BookingSummary mounted");
-    console.log("Selected experienceId:", experienceId);
-
-    if (!experienceId) {
+    console.log("Selected experience from context:", experience);
+    
+    if (!experience) {
       console.error("No experience selected.");
-      setError("No experience selected.");
-      setLoading(false);
-      return;
     }
-
-    const fetchExperience = async () => {
-      try {
-        console.log("Fetching experience with ID:", experienceId);
-        setLoading(true);
-        const data = await fetchExperienceById(experienceId);
-        const parsedData = {
-          ...data,
-          experience_price: parseFloat(data.experience_price),
-        };
-
-        console.log("Fetched experience data:", parsedData);
-        setExperience(parsedData);
-      } catch (err) {
-        console.error("Error fetching experience:", err);
-        setError(
-          err instanceof Error
-            ? err.message
-            : "An error occurred while fetching data."
-        );
-      } finally {
-        setLoading(false);
-        console.log("Finished fetching experience.");
-      }
-    };
-
-    fetchExperience();
-  }, [experienceId]);
+  }, [experience]);
 
   // Update multiplier and total price when payment type or experience changes
   useEffect(() => {
@@ -88,16 +53,6 @@ const BookingSummary: React.FC = () => {
       console.log("Total price updated:", calculatedPrice);
     }
   }, [experience, number_of_people, multiplierCrypto]);
-
-  if (loading) {
-    console.log("Loading experience data...");
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    console.error("Error state:", error);
-    return <div className="text-red-500">{error}</div>;
-  }
 
   if (!experience) {
     console.warn("No experience data available.");
