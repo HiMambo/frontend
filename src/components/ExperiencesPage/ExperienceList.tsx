@@ -1,17 +1,6 @@
 import { Loader2 } from "lucide-react";
 import ExperienceCard from "@/components/ExperienceCard";
-
-interface Experience {
-  id: number;
-  name: string;
-  experience_description: string;
-  experience_price: string;
-  experience_promo_image: string;
-  experience_city: string;
-  experience_country: string;
-  rating_avg: number;
-  sustainability_goal: string[];
-}
+import { Experience } from "@/types/experience";
 
 interface ExperienceListProps {
   experiences: Experience[];
@@ -38,7 +27,7 @@ export default function ExperienceList({ experiences, loading, error, view }: Ex
     <div
       className={
         view === "grid"
-          ? "grid grid-cols-1 lg:grid-cols-2 gap-6"
+          ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
           : "flex flex-col gap-6"
       }
     >
@@ -54,6 +43,7 @@ export default function ExperienceList({ experiences, loading, error, view }: Ex
           discount={null}
           rating={exp.rating_avg}
           sustainabilityGoal={exp.sustainability_goal}
+          view={view}
         />
       ))}
     </div>

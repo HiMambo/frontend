@@ -1,7 +1,7 @@
 'use client';
 
-import { CreditCardIcon } from '@/components/IconComponents';
-import { CryptoIcon } from '@/components/IconComponents';;
+import { CreditCardIcon } from '@/components/shared/IconComponents';
+import { CryptoIcon } from '@/components/shared/IconComponents';;
 
 import { Button } from "@/components/ui/button";
 import { CreditCardForm } from "./CreditCardForm";
@@ -30,22 +30,25 @@ export function PaymentForm({
             {/* Inline PaymentMethodSelector */}
             <div className="flex gap-4">
               <Button
-                size="lg"
+                className="h-12 px-6 text-base relative"
                 variant={method === 'credit' ? 'default' : 'outline'}
-               onClick={() => onMethodChange('credit')}
+                onClick={() => onMethodChange('credit')}
               >
-                <CreditCardIcon className="w-6 h-6" />
+                <CreditCardIcon className="mr-2 size-8" />
                 Credit card
               </Button>
               <Button
-                size="lg"
+                className="h-12 px-6 text-base relative"
                 variant={method === 'crypto' ? 'default' : 'outline'}
                 onClick={() => onMethodChange('crypto')}
-                className="relative"
               >
-                <CryptoIcon className="w-6 h-6"/>
-                Crypto
-                <span className="absolute top-[-0.5rem] right-[-0.5rem] bg-pink-500 text-white text-xs px-1 rounded-full">-10%</span>
+                <div className="flex items-center gap-2">
+                  <CryptoIcon className="size-9 mr-2" />
+                  <span>Crypto</span>
+                </div>
+                <span className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 bg-pink-500 text-white text-xs font-semibold h-6 px-1 rounded-full flex items-center justify-center">
+                  -10%
+                </span>
               </Button>
             </div>
 
