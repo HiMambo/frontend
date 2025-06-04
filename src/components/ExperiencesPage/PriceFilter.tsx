@@ -6,16 +6,14 @@ import React, {
   useMemo,
 } from 'react';
 
-const STEP = 50;
-const MIN = 0;
-const MAX = 1000;
-const MIN_DISTANCE = 50;
+const STEP = 10;
+const MIN_DISTANCE = 10;
 
 interface PriceFilterProps {
   minValue: number;
   maxValue: number;
-  min?: number;
-  max?: number;
+  min: number;
+  max: number;
   step?: number;
   minDistance?: number;
   onMinPriceChange: (min: number) => void;
@@ -25,8 +23,8 @@ interface PriceFilterProps {
 export default function PriceFilter({
   minValue,
   maxValue,
-  min = MIN,
-  max = MAX,
+  min,
+  max,
   step = STEP,
   minDistance = MIN_DISTANCE,
   onMinPriceChange,

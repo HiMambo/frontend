@@ -3,6 +3,8 @@
 import React from "react";
 import { useFilter } from "@/context/FilterContext";
 import PriceFilter from "./PriceFilter";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 
 const FilterSidebar: React.FC = () => {
   const {
@@ -10,6 +12,7 @@ const FilterSidebar: React.FC = () => {
     toggleCategory,
     selectedRating,
     toggleRating,
+    availablePriceRange,
     selectedPrice,
     setMinPrice,
     setMaxPrice,
@@ -17,6 +20,8 @@ const FilterSidebar: React.FC = () => {
     toggleDiscount,
     selectedSDG,
     toggleSDG,
+    resetPriceFilter,
+    noPriceSelection
   } = useFilter();
 
   return (
@@ -55,8 +60,25 @@ const FilterSidebar: React.FC = () => {
 
       {/* Price */}
       <div className="mb-6">
-        <h3 className="font-semibold text-lg text-blue-800 mb-2">Price Range</h3>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="font-semibold text-lg text-blue-800">Price Range</h3>
+          <div className="w-[72px] h-[32px]">
+            {/* Reset Button, conditionally rendered */}
+            {(!noPriceSelection) && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={resetPriceFilter}
+                className="text-muted-foreground hover:text-foreground border-gray-300"
+              >
+                Reset
+              </Button>
+            )}
+          </div>
+        </div>
         <PriceFilter
+          min={availablePriceRange[0]}
+          max={availablePriceRange[1]}
           minValue={selectedPrice[0]}
           maxValue={selectedPrice[1]}
           onMinPriceChange={setMinPrice}
@@ -90,6 +112,7 @@ const FilterSidebar: React.FC = () => {
 
 export default FilterSidebar;
 
+
 const FilterSection = <T extends string | number>({
   title,
   options,
@@ -110,15 +133,17 @@ const FilterSection = <T extends string | number>({
     <ul className="space-y-2">
       {options.map((option) => (
         <li key={String(option)}>
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              onChange={() => !disabled && onToggle(option)}
+          <label className="flex items-center space-x-2 cursor-pointer select-none">
+            <Checkbox
+              id={String(option)}
               checked={selected.includes(option)}
-              className="form-checkbox accent-yellow-400 h-5 w-5 text-yellow-400"
               disabled={disabled}
+              onCheckedChange={() => !disabled && onToggle(option)}
+              className="filter-checkbox"
             />
-            <span className="text-gray-700">{renderLabel(option)}</span>
+            <span className={`text-gray-700 ${disabled ? "opacity-50" : ""}`}>
+              {renderLabel(option)}
+            </span>
           </label>
         </li>
       ))}
