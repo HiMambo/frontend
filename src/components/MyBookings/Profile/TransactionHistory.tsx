@@ -172,7 +172,8 @@ export default function TransactionHistory({
           <div className="flex justify-end mt-4 border-t border-gray-100 pt-3">
             <button
               onClick={() => setShowAllTransactions(true)}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium bg-orange-400
+             text-white rounded-lg hover:bg-orange-300 transition-colors"
             >
               <span>See More Transactions</span>
               <svg

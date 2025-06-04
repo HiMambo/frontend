@@ -134,7 +134,7 @@ export default function ProfileCard({
           <button
             type="button"
             onClick={() => setEditing(!editing)}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium bg-orange-400 text-white rounded-lg hover:bg-orange-100 transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium bg-orange-400 text-white rounded-lg hover:bg-orange-300 transition-colors"
           >
             <span>{editing ? "Save Changes" : "Edit Profile"}</span>
             {editing ? (

@@ -23,8 +23,7 @@ export default function Sidebar({
   const linkClass = (id: string) =>
     `text-xs font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2 p-2 rounded-lg ${
       selectedSection === id
-        ? "text-green-600 bg-green-50 shadow-sm"
-        : "text-gray-700 hover:text-green-600 hover:bg-green-50"
+        ? 'text-white bg-orange-400 shadow-sm' : 'text-white-700 hover:text-orange-600 hover:bg-orange-50'
     }`;
 
   return (
@@ -41,16 +40,15 @@ export default function Sidebar({
           />
           <a
             href="/partner-dashboard"
-            className="px-4 py-1.5 text-lg font-semibold text-green-800 bg-green-100 hover:bg-green-200 rounded-lg transition-colors"
+            className="px-4 py-1.5 text-lg font-semibold text-orange-400 bg-orange-100 hover:bg-orange-200 rounded-lg transition-colors"
           >
             Home
           </a>
         </div>
 
-        {/* Navigation with purple background container */}
         <nav className="space-y-1">
-          <div className="bg-purple-50 p-2 rounded-xl border border-purple-200 mb-3">
-            <div className="pb-2 border-b border-purple-200">
+          <div className="mb-3">
+            <div>
               <h2
                 onClick={() => setSelectedSection("business-page")}
                 className={linkClass("business-page")}
@@ -60,7 +58,7 @@ export default function Sidebar({
               </h2>
             </div>
 
-            <div className="py-2 border-b border-purple-200">
+            <div>
               <h2
                 onClick={() => setSelectedSection("marketing-tools")}
                 className={linkClass("marketing-tools")}
@@ -70,7 +68,7 @@ export default function Sidebar({
               </h2>
             </div>
 
-            <div className="py-2 border-b border-purple-200">
+            <div>
               <h2
                 onClick={() => setSelectedSection("education-hub")}
                 className={linkClass("education-hub")}
@@ -80,7 +78,7 @@ export default function Sidebar({
               </h2>
             </div>
 
-            <div className="py-2">
+            <div>
               <h2
                 onClick={() => setSelectedSection("mambo-wallet")}
                 className={linkClass("mambo-wallet")}
@@ -95,8 +93,8 @@ export default function Sidebar({
         {/* Help Section */}
         <div className="relative">
           <div className="border-t border-gray-200 my-3"></div>
-          <div className="bg-purple-50 p-2 rounded-xl border border-purple-200">
-            <h3 className="text-xs font-medium text-purple-600 mb-1.5">
+          <div className="bg-orange-50 p-2 rounded-xl border border-orange-200">
+            <h3 className="text-xs font-medium text-orange-600 mb-1.5">
               Need help?
             </h3>
             <div className="space-y-1.5">

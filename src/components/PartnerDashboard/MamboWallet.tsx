@@ -409,7 +409,7 @@ export default function MamboWallet() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-600 to-green-700 p-6 rounded-xl shadow-lg relative overflow-hidden">
+        <div className="bg-gradient-to-br from-yellow-300 to-yellow-400 p-6 rounded-xl shadow-md relative overflow-hidden">
           <div className="absolute inset-0 bg-pattern opacity-5"></div>
           <div className="flex justify-between items-center mb-4 relative">
             <h3 className="text-lg font-semibold text-white">Payout</h3>
@@ -428,13 +428,13 @@ export default function MamboWallet() {
           
           <div className="flex flex-col space-y-4 relative">
             <button 
-              className="px-4 py-2.5 bg-white text-green-700 rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm font-medium"
+              className="px-4 py-2.5 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm font-medium"
               onClick={() => setShowBankModal(true)}
             >
               Send To Bank
             </button>
             
-            <div className="flex items-center justify-center gap-2 text-white/90 text-sm">
+            <div className="flex items-center justify-center gap-2 text-white text-sm">
               <span className="opacity-75">Powered by</span>
               <div className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-md">
                 <span className="font-semibold">Onramper</span>
@@ -449,7 +449,7 @@ export default function MamboWallet() {
               </div>
             </div>
             
-            <p className="text-[11px] leading-tight text-white/70 text-center mt-2">
+            <p className="text-[11px] leading-tight text-white text-center mt-2">
               By clicking &apos;Send To Bank&apos;, you will be able to send your money to your bank or any other preferred destination. You will be also able to select your currency of choice.
             </p>
           </div>
@@ -630,7 +630,8 @@ export default function MamboWallet() {
           {/* See More Button */}
           <div className="flex justify-end mt-6">
             <button 
-              className="px-4 py-2 bg-[#FF8C00] text-white rounded-lg hover:bg-[#e67e00] transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium bg-orange-400
+             text-white rounded-lg hover:bg-orange-300 transition-colors"
               onClick={() => setShowExpandedTransactions(true)}
             >
               See More

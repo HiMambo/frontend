@@ -34,8 +34,8 @@ export default function Sidebar({ selectedSection, setSelectedSection }: Sidebar
 
         <div className="relative mt-6">
           <div className="border-t border-gray-200 my-3"></div>
-          <div className="bg-purple-50 p-2 rounded-xl border border-purple-200">
-            <h3 className="text-xs font-medium text-purple-600 mb-1.5">Need help?</h3>
+          <div className="bg-orange-50 p-2 rounded-xl border border-orange-200">
+            <h3 className="text-xs font-medium text-orange-600 mb-1.5">Need help?</h3>
             <div className="space-y-1.5">
               <button className="w-full flex items-center gap-1.5 px-2 py-1 text-left text-xs bg-green-50 text-green-700 rounded-md hover:bg-green-100 transition-colors">
                 🤖 <span>Talk to MamboAI</span>
@@ -72,7 +72,7 @@ function SidebarItem({ icon, label, selected, onClick }: SidebarItemProps) {
   return (
     <div onClick={onClick}
       className={`text-xs font-semibold cursor-pointer flex items-center gap-2 p-2 rounded-lg transition-all
-        ${selected ? 'text-blue-50 bg-orange-400 shadow-sm' : 'text-white-700 hover:text-orange-600 hover:bg-orange-50'}`}>
+        ${selected ? 'text-white bg-orange-400 shadow-sm' : 'text-white-700 hover:text-orange-600 hover:bg-orange-50'}`}>
       {icon}
       {label}
     </div>

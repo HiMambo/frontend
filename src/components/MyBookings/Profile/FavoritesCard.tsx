@@ -45,7 +45,7 @@ export default function FavoritesCard({
   return (
     <>
       <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg shadow-md border border-orange-200">
+        <div className="bg-gradient-to-br from-orange-100 to-orange-300 p-4 rounded-lg shadow-md border border-orange-200">
           <div className="w-full flex justify-between items-center mb-3">
             <h3 className="text-sm font-semibold text-orange-800">Favorite HiPartners</h3>
             <InfoTooltip text="View your saved favorite sustainable tourism partners." />
@@ -69,7 +69,7 @@ export default function FavoritesCard({
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg shadow-md border border-orange-200">
+        <div className="bg-gradient-to-br from-orange-100 to-orange-300 p-4 rounded-lg shadow-md border border-orange-200">
           <div className="w-full flex justify-between items-center mb-3">
             <h3 className="text-sm font-semibold text-orange-800">Favorite Experiences</h3>
             <InfoTooltip text="View your saved favorite sustainable experiences." />
