@@ -4,6 +4,7 @@ import React from "react";
 import { useFilter } from "@/context/FilterContext";
 import PriceFilter from "./PriceFilter";
 import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 
 const FilterSidebar: React.FC = () => {
   const {
@@ -111,6 +112,7 @@ const FilterSidebar: React.FC = () => {
 
 export default FilterSidebar;
 
+
 const FilterSection = <T extends string | number>({
   title,
   options,
@@ -131,15 +133,17 @@ const FilterSection = <T extends string | number>({
     <ul className="space-y-2">
       {options.map((option) => (
         <li key={String(option)}>
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              onChange={() => !disabled && onToggle(option)}
+          <label className="flex items-center space-x-2 cursor-pointer select-none">
+            <Checkbox
+              id={String(option)}
               checked={selected.includes(option)}
-              className="form-checkbox accent-yellow-400 h-5 w-5 text-yellow-400"
               disabled={disabled}
+              onCheckedChange={() => !disabled && onToggle(option)}
+              className="filter-checkbox"
             />
-            <span className="text-gray-700">{renderLabel(option)}</span>
+            <span className={`text-gray-700 ${disabled ? "opacity-50" : ""}`}>
+              {renderLabel(option)}
+            </span>
           </label>
         </li>
       ))}

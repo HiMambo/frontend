@@ -60,20 +60,26 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
   const toggleSDG = (sdg: string) => toggleItem(sdg, selectedSDG, setSelectedSDG);
 
   const setMinPrice = (min: number) => {
-    const newIntendedPrice: [number, number] = [min, userIntendedPrice[1]];
-    setUserIntendedPrice(newIntendedPrice);
+    if (userIntendedPrice === null) {
+      setUserIntendedPrice([min, availablePriceRange[1]]);
+    } else {
+      setUserIntendedPrice([min, userIntendedPrice[1]]);
+    }
   };
 
   const setMaxPrice = (max: number) => {
-    const newIntendedPrice: [number, number] = [userIntendedPrice[0], max];
-    setUserIntendedPrice(newIntendedPrice);
+    if (userIntendedPrice === null) {
+      setUserIntendedPrice([availablePriceRange[0], max]);
+    } else {
+      setUserIntendedPrice([userIntendedPrice[0], max]);
+    }
   };
 
-  const [userIntendedPrice, setUserIntendedPrice] = useState<[number, number]>([0, 0]);
-  const noPriceSelection = userIntendedPrice[0] === 0 && userIntendedPrice[1] === 0;
+  const [userIntendedPrice, setUserIntendedPrice] = useState<[number, number] | null>(null);
+  const noPriceSelection = userIntendedPrice === null;
 
   const resetPriceFilter = () => {
-    setUserIntendedPrice([0, 0]);
+    setUserIntendedPrice(null);
   };
 
   // First stage: apply all filters except price
@@ -115,6 +121,11 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
     if (!availablePriceRange || availablePriceRange.length < 2) return [0, 0];
   
     const [availableMin, availableMax] = availablePriceRange;
+    
+    if (userIntendedPrice === null) {
+      return [availableMin, availableMax];
+    }
+    // Only destructure after null check
     const [intendedMin, intendedMax] = userIntendedPrice;
   
   // If user hasn't set anything yet, use full available range
