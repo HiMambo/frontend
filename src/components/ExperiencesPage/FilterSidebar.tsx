@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useFilter } from "@/context/FilterContext";
 import PriceFilter from "./PriceFilter";
+import { Button } from "../ui/button";
 
 const FilterSidebar: React.FC = () => {
   const {
@@ -10,6 +11,7 @@ const FilterSidebar: React.FC = () => {
     toggleCategory,
     selectedRating,
     toggleRating,
+    availablePriceRange,
     selectedPrice,
     setMinPrice,
     setMaxPrice,
@@ -17,6 +19,8 @@ const FilterSidebar: React.FC = () => {
     toggleDiscount,
     selectedSDG,
     toggleSDG,
+    resetPriceFilter,
+    noPriceSelection
   } = useFilter();
 
   return (
@@ -55,8 +59,25 @@ const FilterSidebar: React.FC = () => {
 
       {/* Price */}
       <div className="mb-6">
-        <h3 className="font-semibold text-lg text-blue-800 mb-2">Price Range</h3>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="font-semibold text-lg text-blue-800">Price Range</h3>
+          <div className="w-[72px] h-[32px]">
+            {/* Reset Button, conditionally rendered */}
+            {(!noPriceSelection) && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={resetPriceFilter}
+                className="text-muted-foreground hover:text-foreground border-gray-300"
+              >
+                Reset
+              </Button>
+            )}
+          </div>
+        </div>
         <PriceFilter
+          min={availablePriceRange[0]}
+          max={availablePriceRange[1]}
           minValue={selectedPrice[0]}
           maxValue={selectedPrice[1]}
           onMinPriceChange={setMinPrice}

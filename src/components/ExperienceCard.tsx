@@ -133,7 +133,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
             <div className="flex justify-between items-center mt-2">
               {/* Price + Cart */}
               <div className="flex items-center gap-2">
-                <span className="text-xl font-bold text-black">${price}</span>
+                <span className="text-xl font-bold text-black">${price.toFixed(2)}</span>
 
                 <Tooltip>
                   <TooltipTrigger asChild>
