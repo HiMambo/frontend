@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+"use client";
 
-import ProfileCard from "./ProfileCard";
+import { useEffect, useState } from "react";
 import FavoritesCard from "./FavoritesCard";
-import BookingsSummary from "./BookingsSummary";
+import ProfileCard from "./ProfileCard";
 import TransactionHistory from "./TransactionHistory";
 
-type PaymentMethod = 'credit-card' | 'paypal' | 'crypto';
+type PaymentMethod = "credit-card" | "paypal" | "crypto";
 
 type PaymentDetailsForm = {
   cardNumber?: string;
@@ -36,6 +36,15 @@ type FavoriteExperience = {
   image: string;
 };
 
+type Transaction = {
+  name: string;
+  experience: string;
+  amount: number;
+  experienceDate: string;
+  paymentDate: string;
+  status?: string;
+};
+
 export default function UserProfileDashboard() {
   const [profile, setProfile] = useState({
     name: "Enrique Maldonado",
@@ -46,7 +55,9 @@ export default function UserProfileDashboard() {
   const [editing, setEditing] = useState(false);
 
   const [showPaymentMenu, setShowPaymentMenu] = useState(false);
-  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod | null>(null);
+  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod | null>(
+    null
+  );
   const [showPaymentDetails, setShowPaymentDetails] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState<PaymentDetailsForm>({});
 
@@ -61,36 +72,102 @@ export default function UserProfileDashboard() {
 
   const [showAllTransactions, setShowAllTransactions] = useState(false);
 
+  const [loading, setLoading] = useState(true); // <-- NEW
+  const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
+
   const [upcomingExperiencesList] = useState([
     { name: "Eco Mountain Trek", date: "2025-06-15" },
     { name: "Sustainable Urban Tour", date: "2025-07-01" },
   ]);
 
   const [pastExperiencesList] = useState<PastExperience[]>([
-    { name: "Green City Tour", date: "2025-04-15", amount: 150, location: "Barcelona" },
-    { name: "Eco Hiking Tour", date: "2025-03-20", amount: 200, location: "Alps" },
-    { name: "Sustainable Safari", date: "2025-02-10", amount: 300, location: "Kenya" },
-  ]);
-
-  const [allTransactions] = useState([
-    { name: "John Doe", experience: "Sustainable Safari", amount: 200, experienceDate: "2025-06-15", paymentDate: "2025-05-01", status: "upcoming" },
-    { name: "Jane Smith", experience: "Eco Hiking Tour", amount: 150, experienceDate: "2025-05-02", paymentDate: "2025-05-02" },
-    { name: "Alice Johnson", experience: "Green City Tour", amount: 300, experienceDate: "2025-05-03", paymentDate: "2025-05-03" },
-    { name: "Bob Wilson", experience: "Mountain Trek", amount: 250, experienceDate: "2025-05-04", paymentDate: "2025-05-04" },
-    { name: "Carol Davis", experience: "Urban Tour", amount: 175, experienceDate: "2025-05-05", paymentDate: "2025-05-05" },
+    {
+      name: "Green City Tour",
+      date: "2025-04-15",
+      amount: 150,
+      location: "Barcelona",
+    },
+    {
+      name: "Eco Hiking Tour",
+      date: "2025-03-20",
+      amount: 200,
+      location: "Alps",
+    },
+    {
+      name: "Sustainable Safari",
+      date: "2025-02-10",
+      amount: 300,
+      location: "Kenya",
+    },
   ]);
 
   const [favoritePartners] = useState<FavoritePartner[]>([
-    { name: "EcoVentures Ltd", location: "Barcelona", rating: 4.8, profilePic: "/partner1.jpg" },
-    { name: "Green Tours Co", location: "Alps", rating: 4.9, profilePic: "/partner2.jpg" },
-    { name: "Sustainable Safaris", location: "Kenya", rating: 5.0, profilePic: "/partner3.jpg" },
+    {
+      name: "EcoVentures Ltd",
+      location: "Barcelona",
+      rating: 4.8,
+      profilePic: "/partner1.jpg",
+    },
+    {
+      name: "Green Tours Co",
+      location: "Alps",
+      rating: 4.9,
+      profilePic: "/partner2.jpg",
+    },
+    {
+      name: "Sustainable Safaris",
+      location: "Kenya",
+      rating: 5.0,
+      profilePic: "/partner3.jpg",
+    },
   ]);
 
   const [favoriteExperiences] = useState<FavoriteExperience[]>([
-    { name: "Mountain Eco Trek", location: "Swiss Alps", price: 299, image: "/exp1.jpg" },
-    { name: "Urban Green Tour", location: "Barcelona", price: 149, image: "/exp2.jpg" },
-    { name: "Wildlife Safari", location: "Kenya", price: 399, image: "/exp3.jpg" },
+    {
+      name: "Mountain Eco Trek",
+      location: "Swiss Alps",
+      price: 299,
+      image: "/exp1.jpg",
+    },
+    {
+      name: "Urban Green Tour",
+      location: "Barcelona",
+      price: 149,
+      image: "/exp2.jpg",
+    },
+    {
+      name: "Wildlife Safari",
+      location: "Kenya",
+      price: 399,
+      image: "/exp3.jpg",
+    },
   ]);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const response = await fetch(
+          "https://backend-production-f498.up.railway.app/clients/5/bookings"
+        );
+        const data = await response.json();
+        const mappedData = data.map((item: any) => ({
+          name: item.partner_name,
+          experience: item.experience_name,
+          amount: item.total_price,
+          experienceDate: item.experience_date,
+          paymentDate: item.booking_date,
+          status: item.status,
+        }));
+        setAllTransactions(mappedData);
+      } catch (error) {
+        console.error("Failed to fetch transactions:", error);
+      } finally {
+        setLoading(false); // <-- Hide loader when fetch is done (success or error)
+      }
+    };
+
+    fetchTransactions();
+  }, []);
 
   return (
     <div className="ml-16 p-8 bg-[#f7f7f7] min-h-screen">
@@ -120,31 +197,44 @@ export default function UserProfileDashboard() {
             <div className="h-2" />
             <div className="w-full flex justify-center">
               <div className="w-full max-w-3xl mx-auto px-4 py-2 bg-yellow-400 border border-yellow-400 rounded-lg shadow-sm flex justify-center">
-                <span className="text-base font-semibold text-white">My Bookings</span>
+                <span className="text-base font-semibold text-white">
+                  My Bookings
+                </span>
               </div>
             </div>
           </div>
 
-          <BookingsSummary
-            pastExperiencesList={pastExperiencesList}
-            upcomingExperiencesList={upcomingExperiencesList}
-            showPastExperiences={showPastExperiences}
-            setShowPastExperiences={setShowPastExperiences}
-            showUpcomingExperiences={showUpcomingExperiences}
-            setShowUpcomingExperiences={setShowUpcomingExperiences}
-            selectedPayment={selectedPayment}
-            setSelectedPayment={setSelectedPayment}
-            showPaymentMenu={showPaymentMenu}
-            setShowPaymentMenu={setShowPaymentMenu}
-            showPaymentDetails={showPaymentDetails}
-            setShowPaymentDetails={setShowPaymentDetails}
-          />
-
-          <TransactionHistory
-            allTransactions={allTransactions}
-            showAllTransactions={showAllTransactions}
-            setShowAllTransactions={setShowAllTransactions}
-          />
+          {/* 👇 NEW LOADING SPINNER BEFORE TransactionHistory */}
+          {loading ? (
+            <div className="flex justify-center items-center py-16">
+              <svg
+                className="animate-spin h-8 w-8 text-purple-500"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8z"
+                ></path>
+              </svg>
+            </div>
+          ) : (
+            <TransactionHistory
+              allTransactions={allTransactions}
+              showAllTransactions={showAllTransactions}
+              setShowAllTransactions={setShowAllTransactions}
+            />
+          )}
         </div>
       </div>
     </div>

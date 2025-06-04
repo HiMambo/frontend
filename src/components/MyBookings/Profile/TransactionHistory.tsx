@@ -1,12 +1,12 @@
 import React from "react";
 
 type Transaction = {
-  name: string;
-  experience: string;
-  amount: number;
-  experienceDate: string;
-  paymentDate: string;
-  status?: string; 
+  name: string; // Partner Name
+  experience: string; // Experience Name
+  amount: number; // Amount Paid
+  experienceDate: string; // Experience Date
+  paymentDate: string; // Booking Date
+  status?: string; // Status (optional)
 };
 
 type TransactionHistoryProps = {
@@ -34,6 +34,30 @@ export default function TransactionHistory({
   showAllTransactions,
   setShowAllTransactions,
 }: TransactionHistoryProps) {
+  // Limit display to first 5 unless "showAllTransactions" is true
+  const displayedTransactions = showAllTransactions
+    ? allTransactions
+    : allTransactions.slice(0, 5);
+
+  // Helper to get 2-letter abbreviation
+  const getAbbreviation = (name: string) => {
+    if (!name) return "";
+    const parts = name.trim().split(/\s+/);
+    if (parts.length === 1) {
+      return parts[0].substring(0, 2).toUpperCase(); // Single word -> first 2 letters
+    } else {
+      return (parts[0][0] + parts[1][0]).toUpperCase(); // First letter of first and second word
+    }
+  };
+
+  if (!allTransactions.length) {
+    return (
+      <div className="bg-white rounded-lg shadow-md flex-1 p-8 flex justify-center items-center text-gray-500">
+        No transactions found.
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-md flex-1">
       <div className="p-4">
@@ -42,66 +66,84 @@ export default function TransactionHistory({
           <InfoTooltip text="Track all your financial transactions, payments, and experience bookings in one place." />
         </div>
 
+        {/* Header */}
         <div className="grid grid-cols-6 gap-0 mb-2 text-xs font-medium text-gray-500">
-          <div className="px-3 text-left">Client Name</div>
+          <div className="px-3 text-left">Partner Name</div>
           <div className="px-3 text-center">Experience Name</div>
           <div className="px-3 text-center">Amount Paid</div>
           <div className="px-3 text-center">Experience Date</div>
-          <div className="px-3 text-right">Payment Date</div>
+          <div className="px-3 text-right">Booking Date</div>
           <div className="px-3 text-right">Invoice</div>
         </div>
 
-        <div className="space-y-2 overflow-y-auto" style={{ maxHeight: "calc(100% - 4rem)" }}>
-          {[...Array(3)].map((_, index) => (
+        {/* Transactions */}
+        <div
+          className="space-y-2 overflow-y-auto"
+          style={{ maxHeight: "calc(100% - 4rem)" }}
+        >
+          {displayedTransactions.map((transaction, index) => (
             <div
               key={index}
               className="grid grid-cols-6 gap-0 items-center py-2 border-b border-gray-100"
             >
+              {/* Partner Name */}
               <div className="flex items-center px-3">
                 <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center shrink-0 mr-2">
                   <span className="text-sm font-semibold">
-                    {index === 0 ? "JD" : index === 1 ? "JS" : "AJ"}
+                    {getAbbreviation(transaction.name)}
                   </span>
                 </div>
-                <span className="text-xs font-medium">
-                  {index === 0 ? "John Doe" : index === 1 ? "Jane Smith" : "Alice Johnson"}
-                </span>
+                <span className="text-xs font-medium">{transaction.name}</span>
               </div>
+
+              {/* Experience Name */}
               <div className="flex justify-center px-3">
                 <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-center bg-green-100 text-green-800">
-                  {index === 0
-                    ? "Sustainable Safari"
-                    : index === 1
-                    ? "Eco Hiking Tour"
-                    : "Green City Tour"}
+                  {transaction.experience}
                 </span>
               </div>
+
+              {/* Amount */}
               <div className="text-center font-medium text-green-600 text-xs px-3">
-                ${index === 0 ? "200" : index === 1 ? "150" : "300"}
+                ${transaction.amount.toFixed(2)}
               </div>
+
+              {/* Experience Date */}
               <div className="text-center px-3">
                 <span
                   className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
-                    index === 0 ? "bg-blue-100 text-blue-800" : "text-gray-500"
+                    transaction.status === "pending"
+                      ? "bg-blue-100 text-blue-800"
+                      : "text-gray-500"
                   }`}
                 >
-                  {index === 0 ? (
+                  {transaction.status === "pending" ? (
                     <div className="flex flex-col items-center">
                       <span>Upcoming</span>
-                      <span className="text-xs text-blue-600">2025-06-15</span>
+                      <span className="text-xs text-blue-600">
+                        {new Date(
+                          transaction.experienceDate
+                        ).toLocaleDateString()}
+                      </span>
                     </div>
                   ) : (
-                    `2025-05-${(index + 1).toString().padStart(2, "0")}`
+                    new Date(transaction.experienceDate).toLocaleDateString()
                   )}
                 </span>
               </div>
+
+              {/* Booking Date */}
               <div className="text-right text-xs text-gray-500 px-3">
-                2025-05-{(index + 1).toString().padStart(2, "0")}
+                {new Date(transaction.paymentDate).toLocaleDateString()}
               </div>
+
+              {/* Invoice Button */}
               <div className="px-3 text-right">
                 <button
                   onClick={() => {
-                    console.log(`Downloading invoice for transaction ${index + 1}`);
+                    console.log(
+                      `Downloading invoice for transaction ${index + 1}`
+                    );
                   }}
                   className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-md transition-colors"
                 >
@@ -125,23 +167,30 @@ export default function TransactionHistory({
           ))}
         </div>
 
-        {/* See More Transactions button */}
-        <div className="flex justify-end mt-4 border-t border-gray-100 pt-3">
-          <button
-            onClick={() => setShowAllTransactions(true)}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
-          >
-            <span>See More Transactions</span>
-            <svg
-              className="w-3.5 h-3.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        {/* See More Transactions Button */}
+        {!showAllTransactions && (
+          <div className="flex justify-end mt-4 border-t border-gray-100 pt-3">
+            <button
+              onClick={() => setShowAllTransactions(true)}
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
+              <span>See More Transactions</span>
+              <svg
+                className="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
