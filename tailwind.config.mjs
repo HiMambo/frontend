@@ -7,6 +7,8 @@ const config = {
           yellow: "#FFD700",
           green: "#34D399",
           dark: "#1F2937",
+          orange: "#FA9439",
+          white: "#FFFFFF"
         },
         primary: "#FF7E5F",
         secondary: "#FEB47B",
