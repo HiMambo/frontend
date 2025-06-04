@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useMemo, useEffect } from "react";
+import React, { createContext, useContext, useState, useMemo } from "react";
 import { Experience } from "@/types/experience";
 
 interface FilterContextType {
@@ -127,7 +127,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
   const clampedMax = Math.min(availableMax, Math.max(intendedMax, availableMin));
   
   return [clampedMin, clampedMax];
-}, [userIntendedPrice, availablePriceRange]);
+}, [userIntendedPrice, availablePriceRange, noPriceSelection]);
 
   // Second stage: apply price filter on already filtered results
   const filteredExperiences = useMemo(() => {

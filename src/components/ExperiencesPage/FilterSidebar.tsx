@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useFilter } from "@/context/FilterContext";
 import PriceFilter from "./PriceFilter";
 import { Button } from "../ui/button";

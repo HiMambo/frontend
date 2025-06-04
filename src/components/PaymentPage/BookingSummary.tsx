@@ -3,22 +3,6 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useCart } from "@/context/Cart";
 
-// Define the type for the experience object
-interface Experience {
-  id: number;
-  name: string;
-  experience_description: string;
-  experience_price: number;
-  experience_promo_image: string;
-  experience_city: string;
-  experience_country: string;
-  travelDate?: string;
-  departure?: string;
-  travellers?: number;
-  duration?: string;
-  refundable?: string;
-}
-
 const BookingSummary: React.FC = () => {
   const { experience, number_of_people, payment_type } = useCart(); // Get the experience from the Cart context
   const [multiplierCrypto, setMultiplierCrypto] = useState(1.0); // Multiplier for crypto discount
