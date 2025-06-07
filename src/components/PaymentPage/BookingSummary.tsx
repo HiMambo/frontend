@@ -9,6 +9,10 @@ const BookingSummary: React.FC = () => {
   // Component mount and data check
   useEffect(() => {
     console.log("BookingSummary mounted");
+  }, []);
+
+  // Experience-dependent effect
+  useEffect(() => {
     console.log("Selected experience from context:", experience);
     
     if (!experience) {
