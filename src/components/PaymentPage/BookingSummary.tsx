@@ -1,12 +1,10 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useCart } from "@/context/Cart";
 
 const BookingSummary: React.FC = () => {
   const { experience, number_of_people, payment_type } = useCart(); // Get the experience from the Cart context
-  const [multiplierCrypto, setMultiplierCrypto] = useState(1.0); // Multiplier for crypto discount
-  const [totalPrice, setTotalPrice] = useState(0.0); // Total price
 
   // Component mount and data check
   useEffect(() => {
@@ -18,25 +16,22 @@ const BookingSummary: React.FC = () => {
     }
   }, [experience]);
 
-  // Update multiplier and total price when payment type or experience changes
-  useEffect(() => {
-    if (payment_type === "crypto") {
-      setMultiplierCrypto(0.9); // Apply a 10% discount for crypto
-      console.log("Discount for crypto applied");
-    } else {
-      setMultiplierCrypto(1.0); // No discount for fiat
-      console.log("No discount with fiat");
-    }
-  }, [payment_type]);
+  // Calculate total price using useMemo to prevent unnecessary recalculations
+  const basePrice = useMemo(() => {
+    if (!experience) return 0;
 
-  useEffect(() => {
-    if (experience) {
-      const calculatedPrice =
-        experience.experience_price * number_of_people * multiplierCrypto;
-      setTotalPrice(calculatedPrice);
-      console.log("Total price updated:", calculatedPrice);
-    }
-  }, [experience, number_of_people, multiplierCrypto]);
+    return typeof experience.experience_price === 'string'
+      ? parseFloat(experience.experience_price)
+      : experience.experience_price;
+  }, [experience]);
+
+  // Calculate total price based on basePrice
+  const totalPrice = useMemo(() => {
+    const multiplierCrypto = payment_type === "crypto" ? 0.9 : 1.0; // Apply discount for crypto
+    const calculated = basePrice * number_of_people * multiplierCrypto;
+    console.log("Total price updated:", calculated);
+    return calculated;
+  }, [basePrice, number_of_people, payment_type]);
 
   if (!experience) {
     console.warn("No experience data available.");
@@ -99,7 +94,7 @@ const BookingSummary: React.FC = () => {
           <div className="flex justify-between text-sm mb-2">
             <span className="text-gray-700">1 Adult</span>
             <span className="text-gray-700">
-              US$ {experience.experience_price?.toFixed(2) || "0.00"}
+              US$ {basePrice.toFixed(2) || "0.00"}
             </span>
           </div>
           <hr className="my-2" />

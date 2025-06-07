@@ -25,9 +25,11 @@ export default function ReviewAndConfirm({
   const handleConfirm = () => {
     if (paymentMethod === 'crypto') {
       // Show crypto payment flow
+      setDiscount(10)
       setShowCryptoPayment(true);
     } else {
       // For credit card payment, proceed with regular confirmation
+      setDiscount(0)
       onConfirm();
     }
   };

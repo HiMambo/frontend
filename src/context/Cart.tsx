@@ -7,10 +7,12 @@ interface Experience {
   id: number;
   name: string;
   experience_description: string;
-  experience_price: number;
+  experience_price: string | number; // Accept both to handle API inconsistency
   experience_promo_image: string;
   experience_city: string;
   experience_country: string;
+  rating_avg?: number;
+  sustainability_goal?: string[];
   travelDate?: string;
   departure?: string;
   travellers?: number;

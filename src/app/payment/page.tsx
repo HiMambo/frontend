@@ -12,11 +12,14 @@ export default function PaymentPage() {
   const [currentStep, setCurrentStep] = useState(1); // 1 = Login, 2 = Payment, 3 = Review
   const { experienceId, price } = useCart(); // Access the context values
 
-  // Log the context values for debugging
+  // Log only once on mount, then only when values actually change
   useEffect(() => {
     console.log("PaymentPage mounted");
-    console.log("Context values - experienceId:", experienceId, "price:", price);
-  }, [experienceId, price]); // Log whenever experienceId or price changes
+  }, []); // Only log mount once
+
+  useEffect(() => {
+    console.log("Context values updated - experienceId:", experienceId, "price:", price);
+  }, [experienceId, price]); // Only log when these actually change
 
   return (
     <>
