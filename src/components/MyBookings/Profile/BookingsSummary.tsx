@@ -1,5 +1,5 @@
 import React from "react";
-import { FaCreditCard, FaPaypal, FaBitcoin, FaEllipsisV } from "react-icons/fa";
+import { FaBitcoin, FaCreditCard, FaEllipsisV, FaPaypal } from "react-icons/fa";
 
 type PaymentMethod = "credit-card" | "paypal" | "crypto";
 
@@ -23,7 +23,9 @@ type BookingsSummaryProps = {
   showUpcomingExperiences: boolean;
   setShowUpcomingExperiences: React.Dispatch<React.SetStateAction<boolean>>;
   selectedPayment: PaymentMethod | null;
-  setSelectedPayment: React.Dispatch<React.SetStateAction<PaymentMethod | null>>;
+  setSelectedPayment: React.Dispatch<
+    React.SetStateAction<PaymentMethod | null>
+  >;
   showPaymentMenu: boolean;
   setShowPaymentMenu: React.Dispatch<React.SetStateAction<boolean>>;
   showPaymentDetails: boolean;
@@ -47,15 +49,15 @@ const InfoTooltip = ({ text }: { text: string }) => (
 export default function BookingsSummary({
   pastExperiencesList,
   upcomingExperiencesList,
-  showPastExperiences,
+
   setShowPastExperiences,
-  showUpcomingExperiences,
+
   setShowUpcomingExperiences,
   selectedPayment,
   setSelectedPayment,
   showPaymentMenu,
   setShowPaymentMenu,
-  showPaymentDetails,
+
   setShowPaymentDetails,
 }: BookingsSummaryProps) {
   return (
@@ -78,7 +80,9 @@ export default function BookingsSummary({
               {pastExperiencesList.length}
             </button>
             <div className="text-center">
-              <div className="text-xs font-medium text-gray-600">Completed Experiences</div>
+              <div className="text-xs font-medium text-gray-600">
+                Completed Experiences
+              </div>
               <div className="text-xs text-blue-600">Click to view all</div>
             </div>
           </div>
@@ -101,7 +105,9 @@ export default function BookingsSummary({
               {upcomingExperiencesList.length}
             </button>
             <div className="text-center">
-              <div className="text-xs font-medium text-gray-600">Scheduled Experiences</div>
+              <div className="text-xs font-medium text-gray-600">
+                Scheduled Experiences
+              </div>
               <div className="text-xs text-green-600">Click to view all</div>
             </div>
           </div>
@@ -135,7 +141,9 @@ export default function BookingsSummary({
                     </span>
                   </>
                 ) : (
-                  <span className="text-sm text-purple-600 font-medium">Select Payment Method</span>
+                  <span className="text-sm text-purple-600 font-medium">
+                    Select Payment Method
+                  </span>
                 )}
               </div>
               <FaEllipsisV className="text-gray-400 w-3 h-3" />
@@ -181,7 +189,9 @@ export default function BookingsSummary({
               </div>
             )}
           </div>
-          <div className="mt-4 text-xs text-gray-500">Click to change payment method</div>
+          <div className="mt-4 text-xs text-gray-500">
+            Click to change payment method
+          </div>
         </div>
       </div>
     </>

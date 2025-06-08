@@ -76,16 +76,16 @@ type Transaction = {
 };
 
 // Experience colors type definition
-type ExperienceType =
-  | "Sustainable Safari"
-  | "Eco Hiking Tour"
-  | "Green City Tour";
+// type ExperienceType =
+//   | "Sustainable Safari"
+//   | "Eco Hiking Tour"
+//   | "Green City Tour";
 
-const experienceColors: Record<ExperienceType, string> = {
-  "Sustainable Safari": "bg-green-100 text-green-800",
-  "Eco Hiking Tour": "bg-blue-100 text-blue-800",
-  "Green City Tour": "bg-purple-100 text-purple-800",
-} as const;
+// const experienceColors: Record<ExperienceType, string> = {
+//   "Sustainable Safari": "bg-green-100 text-green-800",
+//   "Eco Hiking Tour": "bg-blue-100 text-blue-800",
+//   "Green City Tour": "bg-purple-100 text-purple-800",
+// } as const;
 
 const currencies = [
   { code: "EUR", flag: "🇪🇺", icon: FaEuroSign },
@@ -189,6 +189,7 @@ export default function MamboWallet() {
     "This Year": { totalValue: 0.0, totalExperiences: 0, converted: 0 },
     "Forever View": { totalValue: 0.0, totalExperiences: 0, converted: 0 },
   });
+  setIsClient(false);
   useEffect(() => {
     const fetchPaymentData = async () => {
       try {

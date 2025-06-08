@@ -5,23 +5,30 @@ import FavoritesCard from "./FavoritesCard";
 import ProfileCard from "./ProfileCard";
 import TransactionHistory from "./TransactionHistory";
 
-type PaymentMethod = "credit-card" | "paypal" | "crypto";
+// type PaymentMethod = "credit-card" | "paypal" | "crypto";
 
-type PaymentDetailsForm = {
-  cardNumber?: string;
-  expiryDate?: string;
-  cvv?: string;
-  paypalEmail?: string;
-  cryptoAddress?: string;
+// type PaymentDetailsForm = {
+//   cardNumber?: string;
+//   expiryDate?: string;
+//   cvv?: string;
+//   paypalEmail?: string;
+//   cryptoAddress?: string;
+// };
+
+// type PastExperience = {
+//   name: string;
+//   date: string;
+//   amount: number;
+//   location: string;
+// };
+type TransactionApiResponse = {
+  partner_name: string;
+  experience_name: string;
+  total_price: number;
+  experience_date: string;
+  booking_date: string;
+  status?: string;
 };
-
-type PastExperience = {
-  name: string;
-  date: string;
-  amount: number;
-  location: string;
-};
-
 type FavoritePartner = {
   name: string;
   location: string;
@@ -54,18 +61,18 @@ export default function UserProfileDashboard() {
   });
   const [editing, setEditing] = useState(false);
 
-  const [showPaymentMenu, setShowPaymentMenu] = useState(false);
-  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod | null>(
-    null
-  );
-  const [showPaymentDetails, setShowPaymentDetails] = useState(false);
-  const [paymentDetails, setPaymentDetails] = useState<PaymentDetailsForm>({});
+  // const [showPaymentMenu, setShowPaymentMenu] = useState(false);
+  // const [selectedPayment, setSelectedPayment] = useState<PaymentMethod | null>(
+  //   null
+  // );
+  // const [showPaymentDetails, setShowPaymentDetails] = useState(false);
+  // const [paymentDetails, setPaymentDetails] = useState<PaymentDetailsForm>({});
 
-  const [showPastExperiences, setShowPastExperiences] = useState(false);
-  const [showUpcomingExperiences, setShowUpcomingExperiences] = useState(false);
+  // const [showPastExperiences, setShowPastExperiences] = useState(false);
+  // const [showUpcomingExperiences, setShowUpcomingExperiences] = useState(false);
 
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState("");
+  // const [resetEmail, setResetEmail] = useState("");
 
   const [showFavoritePartners, setShowFavoritePartners] = useState(false);
   const [showFavoriteExperiences, setShowFavoriteExperiences] = useState(false);
@@ -74,32 +81,37 @@ export default function UserProfileDashboard() {
 
   const [loading, setLoading] = useState(true); // <-- NEW
   const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
+  console.log(
+    showForgotPassword,
+    showFavoritePartners,
+    showFavoriteExperiences
+  );
 
-  const [upcomingExperiencesList] = useState([
-    { name: "Eco Mountain Trek", date: "2025-06-15" },
-    { name: "Sustainable Urban Tour", date: "2025-07-01" },
-  ]);
+  // const [upcomingExperiencesList] = useState([
+  //   { name: "Eco Mountain Trek", date: "2025-06-15" },
+  //   { name: "Sustainable Urban Tour", date: "2025-07-01" },
+  // ]);
 
-  const [pastExperiencesList] = useState<PastExperience[]>([
-    {
-      name: "Green City Tour",
-      date: "2025-04-15",
-      amount: 150,
-      location: "Barcelona",
-    },
-    {
-      name: "Eco Hiking Tour",
-      date: "2025-03-20",
-      amount: 200,
-      location: "Alps",
-    },
-    {
-      name: "Sustainable Safari",
-      date: "2025-02-10",
-      amount: 300,
-      location: "Kenya",
-    },
-  ]);
+  // const [pastExperiencesList] = useState<PastExperience[]>([
+  //   {
+  //     name: "Green City Tour",
+  //     date: "2025-04-15",
+  //     amount: 150,
+  //     location: "Barcelona",
+  //   },
+  //   {
+  //     name: "Eco Hiking Tour",
+  //     date: "2025-03-20",
+  //     amount: 200,
+  //     location: "Alps",
+  //   },
+  //   {
+  //     name: "Sustainable Safari",
+  //     date: "2025-02-10",
+  //     amount: 300,
+  //     location: "Kenya",
+  //   },
+  // ]);
 
   const [favoritePartners] = useState<FavoritePartner[]>([
     {
@@ -150,7 +162,7 @@ export default function UserProfileDashboard() {
           "https://backend-production-f498.up.railway.app/clients/5/bookings"
         );
         const data = await response.json();
-        const mappedData = data.map((item: any) => ({
+        const mappedData = data.map((item: TransactionApiResponse) => ({
           name: item.partner_name,
           experience: item.experience_name,
           amount: item.total_price,
