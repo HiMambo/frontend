@@ -1,4 +1,3 @@
-import HoverWrapper from "./HoverWrapper";
 import {
   Facebook,
   Instagram,
@@ -6,10 +5,46 @@ import {
   Twitter,
   RightArrow,
 } from "./IconComponents";
+import { Button } from "../ui/button";
 
-export default function Footer() {
+interface FooterProps {
+  variant?: "default" | "home";
+}
+
+const variantStyles = {
+  default: {
+    footerBg: "bg-footer-background",
+    text: "text-footer-text",
+    iconColor: "text-footer-socialIcon",
+    inputBg: "bg-footer-inputBackground",
+    placeholder: "placeholder-footer-inputPlaceholder",
+    button: "bg-footer-button text-footer-text hover:brightness-110",
+    hoverText: "hover:text-footer-texthover",
+  },
+  home: {
+    footerBg: "bg-footerhome-background",
+    text: "text-white",
+    iconColor: "text-white",
+    inputBg: "bg-footer-inputBackground",
+    placeholder: "placeholder-footer-inputPlaceholder",
+    button: "bg-footerhome-button text-white hover:bg-footerhome-buttonhover",
+    hoverText: "hover:text-footerhome-texthover",
+  },
+};
+
+export default function Footer({ variant = "default" }: FooterProps) {
+  const styles = variantStyles[variant];
+
+  const Hover = ({ children }: { children: React.ReactNode }) => (
+    <span
+      className={`transition hover:scale-[1.03] ${styles.hoverText}`}
+    >
+      {children}
+    </span>
+  );
+
   return (
-    <footer className="bg-footer-background text-footer-text py-10 px-6 md:px-16">
+    <footer className={`py-10 px-6 md:px-16 ${styles.footerBg} ${styles.text}`}>
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
         {/* Left Column */}
         <div className="space-y-6">
@@ -21,7 +56,7 @@ export default function Footer() {
               If you have any questions or would like to book a tour with us, please don’t hesitate to contact us.
             </p>
             <p className="flex mt-2 text-sm">
-              Email:<HoverWrapper><a href="mailto:info@himambo.com" className="ml-1">info@himambo.com</a></HoverWrapper>
+              Email:<Hover><a href="mailto:info@himambo.com" className="ml-1">info@himambo.com</a></Hover>
             </p>
           </div>
 
@@ -32,16 +67,17 @@ export default function Footer() {
               <input
                 type="email"
                 placeholder="Input your email here"
-                className="flex-1 bg-footer-inputBackground placeholder-footer-inputPlaceholder text-sm px-4 py-2 rounded-md"
+                className={`flex-1 ${styles.inputBg} ${styles.placeholder} text-sm px-4 py-2 rounded-md text-black`}
+                required
               />
-              <HoverWrapper>
-                <button
+              <Button
                 type="submit"
-                className="bg-footer-button w-10 h-10 flex items-center justify-center rounded-md"
+                size="icon"
+                aria-label="Subscribe"
+                className={styles.button}
               >
-                <RightArrow className="w-5 h-5"/>
-                </button>
-              </HoverWrapper>
+                <RightArrow className="w-5 h-5" />
+              </Button>
             </form>
           </div>
         </div>
@@ -49,19 +85,27 @@ export default function Footer() {
         {/* Right Column */}
         <div className="flex flex-col justify-between space-y-6 text-sm">
           {/* Social Icons */}
-          <div className="flex items-center gap-4">
-            <a href="#" aria-label="Facebook" className = "w-6 h-6 text-footer-socialIcon">
-              <HoverWrapper><Facebook /></HoverWrapper>
-            </a>
-            <a href="#" aria-label="Twitter" className = "w-6 h-6 text-footer-socialIcon">
-              <HoverWrapper><Twitter /></HoverWrapper>
-            </a>
-            <a href="#" aria-label="Linkedin" className = "w-6 h-6 text-footer-socialIcon">
-              <HoverWrapper><LinkedIn /></HoverWrapper>
-            </a>
-            <a href="#" aria-label="Instagram" className = "w-6 h-6 text-footer-socialIcon">
-              <HoverWrapper><Instagram /></HoverWrapper>
-            </a>
+          <div className={`flex items-center gap-4 ${styles.iconColor}`}>
+            <Hover>
+              <a href="#" aria-label="Facebook">
+                <Facebook className="w-6 h-6" />
+              </a>
+            </Hover>
+            <Hover>
+              <a href="#" aria-label="Twitter">
+                <Twitter className="w-6 h-6" />
+              </a>
+            </Hover>
+            <Hover>
+              <a href="#" aria-label="LinkedIn">
+                <LinkedIn className="w-6 h-6" />
+              </a>
+            </Hover>
+            <Hover>
+              <a href="#" aria-label="Instagram">
+                <Instagram className="w-6 h-6" />
+              </a>
+            </Hover>
           </div>
 
           {/* Description Text */}
@@ -70,30 +114,30 @@ export default function Footer() {
           </p>
 
           {/* Navigation Links */}
-          <div className="grid grid-cols-3 gap-x-6">
+          <nav aria-label="Footer links" className="grid grid-cols-3 gap-x-6">
             <div className="flex flex-col space-y-2">
-              <HoverWrapper><a href="#">Home</a></HoverWrapper>
-              <HoverWrapper><a href="#">Testimonials</a></HoverWrapper>
-              <HoverWrapper><a href="#">Destinations</a></HoverWrapper>
-              <HoverWrapper><a href="#">Sign In</a></HoverWrapper>
+              <Hover><a href="#">Home</a></Hover>
+              <Hover><a href="#">Testimonials</a></Hover>
+              <Hover><a href="#">Destinations</a></Hover>
+              <Hover><a href="#">Sign In</a></Hover>
             </div>
             <div className="flex flex-col space-y-2">
-              <HoverWrapper><a href="#">About Us</a></HoverWrapper>
-              <HoverWrapper><a href="#">Packages</a></HoverWrapper>
-              <HoverWrapper><a href="#">Events</a></HoverWrapper>
-              <HoverWrapper><a href="#">Gallery</a></HoverWrapper>
+              <Hover><a href="#">About Us</a></Hover>
+              <Hover><a href="#">Packages</a></Hover>
+              <Hover><a href="#">Events</a></Hover>
+              <Hover><a href="#">Gallery</a></Hover>
             </div>
             <div className="flex flex-col space-y-2">
-              <HoverWrapper><a href="#">Our Team</a></HoverWrapper>
-              <HoverWrapper><a href="#">Blog</a></HoverWrapper>
-              <HoverWrapper><a href="#">Contact Us</a></HoverWrapper>
+              <Hover><a href="#">Our Team</a></Hover>
+              <Hover><a href="#">Blog</a></Hover>
+              <Hover><a href="#">Contact Us</a></Hover>
             </div>
-          </div>
+          </nav>
         </div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="text-center text-xs mt-10 text-footer-text">
+      <div className="text-center text-xs mt-10">
         Copyright HiMambo 2025
       </div>
     </footer>
