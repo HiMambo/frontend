@@ -1,5 +1,5 @@
 import { Loader2 } from "lucide-react";
-import ExperienceCard from "@/components/ExperienceCard";
+import ExperienceCard from "@/components/shared/ExperienceCard";
 import { Experience } from "@/types/experience";
 
 interface ExperienceListProps {

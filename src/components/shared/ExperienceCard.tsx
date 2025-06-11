@@ -10,7 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Star, StarOff } from "./shared/IconComponents";
+import { Star, StarOff } from "./IconComponents";
 
 interface ExperienceCardProps {
   id: number;
