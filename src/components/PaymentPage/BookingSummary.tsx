@@ -4,7 +4,7 @@ import React, { useEffect, useMemo } from "react";
 import { useCart } from "@/context/Cart";
 
 const BookingSummary: React.FC = () => {
-  const { experience, number_of_people, payment_type } = useCart(); // Get the experience from the Cart context
+  const { experience, number_of_people, payment_type, discount } = useCart(); // Get the experience from the Cart context
 
   // Component mount and data check
   useEffect(() => {
@@ -31,11 +31,12 @@ const BookingSummary: React.FC = () => {
 
   // Calculate total price based on basePrice
   const totalPrice = useMemo(() => {
-    const multiplierCrypto = payment_type === "crypto" ? 0.9 : 1.0; // Apply discount for crypto
+    const multiplierCrypto = (100 - discount) / 100; // Convert discount percentage to multiplier
     const calculated = basePrice * number_of_people * multiplierCrypto;
+    console.log("Total discount:", discount);
     console.log("Total price updated:", calculated);
     return calculated;
-  }, [basePrice, number_of_people, payment_type]);
+  }, [basePrice, number_of_people, payment_type, discount]);
 
   if (!experience) {
     console.warn("No experience data available.");
@@ -104,7 +105,7 @@ const BookingSummary: React.FC = () => {
           <hr className="my-2" />
           <div className="flex justify-between text-lg font-bold text-brand-orange">
             <span>TOTAL CHARGE</span>
-            <span>US$ {totalPrice.toFixed(2) || "0.00"}</span>
+            <span>US$ {totalPrice.toFixed(3) || "0.00"}</span>
           </div>
         </div>
       </div>

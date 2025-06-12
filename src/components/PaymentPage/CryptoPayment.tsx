@@ -48,8 +48,14 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
     if (!price) return 0;
 
     // Total price 
+    console.log('Total discount:', discount); // Debugging: Log the total price
     const discountMultiplier = (100 - discount) / 100; // Convert discount percentage to multiplier
-    return price * discountMultiplier * number_of_people ;
+    const totalPrice = price * number_of_people * discountMultiplier; // Apply discount and pax
+
+    // Round to `n` decimals and keep it as a number
+    const n = 2; // Number of decimal places
+    const multiplier = Math.pow(10, n); // Calculate 10^n
+    return Math.round(totalPrice * multiplier) / multiplier;
   };
   
   // * Starting the payment session * // 

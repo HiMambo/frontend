@@ -43,7 +43,7 @@ export const Cart = ({ children }: { children: ReactNode }) => {
   const [price, setPrice] = useState<number | null>(null);
   const [experienceId, setExperienceId] = useState<number | null>(null);
   const [experience, setExperience] = useState<Experience | null>(null);
-  const [discount, setDiscount] = useState<number>(0); // Default discount is 0
+  const [discount, setDiscount] = useState<number>(10); // Default discount is 10
   const [number_of_people, setPax] = useState<number>(1);
   const [booking_date, setBookingDate] = useState<Date>(new Date());
   const [payment_type, setPaymentType] = useState<'crypto' | 'credit'>('crypto');

@@ -6,6 +6,9 @@ import { CryptoIcon } from '@/components/shared/IconComponents';;
 import { Button } from "@/components/ui/button";
 import { CreditCardForm } from "./CreditCardForm";
 import CenteredCard from "./CenteredCard"
+
+import { useCart } from "@/context/Cart";
+
 export function PaymentForm({
   disabled,
   method,
@@ -17,6 +20,21 @@ export function PaymentForm({
   onMethodChange: (m: 'credit' | 'crypto') => void;
   onComplete: () => void; 
 }) {
+
+  const { setPaymentType, setDiscount } = useCart(); // Access Cart context functions
+
+  const handleMethodChange = (m: 'credit' | 'crypto') => {
+    onMethodChange(m); // Update the local state in the parent component
+    setPaymentType(m); // Update the payment method in the cart context
+
+    // Update the discount based on the selected payment method
+    if (m === 'crypto') {
+      setDiscount(10); // Apply a 10% discount for crypto
+      console.log("Payment method changed to crypto, applying 10% discount");
+    } else {
+      setDiscount(0); // No discount for credit card
+    }
+  };
 
   return (
     <div style={{ opacity: disabled ? 0.5 : 1 }}>
@@ -32,7 +50,7 @@ export function PaymentForm({
               <Button
                 className="h-12 px-6 text-base relative"
                 variant={method === 'credit' ? 'default' : 'outline'}
-                onClick={() => onMethodChange('credit')}
+                onClick={() => handleMethodChange('credit')}
               >
                 <CreditCardIcon className="mr-2 size-8" />
                 Credit card
@@ -40,7 +58,7 @@ export function PaymentForm({
               <Button
                 className="h-12 px-6 text-base relative"
                 variant={method === 'crypto' ? 'default' : 'outline'}
-                onClick={() => onMethodChange('crypto')}
+                onClick={() => handleMethodChange('crypto')}
               >
                 <div className="flex items-center gap-2">
                   <CryptoIcon className="size-9 mr-2" />
