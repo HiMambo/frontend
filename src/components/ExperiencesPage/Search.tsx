@@ -1,7 +1,6 @@
 "use client";
 
 import { useFilter } from "@/context/FilterContext";
-import Image from "next/image";
 import { SearchIcon } from "../shared/IconComponents";
 
 const SearchInput = () => {

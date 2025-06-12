@@ -189,14 +189,20 @@ export default function MamboWallet() {
     "This Year": { totalValue: 0.0, totalExperiences: 0, converted: 0 },
     "Forever View": { totalValue: 0.0, totalExperiences: 0, converted: 0 },
   });
-  setIsClient(false);
+  
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   useEffect(() => {
     const fetchPaymentData = async () => {
       try {
+        console.log("Fetching payment data...");
         setLoading(true);
         const partnerId = 11;
         const data = await fetchTotalPaymentPartnerById(partnerId);
 
+        console.log("Fetched payment data:", data);
         const dataDisplay = {
           "This Month": {
             totalValue: data.total_payments_USDC,
@@ -256,7 +262,10 @@ export default function MamboWallet() {
       }
     };
 
+    console.log("Fetching payment data ...");
     fetchPaymentData();
+    
+    console.log("Fetching transactions data...");
     fetchTransactions();
   }, []);
 
