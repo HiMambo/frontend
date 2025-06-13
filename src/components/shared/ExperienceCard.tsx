@@ -87,6 +87,82 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     router.push(`/experience/${id}`);
   };
 
+  // Shared components
+  const StarRating: React.FC<{ rating: number; size: number }> = ({ 
+    rating, 
+    size
+  }) => (
+    <div className="flex items-center space-x-1">
+      {Array.from({ length: 5 }, (_, index) =>
+        index < rating ? (
+          <Star key={index} className={`w-${size} h-${size}`} />
+        ) : (
+          <StarOff key={index} className={`w-${size} h-${size}`} />
+        )
+      )}
+    </div>
+  );
+
+  const SDGIcons: React.FC<{ 
+    goals: string[]; 
+    maxDisplay: number; 
+    iconSize: number 
+  }> = ({ 
+    goals, 
+    maxDisplay, 
+    iconSize 
+  }) => {
+    if (!goals.length) return null;
+
+    return (
+      <div className="flex items-center gap-[2px]">
+        {goals.slice(0, maxDisplay).map((goal, index) => {
+          const imagePath = `/assets/sdg/E-WEB-Goal-${goal.padStart(2, "0")}.png`;
+          return (
+            <Image
+              key={index}
+              src={imagePath}
+              alt={`SDG ${goal}`}
+              width={iconSize}
+              height={iconSize}
+              className="rounded"
+            />
+          );
+        })}
+        {goals.length > maxDisplay && (
+          <span className="text-sm text-gray-500 font-medium px-1">
+            +{goals.length - maxDisplay}
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  const ActionButton: React.FC<{
+    icon: string;
+    alt: string;
+    tooltip: string;
+    onClick: (e: React.MouseEvent) => void;
+    size: number;
+    className?: string;
+  }> = ({ 
+    icon, 
+    alt, 
+    tooltip, 
+    onClick, 
+    size, 
+    className = "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors cursor-pointer" 
+  }) => (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div className={className} onClick={onClick}>
+          <Image src={icon} alt={alt} width={size} height={size} />
+        </div>
+      </TooltipTrigger>
+      <TooltipContent>{tooltip}</TooltipContent>
+    </Tooltip>
+  );
+
   if (view === "grid") {
     return (
       <TooltipProvider>
@@ -96,31 +172,17 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
         >
           {/* Favorite Icon */}
           <div className="absolute top-2 right-2 z-10">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleFavoriteClick();
-                  }}
-                  className="w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center"
-                >
-                  <Image
-                    src={
-                      isFavorited
-                        ? "/assets/HeartFilled.svg"
-                        : "/assets/Heart.svg"
-                    }
-                    alt="Favorite"
-                    width={20}
-                    height={20}
-                  />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                {isFavorited ? "Remove from favorites" : "Add to favorites"}
-              </TooltipContent>
-            </Tooltip>
+          <ActionButton
+            icon={isFavorited ? "/assets/HeartFilled.svg" : "/assets/Heart.svg"}
+            alt="Favorite"
+            tooltip={isFavorited ? "Remove from favorites" : "Add to favorites"}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFavoriteClick();
+            }}
+            className="w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center transition-colors cursor-pointer"
+            size={20}
+          />
           </div>
 
           {/* Image */}
@@ -137,70 +199,35 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           {/* Content */}
           <div className="p-4 flex flex-col justify-between flex-grow bg-white">
             <div>
-              <h3 className="font-semibold text-lg text-gray-800">{title}</h3>
-              <p className="text-sm text-gray-500 mt-1">{location}</p>
-              <div className="flex items-center space-x-1 text-yellow-400 mt-2">
-                {Array.from({ length: 5 }, (_, index) =>
-                  index < safeRating ? (
-                    <Star key={index} className="w-4 h-4" />
-                  ) : (
-                    <StarOff key={index} className="w-4 h-4" />
-                  )
-                )}
+              <div className="min-h-[4.5rem]">
+                <h3 className="font-semibold text-lg text-gray-800 leading-tight">{title}</h3>
+                <p className="text-sm text-gray-500 mt-1">{location}</p>
+              </div>
+              <div className="mt-2">
+                <StarRating rating={safeRating} size={4} />
               </div>
             </div>
 
             <div className="flex justify-between items-center mt-2">
               {/* Price + Cart */}
               <div className="flex items-center gap-2">
-                <span className="text-xl font-bold text-black">${price.toFixed(2)}</span>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCartClick();
-                      }}
-                      className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
-                    >
-                      <Image
-                        src="/assets/shopping.svg"
-                        alt="Cart"
-                        width={25}
-                        height={25}
-                      />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>Checkout</TooltipContent>
-                </Tooltip>
+                <span className="text-xl font-bold text-black">
+                  $ {price.toFixed(2)}
+                </span>
+                <ActionButton
+                  icon="/assets/shopping.svg"
+                  alt="Cart"
+                  tooltip="Checkout"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCartClick();
+                  }}
+                  size={25}
+                />
               </div>
 
               {/* SDGs */}
-              <div className="flex items-center gap-[2px]">
-                {sustainabilityGoal.length > 0 && (
-                  <>
-                    {sustainabilityGoal.slice(0, 3).map((goal, index) => {
-                      const imagePath = `/assets/sdg/E-WEB-Goal-${goal.padStart(2, "0")}.png`;
-                      return (
-                        <Image
-                          key={index}
-                          src={imagePath}
-                          alt={`SDG ${goal}`}
-                          width={30}
-                          height={30}
-                          className="rounded"
-                        />
-                      );
-                    })}
-                    {sustainabilityGoal.length > 3 && (
-                      <span className="text-xs text-gray-500 font-medium">
-                        +{sustainabilityGoal.length - 3}
-                      </span>
-                    )}
-                  </>
-                )}
-              </div>
+              <SDGIcons goals={sustainabilityGoal} iconSize={30} maxDisplay={3} />
             </div>
 
           </div>
@@ -213,7 +240,8 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   return (
     <TooltipProvider>
       <div 
-      className="rounded-lg shadow-lg transition-transform transform hover:scale-[1.02] hover:shadow-xl overflow-hidden flex flex-col sm:flex-row border-t-indigo-50"
+      className="rounded-lg shadow-lg transition-transform transform hover:scale-[1.02] hover:shadow-xl cursor-pointer overflow-hidden flex flex-col sm:flex-row border-t-indigo-50"
+      onClick={handleCartClick}
       >
         {/* Image */}
         <div className="w-full sm:w-1/3 relative min-h-[200px]">
@@ -238,16 +266,8 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
             </div>
 
             {/* Rating */}
-            <div className="flex pt-3 sm:pt-0 sm:pl-4 space-x-1 text-yellow-400">
-              {Array.from({ length: 5 }, (_, index) => (
-                <span key={index}>
-                  {index < safeRating ? (
-                    <Star className="w-5 h-5" />
-                  ) : (
-                    <StarOff className="w-5 h-5" />
-                  )}
-                </span>
-              ))}
+            <div className="pt-3 sm:pt-0 sm:pl-4">
+              <StarRating rating={safeRating} size={5} />
             </div>
           </div>
 
@@ -267,85 +287,41 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           <div className="flex flex-col sm:flex-row justify-between gap-4 mt-4">
             {/* Action Buttons */}
             <div className="flex items-center gap-2 flex-wrap">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors cursor-pointer">
-                    <Image
-                      src="/assets/shopping.svg"
-                      alt="Add to cart"
-                      width={25}
-                      height={25}
-                      onClick={handleCartClick}
-                    />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>Proceed to checkout</TooltipContent>
-              </Tooltip>
-
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors cursor-pointer">
-                    <Image
-                      src={
-                        isFavorited
-                          ? "/assets/HeartFilled.svg"
-                          : "/assets/Heart.svg"
-                      }
-                      alt="Like"
-                      width={20}
-                      height={20}
-                      onClick={handleFavoriteClick}
-                    />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  {isFavorited ? "Remove from favorites" : "Add to favorites"}
-                </TooltipContent>
-              </Tooltip>
-
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors cursor-pointer">
-                    <Image
-                      src="/assets/Magnifier.svg"
-                      alt="View details"
-                      width={19}
-                      height={19}
-                      onClick={handleMagnifierClick}
-                    />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>View details</TooltipContent>
-              </Tooltip>
+            <ActionButton
+              icon="/assets/shopping.svg"
+              alt="Add to cart"
+              tooltip="Proceed to checkout"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCartClick();
+              }}
+              size={25}
+            />
+            <ActionButton
+              icon={isFavorited ? "/assets/HeartFilled.svg" : "/assets/Heart.svg"}
+              alt="Like"
+              tooltip={isFavorited ? "Remove from favorites" : "Add to favorites"}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFavoriteClick();
+              }}
+              size={20}
+            />
+            <ActionButton
+              icon="/assets/Magnifier.svg"
+              alt="View details"
+              tooltip="View details"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleMagnifierClick();
+              }}
+              size={19}
+            />
             </div>
 
             {/* Sustainability Icons */}
             <div className="flex items-center flex-wrap gap-2">
-              {sustainabilityGoal?.length ? (
-                sustainabilityGoal.map((goal, index) => {
-                  const imagePath = `/assets/sdg/E-WEB-Goal-${goal.padStart(
-                    2,
-                    "0"
-                  )}.png`;
-                  return (
-                    <Image
-                      key={index}
-                      src={imagePath}
-                      alt={`Sustainability Goal ${goal}`}
-                      width={40}
-                      height={40}
-                      className="rounded"
-                    />
-                  );
-                })
-              ) : (
-                <Image
-                  src="/assets/Frame2.png"
-                  alt="SDG"
-                  width={40}
-                  height={40}
-                />
-              )}
+              <SDGIcons goals={sustainabilityGoal} iconSize={40} maxDisplay={5} />
             </div>
           </div>
         </div>
