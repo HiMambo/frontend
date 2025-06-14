@@ -1,5 +1,5 @@
 import { Loader2 } from "lucide-react";
-import ExperienceCard from "@/components/shared/ExperienceCard";
+import ExperienceCard from "@/components/ExperienceCard/ExperienceCard";
 import { Experience } from "@/types/experience";
 
 interface ExperienceListProps {
@@ -31,18 +31,10 @@ export default function ExperienceList({ experiences, loading, error, view }: Ex
           : "flex flex-col gap-6"
       }
     >
-      {experiences.map((exp) => (
+      {experiences.map((experience) => (
         <ExperienceCard
-          key={exp.id}
-          id={exp.id}
-          title={exp.name}
-          price={parseFloat(exp.experience_price)}
-          location={`${exp.experience_city}, ${exp.experience_country}`}
-          image={exp.experience_promo_image}
-          description={exp.experience_description}
-          discount={null}
-          rating={exp.rating_avg}
-          sustainabilityGoal={exp.sustainability_goal}
+          key={experience.id}
+          experience={experience}
           view={view}
         />
       ))}
