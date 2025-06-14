@@ -49,7 +49,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     }
   };
 
-const handleCartClick = (e: React.MouseEvent) => {
+  const handleCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     
     const cartExperience = {
