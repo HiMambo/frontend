@@ -31,6 +31,7 @@ interface FilterSectionProps<T extends string | number> {
   searchPlaceholder?: string;
   dropdownPlaceholder?: string;
   emptyMessage?: string;
+  iconPath?: (val: T) => string | undefined;
 }
 
 export const FilterSection = <T extends string | number>({
@@ -45,6 +46,7 @@ export const FilterSection = <T extends string | number>({
   searchPlaceholder = "Search...",
   dropdownPlaceholder = "Select items...",
   emptyMessage = "No items found.",
+  iconPath,
 }: FilterSectionProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -61,6 +63,21 @@ export const FilterSection = <T extends string | number>({
   const getSelectedLabel = (value: T): string => {
     const option = options.find(opt => getValue(opt) === value);
     return option ? getLabel(option) : String(value);
+  };
+
+  const renderIcon = (value: T, className = "w-5 h-5 object-contain rounded-xs") => {
+    if (!iconPath) return null;
+      const path = iconPath(value);
+    if (!path) return null;
+
+    return (
+      <img
+        src={path}
+        alt=""
+        className={className}
+        aria-hidden="true"
+      />
+    );
   };
 
   // Dropdown rendering
@@ -99,7 +116,10 @@ export const FilterSection = <T extends string | number>({
                   variant="secondary"
                   className="text-xs"
                 >
-                  {displayLabel}
+                <div className="flex items-center gap-1.5 rounded-md">
+                  {renderIcon?.(value, "w-4 h-4 rounded-xs")}
+                  <span>{displayLabel}</span>
+                </div>
                   <button
                     onClick={() => onToggle(value)}
                     disabled={disabled}
@@ -142,7 +162,12 @@ export const FilterSection = <T extends string | number>({
                       key={String(value)}
                       value={label}
                       onSelect={() => onToggle(value)}
-                      className="cursor-pointer"
+                      className={cn(
+                        "cursor-pointer flex items-center gap-2",
+                        selected.includes(value)
+                          ? "bg-gray-100/50"
+                          : ""
+                      )}
                     >
                       <Check
                         className={cn(
@@ -152,7 +177,8 @@ export const FilterSection = <T extends string | number>({
                             : "opacity-0"
                         )}
                       />
-                      {label}
+                      {renderIcon(value)}
+                      <span>{label}</span>
                     </CommandItem>
                   );
                 })}
@@ -175,7 +201,7 @@ export const FilterSection = <T extends string | number>({
 
           return (
             <li key={String(value)}>
-              <label className="flex items-center space-x-2 cursor-pointer select-none">
+              <label className="flex items-center space-x-3 cursor-pointer select-none">
                 <Checkbox
                   id={String(value)}
                   checked={selected.includes(value)}
@@ -183,6 +209,7 @@ export const FilterSection = <T extends string | number>({
                   onCheckedChange={() => !disabled && onToggle(value)}
                   className="filter-checkbox"
                 />
+                {renderIcon(value)}
                 <span className={`text-gray-700 ${disabled ? "opacity-50" : ""}`}>
                   {label}
                 </span>

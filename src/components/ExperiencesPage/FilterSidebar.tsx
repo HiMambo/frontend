@@ -122,6 +122,7 @@ const FilterSidebar: React.FC = () => {
         dropdownPlaceholder="Select SDGs..."
         emptyMessage="No SDG found."
         renderBadgeLabel={(val) => `SDG ${val}`}
+        iconPath={(val) => `/assets/sdg/E-WEB-Goal-${val.padStart(2, "0")}.png`}
       />
     </div>
   );
