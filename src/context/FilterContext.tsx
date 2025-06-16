@@ -95,7 +95,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
         selectedCategories.length === 0 || selectedCategories.includes(exp.experience_country); // Missing backend
 
       const matchesRating =
-        selectedRating.length === 0 || selectedRating.includes(Math.floor(exp.rating_avg)); //Make non integer?
+        selectedRating.length === 0 || exp.rating_avg >= Math.min(...selectedRating);
 
       const matchesDiscount =
         selectedDiscount.length === 0 || selectedDiscount.includes("SomeDiscount"); // Missing logic
