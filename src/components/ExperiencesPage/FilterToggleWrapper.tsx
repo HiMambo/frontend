@@ -24,7 +24,7 @@ const FilterToggleWrapper: React.FC<FilterToggleWrapperProps> = ({ children }) =
             Filters
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="backdrop-blur-md bg-white/90 w-[90vw] sm:w-[400px] overflow-auto p-6">
+        <SheetContent side="left" className="backdrop-blur-md bg-white/90 w-[400px] overflow-auto p-6">
           <SheetTitle className="text-2xl font-bold text-blue-800 mb-1">Filters</SheetTitle>
           <div>
             {children}

@@ -101,7 +101,8 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
         selectedDiscount.length === 0 || selectedDiscount.includes("SomeDiscount"); // Missing logic
 
       const matchesSDG =
-        selectedSDG.length === 0 || selectedSDG.some((sdg) => exp.sustainability_goal.includes(sdg)); // Missing logic
+        selectedSDG.length === 0 ||
+        selectedSDG.every((sdg) => exp.sustainability_goal.includes(sdg));
 
       return matchesSearch && matchesCategory && matchesRating && matchesDiscount && matchesSDG;
     });
