@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
@@ -87,7 +86,7 @@ const handleToggle = (val: T) => {
     if (!path) return null;
 
     return (
-      <Image
+      <img
         src={path}
         alt=""
         className={className}
