@@ -21,14 +21,29 @@ const FilterSidebar: React.FC = () => {
     selectedSDG,
     toggleSDG,
     resetPriceFilter,
-    noPriceSelection
+    noPriceSelection,
+    anyFilterSelected,
+    resetAllFilters
   } = useFilter();
 
   return (
     <div className="text-gray-600 w-full">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-blue-800">Filter by</h2>
+        {anyFilterSelected && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={resetAllFilters}
+            className="text-muted-foreground hover:text-foreground h-auto p-1 text-base"
+          >
+            Clear All Filters
+          </Button>
+        )}
+      </div>
       {/* Categories */}
       <FilterSection
-        title="Categories"
+        title="Category"
         options={[
           "Nature & Wildlife",
           "Cultural Immersion",
@@ -43,7 +58,7 @@ const FilterSidebar: React.FC = () => {
 
       {/* Discount Offer */}
       <FilterSection
-        title="Discount Offer"
+        title="Discount"
         options={["20% Cashback", "5% Cashback Offer", "25% Discount Offer"]}
         selected={selectedDiscount}
         onToggle={toggleDiscount}
@@ -51,11 +66,12 @@ const FilterSidebar: React.FC = () => {
 
       {/* Rating */}
       <FilterSection
-        title="Rating Item"
-        options={[5, 4, 3, 2]}
+        title="Rating"
+        options={[5, 4, 3]}
         selected={selectedRating}
         onToggle={toggleRating}
-        renderLabel={(val) => `${val} Stars`}
+        renderLabel={(val) => val === 5 ? `${val} Stars` : `${val}+ Stars`}
+        single={true}
       />
 
       {/* Price */}
@@ -95,7 +111,7 @@ const FilterSidebar: React.FC = () => {
 
       {/* Filter By SDG */}
       <FilterSection
-        title="Filter By SDG"
+        title="SDGs"
         options={[
           { value: "1", label: "SDG 1: No Poverty" },
           { value: "2", label: "SDG 2: Zero Hunger" },

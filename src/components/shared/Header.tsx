@@ -66,7 +66,7 @@ export default function Header() {
         {/* Sign Up Button */}
         <Link
           href="/signup"
-          className="bg-primary text-white shadow-lg py-2 px-4 rounded-xs text-center w-25 hover:bg-[#e18533] sm:w-35 text-lg">
+          className="bg-primary text-white shadow-lg py-2 px-4 rounded-md text-center w-25 hover:bg-[#e18533] sm:w-35 text-lg">
           Sign up
         </Link>
       </div>

@@ -28,7 +28,6 @@ function MainContent({ view }: { view: "list" | "grid" }) {
         {/* Sidebar for large screens */}
         <div className="hidden lg:block lg:col-span-1">
           <div className="bg-white p-6 text-gray-600 rounded-lg shadow-md w-full">
-            <h2 className="text-2xl font-bold text-blue-800 mb-6">Filters</h2>
             <FilterSidebar />
           </div>
         </div>

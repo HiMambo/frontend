@@ -28,6 +28,9 @@ interface FilterContextType {
 
   resetPriceFilter: () => void;
   noPriceSelection: boolean;
+
+  anyFilterSelected: boolean;
+  resetAllFilters: () => void;
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -149,6 +152,22 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
     });
   }, [nonPriceFilteredExperiences, selectedPrice]);
 
+  const anyFilterSelected = (
+    selectedCategories.length > 0 ||
+    selectedRating.length > 0 ||
+    selectedDiscount.length > 0 ||
+    selectedSDG.length > 0 ||
+    !noPriceSelection
+  );
+
+  const resetAllFilters = () => {
+    setSelectedCategories([]);
+    setSelectedRating([]);
+    setSelectedDiscount([]);
+    setSelectedSDG([]);
+    resetPriceFilter();
+  };
+
   return (
     <FilterContext.Provider
       value={{
@@ -168,7 +187,9 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
         filteredExperiences,
         availablePriceRange,
         resetPriceFilter,
-        noPriceSelection
+        noPriceSelection,
+        anyFilterSelected,
+        resetAllFilters
       }}
     >
       {children}

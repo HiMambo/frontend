@@ -56,7 +56,7 @@ export default function Footer({ variant = "default" }: FooterProps) {
               If you have any questions or would like to book a tour with us, please don’t hesitate to contact us.
             </p>
             <p className="flex mt-2 text-sm">
-              Email:<Hover><a href="mailto:info@himambo.com" className="ml-1">info@himambo.com</a></Hover>
+              Email:<Hover><a href="mailto:info@himambo.com" className="ml-1">contact@himambo.com</a></Hover>
             </p>
           </div>
 

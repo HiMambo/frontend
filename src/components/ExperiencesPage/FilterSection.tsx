@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
@@ -32,6 +33,7 @@ interface FilterSectionProps<T extends string | number> {
   dropdownPlaceholder?: string;
   emptyMessage?: string;
   iconPath?: (val: T) => string | undefined;
+  single?: boolean;
 }
 
 export const FilterSection = <T extends string | number>({
@@ -47,8 +49,22 @@ export const FilterSection = <T extends string | number>({
   dropdownPlaceholder = "Select items...",
   emptyMessage = "No items found.",
   iconPath,
+  single = false,
 }: FilterSectionProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
+
+const handleToggle = (val: T) => {
+  if (single && !dropdown) {
+    if (selected.includes(val)) {
+      onToggle(val);
+    } else {
+      selected.forEach((s) => onToggle(s));
+      onToggle(val);
+    }
+  } else {
+    onToggle(val);
+  }
+};
 
   const getValue = (opt: Option<T>): T =>
     typeof opt === "object" ? opt.value : opt;
@@ -71,7 +87,7 @@ export const FilterSection = <T extends string | number>({
     if (!path) return null;
 
     return (
-      <img
+      <Image
         src={path}
         alt=""
         className={className}
@@ -94,7 +110,7 @@ export const FilterSection = <T extends string | number>({
               className="text-muted-foreground hover:text-foreground h-auto p-1"
               disabled={disabled}
             >
-              Clear All
+              Clear Selection
             </Button>
           )}
         </div>
@@ -121,7 +137,7 @@ export const FilterSection = <T extends string | number>({
                   <span>{displayLabel}</span>
                 </div>
                   <button
-                    onClick={() => onToggle(value)}
+                    onClick={() => handleToggle(value)}
                     disabled={disabled}
                     className="ml-1 hover:bg-secondary-foreground/20 rounded-full p-0.5 disabled:opacity-50"
                   >
@@ -161,7 +177,7 @@ export const FilterSection = <T extends string | number>({
                     <CommandItem
                       key={String(value)}
                       value={label}
-                      onSelect={() => onToggle(value)}
+                      onSelect={() => handleToggle(value)}
                       className={cn(
                         "cursor-pointer flex items-center gap-2",
                         selected.includes(value)
@@ -193,7 +209,20 @@ export const FilterSection = <T extends string | number>({
   // Default checkbox rendering
   return (
     <div className="mb-6">
-      <h3 className="font-semibold text-lg text-blue-800 mb-2">{title}</h3>
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="font-semibold text-lg text-blue-800 mb-2">{title}</h3>
+          {(selected.length > 0 && !single) && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearAll}
+              className="text-muted-foreground hover:text-foreground h-auto p-1"
+              disabled={disabled}
+            >
+              Clear Selection
+            </Button>
+          )}
+      </div>
       <ul className="space-y-2">
         {options.map((option) => {
           const value = getValue(option);
@@ -206,7 +235,7 @@ export const FilterSection = <T extends string | number>({
                   id={String(value)}
                   checked={selected.includes(value)}
                   disabled={disabled}
-                  onCheckedChange={() => !disabled && onToggle(value)}
+                  onCheckedChange={() => !disabled && handleToggle(value)}
                   className="filter-checkbox"
                 />
                 {renderIcon(value)}
