@@ -44,18 +44,21 @@ export function CustomSelect({
         {options.map((option) => {
             const isSelected = value === option
             return (
-            <button
+              <button
                 key={option}
                 onClick={() => {
                 setValue(option)
                 setIsOpen(false)
                 }}
-                className={`w-full flex items-center justify-between px-3 py-2 text-left hover:bg-gray-100 ${
-                isSelected ? "bg-gray-100/70 font-medium" : ""
+                className={`w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-gray-100/80 ${
+                isSelected ? "bg-gray-100/50 font-medium" : ""
                 }`}
-            >
-                <span>{formatLabel(option)}</span>
-                {isSelected && <Check className="h-4 w-4 text-black ml-2" />}
+              >
+              <Check className={`text-primary h-4 w-4 text-black ml-2" ${
+                isSelected ? "opacity:100" : "opacity-0"
+                }`}
+              />
+              <span>{formatLabel(option)}</span>
             </button>
             )
         })}
