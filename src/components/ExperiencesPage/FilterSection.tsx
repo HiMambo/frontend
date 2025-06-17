@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
@@ -80,14 +81,16 @@ const handleToggle = (val: T) => {
     return option ? getLabel(option) : String(value);
   };
 
-  const renderIcon = (value: T, className = "w-5 h-5 object-contain rounded-xs") => {
+  const renderIcon = (value: T, size: number, className = "object-contain rounded-xs") => {
     if (!iconPath) return null;
       const path = iconPath(value);
     if (!path) return null;
 
     return (
-      <img
+      <Image
         src={path}
+        width={size}
+        height={size}
         alt=""
         className={className}
         aria-hidden="true"
@@ -132,7 +135,7 @@ const handleToggle = (val: T) => {
                   className="text-xs"
                 >
                 <div className="flex items-center gap-1.5 rounded-md">
-                  {renderIcon?.(value, "w-4 h-4 rounded-xs")}
+                  {renderIcon?.(value, 16)}
                   <span>{displayLabel}</span>
                 </div>
                   <button
@@ -192,7 +195,7 @@ const handleToggle = (val: T) => {
                             : "opacity-0"
                         )}
                       />
-                      {renderIcon(value)}
+                      {renderIcon(value, 20)}
                       <span>{label}</span>
                     </CommandItem>
                   );
@@ -237,7 +240,7 @@ const handleToggle = (val: T) => {
                   onCheckedChange={() => !disabled && handleToggle(value)}
                   className="filter-checkbox"
                 />
-                {renderIcon(value)}
+                {renderIcon(value, 20)}
                 <span className={`text-gray-700 ${disabled ? "opacity-50" : ""}`}>
                   {label}
                 </span>
