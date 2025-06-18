@@ -23,15 +23,15 @@ export const ListLayout: React.FC<SharedExperienceCardProps> = ({
     sustainability_goal = [],
   } = experience;
 
-    return (
+  return (
     <div 
-      className="rounded-lg shadow-lg transition-transform transform hover:scale-[1.02] hover:shadow-xl cursor-pointer overflow-hidden flex flex-col sm:flex-row border-t-indigo-50"
+      className="h-[260px] p-4 rounded-lg shadow-lg transition-transform transform hover:scale-[1.02] hover:shadow-xl cursor-pointer overflow-hidden flex flex-col sm:flex-row border-t-indigo-50"
       onClick={onCartClick}
     >
       {/* Image */}
-      <div className="w-full sm:w-1/3 relative min-h-[200px]">
+      <div className="relative w-[340px] h-[230px]">
         <Image
-          className="p-4"
+          className="rounded"
           src={experience_promo_image}
           alt={name}
           layout="fill"
@@ -40,59 +40,60 @@ export const ListLayout: React.FC<SharedExperienceCardProps> = ({
       </div>
 
       {/* Content */}
-      <div className="p-4 flex flex-col justify-between w-full sm:w-2/3">
-        <div className="flex flex-col sm:flex-row sm:justify-between">
-          <div className="pt-3 sm:pt-0">
-            <h3 className="mb-2 text-lg sm:text-xl font-bold text-gray-800">
-              {name}
-            </h3>
+      <div className="flex flex-col pl-4 pt-1 w-full sm:w-2/3 h-full">
+        {/* Header: Title, Location, Rating */}
+        <div className="flex flex-col sm:flex-row justify-between">
+          <div>
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800">{name}</h3>
             <p className="text-sm text-gray-600">{experience_city}, {experience_country}</p>
-            <p className="text-gray-500 text-sm mt-2">{experience_description}</p>
           </div>
-
           {/* Rating */}
-          <div className="pt-3 sm:pt-0 sm:pl-4">
+          <div className="pt-1 pl-3">
             <StarRating rating={rating_avg} size={5} />
           </div>
         </div>
 
-        {/* Price */}
-        <div className="flex items-center justify-between mt-4">
-          <p className="text-lg font-semibold">
-            $ {getPrice().toFixed(2)}
-          </p>
-        </div>
+        {/* Description (flex-grow, truncate if needed) */}
+        <p className="text-gray-500 text-sm mt-5 overflow-hidden text-ellipsis line-clamp-3 pb-2">
+          {experience_description}
+        </p>
 
-        {/* Icons & Tags */}
-        <div className="flex flex-col sm:flex-row justify-between gap-4 mt-4">
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <ActionButton
-              icon="/assets/shopping.svg"
-              alt="Add to cart"
-              tooltip="Proceed to checkout"
-              onClick={onCartClick}
-              size={25}
-            />
-            <ActionButton
-              icon={isFavorited ? "/assets/HeartFilled.svg" : "/assets/Heart.svg"}
-              alt="Like"
-              tooltip={isFavorited ? "Remove from favorites" : "Add to favorites"}
-              onClick={onFavoriteClick}
-              size={20}
-            />
-            <ActionButton
-              icon="/assets/Magnifier.svg"
-              alt="View details"
-              tooltip="View details"
-              onClick={onDetailsClick}
-              size={19}
-            />
+        {/* Bottom section */}
+        <div className="mt-auto">
+          {/* Price */}
+          <div className="flex items-center justify-between">
+            <p className="text-lg font-semibold">$ {getPrice().toFixed(2)}</p>
           </div>
 
-          {/* Sustainability Icons */}
-          <div className="flex items-center flex-wrap gap-2">
-            <SDGIcons goals={sustainability_goal} iconSize={40} maxDisplay={5} />
+          {/* Action Buttons & SDG Icons */}
+          <div className="flex flex-col sm:flex-row justify-between gap-4 mt-3">
+            <div className="flex items-center gap-2 flex-wrap">
+              <ActionButton
+                icon="/assets/shopping.svg"
+                alt="Add to cart"
+                tooltip="Proceed to checkout"
+                onClick={onCartClick}
+                size={25}
+              />
+              <ActionButton
+                icon={isFavorited ? "/assets/HeartFilled.svg" : "/assets/Heart.svg"}
+                alt="Like"
+                tooltip={isFavorited ? "Remove from favorites" : "Add to favorites"}
+                onClick={onFavoriteClick}
+                size={20}
+              />
+              <ActionButton
+                icon="/assets/Magnifier.svg"
+                alt="View details"
+                tooltip="View details"
+                onClick={onDetailsClick}
+                size={19}
+              />
+            </div>
+
+            <div className="flex items-center flex-wrap gap-2">
+              <SDGIcons goals={sustainability_goal} iconSize={40} maxDisplay={5} />
+            </div>
           </div>
         </div>
       </div>

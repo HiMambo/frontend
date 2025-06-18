@@ -38,7 +38,7 @@ export const HomeLayout: React.FC<SharedExperienceCardProps> = ({
       <div className="flex flex-col gap-1">
         <h3 className="font-bold text-xl text-gray-900">{name}</h3>
         <p className="text-sm text-gray-600">{experience_city}, {experience_country}</p>
-        <p className="text-sm text-gray-500 mt-1">{experience_description}</p>
+        <p className="text-sm text-gray-500 mt-5">{experience_description}</p>
       </div>
 
       {/* SDGs */}  
