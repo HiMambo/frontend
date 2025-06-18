@@ -4,19 +4,12 @@ import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
 import Image from "next/image";
 import SearchBox from "@/components/HomePage/SearchBox";
-import ExperienceCard from "@/components/ExperienceCard/ExperienceCard";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { FeaturedExperiencesCarousel } from "@/components/HomePage/FeaturedExperiencesCarousel";
 import { useExperiences } from "@/hooks/useExperiences";
 
 export default function Home(){
   
-  const { experiences } = useExperiences(); //Placeholder until we can fetch featured experiences.
+  const { experiences, loading, error } = useExperiences(); //Placeholder until we can fetch featured experiences.
 
   return (
     <>
@@ -46,27 +39,11 @@ export default function Home(){
             <p className="text-4xl font-semibold text-black mt-3 tracking-wider">Select the best experience for you!</p>
           </div>
 
-          <Carousel
-            opts={{
-              align: "start",
-            }}
-            className="w-full max-w-6xl"
-          >
-            <CarouselContent>
-              {experiences.map((experience) => (
-                <CarouselItem
-                  key={experience.id}
-                  className="pl-5 md:basis-1/2 lg:basis-1/3 max-w-xs sm:max-w-sm mx-auto"
-                >
-                  <ExperienceCard experience={experience} view={"home"} />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-
-            {/* Navigation Buttons */}
-            <CarouselPrevious className="left-2 xl:left-[-45px] z-10" />
-            <CarouselNext className="right-2 xl:right-[-45px] z-10" />
-          </Carousel>
+          <FeaturedExperiencesCarousel
+            experiences={experiences}
+            loading={loading}
+            error={error}
+          />
         </section>
       </main>
       <Footer variant="home" />

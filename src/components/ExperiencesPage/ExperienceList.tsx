@@ -1,6 +1,7 @@
-import { Loader2 } from "lucide-react";
 import ExperienceCard from "@/components/ExperienceCard/ExperienceCard";
 import { Experience } from "@/types/experience";
+import { SkeletonCard } from "../shared/SkeletonCard";
+import { AlertCircle } from "lucide-react";
 
 interface ExperienceListProps {
   experiences: Experience[];
@@ -10,33 +11,34 @@ interface ExperienceListProps {
 }
 
 export default function ExperienceList({ experiences, loading, error, view }: ExperienceListProps) {
+  const layoutClass =
+    view === "grid"
+      ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+      : "flex flex-col gap-6";
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center text-gray-500 py-8 gap-2">
-        <Loader2 className="h-5 w-5 animate-spin text-gray-500" />
-        <span>Loading experiences...</span>
+      <div className={layoutClass}>
+        {Array.from({ length: 6 }).map((_, index) => (
+          <SkeletonCard key={index} index={index} view={view} />
+        ))}
       </div>
     );
   }
 
   if (error) {
-    return <div className="text-red-500 text-center">{error}</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20 space-y-4">
+        <AlertCircle className="w-12 h-12 text-red-500" />
+        <h2 className="text-lg font-semibold text-gray-800">{error}</h2>
+      </div>
+    );
   }
 
   return (
-    <div
-      className={
-        view === "grid"
-          ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
-          : "flex flex-col gap-6"
-      }
-    >
+    <div className={layoutClass}>
       {experiences.map((experience) => (
-        <ExperienceCard
-          key={experience.id}
-          experience={experience}
-          view={view}
-        />
+        <ExperienceCard key={experience.id} experience={experience} view={view} />
       ))}
     </div>
   );
