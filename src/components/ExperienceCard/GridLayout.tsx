@@ -78,7 +78,7 @@ export const GridLayout: React.FC<SharedExperienceCardProps> = ({
           </div>
 
           {/* SDGs */}
-          <SDGIcons goals={sustainability_goal} iconSize={30} maxDisplay={3} />
+          <SDGIcons goals={sustainability_goal} iconSize={30} maxDisplay={2} />
         </div>
       </div>
     </div>
