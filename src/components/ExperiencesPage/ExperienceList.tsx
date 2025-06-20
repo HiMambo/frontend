@@ -1,7 +1,7 @@
 import ExperienceCard from "@/components/ExperienceCard/ExperienceCard";
 import { Experience } from "@/types/experience";
 import { SkeletonCard } from "../shared/SkeletonCard";
-import { AlertCircle } from "lucide-react";
+import ErrorMessage from "../shared/ErrorMessage";
 
 interface ExperienceListProps {
   experiences: Experience[];
@@ -27,12 +27,7 @@ export default function ExperienceList({ experiences, loading, error, view }: Ex
   }
 
   if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 space-y-4">
-        <AlertCircle className="w-12 h-12 text-red-500" />
-        <h2 className="text-lg font-semibold text-gray-800">{error}</h2>
-      </div>
-    );
+    return <ErrorMessage message={error} />;
   }
 
   return (

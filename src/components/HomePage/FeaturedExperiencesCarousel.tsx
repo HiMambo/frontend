@@ -10,7 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { AlertCircle } from "lucide-react";
+import ErrorMessage from "../shared/ErrorMessage";
 import { Experience } from "@/types/experience";
 
 interface FeaturedExperiencesCarouselProps {
@@ -27,12 +27,7 @@ export const FeaturedExperiencesCarousel: React.FC<FeaturedExperiencesCarouselPr
   const view = "home"
 
   if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 space-y-4">
-        <AlertCircle className="w-12 h-12 text-red-500" />
-        <h3 className="text-lg font-semibold text-gray-800">{error}</h3>
-      </div>
-    );
+    return <ErrorMessage message={error} />;
   }
 
   return (
