@@ -58,7 +58,7 @@ export const GridLayout: React.FC<SharedExperienceCardProps> = ({
             <p className="text-sm text-gray-500 mt-1">{experience_city}, {experience_country}</p>
           </div>
           <div className="mt-2">
-            <StarRating rating={rating_avg} size={4} />
+            <StarRating rating={rating_avg} size={4} showValue={false}/>
           </div>
         </div>
 
