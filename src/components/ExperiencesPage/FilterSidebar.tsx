@@ -54,6 +54,7 @@ const FilterSidebar: React.FC = () => {
         ]}
         selected={selectedCategories}
         onToggle={toggleCategory}
+        disabled
       />
 
       {/* Discount Offer */}
@@ -62,6 +63,7 @@ const FilterSidebar: React.FC = () => {
         options={["20% Cashback", "5% Cashback Offer", "25% Discount Offer"]}
         selected={selectedDiscount}
         onToggle={toggleDiscount}
+        disabled
       />
 
       {/* Rating */}
