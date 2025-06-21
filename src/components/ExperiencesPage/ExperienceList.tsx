@@ -1,16 +1,27 @@
 import ExperienceCard from "@/components/ExperienceCard/ExperienceCard";
 import { Experience } from "@/types/experience";
 import { SkeletonCard } from "../shared/SkeletonCard";
+import { useFilter } from "@/context/FilterContext";
+import { Button } from "../ui/button";
 import ErrorMessage from "../shared/ErrorMessage";
 
 interface ExperienceListProps {
   experiences: Experience[];
   loading: boolean;
   error: string | null;
+  noResultsForGivenFilters: boolean;
   view: "grid" | "list";
 }
 
-export default function ExperienceList({ experiences, loading, error, view }: ExperienceListProps) {
+export default function ExperienceList({ 
+  experiences,
+  loading,
+  error,
+  noResultsForGivenFilters,
+  view 
+}: ExperienceListProps) {
+  const { resetAllFilters } = useFilter()
+
   const layoutClass =
     view === "grid"
       ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
@@ -28,6 +39,22 @@ export default function ExperienceList({ experiences, loading, error, view }: Ex
 
   if (error) {
     return <ErrorMessage message={error} />;
+  }
+
+  if (noResultsForGivenFilters) {
+    return (
+      <div className="text-center text-muted-foreground mt-8">
+        <p className="text-lg font-medium">No experiences match the selected filters.</p>
+        <p className="text-sm mt-1">Try adjusting your search or reset the filters.</p>
+        <Button
+          onClick={resetAllFilters}
+          className="mt-4 px-4 py-2 font-semibold rounded"
+          variant="outline"
+        >
+          Reset All Filters
+        </Button>
+      </div>
+    );
   }
 
   return (

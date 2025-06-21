@@ -1,6 +1,7 @@
 "use client";
 
 import { useExperiences } from "@/hooks/useExperiences";
+import type { Experience } from "@/hooks/useExperiences";
 import { useEffect, useState } from "react";
 import Footer from "@/components/shared/Footer";
 import Header from "@/components/shared/Header";
@@ -13,9 +14,21 @@ import ExperienceList from "@/components/ExperiencesPage/ExperienceList";
 import FilterSidebar from "@/components/ExperiencesPage/FilterSidebar";
 import { FilterProvider, useFilter } from "@/context/FilterContext";
 
-function MainContent({ view }: { view: "list" | "grid" }) {
+function MainContent({
+  experiences,
+  view,
+  loading,
+  error,
+}: {
+  experiences: Experience[]
+  view: "list" | "grid";
+  loading: boolean;
+  error: string | null;
+}) {
   const { filteredExperiences } = useFilter();
-  const { loading, error } = useExperiences();
+
+  const noResultsForGivenFilters =
+    !loading && experiences.length > 0 && filteredExperiences.length === 0;
 
   return (
     <main className="bg-white min-h-screen p-4 sm:p-6 md:p-8 xl:p-12">
@@ -35,10 +48,11 @@ function MainContent({ view }: { view: "list" | "grid" }) {
         {/* Experience list */}
         <div className="lg:col-span-3 flex flex-col gap-8">
           <ExperienceList
+            view={view}
             experiences={filteredExperiences}
             loading={loading}
             error={error}
-            view={view}
+            noResultsForGivenFilters={noResultsForGivenFilters}
           />
         </div>
       </div>
@@ -49,7 +63,7 @@ function MainContent({ view }: { view: "list" | "grid" }) {
 export default function Home() {
   const [view, setView] = useState<"list" | "grid">("list");
   const { setPax, setBookingDate } = useCart();
-  const { experiences } = useExperiences();
+  const { experiences, loading, error } = useExperiences();
 
   useEffect(() => {
     setPax(2);
@@ -63,7 +77,12 @@ export default function Home() {
       <FilterProvider experiences={experiences}>
         <Search />
         <SearchControls view={view} setView={setView} />
-        <MainContent view={view} />
+              <MainContent
+                view={view}
+                experiences={experiences}
+                loading={loading}
+                error={error}
+              />
       </FilterProvider>
       <Footer />
     </>

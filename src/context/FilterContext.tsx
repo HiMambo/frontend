@@ -166,6 +166,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
     setSelectedDiscount([]);
     setSelectedSDG([]);
     resetPriceFilter();
+    setSearchQuery("");
   };
 
   return (

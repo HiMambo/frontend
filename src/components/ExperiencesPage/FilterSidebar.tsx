@@ -80,7 +80,7 @@ const FilterSidebar: React.FC = () => {
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <h3 className="font-semibold text-lg text-blue-800">Price Range</h3>
-            {/* Reset Button, conditionally rendered */}
+            {/* Reset Button */}
             {(!noPriceSelection) && (
               <Button
                 variant="ghost"
