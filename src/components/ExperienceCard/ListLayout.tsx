@@ -69,12 +69,12 @@ export const ListLayout: React.FC<SharedExperienceCardProps> = ({
           <div className="flex flex-col sm:flex-row justify-between gap-4 mt-3">
             <div className="flex items-center gap-2 flex-wrap">
               <ActionButton
-                icon="/assets/shopping.svg"
-                alt="Add to cart"
-                tooltip="Proceed to checkout"
-                onClick={onCartClick}
-                size={25}
-              />
+                icon="/assets/Magnifier.svg"
+                alt="View details"
+                tooltip="View details"
+                onClick={onDetailsClick}
+                size={19}
+              />              
               <ActionButton
                 icon={isFavorited ? "/assets/HeartFilled.svg" : "/assets/Heart.svg"}
                 alt="Like"
@@ -83,11 +83,11 @@ export const ListLayout: React.FC<SharedExperienceCardProps> = ({
                 size={20}
               />
               <ActionButton
-                icon="/assets/Magnifier.svg"
-                alt="View details"
-                tooltip="View details"
-                onClick={onDetailsClick}
-                size={19}
+                icon="/assets/shopping.svg"
+                alt="Add to cart"
+                tooltip="Proceed to checkout"
+                onClick={onCartClick}
+                size={25}
               />
             </div>
 

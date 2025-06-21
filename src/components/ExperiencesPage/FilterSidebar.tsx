@@ -113,7 +113,7 @@ const FilterSidebar: React.FC = () => {
 
       {/* Filter By SDG */}
       <FilterSection
-        title="SDGs"
+        title="Sustainable Development Goals"
         options={[
           { value: "1", label: "SDG 1: No Poverty" },
           { value: "2", label: "SDG 2: Zero Hunger" },
