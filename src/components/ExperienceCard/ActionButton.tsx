@@ -22,9 +22,9 @@ export const ActionButton: React.FC<{
 }) => (
   <Tooltip>
     <TooltipTrigger asChild>
-      <div className={className} onClick={onClick}>
+      <button className={className} onClick={onClick}>
         <Image src={icon} alt={alt} width={size} height={size} />
-      </div>
+      </button>
     </TooltipTrigger>
     <TooltipContent>{tooltip}</TooltipContent>
   </Tooltip>

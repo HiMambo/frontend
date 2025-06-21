@@ -22,7 +22,7 @@ export function CustomSelect({
 
   return (
     <div>
-      <p className="text-xs leading-none mb-1">{label}</p>
+      <p className="text-xs leading-none mb-1 h-3">{label}</p>
 
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>

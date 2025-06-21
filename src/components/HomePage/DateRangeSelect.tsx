@@ -18,7 +18,7 @@ export function DateRangeSelect({ label = "Dates", value, onChange }: DateRangeP
 
   return (
     <div>
-      <p className="text-xs">{label}</p>
+      <p className="text-xs leading-none mb-1 h-3">{label}</p>
       <Popover
         open={isOpen}
         onOpenChange={(open) => {
@@ -27,7 +27,7 @@ export function DateRangeSelect({ label = "Dates", value, onChange }: DateRangeP
         }}
       >
         <PopoverTrigger asChild>
-          <button className="flex items-center font-semibold text-sm bg-transparent focus:outline-none">
+          <button className="flex w-full font-semibold bg-transparent border-none p-0 h-auto focus:outline-none">
             {value?.from ? (
               value.to ? (
                 <span>
