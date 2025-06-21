@@ -1,17 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { fetchExperiences } from "@/lib/api";
-
-export interface Experience {
-  id: number;
-  name: string;
-  experience_description: string;
-  experience_price: string;
-  experience_promo_image: string;
-  experience_city: string;
-  experience_country: string;
-  rating_avg: number;
-  sustainability_goal: string[];
-}
+import type { Experience } from "@/lib/api";
 
 export function useExperiences() {
   const [experiences, setExperiences] = useState<Experience[]>([]);

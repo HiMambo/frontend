@@ -1,7 +1,7 @@
 "use client";
 
 import { useExperiences } from "@/hooks/useExperiences";
-import type { Experience } from "@/hooks/useExperiences";
+import type { Experience } from "@/lib/api";
 import { useEffect, useState } from "react";
 import Footer from "@/components/shared/Footer";
 import Header from "@/components/shared/Header";
@@ -15,13 +15,15 @@ import FilterSidebar from "@/components/ExperiencesPage/FilterSidebar";
 import { FilterProvider, useFilter } from "@/context/FilterContext";
 
 function MainContent({
-  experiences,
   view,
+  sortBy,
+  experiences,
   loading,
   error,
 }: {
-  experiences: Experience[]
   view: "list" | "grid";
+  sortBy: string;
+  experiences: Experience[]
   loading: boolean;
   error: string | null;
 }) {
@@ -29,6 +31,19 @@ function MainContent({
 
   const noResultsForGivenFilters =
     !loading && experiences.length > 0 && filteredExperiences.length === 0;
+
+  const sortedExperiences = [...filteredExperiences].sort((a, b) => {
+    switch (sortBy) {
+      case "Newest":
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      case "Price: Low to High":
+        return Number(a.experience_price) - Number(b.experience_price);
+      case "Price: High to Low":
+        return Number(b.experience_price) - Number(a.experience_price);
+      default:
+        return 0; // "Best Match" or unknown – no sorting
+    }
+  });
 
   return (
     <main className="bg-white min-h-screen p-4 sm:p-6 md:p-8 xl:p-12">
@@ -49,7 +64,7 @@ function MainContent({
         <div className="lg:col-span-3 flex flex-col gap-8">
           <ExperienceList
             view={view}
-            experiences={filteredExperiences}
+            experiences={sortedExperiences}
             loading={loading}
             error={error}
             noResultsForGivenFilters={noResultsForGivenFilters}
@@ -62,6 +77,8 @@ function MainContent({
 
 export default function Home() {
   const [view, setView] = useState<"list" | "grid">("list");
+  const [sortBy, setSortBy] = useState("Best Match");
+
   const { setPax, setBookingDate } = useCart();
   const { experiences, loading, error } = useExperiences();
 
@@ -76,13 +93,19 @@ export default function Home() {
       <Header />
       <FilterProvider experiences={experiences}>
         <Search />
-        <SearchControls view={view} setView={setView} />
-              <MainContent
-                view={view}
-                experiences={experiences}
-                loading={loading}
-                error={error}
-              />
+        <SearchControls
+          view={view}
+          setView={setView}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+        />
+        <MainContent
+          view={view}
+          sortBy={sortBy}
+          experiences={experiences}
+          loading={loading}
+          error={error}
+        />
       </FilterProvider>
       <Footer />
     </>

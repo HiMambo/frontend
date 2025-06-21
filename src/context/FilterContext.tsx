@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useMemo } from "react";
-import { Experience } from "@/types/experience";
+import type { Experience } from "@/lib/api";
 
 interface FilterContextType {
   searchQuery: string;
