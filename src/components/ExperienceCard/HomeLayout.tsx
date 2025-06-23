@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { SDGIcons } from "./SDGIcons";
 import { SharedExperienceCardProps } from "./ExperienceCard";
-import LocationDisplay from "../shared/LocationDisplay";
+import LocationDisplay from "./LocationDisplay";
 
 export const HomeLayout: React.FC<SharedExperienceCardProps> = ({
   experience,

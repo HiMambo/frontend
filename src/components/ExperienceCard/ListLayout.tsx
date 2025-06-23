@@ -4,7 +4,7 @@ import { StarRating } from "./StarRating";
 import { ActionButton } from "./ActionButton";
 import { SDGIcons } from "./SDGIcons";
 import { SharedExperienceCardProps } from "./ExperienceCard";
-import LocationDisplay from "../shared/LocationDisplay";
+import LocationDisplay from "./LocationDisplay";
 
 export const ListLayout: React.FC<SharedExperienceCardProps> = ({
   experience,
