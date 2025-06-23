@@ -32,11 +32,11 @@ export function AuthForm({ onSuccess }: { onSuccess: () => void }) {
           {tab === 'signup' && (
             <div className="space-y-6">
               <Input placeholder="Email" />
+              <Input placeholder="Password" type="password" />
               <div className="flex gap-2">
                 <Input className="w-1/2" placeholder="First name" />
                 <Input className="w-1/2" placeholder="Last name" />
               </div>
-              <Input placeholder="Password" type="password" />
 
               <div>
                 <Label className="mb-1 block text-sm font-medium">Where did you hear about us?</Label>
