@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { SDGIcons } from "./SDGIcons";
 import { SharedExperienceCardProps } from "./ExperienceCard";
+import LocationDisplay from "../shared/LocationDisplay";
 
 export const HomeLayout: React.FC<SharedExperienceCardProps> = ({
   experience,
@@ -37,7 +38,7 @@ export const HomeLayout: React.FC<SharedExperienceCardProps> = ({
     <div className="flex-grow bg-white p-4 flex flex-col justify-between">
       <div className="flex flex-col gap-1">
         <h3 className="font-bold text-xl text-gray-900">{name}</h3>
-        <p className="text-sm text-gray-600">{experience_city}, {experience_country}</p>
+        <LocationDisplay city={experience_city} country={experience_country} />
         <p className="text-sm text-gray-500 mt-5">{experience_description}</p>
       </div>
 

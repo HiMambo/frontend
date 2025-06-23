@@ -4,6 +4,7 @@ import { StarRating } from "./StarRating";
 import { ActionButton } from "./ActionButton";
 import { SDGIcons } from "./SDGIcons";
 import { SharedExperienceCardProps } from "./ExperienceCard";
+import LocationDisplay from "../shared/LocationDisplay";
 
 export const GridLayout: React.FC<SharedExperienceCardProps> = ({
   experience,
@@ -55,7 +56,7 @@ export const GridLayout: React.FC<SharedExperienceCardProps> = ({
         <div>
           <div className="min-h-[4.5rem]">
             <h3 className="font-semibold text-lg text-gray-800 leading-tight">{name}</h3>
-            <p className="text-sm text-gray-500 mt-1">{experience_city}, {experience_country}</p>
+            <LocationDisplay city={experience_city} country={experience_country} />
           </div>
           <div className="mt-2">
             <StarRating rating={rating_avg} size={4} showValue={false}/>

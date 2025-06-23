@@ -4,6 +4,7 @@ import { StarRating } from "./StarRating";
 import { ActionButton } from "./ActionButton";
 import { SDGIcons } from "./SDGIcons";
 import { SharedExperienceCardProps } from "./ExperienceCard";
+import LocationDisplay from "../shared/LocationDisplay";
 
 export const ListLayout: React.FC<SharedExperienceCardProps> = ({
   experience,
@@ -45,7 +46,7 @@ export const ListLayout: React.FC<SharedExperienceCardProps> = ({
         <div className="flex flex-col sm:flex-row justify-between">
           <div>
             <h3 className="text-lg sm:text-xl font-bold text-gray-800">{name}</h3>
-            <p className="text-sm text-gray-600">{experience_city}, {experience_country}</p>
+            <LocationDisplay city={experience_city} country={experience_country} />
           </div>
           {/* Rating */}
           <div className="pt-1 pl-3">
