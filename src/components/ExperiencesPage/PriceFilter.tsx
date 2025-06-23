@@ -29,6 +29,10 @@ export default function PriceFilter({
   const minDistance = 1;
   const step = (max-min) > 999 ? 10 : 1
 
+  const isDisabled = useMemo(() => {
+    return min === max || (max - min) < minDistance;
+  }, [min, max, minDistance]);
+
   const clampMin = useCallback(
     (val: number) => Math.max(min, Math.min(val, maxValue - minDistance)),
     [min, maxValue, minDistance]
@@ -143,30 +147,44 @@ export default function PriceFilter({
       <div className="relative mb-4">
         <div
           ref={sliderRef}
-          className="relative h-1 w-full rounded bg-filter-secondary/30 cursor-pointer"
+          className={`relative h-1 w-full rounded cursor-pointer ${
+            isDisabled 
+              ? 'bg-gray-200 cursor-not-allowed opacity-50' 
+              : 'bg-filter-secondary/30'
+          }`}
         >
           {/* Active track */}
-          <div
-            className="absolute h-1 rounded bg-filter-secondary"
-            style={{ left: trackFillLeft, width: trackFillWidth }}
-          />
+          {!isDisabled && (
+            <div
+              className="absolute h-1 rounded bg-filter-secondary"
+              style={{ left: trackFillLeft, width: trackFillWidth }}
+            />
+          )}
 
           {/* Min thumb */}
           <div
-            className={`absolute h-5 w-5 bg-filter-primary rounded-full shadow cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 top-1/2 transition-transform duration-100 ${
-              isDragging === 0 ? 'scale-110 ring-10 ring-filter-primary/30' : ''
+            className={`absolute h-5 w-5 rounded-full shadow transform -translate-x-1/2 -translate-y-1/2 top-1/2 transition-transform duration-100 ${
+              isDisabled 
+                ? 'bg-gray-400 cursor-not-allowed opacity-80' 
+                : `bg-filter-primary cursor-grab active:cursor-grabbing ${
+                    isDragging === 0 ? 'scale-110 ring-10 ring-filter-primary/30' : ''
+                  }`
             }`}
             style={{ left: getThumbPosition(minValue) }}
-            onMouseDown={handleMouseDown(0)}
+            onMouseDown={isDisabled ? undefined : handleMouseDown(0)}
           />
 
           {/* Max thumb */}
           <div
-            className={`absolute h-5 w-5 bg-filter-primary rounded-full shadow cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 top-1/2 transition-transform duration-100 ${
-              isDragging === 1 ? 'scale-110 ring-10 ring-filter-primary/30' : ''
+            className={`absolute h-5 w-5 rounded-full shadow transform -translate-x-1/2 -translate-y-1/2 top-1/2 transition-transform duration-100 ${
+              isDisabled 
+                ? 'bg-gray-400 cursor-not-allowed opacity-80' 
+                : `bg-filter-primary cursor-grab active:cursor-grabbing ${
+                    isDragging === 1 ? 'scale-110 ring-10 ring-filter-primary/30' : ''
+                  }`
             }`}
             style={{ left: getThumbPosition(maxValue) }}
-            onMouseDown={handleMouseDown(1)}
+            onMouseDown={isDisabled ? undefined : handleMouseDown(1)}
           />
         </div>
       </div>
@@ -180,6 +198,8 @@ export default function PriceFilter({
           setValue={setTempMinInput}
           onConfirm={handleMinInput}
           resetValue={minValue.toString()}
+          disabled={isDisabled}
+          
         />
         <div className="w-3 h-[1.5px] bg-gray-700 mt-7 rounded-sm" />
         <ManualInput
@@ -189,6 +209,7 @@ export default function PriceFilter({
           setValue={setTempMaxInput}
           onConfirm={handleMaxInput}
           resetValue={maxValue.toString()}
+          disabled={isDisabled}
         />
       </div>
     </div>
@@ -202,9 +223,10 @@ type ManualInputProps = {
   setValue: (val: string) => void;
   onConfirm: (val: number) => void;
   resetValue: string; // external value to reset to on blur
+  disabled?: boolean;
 };
 
-function ManualInput({ id, label, value, setValue, onConfirm, resetValue }: ManualInputProps) {
+function ManualInput({ id, label, value, setValue, onConfirm, resetValue, disabled }: ManualInputProps) {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const key = e.key;
 
@@ -231,7 +253,12 @@ function ManualInput({ id, label, value, setValue, onConfirm, resetValue }: Manu
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         onBlur={() => setValue(resetValue)}
-        className="border rounded p-2 h-8 w-16 text-center focus:outline-none focus:ring-2 focus:ring-filter-primary no-spinner"
+        className={`border rounded p-2 h-8 w-16 text-center focus:outline-none no-spinner ${
+          disabled 
+            ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+            : 'focus:ring-2 focus:ring-filter-primary'
+        }`}
+        disabled={disabled}
       />
     </div>
   );
