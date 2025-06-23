@@ -21,6 +21,8 @@ export function PaymentForm({
   onComplete: () => void; 
 }) {
 
+  const CRYPTO_DISCOUNT = 10
+
   const { setPaymentType, setDiscount } = useCart(); // Access Cart context functions
 
   const handleMethodChange = (m: 'credit' | 'crypto') => {
@@ -29,10 +31,10 @@ export function PaymentForm({
 
     // Update the discount based on the selected payment method
     if (m === 'crypto') {
-      setDiscount(10); // Apply a 10% discount for crypto
-      console.log("Payment method changed to crypto, applying 10% discount");
+      setDiscount(CRYPTO_DISCOUNT); 
+      console.log(`Payment method changed to crypto, applying ${CRYPTO_DISCOUNT}% discount`);
     } else {
-      setDiscount(0); // No discount for credit card
+      setDiscount(0);
     }
   };
 
@@ -65,7 +67,7 @@ export function PaymentForm({
                   <span>Crypto</span>
                 </div>
                 <span className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 bg-pink-500 text-white text-xs font-semibold h-6 px-1 rounded-full flex items-center justify-center">
-                  -10%
+                  -{CRYPTO_DISCOUNT}%
                 </span>
               </Button>
             </div>
