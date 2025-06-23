@@ -2,8 +2,8 @@ import React from 'react';
 import { Star, ArrowRight, Heart } from 'lucide-react';
 
 type SkeletonCardProps = {
-  view: "grid" | "list" | "home";
-  index: number;
+  view: "grid" | "list" | "home" | "bookingSummary";
+  index?: number;
 };
 
 export const SkeletonCard: React.FC<SkeletonCardProps> = ({ view, index = 0 }) => {
@@ -81,7 +81,7 @@ export const SkeletonCard: React.FC<SkeletonCardProps> = ({ view, index = 0 }) =
                   className="h-6 bg-gray-200 rounded mb-1" 
                   style={{ width: variant.titleWidth }} 
                 />
-                {/* Location skeleton */}
+                {/* Location */}
                 <div 
                   className="h-4 bg-gray-200 rounded" 
                   style={{ width: variant.locationWidth }} 
@@ -175,6 +175,52 @@ export const SkeletonCard: React.FC<SkeletonCardProps> = ({ view, index = 0 }) =
               <div className="flex items-center gap-1">
                 <div className="h-4 w-20 bg-gray-200 rounded" />
                 <ArrowRight className="w-5 h-5 text-gray-200" />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+      
+    case "bookingSummary":
+      return (
+        <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden animate-wave">
+          {/* Placeholder Image */}
+          <div className="w-full h-48 bg-gray-200" />
+
+          <div className="p-6 space-y-4 mb-2">
+            {/* Title */}
+            <div className="h-6 bg-gray-200 rounded w-2/3 mb-2" />
+
+            {/* Location and SDGs */}
+            <div className="flex items-center justify-between text-sm mb-4">
+              <div className="h-4 bg-gray-200 rounded w-1/3" />
+              <div className="flex gap-1">
+                {Array.from({ length: 1 }).map((_, i) => (
+                  <div key={i} className="w-8 h-8 bg-gray-200 rounded-md" />
+                ))}
+              </div>
+            </div>
+
+            {/* Information Table */}
+            <div className="space-y-1 mb-6">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="flex justify-between">
+                  <div className="h-4 bg-gray-200 rounded w-1/4 mb-1" />
+                  <div className="h-4 bg-gray-200 rounded w-1/5" />
+                </div>
+              ))}
+            </div>
+
+            {/* Price Section */}
+            <div className="bg-gray-100 p-3 rounded-lg">
+              <div className="flex justify-between text-sm mb-2">
+                <div className="h-4 bg-gray-300 rounded w-1/4" />
+                <div className="h-4 bg-gray-300 rounded w-1/4" />
+              </div>
+              <hr className="my-2" />
+              <div className="flex justify-between text-lg font-bold">
+                <div className="h-6 bg-gray-300 rounded w-1/3" />
+                <div className="h-6 bg-gray-300 rounded w-1/4" />
               </div>
             </div>
           </div>

@@ -21,9 +21,7 @@ export function PaymentForm({
   onComplete: () => void; 
 }) {
 
-  const CRYPTO_DISCOUNT = 10
-
-  const { setPaymentType, setDiscount } = useCart(); // Access Cart context functions
+  const { setPaymentType, setDiscount, CRYPTO_DISCOUNT } = useCart(); // Access Cart context functions
 
   const handleMethodChange = (m: 'credit' | 'crypto') => {
     onMethodChange(m); // Update the local state in the parent component

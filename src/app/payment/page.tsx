@@ -10,16 +10,17 @@ import { useCart } from "@/context/Cart"; // Import the Cart context
 
 export default function PaymentPage() {
   const [currentStep, setCurrentStep] = useState(1); // 1 = Login, 2 = Payment, 3 = Review
-  const { experienceId, price } = useCart(); // Access the context values
+  const { experienceId, price, isHydrated } = useCart(); // Access the context values
 
-  // Log only once on mount, then only when values actually change
   useEffect(() => {
     console.log("PaymentPage mounted");
-  }, []); // Only log mount once
+  }, []);
 
   useEffect(() => {
+    if (!isHydrated) return;
+    
     console.log("Context values updated - experienceId:", experienceId, "price:", price);
-  }, [experienceId, price]); // Only log when these actually change
+  }, [experienceId, price, isHydrated]);
 
   return (
     <>
@@ -28,11 +29,11 @@ export default function PaymentPage() {
         <ProgressBar currentStep={currentStep} />
       </div>
       <main className="grid md:grid-cols-5 gap-6 p-6">
-        {/* Make LoginAndPaymentFlow span 2 columns */}
+        {/* Make LoginAndPaymentFlow */}
         <div className="md:col-span-3">
           <LoginAndPaymentFlow setCurrentStep={setCurrentStep} />
         </div>
-        {/* BookingSummary stays in 1 column */}
+        {/* BookingSummary */}
         <div className="md:col-span-2">
           <BookingSummary />
         </div>
