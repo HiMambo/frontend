@@ -10,7 +10,7 @@ import { useCart } from "@/context/Cart"; // Import the Cart context
 
 export default function PaymentPage() {
   const [currentStep, setCurrentStep] = useState(1); // 1 = Login, 2 = Payment, 3 = Review
-  const { experienceId, price, isHydrated } = useCart(); // Access the context values
+  const { cartExperience, priceBreakdown, isHydrated } = useCart(); // Access the context values
 
   useEffect(() => {
     console.log("PaymentPage mounted");
@@ -19,8 +19,8 @@ export default function PaymentPage() {
   useEffect(() => {
     if (!isHydrated) return;
     
-    console.log("Context values updated - experienceId:", experienceId, "price:", price);
-  }, [experienceId, price, isHydrated]);
+    console.log("Context values updated - experience.Id:", cartExperience?.id, "price:", priceBreakdown?.finalPrice);
+  }, [cartExperience?.id, priceBreakdown?.finalPrice, isHydrated]);
 
   return (
     <>

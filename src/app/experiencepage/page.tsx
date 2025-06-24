@@ -2,12 +2,11 @@
 
 import { useExperiences } from "@/hooks/useExperiences";
 import type { Experience } from "@/lib/api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Footer from "@/components/shared/Footer";
 import Header from "@/components/shared/Header";
 import Search from "@/components/ExperiencesPage/Search";
 import { SearchControls } from "@/components/ExperiencesPage/SearchControls";
-import { useCart } from "@/context/Cart";
 
 import FilterToggleWrapper from "@/components/ExperiencesPage/FilterToggleWrapper";
 import ExperienceList from "@/components/ExperiencesPage/ExperienceList";
@@ -79,14 +78,7 @@ export default function Home() {
   const [view, setView] = useState<"list" | "grid">("list");
   const [sortBy, setSortBy] = useState("Best Match");
 
-  const { setPax, setBookingDate } = useCart();
   const { experiences, loading, error } = useExperiences();
-
-  useEffect(() => {
-    setPax(2);
-    const hardcodedDate = new Date("2025-06-13T09:30:00Z");
-    setBookingDate(hardcodedDate);
-  }, [setPax, setBookingDate]);
 
   return (
     <>

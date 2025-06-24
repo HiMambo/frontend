@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -28,7 +29,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   view = "list",
 }) => {
   const router = useRouter();
-  const { setPrice, setExperienceId, setExperience } = useCart();
+  const { setCartExperience, searchParams } = useCart();
   const [isFavorited, setIsFavorited] = useState(false);
 
   // Helper functions
@@ -42,7 +43,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
       await fetch("/api/favorites", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ experienceId: experience.id }),
+        body: JSON.stringify({ experience_id: experience.id }), //Placeholders. Needs to be implemented with backend
       });
     } catch (error) {
       console.error("Failed to favorite", error);
@@ -54,19 +55,15 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     
     const cartExperience = {
       ...experience,
-      travelDate: undefined,
-      departure: undefined,
-      travellers: undefined,
-      duration: undefined,
-      refundable: undefined,
+      travelDate: undefined, //Must eventually come from backend
+      departure: undefined, //Must eventually come from backend
+      travellers: parseInt(searchParams.guests),
+      duration: undefined, //Must eventually come from backend
+      refundable: undefined, //Must eventually come from backend
     };
 
     console.log("Adding experience to cart:", cartExperience);
-    
-    setPrice(getPrice());
-    setExperienceId(experience.id);
-    setExperience(cartExperience);
-    
+    setCartExperience(cartExperience);
     router.push("/payment");
   };
 

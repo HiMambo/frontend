@@ -8,5 +8,4 @@ export interface Experience {
   experience_country: string;
   rating_avg: number;
   sustainability_goal: string[];
-  discount?: number;
 }

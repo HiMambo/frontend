@@ -17,7 +17,7 @@ export default function ReviewAndConfirm({
   onConfirm,
   onBackToPayment
 }: ReviewAndConfirmProps) {
-  const { discount, setDiscount } = useCart(); // Access discount and setDiscount from the Cart context
+  const { basePriceDiscount, setBasePriceDiscount } = useCart();
   const [promoCode, setPromoCode] = useState(""); // State for promo code
   const [error, setError] = useState<string | null>(null); // State for promo code errors
   const [showCryptoPayment, setShowCryptoPayment] = useState(false);
@@ -25,12 +25,10 @@ export default function ReviewAndConfirm({
   const handleConfirm = () => {
     if (paymentMethod === 'crypto') {
       // Show crypto payment flow
-      // setDiscount(10)
       console.log("Proceeding with crypto payment with a 10% discount");
       setShowCryptoPayment(true);
     } else {
       // For credit card payment, proceed with regular confirmation
-      // setDiscount(0)
       onConfirm();
     }
   };
@@ -48,20 +46,20 @@ export default function ReviewAndConfirm({
 
   const handleApplyPromoCode = () => {
     // Example promo code validation logic
-    console.log("Current discount in context:", discount);
+    console.log("Current discount in context:", basePriceDiscount);
     if (promoCode === "COLOSSEUM") {
-      const discountValue = 99.90; // %99.9 discount
-      setDiscount(discountValue); // Apply a %99.9 discount
+      const discountValue = 20; // %20 discount
+      setBasePriceDiscount(discountValue); // Apply a %99.9 discount
       setError(null);
       console.log("Promo code applied: ", discountValue, "% discount for ", promoCode);
     } else if (promoCode === "JAGER") {
       const discountValue = 99.90; // %99.9 discount
-      setDiscount(discountValue); // Apply a %99.9 discount
+      setBasePriceDiscount(discountValue); // Apply a %99.9 discount
       setError(null);
       console.log("Promo code applied: ", discountValue, "% discount for ", promoCode);
     } else {
       setError("Invalid promo code");
-      setDiscount(0); // Reset discount if promo code is invalid
+      setBasePriceDiscount(0); // Reset discount if promo code is invalid
     }
   };
 
@@ -113,7 +111,8 @@ export default function ReviewAndConfirm({
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
           {/* This is a TRICK! the logic for discount > 10 should be deleted and treated properly*/}
-          {discount > 10 && <p className="text-green-500 text-sm">Discount applied: {discount}%</p>}
+          {/* Possibly fixed: */}
+          {basePriceDiscount > 0 && <p className="text-green-500 text-sm">Discount applied: {basePriceDiscount}%</p>}
         </div>
 
         {/* Confirm Booking Button */}

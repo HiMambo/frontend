@@ -1,19 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CustomSelect } from "./CustomSelect";
 import { DateRangeSelect } from "./DateRangeSelect";
 import { SearchIcon } from "@/components/shared/IconComponents";
-import { DateRange } from "react-day-picker";
+import { useCart } from "@/context/Cart";
 
 export default function SearchBox() {
   const router = useRouter();
 
-  const [guests, setGuests] = useState("1");
-  const [date, setDate] = useState<DateRange | undefined>();
-  const [experienceType, setExperienceType] = useState("Any")
+  const { searchParams, setGuests, setDate, setExperienceType } = useCart();
 
   const handleButtonClick = () => {
     router.push("/experiencepage/");
@@ -22,7 +19,7 @@ export default function SearchBox() {
   return (
     <div className="bg-home-searchbox rounded-xl px-4 py-4 shadow-md w-full max-w-6xl mx-auto flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
       {/* Search box */}
-      <div className="flex items-center bg-white rounded-md px-4 py-2 w-full xl:max-w-md">
+      <div className="flex items-center bg-white rounded-md px-4 py-2 w-full xl:max-w-90">
         <input
           type="text"
           placeholder="Search activities or Destinations"
@@ -38,21 +35,21 @@ export default function SearchBox() {
         <div className="flex flex-wrap gap-4 md:gap-6 items-center justify-center flex-grow">
           <CustomSelect
             label="Guests"
-            options={["1", "2", "3", "4", "5", "6", "6+"]}
-            value={guests}
+            options={["1", "2", "3", "4", "5", "6"]}
+            value={searchParams.guests}
             setValue={setGuests}
             formatLabel={(opt) => opt === "1" ? `${opt} Adult` : `${opt} Adults`}
           />
 
           <DateRangeSelect
-            value={date}
+            value={searchParams.date}
             onChange={setDate}
           />
 
           <CustomSelect
             label="Experience Type"
             options={["Any", "Nature & Wildlife", "Cultural Immersion", "Adventure & Outdoor", "Wellness & Retreats", "Social Impact", "Food & Gastronomy"]}
-            value={experienceType}
+            value={searchParams.experienceType}
             setValue={setExperienceType}
           />
         </div>

@@ -29,7 +29,7 @@ type CryptoPaymentProps = {
 };
 
 export default function CryptoPayment({}: CryptoPaymentProps) {
-  const { price, experienceId, discount, number_of_people, booking_date} = useCart();
+  const { priceBreakdown, booking_date, cartExperience} = useCart();
   const [payment, setPayment] = useState<PaymentSession | null>(null);
   const [loading, setLoading] = useState(true);
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
@@ -42,21 +42,6 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
   const [isPaymentSessionInitialized, setIsPaymentSessionInitialized] = useState(false); // Tracks whether the session is initialized
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://127.0.0.1:8000';
-
-  // Calculate the total price based on the discount
-  const calculateTotalPrice = () => {
-    if (!price) return 0;
-
-    // Total price 
-    console.log('Total discount:', discount); // Debugging: Log the total price
-    const discountMultiplier = (100 - discount) / 100; // Convert discount percentage to multiplier
-    const totalPrice = price * number_of_people * discountMultiplier; // Apply discount and pax
-
-    // Round to `n` decimals and keep it as a number
-    const n = 2; // Number of decimal places
-    const multiplier = Math.pow(10, n); // Calculate 10^n
-    return Math.round(totalPrice * multiplier) / multiplier;
-  };
   
   // * Starting the payment session * // 
   useEffect(() => {
@@ -67,10 +52,10 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
   
         console.log('API URL:', API_URL); // Debugging: Log the API URL
 
-        const totalPrice = calculateTotalPrice(); // Calculate the total price
+        const totalPrice = priceBreakdown?.finalPrice
         console.log('Total Price (after discount):', totalPrice); // Debugging: Log the total price
 
-        const response = await fetch(`${API_URL}/experience/${experienceId}/start_pay_session/price/${totalPrice}`);
+        const response = await fetch(`${API_URL}/experience/${cartExperience?.id}/start_pay_session/price/${totalPrice}`);
         if (!response.ok) {
           console.error('Response status for starting payment session:', response.status); // Debugging: Log the response status
           throw new Error('Failed to fetch payment session data');
@@ -222,7 +207,7 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
     const now = new Date(); 
 
     // Ensure experienceId is not null
-    if (!experienceId) {
+    if (!cartExperience?.id || !priceBreakdown) {
       console.error("Experience ID is null. Cannot create booking.");
       setError("Experience ID is missing. Please try again.");
       return;
@@ -230,15 +215,16 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
 
     try {
       const bookingData = {
-        experience_id: experienceId,
+        experience_id: cartExperience.id,
         booking_date: now.toISOString(),
         client_id: 5,
         duration_days: 2,
-        number_of_people: number_of_people,
-        total_price: calculateTotalPrice()*(1-SHARE_PERCENTAGE_HIMAMBO),
+        number_of_people: cartExperience.travellers,
+        total_price: priceBreakdown?.finalPrice*(1-SHARE_PERCENTAGE_HIMAMBO),
         created_at: now.toISOString(),
         updated_at: now.toISOString(),
-        discount: discount,
+        discount: priceBreakdown.cryptoDiscount, //To be reviewed
+        baseDiscount: priceBreakdown.basePriceDiscount, //To be reviewed
         currency: payment.final_currency,
         experience_date : booking_date.toISOString(),
         payment_type: "crypto",
