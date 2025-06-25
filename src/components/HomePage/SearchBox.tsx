@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { CustomSelect } from "./CustomSelect";
 import { DateRangeSelect } from "./DateRangeSelect";
 import { SearchIcon } from "@/components/shared/IconComponents";
-import { useCart } from "@/context/Cart";
+import { useSearch } from "@/context/SearchContext";
 
 export default function SearchBox() {
   const router = useRouter();
 
-  const { searchParams, setGuests, setDate, setExperienceType } = useCart();
+  const { searchParams, setGuests, setDate, setExperienceType } = useSearch();
 
   const handleButtonClick = () => {
     router.push("/experiencepage/");

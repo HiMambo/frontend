@@ -1,15 +1,14 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, useMemo, useCallback, ReactNode } from "react";
-import { DateRange } from "react-day-picker";
 
 const LOCAL_STORAGE_KEY = "cartState";
 const CART_EXPIRY_MS = 24 * 60 * 60 * 1000; // 1 day in ms
 
-const CRYPTO_DISCOUNT = 10 //Discount applied if payment_method="crypto"
+const CRYPTO_DISCOUNT = 10; // Discount applied if payment_method="crypto"
 
 interface CartExperience {
-  //Normal experience interface
+  // Normal experience interface
   id: number;
   name: string;
   experience_description: string;
@@ -19,18 +18,12 @@ interface CartExperience {
   experience_country: string;
   rating_avg: number;
   sustainability_goal: string[];
-  //Additional info for booking
+  // Additional info for booking
   travelDate?: string;
   departure?: string;
   travellers: number;
   duration?: string;
   refundable?: string;
-}
-
-interface SearchParams {
-  guests: string;
-  date: DateRange | undefined;
-  experienceType: string;
 }
 
 interface PriceBreakdown {
@@ -42,19 +35,12 @@ interface PriceBreakdown {
   finalPrice: number;
 }
 
-type PriceContextType = {
-  // Existing cart functionality
+type CartContextType = {
+  // Cart functionality
   cartExperience: CartExperience | null;
   setCartExperience: (cartExperience: CartExperience) => void;
   clearCart: () => void;
   isHydrated: boolean;
-
-  // Search parameters
-  searchParams: SearchParams;
-  setSearchParams: (params: Partial<SearchParams>) => void;
-  setGuests: (guests: string) => void;
-  setDate: (date: DateRange | undefined) => void;
-  setExperienceType: (type: string) => void;
 
   // Centralized price calculations
   priceBreakdown: PriceBreakdown | null;
@@ -69,19 +55,12 @@ type PriceContextType = {
   setPaymentType: (payment_type: "crypto" | "credit") => void;
 };
 
-const PriceContext = createContext<PriceContextType | undefined>(undefined);
+const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const Cart = ({ children }: { children: ReactNode }) => {
+export const CartProvider = ({ children }: { children: ReactNode }) => {
   // Cart state
   const [cartExperience, setCartExperience] = useState<CartExperience | null>(null);
   const [basePriceDiscount, setBasePriceDiscount] = useState<number>(0);
-
-  // Search parameters state
-  const [searchParams, setSearchParamsState] = useState<SearchParams>({
-    guests: "1",
-    date: undefined,
-    experienceType: "Any"
-  });
 
   ///Legacy
   const [booking_date, setBookingDate] = useState<Date>(new Date());
@@ -123,31 +102,10 @@ export const Cart = ({ children }: { children: ReactNode }) => {
     };
   }, [cartExperience, basePriceDiscount, payment_type, isHydrated]);
 
-  // Search parameter setters
-  const setSearchParams = useCallback((params: Partial<SearchParams>) => {
-    setSearchParamsState(prev => ({ ...prev, ...params }));
-  }, []);
-
-  const setGuests = useCallback((guests: string) => {
-    setSearchParamsState(prev => ({ ...prev, guests }));
-  }, []);
-
-  const setDate = useCallback((date: DateRange | undefined) => {
-    setSearchParamsState(prev => ({ ...prev, date }));
-  }, []);
-
-  const setExperienceType = useCallback((experienceType: string) => {
-    setSearchParamsState(prev => ({ ...prev, experienceType }));
-  }, []);
-
   const clearCart = useCallback(() => {
     setCartExperience(null);
     setBookingDate(new Date());
-    setSearchParamsState({
-      guests: "1",
-      date: undefined,
-      experienceType: "Any"
-    });
+    setBasePriceDiscount(0);
     localStorage.removeItem(LOCAL_STORAGE_KEY);
   }, []);
 
@@ -161,7 +119,6 @@ export const Cart = ({ children }: { children: ReactNode }) => {
         if (now - parsed.savedAt < CART_EXPIRY_MS) {
           setCartExperience(parsed.cartExperience);
           setBookingDate(new Date(parsed.booking_date));
-          setSearchParamsState(parsed.searchParams);
         } else {
           localStorage.removeItem(LOCAL_STORAGE_KEY); // Expired
         }
@@ -179,31 +136,22 @@ export const Cart = ({ children }: { children: ReactNode }) => {
     const cartState = {
       cartExperience,
       booking_date,
-      searchParams,
       savedAt: Date.now(),
     };
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cartState));
   }, [
     cartExperience,
     booking_date,
-    searchParams,
     isHydrated
   ]);
 
-  const cartContextValue = useMemo(
+  const value = useMemo(
     () => ({
-      // Existing cart functionality
+      // Cart functionality
       cartExperience,
       setCartExperience,
       clearCart,
       isHydrated,
-
-      // Search parameters
-      searchParams,
-      setSearchParams,
-      setGuests,
-      setDate,
-      setExperienceType,
 
       // Centralized price calculations
       priceBreakdown,
@@ -221,11 +169,7 @@ export const Cart = ({ children }: { children: ReactNode }) => {
       cartExperience,
       isHydrated,
       clearCart,
-      searchParams,
-      setSearchParams,
-      setGuests,
-      setDate,
-      setExperienceType,
+      
       priceBreakdown,
       basePriceDiscount,
 
@@ -235,16 +179,16 @@ export const Cart = ({ children }: { children: ReactNode }) => {
   );
 
   return (
-    <PriceContext.Provider value={cartContextValue}>
+    <CartContext.Provider value={value}>
       {children}
-    </PriceContext.Provider>
+    </CartContext.Provider>
   );
 };
 
 export const useCart = () => {
-  const context = useContext(PriceContext);
+  const context = useContext(CartContext);
   if (!context) {
-    throw new Error("useCart must be used within a Cart");
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 };

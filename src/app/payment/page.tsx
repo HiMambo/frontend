@@ -6,7 +6,7 @@ import Footer from "@/components/shared/Footer";
 import BookingSummary from "@/components/PaymentPage/BookingSummary";
 import LoginAndPaymentFlow from "@/components/PaymentPage/LoginAndPaymentFlow";
 import ProgressBar from "@/components/PaymentPage/ProgressBar";
-import { useCart } from "@/context/Cart"; // Import the Cart context
+import { useCart } from "@/context/Cart";
 
 export default function PaymentPage() {
   const [currentStep, setCurrentStep] = useState(1); // 1 = Login, 2 = Payment, 3 = Review
