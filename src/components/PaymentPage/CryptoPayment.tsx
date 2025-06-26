@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useCart } from "@/context/Cart"; // Import the Cart context
+import { useSearch } from '@/context/SearchContext';
 import { createBooking } from "@/lib/api"; // Import the createBooking function
 import { CryptoPaymentUI } from './CryptoPaymentUI';
 
@@ -30,6 +31,7 @@ type CryptoPaymentProps = {
 
 export default function CryptoPayment({}: CryptoPaymentProps) {
   const { priceBreakdown, booking_date, cartExperience} = useCart();
+  const { searchParams } = useSearch();
   const [payment, setPayment] = useState<PaymentSession | null>(null);
   const [loading, setLoading] = useState(true);
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
@@ -219,7 +221,7 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
         booking_date: now.toISOString(),
         client_id: 5,
         duration_days: 2,
-        number_of_people: cartExperience.travellers,
+        number_of_people: searchParams.guests,
         total_price: priceBreakdown?.finalPrice*(1-SHARE_PERCENTAGE_HIMAMBO),
         created_at: now.toISOString(),
         updated_at: now.toISOString(),

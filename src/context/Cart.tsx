@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, useMemo, useCallback, ReactNode } from "react";
+import { useSearch } from "@/context/SearchContext"
 
 const LOCAL_STORAGE_KEY = "cartState";
 const CART_EXPIRY_MS = 24 * 60 * 60 * 1000; // 1 day in ms
@@ -21,7 +22,6 @@ interface CartExperience {
   // Additional info for booking
   travelDate?: string;
   departure?: string;
-  travellers: number;
   duration?: string;
   refundable?: string;
 }
@@ -58,6 +58,8 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
+  const {searchParams} = useSearch();
+
   // Cart state
   const [cartExperience, setCartExperience] = useState<CartExperience | null>(null);
   const [basePriceDiscount, setBasePriceDiscount] = useState<number>(0);
@@ -76,7 +78,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const basePrice = parseFloat(cartExperience.experience_price);
     if (isNaN(basePrice) || basePrice <= 0) return null;
 
-    const travellers = cartExperience.travellers;
+    const travellers = searchParams.guests;
     
     // Apply base price discount first
     const basePriceDiscountMultiplier = (100 - basePriceDiscount) / 100;
@@ -100,7 +102,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       cryptoDiscount,
       finalPrice: roundToTwoDecimals(finalPrice),
     };
-  }, [cartExperience, basePriceDiscount, payment_type, isHydrated]);
+  }, [cartExperience, basePriceDiscount, payment_type, searchParams.guests, isHydrated]);
 
   const clearCart = useCallback(() => {
     setCartExperience(null);
@@ -169,7 +171,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       cartExperience,
       isHydrated,
       clearCart,
-      
+
       priceBreakdown,
       basePriceDiscount,
 

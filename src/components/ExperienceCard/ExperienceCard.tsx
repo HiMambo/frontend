@@ -3,7 +3,6 @@
 import { useState } from "react";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useSearch } from "@/context/SearchContext";
 import { useCart } from "@/context/Cart";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Experience } from "@/types/experience";
@@ -31,7 +30,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
 }) => {
   const router = useRouter();
   const { setCartExperience } = useCart();
-  const { searchParams } = useSearch();
   const [isFavorited, setIsFavorited] = useState(false);
 
   // Helper functions
@@ -59,7 +57,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
       ...experience,
       travelDate: undefined, //Must eventually come from backend
       departure: undefined, //Must eventually come from backend
-      travellers: parseInt(searchParams.guests),
       duration: undefined, //Must eventually come from backend
       refundable: undefined, //Must eventually come from backend
     };

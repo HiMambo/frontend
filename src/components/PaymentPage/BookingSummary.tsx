@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { useEffect } from "react";
 import { useCart } from "@/context/Cart";
+import { useSearch } from "@/context/SearchContext";
 import { SDGIcons } from "../ExperienceCard/SDGIcons";
 import { SkeletonCard } from "../shared/SkeletonCard";
 import ErrorMessage from "../shared/ErrorMessage";
@@ -9,6 +10,7 @@ import LocationDisplay from "../ExperienceCard/LocationDisplay";
 
 const BookingSummary: React.FC = () => {
   const { cartExperience, priceBreakdown, isHydrated } = useCart(); // Get the experience from the Cart context
+  const { searchParams } = useSearch();
 
   // Component mount and data check
   useEffect(() => {
@@ -81,7 +83,7 @@ const BookingSummary: React.FC = () => {
           </div>
           <div className="flex justify-between">
             <span className="font-medium">Travellers</span>
-            <span>{cartExperience.travellers}</span>
+            <span>{searchParams.guests}</span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium">Duration</span>
@@ -96,7 +98,7 @@ const BookingSummary: React.FC = () => {
         {/* Payment Section */}
         <div className="bg-gray-50 p-4 rounded-lg">
           {/* Base Price Section (only if more than one traveller) */}
-          {cartExperience.travellers > 1 && (
+          {searchParams.guests > 1 && (
             <div className="flex justify-between text-sm mb-2">
               <span className="text-gray-700">Price per person</span>
               <span className="text-gray-700">
@@ -121,7 +123,7 @@ const BookingSummary: React.FC = () => {
               {priceBreakdown.basePriceDiscount > 0 ? (
                 <div className="flex flex-col items-end">
                   <span className="line-through text-gray-400 text-xs">
-                    US$ {(priceBreakdown.basePrice * cartExperience.travellers).toFixed(2)}
+                    US$ {(priceBreakdown.basePrice * searchParams.guests).toFixed(2)}
                   </span>
                   <span>US$ {priceBreakdown.totalBeforeCryptoDiscount.toFixed(2)}</span>
                 </div>

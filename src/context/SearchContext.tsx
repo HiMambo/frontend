@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useCallback, ReactNode } from "rea
 import { DateRange } from "react-day-picker";
 
 interface SearchParams {
-  guests: string;
+  guests: number;
   date: DateRange | undefined;
   experienceType: string;
 }
@@ -12,14 +12,14 @@ interface SearchParams {
 type SearchContextType = {
   searchParams: SearchParams;
   setSearchParams: (params: Partial<SearchParams>) => void;
-  setGuests: (guests: string) => void;
+  setGuests: (guests: number) => void;
   setDate: (date: DateRange | undefined) => void;
   setExperienceType: (type: string) => void;
   resetSearch: () => void;
 };
 
 const defaultSearchParams: SearchParams = {
-  guests: "1",
+  guests: 1,
   date: undefined,
   experienceType: "Any"
 };
@@ -33,7 +33,7 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
     setSearchParamsState(prev => ({ ...prev, ...params }));
   }, []);
 
-  const setGuests = useCallback((guests: string) => {
+  const setGuests = useCallback((guests: number) => {
     setSearchParamsState(prev => ({ ...prev, guests }));
   }, []);
 

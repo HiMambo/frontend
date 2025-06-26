@@ -33,12 +33,12 @@ export default function SearchBox() {
         
         {/* Filters */}
         <div className="flex flex-wrap gap-4 md:gap-6 items-center justify-center flex-grow">
-          <CustomSelect
+          <CustomSelect<number>
             label="Guests"
-            options={["1", "2", "3", "4", "5", "6"]}
+            options={[1, 2, 3, 4, 5, 6]}
             value={searchParams.guests}
             setValue={setGuests}
-            formatLabel={(opt) => opt === "1" ? `${opt} Adult` : `${opt} Adults`}
+            formatLabel={(opt) => opt === 1 ? `${opt} Adult` : `${opt} Adults`}
           />
 
           <DateRangeSelect
@@ -46,7 +46,7 @@ export default function SearchBox() {
             onChange={setDate}
           />
 
-          <CustomSelect
+          <CustomSelect<string>
             label="Experience Type"
             options={["Any", "Nature & Wildlife", "Cultural Immersion", "Adventure & Outdoor", "Wellness & Retreats", "Social Impact", "Food & Gastronomy"]}
             value={searchParams.experienceType}
