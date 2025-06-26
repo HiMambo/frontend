@@ -18,6 +18,8 @@ const FilterSidebar: React.FC = () => {
     setMaxPrice,
     selectedDiscount,
     toggleDiscount,
+    selectedPillar,
+    togglePillar,
     selectedSDG,
     toggleSDG,
     resetPriceFilter,
@@ -108,6 +110,15 @@ const FilterSidebar: React.FC = () => {
         options={["For families", "Pet friendly", "LGBTQI+"]}
         selected={[]}
         onToggle={() => {}}
+        disabled
+      />
+
+      {/* Pillars */}
+      <FilterSection
+        title="Pillar"
+        options={["People", "Planet", "Prosperity", "Peace", "Partnership"]}
+        selected={selectedPillar}
+        onToggle={togglePillar}
         disabled
       />
 

@@ -20,6 +20,9 @@ interface FilterContextType {
   selectedDiscount: string[];
   toggleDiscount: (discount: string) => void;
 
+  selectedPillar: string[];
+  togglePillar: (pillar: string) => void;
+
   selectedSDG: string[];
   toggleSDG: (sdg: string) => void;
 
@@ -51,6 +54,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedRating, setSelectedRating] = useState<number[]>([]);
   const [selectedDiscount, setSelectedDiscount] = useState<string[]>([]);
+  const [selectedPillar, setSelectedPillar] = useState<string[]>([]);
   const [selectedSDG, setSelectedSDG] = useState<string[]>([]);
 
   const toggleItem = <T,>(item: T, list: T[], setList: React.Dispatch<React.SetStateAction<T[]>>) => {
@@ -60,6 +64,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
   const toggleCategory = (category: string) => toggleItem(category, selectedCategories, setSelectedCategories);
   const toggleRating = (rating: number) => toggleItem(rating, selectedRating, setSelectedRating);
   const toggleDiscount = (discount: string) => toggleItem(discount, selectedDiscount, setSelectedDiscount);
+  const togglePillar = (pillar: string) => toggleItem(pillar, selectedPillar, setSelectedPillar);
   const toggleSDG = (sdg: string) => toggleItem(sdg, selectedSDG, setSelectedSDG);
 
   const setMinPrice = (min: number) => {
@@ -95,21 +100,24 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
         exp.experience_description?.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesCategory =
-        selectedCategories.length === 0 || selectedCategories.includes(exp.experience_country); // Missing backend
+        selectedCategories.length === 0 || selectedCategories.includes(""); // Missing backend
 
       const matchesRating =
         selectedRating.length === 0 || exp.rating_avg >= Math.min(...selectedRating);
 
       const matchesDiscount =
-        selectedDiscount.length === 0 || selectedDiscount.includes("SomeDiscount"); // Missing logic
+        selectedDiscount.length === 0 || selectedDiscount.includes(""); // Missing logic/backend
+
+      const matchesPillar =
+        selectedPillar.length === 0 || selectedPillar.includes(""); // Missing logic/backend
 
       const matchesSDG =
         selectedSDG.length === 0 ||
         selectedSDG.some((sdg) => exp.sustainability_goal.includes(sdg));
 
-      return matchesSearch && matchesCategory && matchesRating && matchesDiscount && matchesSDG;
+      return matchesSearch && matchesCategory && matchesRating && matchesDiscount && matchesPillar && matchesSDG;
     });
-  }, [experiences, searchQuery, selectedCategories, selectedRating, selectedDiscount, selectedSDG]);
+  }, [experiences, searchQuery, selectedCategories, selectedRating, selectedDiscount, selectedPillar, selectedSDG]);
 
   // Calculate min and max price of filtered experiences
   const availablePriceRange: [number, number] = useMemo(() => {
@@ -156,6 +164,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
     selectedCategories.length > 0 ||
     selectedRating.length > 0 ||
     selectedDiscount.length > 0 ||
+    selectedPillar.length > 0 ||
     selectedSDG.length > 0 ||
     !noPriceSelection
   );
@@ -164,6 +173,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
     setSelectedCategories([]);
     setSelectedRating([]);
     setSelectedDiscount([]);
+    setSelectedPillar([]);
     setSelectedSDG([]);
     resetPriceFilter();
     setSearchQuery("");
@@ -183,6 +193,8 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children, experi
         setMaxPrice,
         selectedDiscount,
         toggleDiscount,
+        selectedPillar,
+        togglePillar,
         selectedSDG,
         toggleSDG,
         filteredExperiences,
