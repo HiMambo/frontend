@@ -39,13 +39,13 @@ export function AuthForm({ onSuccess }: { onSuccess: () => void }) {
               </div>
 
               <div>
-                <Label className="mb-1 block text-sm font-medium">Where did you hear about us?</Label>
+                <Label className="mb-1 block text-sm font-medium">How did you learn about us?</Label>
                 <Select>
                   <SelectTrigger>
                     <SelectValue placeholder="Select an option" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="friend">Friend</SelectItem>
+                    <SelectItem value="friend">Friends</SelectItem>
                     <SelectItem value="social">Social Media</SelectItem>
                     <SelectItem value="ads">Online Ads</SelectItem>
                     <SelectItem value="search">Search Engine</SelectItem>
