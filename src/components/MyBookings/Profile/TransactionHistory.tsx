@@ -67,13 +67,13 @@ export default function TransactionHistory({
         </div>
 
         {/* Header */}
-        <div className="grid grid-cols-6 gap-0 mb-2 text-xs font-medium text-gray-500">
-          <div className="px-3 text-left">Partner Name</div>
+        <div className="grid grid-cols-6 gap-0 mb-2 text-xs font-medium text-gray-500" style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr' }}>
+          <div className="px-3 text-center">Partner Name</div>
           <div className="px-3 text-center">Experience Name</div>
           <div className="px-3 text-center">Amount Paid</div>
           <div className="px-3 text-center">Experience Date</div>
-          <div className="px-3 text-right">Booking Date</div>
-          <div className="px-3 text-right">Invoice</div>
+          <div className="px-3 text-center">Booking Date</div>
+          <div className="px-3 text-center">Invoice</div>
         </div>
 
         {/* Transactions */}
@@ -84,7 +84,8 @@ export default function TransactionHistory({
           {displayedTransactions.map((transaction, index) => (
             <div
               key={index}
-              className="grid grid-cols-6 gap-0 items-center py-2 border-b border-gray-100"
+              className="grid grid-cols-6 gap-0 items-center py-2 border-b border-gray-100 cursor-default"
+              style={{ gridTemplateColumns: '3fr 1fr 1fr 1fr 1fr 1fr' }}
             >
               {/* Partner Name */}
               <div className="flex items-center px-3">
@@ -97,11 +98,16 @@ export default function TransactionHistory({
               </div>
 
               {/* Experience Name */}
-              <div className="flex justify-center px-3">
-                <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-center bg-green-100 text-green-800">
-                  {transaction.experience}
-                </span>
-              </div>
+<div className="flex justify-center px-3 relative group">
+  <span
+    className="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-center bg-green-100 text-green-800 truncate max-w-[5rem] cursor-default"
+  >
+    {transaction.experience}
+  </span>
+<div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-200 z-50">
+  {transaction.experience}
+</div>
+</div>
 
               {/* Amount */}
               <div className="text-center font-medium text-green-600 text-xs px-3">
@@ -192,6 +198,31 @@ export default function TransactionHistory({
             </button>
           </div>
         )}
+        {showAllTransactions && (
+  <div className="flex justify-end mt-4 border-t border-gray-100 pt-3">
+    <button
+      onClick={() => setShowAllTransactions(false)}
+      className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium bg-orange-400
+     text-white rounded-lg hover:bg-orange-300 transition-colors"
+    >
+      <span>See Less Transactions</span>
+      <svg
+        className="w-3.5 h-3.5 transform rotate-180"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M9 5l7 7-7 7"
+        />
+      </svg>
+    </button>
+  </div>
+)}
+
       </div>
     </div>
   );

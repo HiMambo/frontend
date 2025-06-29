@@ -72,7 +72,7 @@ export default function UserProfileDashboard() {
 
   const [showAllTransactions, setShowAllTransactions] = useState(false);
 
-  const [loading, setLoading] = useState(true); // <-- NEW
+  const [loading, setLoading] = useState(true); 
   const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
 
   const [upcomingExperiencesList] = useState([
@@ -162,7 +162,7 @@ export default function UserProfileDashboard() {
       } catch (error) {
         console.error("Failed to fetch transactions:", error);
       } finally {
-        setLoading(false); // <-- Hide loader when fetch is done (success or error)
+        setLoading(false); 
       }
     };
 
