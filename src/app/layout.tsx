@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import { Cart } from "@/context/Cart";
+import { CartProvider } from "@/context/Cart";
+import { SearchProvider } from "@/context/SearchContext";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,8 +30,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* Wrap all pages with the PriceProvider */}
-        <Cart>{children}</Cart>
+        {/* Wrap all pages with the SearchProvider and CartProvider */}
+        <SearchProvider>
+          <CartProvider>
+            {children}
+          </CartProvider>
+        </SearchProvider>
       </body>
     </html>
   );

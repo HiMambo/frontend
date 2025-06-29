@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from "react";
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
   LinearScale,
-  PointElement,
   LineElement,
+  PointElement,
   Title,
   Tooltip,
-  Legend,
 } from "chart.js";
-import { Line } from 'react-chartjs-2';
-import { 
-  FaCcMastercard, 
-  FaCcPaypal, 
-  FaCcVisa, 
-  FaGooglePay, 
+import { X as XIcon } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
+import {
   FaApplePay,
-  FaEuroSign,
-  FaDollarSign,
-  FaPoundSign,
   FaBitcoin,
+  FaCcMastercard,
+  FaCcPaypal,
+  FaCcVisa,
   FaCreditCard,
+  FaDollarSign,
+  FaEuroSign,
+  FaGooglePay,
+  FaMoneyBillWave,
+  FaPoundSign,
   FaUniversity,
-  FaMoneyBillWave
-} from 'react-icons/fa';
-import { SiSololearn } from 'react-icons/si';
-import { X as XIcon } from 'lucide-react';
+} from "react-icons/fa";
+import { SiSololearn } from "react-icons/si";
 
-import Image from 'next/image';
+import Image from "next/image";
 
 import { fetchTotalPaymentPartnerById } from "@/lib/api";
 
@@ -55,12 +55,11 @@ type PaymentDataCrypto = {
   converted: number;
 };
 
-
 type GraphOptions = {
   responsive: boolean;
   plugins: {
     legend: {
-      position: 'top' | 'bottom' | 'left' | 'right';
+      position: "top" | "bottom" | "left" | "right";
     };
     title: {
       display: boolean;
@@ -68,15 +67,25 @@ type GraphOptions = {
     };
   };
 };
+type Transaction = {
+  id: number;
+  partner_name: string;
+  experience_name: string;
+  total_price: number;
+  booking_date: string;
+};
 
 // Experience colors type definition
-type ExperienceType = 'Sustainable Safari' | 'Eco Hiking Tour' | 'Green City Tour';
+// type ExperienceType =
+//   | "Sustainable Safari"
+//   | "Eco Hiking Tour"
+//   | "Green City Tour";
 
-const experienceColors: Record<ExperienceType, string> = {
-  'Sustainable Safari': 'bg-green-100 text-green-800',
-  'Eco Hiking Tour': 'bg-blue-100 text-blue-800',
-  'Green City Tour': 'bg-purple-100 text-purple-800'
-} as const;
+// const experienceColors: Record<ExperienceType, string> = {
+//   "Sustainable Safari": "bg-green-100 text-green-800",
+//   "Eco Hiking Tour": "bg-blue-100 text-blue-800",
+//   "Green City Tour": "bg-purple-100 text-purple-800",
+// } as const;
 
 const currencies = [
   { code: "EUR", flag: "🇪🇺", icon: FaEuroSign },
@@ -87,19 +96,19 @@ const currencies = [
 ];
 
 // Currency dropdown component for reusability
-const CurrencyDropdown = ({ 
-  selectedCurrency, 
-  showDropdown, 
-  onSelect, 
-  onToggle 
-}: { 
-  selectedCurrency: { code: string; flag: string }; 
-  showDropdown: boolean; 
-  onSelect: (currency: typeof currencies[0]) => void; 
-  onToggle: () => void; 
+const CurrencyDropdown = ({
+  selectedCurrency,
+  showDropdown,
+  onSelect,
+  onToggle,
+}: {
+  selectedCurrency: { code: string; flag: string };
+  showDropdown: boolean;
+  onSelect: (currency: (typeof currencies)[0]) => void;
+  onToggle: () => void;
 }) => (
   <div className="relative">
-    <button 
+    <button
       type="button"
       className="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-lg hover:bg-gray-50 border border-gray-200"
       onClick={(e) => {
@@ -108,19 +117,20 @@ const CurrencyDropdown = ({
       }}
     >
       {React.createElement(
-        currencies.find(c => c.code === selectedCurrency.code)?.icon || FaDollarSign,
+        currencies.find((c) => c.code === selectedCurrency.code)?.icon ||
+          FaDollarSign,
         { className: "w-5 h-5 mr-1" }
       )}
       <span className="mr-1">{selectedCurrency.flag}</span>
       <span>{selectedCurrency.code}</span>
       <XIcon className="w-4 h-4 ml-1" />
     </button>
-    
+
     {showDropdown && (
       <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
         <div className="py-1">
           {currencies.map((currency) => (
-            <button 
+            <button
               key={currency.code}
               className="w-full flex items-center px-4 py-2 hover:bg-gray-50 transition-colors"
               onClick={() => {
@@ -128,7 +138,9 @@ const CurrencyDropdown = ({
                 onToggle();
               }}
             >
-              {React.createElement(currency.icon, { className: "w-5 h-5 mr-2" })}
+              {React.createElement(currency.icon, {
+                className: "w-5 h-5 mr-2",
+              })}
               <span className="mr-2">{currency.flag}</span>
               <span>{currency.code}</span>
             </button>
@@ -145,80 +157,91 @@ export default function MamboWallet() {
   const [showBankModal, setShowBankModal] = useState(false);
   const [showPaymentMethods, setShowPaymentMethods] = useState(false); // Add new state for payment method dropdown
   const [showCurrencySelect, setShowCurrencySelect] = useState(false); // Add this line
-  const [selectedCurrency, setSelectedCurrency] = useState({ code: "EUR", flag: "🇪🇺" });
+  const [selectedCurrency, setSelectedCurrency] = useState({
+    code: "EUR",
+    flag: "🇪🇺",
+  });
   const [amount, setAmount] = useState("300");
-  const [showReceiveCurrencySelect, setShowReceiveCurrencySelect] = useState(false);
-  const [selectedReceiveCurrency, setSelectedReceiveCurrency] = useState({ code: "BTC", flag: "₿" });
+  const [showReceiveCurrencySelect, setShowReceiveCurrencySelect] =
+    useState(false);
+
+  const [selectedReceiveCurrency, setSelectedReceiveCurrency] = useState({
+    code: "BTC",
+    flag: "₿",
+  });
   const [receiveAmount, setReceiveAmount] = useState("0.00303431");
-  const [showExpandedTransactions, setShowExpandedTransactions] = useState(false);
+  const [showExpandedTransactions, setShowExpandedTransactions] =
+    useState(false);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [summaryPaymentFiat, setSummaryPaymentFiat] = useState<Record<TimeView, PaymentData>>({
-                                        "This Month":   { totalValue: 0.00, totalExperiences: 0, average: 0 },
-                                        "This Year":    { totalValue: 0.00, totalExperiences: 0, average: 0 },
-                                        "Forever View": { totalValue: 0.00, totalExperiences: 0, average: 0 },
-                                      });
-  const [summaryPaymentCrypto, setSummaryPaymentCrypto] = useState<Record<TimeView, PaymentDataCrypto>>({
-                                        "This Month":   { totalValue: 0.00, totalExperiences: 0, converted: 0 },
-                                        "This Year":    { totalValue: 0.00, totalExperiences: 0, converted: 0 },
-                                        "Forever View": { totalValue: 0.00, totalExperiences: 0, converted: 0 },
-                                      });
+  const [summaryPaymentFiat, setSummaryPaymentFiat] = useState<
+    Record<TimeView, PaymentData>
+  >({
+    "This Month": { totalValue: 0.0, totalExperiences: 0, average: 0 },
+    "This Year": { totalValue: 0.0, totalExperiences: 0, average: 0 },
+    "Forever View": { totalValue: 0.0, totalExperiences: 0, average: 0 },
+  });
+  const [summaryPaymentCrypto, setSummaryPaymentCrypto] = useState<
+    Record<TimeView, PaymentDataCrypto>
+  >({
+    "This Month": { totalValue: 0.0, totalExperiences: 0, converted: 0 },
+    "This Year": { totalValue: 0.0, totalExperiences: 0, converted: 0 },
+    "Forever View": { totalValue: 0.0, totalExperiences: 0, converted: 0 },
+  });
+  
   useEffect(() => {
-    setIsClient(true); // Set to true once the component is mounted on the client
+    setIsClient(true);
   }, []);
-
-  useEffect(() => {
-    if (showBankModal || showExpandedTransactions) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [showBankModal, showExpandedTransactions]);
 
   useEffect(() => {
     const fetchPaymentData = async () => {
       try {
+        console.log("Fetching payment data...");
         setLoading(true);
-        const partnerId = 11; // Replace with the actual partner ID
+        const partnerId = 11;
         const data = await fetchTotalPaymentPartnerById(partnerId);
 
-        console.log("Data from API")
-        console.log(data)
-
-        // For fiat
+        console.log("Fetched payment data:", data);
         const dataDisplay = {
-          "This Month": { totalValue: data.total_payments_USDC, 
-                          totalExperiences: 2, 
-                          average: 21 },
-          "This Year": {  totalValue: data.total_payments_USDC, 
-                          totalExperiences: 18, 
-                          average: 17 },
-          "Forever View": { totalValue: data.total_payments_USDC, 
-                            totalExperiences: 72, 
-                            average: 16 },
+          "This Month": {
+            totalValue: data.total_payments_USDC,
+            totalExperiences: 2,
+            average: 21,
+          },
+          "This Year": {
+            totalValue: data.total_payments_USDC,
+            totalExperiences: 18,
+            average: 17,
+          },
+          "Forever View": {
+            totalValue: data.total_payments_USDC,
+            totalExperiences: 72,
+            average: 16,
+          },
         };
-        setSummaryPaymentFiat(dataDisplay)
+        setSummaryPaymentFiat(dataDisplay);
 
-        // For crypto
         const dataDisplayCrypto = {
-          "This Month": { totalValue: data.total_payments_SOL, 
-                          totalExperiences: 1, 
-                          converted: 0.35 },
-          "This Year": {  totalValue: data.total_payments_SOL, 
-                          totalExperiences: 30, 
-                          converted: 0.4 },
-          "Forever View": { totalValue: data.total_payments_SOL, 
-                            totalExperiences: 45, 
-                            converted: 0.2 },
+          "This Month": {
+            totalValue: data.total_payments_SOL,
+            totalExperiences: 1,
+            converted: 0.35,
+          },
+          "This Year": {
+            totalValue: data.total_payments_SOL,
+            totalExperiences: 30,
+            converted: 0.4,
+          },
+          "Forever View": {
+            totalValue: data.total_payments_SOL,
+            totalExperiences: 45,
+            converted: 0.2,
+          },
         };
-        setSummaryPaymentCrypto(dataDisplayCrypto)
+        setSummaryPaymentCrypto(dataDisplayCrypto);
 
-
-        setError(null); // Clear any previous errors
+        setError(null);
       } catch (err) {
         console.error("Error fetching payment data:", err);
         setError("Failed to load payment data. Please try again later.");
@@ -227,9 +250,24 @@ export default function MamboWallet() {
       }
     };
 
-    fetchPaymentData();
-  }, []);
+    const fetchTransactions = async () => {
+      try {
+        const res = await fetch(
+          "https://backend-production-f498.up.railway.app/partners/11/bookings"
+        );
+        const data = await res.json();
+        setTransactions(data);
+      } catch (err) {
+        console.error("Error fetching transactions:", err);
+      }
+    };
 
+    console.log("Fetching payment data ...");
+    fetchPaymentData();
+    
+    console.log("Fetching transactions data...");
+    fetchTransactions();
+  }, []);
 
   const refundValues = {
     "This Month": { totalRefunds: 1, refundRate: 6.67 },
@@ -237,18 +275,31 @@ export default function MamboWallet() {
     "Forever View": { totalRefunds: 4, refundRate: 6.67 },
   };
 
-  console.log("summaryPaymentFiat")
-  console.log(summaryPaymentFiat)
+  console.log("summaryPaymentFiat");
+  console.log(summaryPaymentFiat);
   const currentValues = summaryPaymentFiat[view];
 
-  console.log("summaryPaymentCrypto")
-  console.log(summaryPaymentCrypto)
+  console.log("summaryPaymentCrypto");
+  console.log(summaryPaymentCrypto);
   const currentCryptoValues = summaryPaymentCrypto[view];
 
   const currentRefundValues = refundValues[view];
 
   const graphData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
     datasets: [
       {
         label: "All Payments",
@@ -289,9 +340,15 @@ export default function MamboWallet() {
   }
 
   return (
-    <div className={`ml-16 p-8 relative${showBankModal || showExpandedTransactions ? ' overflow-hidden' : ''}`}> {/* Changed from <main> to <div> */}
+    <div
+      className={`ml-16 p-8 relative${
+        showBankModal || showExpandedTransactions ? " overflow-hidden" : ""
+      }`}
+    >
+      {" "}
+      {/* Changed from <main> to <div> */}
       {/* Blurred overlay for entire top/profile area when modal is open */}
-      {(showBankModal || showExpandedTransactions) && (
+      {showBankModal && (
         <div className="fixed inset-0 z-30">
           {/* Top/profile blur */}
           <div className="absolute top-0 left-0 w-full h-56 backdrop-blur-sm bg-black/20 transition-all duration-300 ease-in-out pointer-events-none" />
@@ -310,7 +367,9 @@ export default function MamboWallet() {
         <div className="flex space-x-4 mt-4">
           <button
             className={`px-4 py-2 rounded-lg ${
-              view === "This Month" ? "bg-[#FF8C00] text-white" : "bg-gray-200 text-gray-700"
+              view === "This Month"
+                ? "bg-[#FF8C00] text-white"
+                : "bg-gray-200 text-gray-700"
             }`}
             onClick={() => setView("This Month")}
           >
@@ -318,7 +377,9 @@ export default function MamboWallet() {
           </button>
           <button
             className={`px-4 py-2 rounded-lg ${
-              view === "This Year" ? "bg-[#FF8C00] text-white" : "bg-gray-200 text-gray-700"
+              view === "This Year"
+                ? "bg-[#FF8C00] text-white"
+                : "bg-gray-200 text-gray-700"
             }`}
             onClick={() => setView("This Year")}
           >
@@ -326,7 +387,9 @@ export default function MamboWallet() {
           </button>
           <button
             className={`px-4 py-2 rounded-lg ${
-              view === "Forever View" ? "bg-[#FF8C00] text-white" : "bg-gray-200 text-gray-700"
+              view === "Forever View"
+                ? "bg-[#FF8C00] text-white"
+                : "bg-gray-200 text-gray-700"
             }`}
             onClick={() => setView("Forever View")}
           >
@@ -334,7 +397,6 @@ export default function MamboWallet() {
           </button>
         </div>
       </header>
-
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* First Row */}
         <div className="bg-white p-6 rounded-lg shadow-md relative">
@@ -349,7 +411,8 @@ export default function MamboWallet() {
                 ?
               </button>
               <div className="absolute right-0 top-full mt-2 bg-gray-100 p-4 rounded-lg shadow-md text-sm text-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
-                This card shows the total value of payments, the number of experiences purchased, and the average value per experience.
+                This card shows the total value of payments, the number of
+                experiences purchased, and the average value per experience.
               </div>
             </div>
           </div>
@@ -360,8 +423,8 @@ export default function MamboWallet() {
           <p className="text-sm text-gray-500">Total Payments Value</p>
           <div className="mt-4 text-sm text-gray-600">
             {/* <div className="flex justify-between"> */}
-              {/* <span>Total Exp. Purchased:</span> */}
-              {/* <span>{currentValues.totalExperiences.toLocaleString()}</span> */}
+            {/* <span>Total Exp. Purchased:</span> */}
+            {/* <span>{currentValues.totalExperiences.toLocaleString()}</span> */}
             {/* </div> */}
             <div className="flex justify-between">
               <span>Average Per Experience:</span>
@@ -385,13 +448,18 @@ export default function MamboWallet() {
                 ?
               </button>
               <div className="absolute right-0 top-full mt-2 bg-gray-100 p-4 rounded-lg shadow-md text-sm text-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
-                This card shows the total value of crypto payments, the number of experiences purchased, and the total converted to local currency.
+                This card shows the total value of crypto payments, the number
+                of experiences purchased, and the total converted to local
+                currency.
               </div>
             </div>
           </div>
           <p className="text-4xl font-bold mb-2">
             <span className="text-sm text-purple-600 mr-1">SOL</span>
-            {currentCryptoValues.totalValue.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 })}
+            {currentCryptoValues.totalValue.toLocaleString(undefined, {
+              minimumFractionDigits: 4,
+              maximumFractionDigits: 4,
+            })}
           </p>
           <p className="text-sm text-gray-500">Total Payments Value</p>
           <div className="mt-4 text-sm text-gray-600">
@@ -403,7 +471,10 @@ export default function MamboWallet() {
               <span>Total Converted To Local Currency:</span>
               <span>
                 <span className="text-xs text-purple-600 mr-1">SOL</span>
-                {currentCryptoValues.converted.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 4 })}
+                {currentCryptoValues.converted.toLocaleString(undefined, {
+                  minimumFractionDigits: 3,
+                  maximumFractionDigits: 4,
+                })}
               </span>
             </div>
           </div>
@@ -425,22 +496,22 @@ export default function MamboWallet() {
               </div>
             </div>
           </div>
-          
+
           <div className="flex flex-col space-y-4 relative">
-            <button 
+            <button
               className="px-4 py-2.5 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm font-medium"
               onClick={() => setShowBankModal(true)}
             >
               Send To Bank
             </button>
-            
+
             <div className="flex items-center justify-center gap-2 text-white text-sm">
               <span className="opacity-75">Powered by</span>
               <div className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-md">
                 <span className="font-semibold">Onramper</span>
-                <Image 
-                  src="/onramper.png" 
-                  alt="Onramper" 
+                <Image
+                  src="/onramper.png"
+                  alt="Onramper"
                   layout="intrinsic" // Scales based on intrinsic dimensions
                   width={30} // Pixel width
                   height={10} // Pixel height
@@ -448,9 +519,11 @@ export default function MamboWallet() {
                 />
               </div>
             </div>
-            
+
             <p className="text-[11px] leading-tight text-white text-center mt-2">
-              By clicking &apos;Send To Bank&apos;, you will be able to send your money to your bank or any other preferred destination. You will be also able to select your currency of choice.
+              By clicking &apos;Send To Bank&apos;, you will be able to send
+              your money to your bank or any other preferred destination. You
+              will be also able to select your currency of choice.
             </p>
           </div>
         </div>
@@ -468,7 +541,8 @@ export default function MamboWallet() {
                 ?
               </button>
               <div className="absolute right-0 top-full mt-2 bg-gray-100 p-4 rounded-lg shadow-md text-sm text-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
-                This graph compares your payment trends over time between regular and crypto payments.
+                This graph compares your payment trends over time between
+                regular and crypto payments.
               </div>
             </div>
           </div>
@@ -487,7 +561,8 @@ export default function MamboWallet() {
                 ?
               </button>
               <div className="absolute right-0 top-full mt-2 bg-gray-100 p-4 rounded-lg shadow-md text-sm text-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                This card shows the breakdown of payment methods used by customers.
+                This card shows the breakdown of payment methods used by
+                customers.
               </div>
             </div>
           </div>
@@ -497,16 +572,16 @@ export default function MamboWallet() {
               <li className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="p-1 bg-white rounded-full shadow-sm">
-                    <Image 
-                      src="/solana.png" 
-                      alt="Solana" 
+                    <Image
+                      src="/solana.png"
+                      alt="Solana"
                       className="w-5 h-5"
                       layout="intrinsic" // Makes the image responsive
                       width={100} // Pixel width
                       height={50} // Pixel height
                       style={{
                         filter: "hue-rotate(220deg) brightness(1.2)",
-                        mixBlendMode: "multiply"
+                        mixBlendMode: "multiply",
                       }}
                     />
                   </div>
@@ -583,7 +658,9 @@ export default function MamboWallet() {
           </div>
 
           {/* Grid Container */}
-          <div className="pl-0 pr-0"> {/* Remove extra padding for grid alignment */}
+          <div className="pl-0 pr-0">
+            {" "}
+            {/* Remove extra padding for grid alignment */}
             {/* Column Headers */}
             <div className="grid grid-cols-4 gap-0 mb-2 text-xs font-medium text-gray-500">
               <div className="px-4 text-left">Client Name</div>
@@ -593,122 +670,55 @@ export default function MamboWallet() {
             </div>
             {/* Transactions List */}
             <div className="space-y-3">
-              {[...Array(3)].map((_, index) => (
-                <div key={index} className="grid grid-cols-4 gap-0 items-center py-3 border-b border-gray-100">
-                  <div className="flex items-center px-4">
-                    <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center shrink-0 mr-3">
-                      <span className="text-lg font-semibold">
-                        {index === 0 ? 'JD' : index === 1 ? 'JS' : 'AJ'}
+              {transactions
+                .slice(0, showExpandedTransactions ? transactions.length : 3)
+                .map((transaction) => (
+                  <div
+                    key={transaction.id}
+                    className="grid grid-cols-4 gap-0 items-center py-3 border-b border-gray-100"
+                  >
+                    <div className="flex items-center px-4">
+                      <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center shrink-0 mr-3">
+                        <span className="text-lg font-semibold">
+                          {transaction.partner_name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                            .slice(0, 2)}
+                        </span>
+                      </div>
+                      <span className="text-xs font-medium">
+                        {transaction.partner_name}
                       </span>
                     </div>
-                    <span className="text-xs font-medium">
-                      {index === 0 ? 'John Doe' : index === 1 ? 'Jane Smith' : 'Alice Johnson'}
-                    </span>
+                    <div className="flex justify-center px-4">
+                      <span className="inline-block px-3 py-1 rounded-full text-xs font-medium text-center bg-green-100 text-green-800">
+                        {transaction.experience_name}
+                      </span>
+                    </div>
+                    <div className="text-center font-medium text-green-600 text-xs px-4">
+                      €{transaction.total_price}
+                    </div>
+                    <div className="text-right text-xs text-gray-500 px-4">
+                      {transaction.booking_date}
+                    </div>
                   </div>
-                  <div className="flex justify-center px-4">
-                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium text-center ${
-                      index === 0
-                        ? experienceColors["Sustainable Safari"]
-                        : index === 1
-                        ? experienceColors["Eco Hiking Tour"]
-                        : experienceColors["Green City Tour"]
-                    }`}>
-                      {index === 0 ? 'Sustainable Safari' : index === 1 ? 'Eco Hiking Tour' : 'Green City Tour'}
-                    </span>
-                  </div>
-                  <div className="text-center font-medium text-green-600 text-xs px-4">
-                    €{index === 0 ? '200' : index === 1 ? '150' : '300'}
-                  </div>
-                  <div className="text-right text-xs text-gray-500 px-4">
-                    2025-05-{(index + 1).toString().padStart(2, '0')}
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
 
           {/* See More Button */}
           <div className="flex justify-end mt-6">
-            <button 
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium bg-orange-400
-             text-white rounded-lg hover:bg-orange-300 transition-colors"
-              onClick={() => setShowExpandedTransactions(true)}
+            <button
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium bg-orange-400 text-white rounded-lg hover:bg-orange-300 transition-colors"
+              onClick={() => setShowExpandedTransactions((prev) => !prev)}
             >
-              See More
+              {showExpandedTransactions ? "Show Less" : "See More"}
             </button>
           </div>
         </div>
 
         {/* Expanded Transactions Modal */}
-        {showExpandedTransactions && (
-          <>
-            {/* Blurred Overlay */}
-            <div 
-              className="fixed inset-0 backdrop-blur-sm bg-black/30 z-40 transition-all duration-300 ease-in-out"
-              onClick={() => setShowExpandedTransactions(false)}
-            />
-            <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-4xl w-full">
-                {/* Header */}
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-semibold">Transaction History</h3>
-                  <button
-                    onClick={() => setShowExpandedTransactions(false)}
-                    className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-                  >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-
-                {/* Grid Container */}
-                <div className="pl-0 pr-0">
-                  {/* Column Headers */}
-                  <div className="grid grid-cols-4 gap-0 mb-2 text-xs font-medium text-gray-500">
-                    <div className="px-4 text-left">Client Name</div>
-                    <div className="px-4 text-center">Experience Name</div>
-                    <div className="px-4 text-center">Amount Paid</div>
-                    <div className="px-4 text-right">Payment Date</div>
-                  </div>
-                  <div className="max-h-[60vh] overflow-y-auto space-y-3">
-                    {[...Array(8)].map((_, index) => (
-                      <div key={index} className="grid grid-cols-4 gap-0 items-center py-3 border-b border-gray-100">
-                        <div className="flex items-center px-4">
-                          <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center shrink-0 mr-3">
-                            <span className="text-lg font-semibold">
-                              {index === 0 ? 'JD' : index === 1 ? 'JS' : 'AJ'}
-                            </span>
-                          </div>
-                          <span className="text-xs font-medium">
-                            {index === 0 ? 'John Doe' : index === 1 ? 'Jane Smith' : 'Alice Johnson'}
-                          </span>
-                        </div>
-                        <div className="flex justify-center px-4">
-                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium text-center ${
-                            index === 0
-                              ? experienceColors["Sustainable Safari"]
-                              : index === 1
-                              ? experienceColors["Eco Hiking Tour"]
-                              : experienceColors["Green City Tour"]
-                          }`}>
-                            {index === 0 ? 'Sustainable Safari' : index === 1 ? 'Eco Hiking Tour' : 'Green City Tour'}
-                          </span>
-                        </div>
-                        <div className="text-center font-medium text-green-600 text-xs px-4">
-                          €{index === 0 ? '200' : index === 1 ? '150' : '300'}
-                        </div>
-                        <div className="text-right text-xs text-gray-500 px-4">
-                          2025-05-{(index + 1).toString().padStart(2, '0')}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
 
         <div className="bg-white p-6 rounded-lg shadow-md relative">
           <div className="flex justify-between items-center mb-4">
@@ -722,29 +732,35 @@ export default function MamboWallet() {
                 ?
               </button>
               <div className="absolute right-0 top-full mt-2 bg-gray-100 p-4 rounded-lg shadow-md text-sm text-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
-                This card shows the total refunds and the refund rate compared to total experiences booked.
+                This card shows the total refunds and the refund rate compared
+                to total experiences booked.
               </div>
             </div>
           </div>
-          <p className="text-4xl font-bold mb-2 text-red-600">-€{currentRefundValues.totalRefunds.toLocaleString()}</p>
+          <p className="text-4xl font-bold mb-2 text-red-600">
+            -€{currentRefundValues.totalRefunds.toLocaleString()}
+          </p>
           <p className="text-sm text-gray-500">Total Refunds Value</p>
           <div className="mt-4 text-sm text-gray-600">
             <div className="flex justify-between mb-2">
               <span>Total Refunds:</span>
-              <span className="text-red-600">{currentRefundValues.totalRefunds}</span>
+              <span className="text-red-600">
+                {currentRefundValues.totalRefunds}
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Refunds Rate / Experiences:</span>
-              <span className="text-red-600">{currentRefundValues.refundRate}%</span>
+              <span className="text-red-600">
+                {currentRefundValues.refundRate}%
+              </span>
             </div>
           </div>
         </div>
       </section>
-
       {/* Bank Details Modal */}
       {showBankModal && (
         <>
-          <div 
+          <div
             className="fixed inset-0 backdrop-blur-sm bg-black/30 z-40 transition-all duration-300 ease-in-out"
             onClick={() => setShowBankModal(false)}
           />
@@ -758,13 +774,18 @@ export default function MamboWallet() {
                 <XIcon className="w-6 h-6" />
               </button>
 
-              <form className="space-y-6" onSubmit={(e) => {
-                e.preventDefault();
-                // Handle form submission here
-              }}>
+              <form
+                className="space-y-6"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  // Handle form submission here
+                }}
+              >
                 {/* Amount Input */}
                 <div className="space-y-2">
-                  <label className="block text-sm text-gray-600">You send</label>
+                  <label className="block text-sm text-gray-600">
+                    You send
+                  </label>
                   <div className="flex items-center bg-white rounded-xl p-3 border border-gray-200">
                     <input
                       type="number"
@@ -774,18 +795,22 @@ export default function MamboWallet() {
                       min="0"
                       step="0.01"
                     />
-                    <CurrencyDropdown 
-                      selectedCurrency={selectedCurrency} 
-                      showDropdown={showCurrencySelect} 
-                      onSelect={(currency) => setSelectedCurrency(currency)} 
-                      onToggle={() => setShowCurrencySelect(!showCurrencySelect)} 
+                    <CurrencyDropdown
+                      selectedCurrency={selectedCurrency}
+                      showDropdown={showCurrencySelect}
+                      onSelect={(currency) => setSelectedCurrency(currency)}
+                      onToggle={() =>
+                        setShowCurrencySelect(!showCurrencySelect)
+                      }
                     />
                   </div>
                 </div>
 
                 {/* Received Amount */}
                 <div className="space-y-2">
-                  <label className="block text-sm text-gray-600">You receive</label>
+                  <label className="block text-sm text-gray-600">
+                    You receive
+                  </label>
                   <div className="flex items-center bg-white rounded-xl p-3 border border-gray-200">
                     <input
                       type="number"
@@ -795,19 +820,25 @@ export default function MamboWallet() {
                       min="0"
                       step="0.00000001"
                     />
-                    <CurrencyDropdown 
-                      selectedCurrency={selectedReceiveCurrency} 
-                      showDropdown={showReceiveCurrencySelect} 
-                      onSelect={(currency) => setSelectedReceiveCurrency(currency)} 
-                      onToggle={() => setShowReceiveCurrencySelect(!showReceiveCurrencySelect)} 
+                    <CurrencyDropdown
+                      selectedCurrency={selectedReceiveCurrency}
+                      showDropdown={showReceiveCurrencySelect}
+                      onSelect={(currency) =>
+                        setSelectedReceiveCurrency(currency)
+                      }
+                      onToggle={() =>
+                        setShowReceiveCurrencySelect(!showReceiveCurrencySelect)
+                      }
                     />
                   </div>
                 </div>
 
                 {/* Payment Method Selection */}
                 <div className="space-y-2 relative">
-                  <label className="block text-sm text-gray-600">Destination</label>
-                  <button 
+                  <label className="block text-sm text-gray-600">
+                    Destination
+                  </label>
+                  <button
                     type="button"
                     className="w-full flex items-center justify-between bg-white p-4 rounded-xl border border-gray-200 hover:border-gray-300"
                     onClick={(e) => {
@@ -818,9 +849,15 @@ export default function MamboWallet() {
                     <div className="flex items-center space-x-3">
                       <FaCreditCard className="w-6 h-6 text-gray-700" />
                       <span>Revolut Pay</span>
-                      <span className="text-green-500 text-sm">Recommended</span>
+                      <span className="text-green-500 text-sm">
+                        Recommended
+                      </span>
                     </div>
-                    <XIcon className={`w-4 h-4 transition-transform ${showPaymentMethods ? 'rotate-180' : ''}`} />
+                    <XIcon
+                      className={`w-4 h-4 transition-transform ${
+                        showPaymentMethods ? "rotate-180" : ""
+                      }`}
+                    />
                   </button>
 
                   {/* Payment Methods Dropdown */}
@@ -833,7 +870,9 @@ export default function MamboWallet() {
                         <button className="w-full flex items-center px-4 py-3 hover:bg-gray-50">
                           <FaCreditCard className="w-6 h-6 mr-3 text-gray-700" />
                           <span>Revolut Pay</span>
-                          <span className="ml-2 text-sm text-green-500">Recommended</span>
+                          <span className="ml-2 text-sm text-green-500">
+                            Recommended
+                          </span>
                         </button>
                         <button className="w-full flex items-center px-4 py-3 hover:bg-gray-50">
                           <FaApplePay className="w-6 h-6 mr-3 text-black" />
@@ -871,7 +910,7 @@ export default function MamboWallet() {
                   )}
                 </div>
 
-                <button 
+                <button
                   type="submit"
                   className="w-full px-4 py-4 bg-black text-white rounded-xl text-lg font-medium hover:bg-gray-800 transition-colors duration-200"
                 >

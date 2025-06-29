@@ -6,17 +6,21 @@ import Footer from "@/components/shared/Footer";
 import BookingSummary from "@/components/PaymentPage/BookingSummary";
 import LoginAndPaymentFlow from "@/components/PaymentPage/LoginAndPaymentFlow";
 import ProgressBar from "@/components/PaymentPage/ProgressBar";
-import { useCart } from "@/context/Cart"; // Import the Cart context
+import { useCart } from "@/context/Cart";
 
 export default function PaymentPage() {
   const [currentStep, setCurrentStep] = useState(1); // 1 = Login, 2 = Payment, 3 = Review
-  const { experienceId, price } = useCart(); // Access the context values
+  const { cartExperience, priceBreakdown, isHydrated } = useCart(); // Access the context values
 
-  // Log the context values for debugging
   useEffect(() => {
     console.log("PaymentPage mounted");
-    console.log("Context values - experienceId:", experienceId, "price:", price);
-  }, [experienceId, price]); // Log whenever experienceId or price changes
+  }, []);
+
+  useEffect(() => {
+    if (!isHydrated) return;
+    
+    console.log("Context values updated - experience.Id:", cartExperience?.id, "price:", priceBreakdown?.finalPrice);
+  }, [cartExperience?.id, priceBreakdown?.finalPrice, isHydrated]);
 
   return (
     <>
@@ -25,11 +29,11 @@ export default function PaymentPage() {
         <ProgressBar currentStep={currentStep} />
       </div>
       <main className="grid md:grid-cols-5 gap-6 p-6">
-        {/* Make LoginAndPaymentFlow span 2 columns */}
+        {/* Make LoginAndPaymentFlow */}
         <div className="md:col-span-3">
           <LoginAndPaymentFlow setCurrentStep={setCurrentStep} />
         </div>
-        {/* BookingSummary stays in 1 column */}
+        {/* BookingSummary */}
         <div className="md:col-span-2">
           <BookingSummary />
         </div>

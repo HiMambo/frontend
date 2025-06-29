@@ -4,24 +4,24 @@ type ProgressBarProps = {
 
 const steps = [
   { label: 'Login/Signup', step: 1 },
-  { label: 'Payment', step: 2 },
-  { label: 'Review', step: 3 },
+  { label: 'Guests', step: 2 },
+  { label: 'Payment', step: 3 },
 ];
 
 export default function ProgressBar({ currentStep }: ProgressBarProps) {
   const totalSteps = steps.length;
   const progressPercentage =
-    ((currentStep - 1) / (totalSteps - 1)) * 100;
+    Math.min(((currentStep - 1) / (totalSteps - 1)) * 100, 100);
 
   return (
     <div className="w-full max-w-3xl mx-auto px-4 pt-10">
       <div className="relative flex items-center justify-between">
         {/* Progress track container */}
-        <div className="absolute left-1/6 right-1/6 top-4.5 h-1 bg-gray-200 z-0 rounded" />
+        <div className="absolute left-1/6 right-1/6 top-4 h-1 bg-gray-200 z-0 rounded" />
 
         {/* Filled progress */}
         <div
-          className="absolute left-1/6 top-4.5 h-1 bg-primary z-10 rounded transition-all duration-500"
+          className="absolute left-1/6 top-4 h-1 bg-primary z-10 rounded transition-all duration-500"
           style={{ width: `calc(${progressPercentage}% * 2 / 3)` }} // Scales between 0% and ~100% between circles
         />
 

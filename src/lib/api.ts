@@ -14,6 +14,8 @@ export interface Experience {
   experience_country: string;
   rating_avg: number;
   sustainability_goal: string[];
+  created_at: string;
+  updated_at: string;
 }
 
 export async function fetchExperiences(): Promise<Experience[]> {

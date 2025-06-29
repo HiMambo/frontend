@@ -1,50 +1,66 @@
-import { Loader2 } from "lucide-react";
-import ExperienceCard from "@/components/ExperienceCard";
+import ExperienceCard from "@/components/ExperienceCard/ExperienceCard";
 import { Experience } from "@/types/experience";
+import { SkeletonCard } from "../shared/SkeletonCard";
+import { useFilter } from "@/context/FilterContext";
+import { Button } from "../ui/button";
+import ErrorMessage from "../shared/ErrorMessage";
 
 interface ExperienceListProps {
   experiences: Experience[];
   loading: boolean;
   error: string | null;
+  noResultsForGivenFilters: boolean;
   view: "grid" | "list";
 }
 
-export default function ExperienceList({ experiences, loading, error, view }: ExperienceListProps) {
+export default function ExperienceList({ 
+  experiences,
+  loading,
+  error,
+  noResultsForGivenFilters,
+  view 
+}: ExperienceListProps) {
+  const { resetAllFilters } = useFilter()
+
+  const layoutClass =
+    view === "grid"
+      ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+      : "flex flex-col gap-6";
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center text-gray-500 py-8 gap-2">
-        <Loader2 className="h-5 w-5 animate-spin text-gray-500" />
-        <span>Loading experiences...</span>
+      <div className={layoutClass}>
+        {Array.from({ length: 6 }).map((_, index) => (
+          <SkeletonCard key={index} index={index} view={view} />
+        ))}
       </div>
     );
   }
 
   if (error) {
-    return <div className="text-red-500 text-center">{error}</div>;
+    return <ErrorMessage message={error} />;
+  }
+
+  if (noResultsForGivenFilters) {
+    return (
+      <div className="text-center text-muted-foreground mt-8">
+        <p className="text-lg font-medium">No experiences match the selected filters.</p>
+        <p className="text-sm mt-1">Try adjusting your search or reset the filters.</p>
+        <Button
+          onClick={resetAllFilters}
+          className="mt-4 px-4 py-2 font-semibold rounded"
+          variant="outline"
+        >
+          Reset All Filters
+        </Button>
+      </div>
+    );
   }
 
   return (
-    <div
-      className={
-        view === "grid"
-          ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
-          : "flex flex-col gap-6"
-      }
-    >
-      {experiences.map((exp) => (
-        <ExperienceCard
-          key={exp.id}
-          id={exp.id}
-          title={exp.name}
-          price={parseFloat(exp.experience_price)}
-          location={`${exp.experience_city}, ${exp.experience_country}`}
-          image={exp.experience_promo_image}
-          description={exp.experience_description}
-          discount={null}
-          rating={exp.rating_avg}
-          sustainabilityGoal={exp.sustainability_goal}
-          view={view}
-        />
+    <div className={layoutClass}>
+      {experiences.map((experience) => (
+        <ExperienceCard key={experience.id} experience={experience} view={view} />
       ))}
     </div>
   );

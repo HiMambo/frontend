@@ -6,18 +6,11 @@ import React, {
   useMemo,
 } from 'react';
 
-const STEP = 50;
-const MIN = 0;
-const MAX = 1000;
-const MIN_DISTANCE = 50;
-
 interface PriceFilterProps {
   minValue: number;
   maxValue: number;
-  min?: number;
-  max?: number;
-  step?: number;
-  minDistance?: number;
+  min: number;
+  max: number;
   onMinPriceChange: (min: number) => void;
   onMaxPriceChange: (max: number) => void;
 }
@@ -25,15 +18,20 @@ interface PriceFilterProps {
 export default function PriceFilter({
   minValue,
   maxValue,
-  min = MIN,
-  max = MAX,
-  step = STEP,
-  minDistance = MIN_DISTANCE,
+  min,
+  max,
   onMinPriceChange,
   onMaxPriceChange,
 }: PriceFilterProps) {
   const [isDragging, setIsDragging] = useState<number | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
+
+  const minDistance = 1;
+  const step = (max-min) > 999 ? 10 : 1
+
+  const isDisabled = useMemo(() => {
+    return min === max || (max - min) < minDistance;
+  }, [min, max, minDistance]);
 
   const clampMin = useCallback(
     (val: number) => Math.max(min, Math.min(val, maxValue - minDistance)),
@@ -65,6 +63,17 @@ export default function PriceFilter({
     },
     [minValue, maxValue, minDistance, onMinPriceChange, onMaxPriceChange]
   );
+
+  const [tempMinInput, setTempMinInput] = useState(minValue.toString());
+  const [tempMaxInput, setTempMaxInput] = useState(maxValue.toString());
+
+  useEffect(() => {
+  setTempMinInput(minValue.toString());
+}, [minValue]);
+
+  useEffect(() => {
+    setTempMaxInput(maxValue.toString());
+  }, [maxValue]);
 
   const handleMinInput = useCallback(
     (val: number) => {
@@ -138,64 +147,119 @@ export default function PriceFilter({
       <div className="relative mb-4">
         <div
           ref={sliderRef}
-          className="relative h-1 w-full rounded bg-filter-secondary/30 cursor-pointer"
+          className={`relative h-1 w-full rounded cursor-pointer ${
+            isDisabled 
+              ? 'bg-gray-200 cursor-not-allowed opacity-50' 
+              : 'bg-filter-secondary/30'
+          }`}
         >
           {/* Active track */}
-          <div
-            className="absolute h-1 rounded bg-filter-secondary"
-            style={{ left: trackFillLeft, width: trackFillWidth }}
-          />
+          {!isDisabled && (
+            <div
+              className="absolute h-1 rounded bg-filter-secondary"
+              style={{ left: trackFillLeft, width: trackFillWidth }}
+            />
+          )}
 
           {/* Min thumb */}
           <div
-            className="absolute h-5 w-5 bg-filter-primary rounded-full shadow cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 top-1/2"
+            className={`absolute h-5 w-5 rounded-full shadow transform -translate-x-1/2 -translate-y-1/2 top-1/2 transition-transform duration-100 ${
+              isDisabled 
+                ? 'bg-gray-400 cursor-not-allowed opacity-80' 
+                : `bg-filter-primary cursor-grab active:cursor-grabbing ${
+                    isDragging === 0 ? 'scale-110 ring-10 ring-filter-primary/30' : ''
+                  }`
+            }`}
             style={{ left: getThumbPosition(minValue) }}
-            onMouseDown={handleMouseDown(0)}
+            onMouseDown={isDisabled ? undefined : handleMouseDown(0)}
           />
 
           {/* Max thumb */}
           <div
-            className="absolute h-5 w-5 bg-filter-primary rounded-full shadow cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 top-1/2"
+            className={`absolute h-5 w-5 rounded-full shadow transform -translate-x-1/2 -translate-y-1/2 top-1/2 transition-transform duration-100 ${
+              isDisabled 
+                ? 'bg-gray-400 cursor-not-allowed opacity-80' 
+                : `bg-filter-primary cursor-grab active:cursor-grabbing ${
+                    isDragging === 1 ? 'scale-110 ring-10 ring-filter-primary/30' : ''
+                  }`
+            }`}
             style={{ left: getThumbPosition(maxValue) }}
-            onMouseDown={handleMouseDown(1)}
+            onMouseDown={isDisabled ? undefined : handleMouseDown(1)}
           />
         </div>
       </div>
 
       {/* Manual Inputs */}
-      <div className="flex justify-center items-center gap-6 mt-4 text-gray-700">
-        <div className="flex flex-col items-center">
-          <label htmlFor="minInput" className="text-sm text-gray-600 mb-2">Min (€)</label>
-          <input
-            id="minInput"
-            type="number"
-            min={min}
-            max={maxValue - minDistance}
-            step={step}
-            value={minValue}
-            onChange={(e) => handleMinInput(Number(e.target.value))}
-            className="border rounded p-2 h-10 w-24 text-center focus:outline-none focus:ring-2 focus:ring-filter-primary"
-          />
-        </div>
-        <div className="flex flex-col items-center">
-          <label htmlFor="maxInput" className="text-sm text-gray-600 mb-2">Max (€)</label>
-          <input
-            id="maxInput"
-            type="number"
-            min={minValue + minDistance}
-            max={max}
-            step={step}
-            value={maxValue}
-            onChange={(e) => handleMaxInput(Number(e.target.value))}
-            className="border rounded p-2 h-10 w-24 text-center focus:outline-none focus:ring-2 focus:ring-filter-primary"
-          />
-        </div>
+      <div className="flex justify-center items-center gap-4 mt-4 text-gray-700">
+        <ManualInput
+          id="minInput"
+          label="From (€)"
+          value={tempMinInput}
+          setValue={setTempMinInput}
+          onConfirm={handleMinInput}
+          resetValue={minValue.toString()}
+          disabled={isDisabled}
+          
+        />
+        <div className="w-3 h-[1.5px] bg-gray-700 mt-7 rounded-sm" />
+        <ManualInput
+          id="maxInput"
+          label="To (€)"
+          value={tempMaxInput}
+          setValue={setTempMaxInput}
+          onConfirm={handleMaxInput}
+          resetValue={maxValue.toString()}
+          disabled={isDisabled}
+        />
       </div>
+    </div>
+  );
+}
 
-      {/* Current Range Display */}
-      <div className="text-center mt-2 text-sm text-gray-600">
-        Range: €{minValue} - €{maxValue}
-      </div>
+type ManualInputProps = {
+  id: string;
+  label: string;
+  value: string;
+  setValue: (val: string) => void;
+  onConfirm: (val: number) => void;
+  resetValue: string; // external value to reset to on blur
+  disabled?: boolean;
+};
+
+function ManualInput({ id, label, value, setValue, onConfirm, resetValue, disabled }: ManualInputProps) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const key = e.key;
+
+    if (key === 'Escape' || (key === 'Enter' && !/^\d+$/.test(value))) {
+      e.currentTarget.blur();
+      return;
+    }
+
+    if (key === 'Enter') {
+      onConfirm(Number(value));
+      e.currentTarget.blur();
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center">
+      <label htmlFor={id} className="text-sm text-gray-600 mb-2">
+        {label}
+      </label>
+      <input
+        id={id}
+        type="number"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onBlur={() => setValue(resetValue)}
+        className={`border rounded p-2 h-8 w-16 text-center focus:outline-none no-spinner ${
+          disabled 
+            ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+            : 'focus:ring-2 focus:ring-filter-primary'
+        }`}
+        disabled={disabled}
+      />
     </div>
   );
 }

@@ -1,46 +1,63 @@
 'use client'
-
 import { useEffect, useState } from 'react';
 import { AccordionStep } from './AccordionStep';
 import { AuthForm } from './AuthForm';
 import { PaymentForm } from './PaymentForm';
-import ReviewAndConfirm from './ReviewAndConfirm';
-
-import { useCart } from "@/context/Cart"; // Import the Cart context
+import GuestDetailsAndDiscount from './GuestDetailsAndDiscount';
+import { useCart } from "@/context/Cart";
+import { useSearch } from "@/context/SearchContext"
 
 type Props = {
   setCurrentStep: (step: number) => void;
 };
 
+type Guest = {
+  firstName: string;
+  lastName: string;
+};
+
 export default function LoginAndPaymentFlow({ setCurrentStep }: Props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'credit' | 'crypto'>('crypto');
-  const [reviewOpen, setReviewOpen] = useState(false);
+  const [guestDetailsConfirmed, setGuestDetailsConfirmed] = useState(false);
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
+  const { payment_type, setPaymentType } = useCart();
 
-  const { setPaymentType } = useCart(); // Access the Cart context
-  
-  // Update current step
+  const { searchParams, setGuests } = useSearch();
+  const [guestDetails, setGuestDetails] = useState<Guest[]>([
+    { firstName: '', lastName: '' },
+  ]);
+
+  // Initialize guest details when component mounts or guest count changes
+  useEffect(() => {
+    setGuestDetails(prev =>
+      Array.from({ length: searchParams.guests }, (_, i) => ({
+        firstName: prev[i]?.firstName || '',
+        lastName: prev[i]?.lastName || '',
+      }))
+    );
+  }, [searchParams.guests]);
+
+  // Update current step based on new flow
   useEffect(() => {
     if (!isLoggedIn) {
       setCurrentStep(1);
-    } else if (!reviewOpen) {
+    } else if (!guestDetailsConfirmed) {
       setCurrentStep(2);
     } else if (!bookingConfirmed) {
       setCurrentStep(3);
     } else {
-      setCurrentStep(4); // New step for confirmed booking
+      setCurrentStep(4);
     }
-  }, [isLoggedIn, reviewOpen, bookingConfirmed, setCurrentStep]);
+  }, [isLoggedIn, guestDetailsConfirmed, bookingConfirmed, setCurrentStep]);
 
-  // Handle going back to payment
-  const handleBackToPayment = () => {
-    setReviewOpen(false);
+  // Handle guest details confirmation
+  const handleGuestDetailsComplete = () => {
+    setGuestDetailsConfirmed(true);
   };
 
-  // Handle payment form completion (proceed to review)
-  const handlePaymentComplete = () => {
-    setReviewOpen(true);
+  // Handle going back to guest details
+  const handleBackToGuestDetails = () => {
+    setGuestDetailsConfirmed(false);
   };
 
   // Handle booking confirmation (after payment)
@@ -51,10 +68,8 @@ export default function LoginAndPaymentFlow({ setCurrentStep }: Props) {
   // Changing the payment method
   const handleMethodChange = (m: 'credit' | 'crypto') => {
     console.log('Changing payment method to:', m);
-    setPaymentMethod(m); // Update the local state
-    setPaymentType(m); // Update the Cart payment method
+    setPaymentType(m);
   };
-  
 
   return (
     <div className="mx-auto space-y-4 max-w-xl min-h-[500px] transition-all duration-500">
@@ -67,30 +82,33 @@ export default function LoginAndPaymentFlow({ setCurrentStep }: Props) {
         <AuthForm onSuccess={() => setIsLoggedIn(true)} />
       </AccordionStep>
 
-      {/* Step 2: Payment */}
+      {/* Step 2: Guest Details and Discount */}
       <AccordionStep
-        title={reviewOpen ? 'Payment Method Added' : 'Step 2: Choose Payment method'}
-        show={isLoggedIn && !reviewOpen}
-        completed={reviewOpen}
+        title={guestDetailsConfirmed ? 'Guest Details Confirmed' : 'Step 2: Confirm Guests & Apply Discount'}
+        show={isLoggedIn && !guestDetailsConfirmed}
+        completed={guestDetailsConfirmed}
       >
-        <PaymentForm
-          disabled={!isLoggedIn}
-          method={paymentMethod}
-          onMethodChange={handleMethodChange}
-          onComplete={handlePaymentComplete}
+        <GuestDetailsAndDiscount
+          guests={searchParams.guests}
+          setGuests={setGuests}
+          guestDetails={guestDetails}
+          setGuestDetails={setGuestDetails}
+          onComplete={handleGuestDetailsComplete}
         />
       </AccordionStep>
 
-      {/* Step 3: Review */}
+      {/* Step 3: Payment */}
       <AccordionStep
-        title={bookingConfirmed ? "Payment Received!" : 'Step 3: Review & Pay'}
-        show={reviewOpen && !bookingConfirmed}
+        title={bookingConfirmed ? "Payment Complete!" : 'Step 3: Select Payment & Pay'}
+        show={guestDetailsConfirmed && !bookingConfirmed}
         completed={bookingConfirmed}
       >
-        <ReviewAndConfirm
-          paymentMethod={paymentMethod}
-          onConfirm={handleBookingConfirmed}
-          onBackToPayment={handleBackToPayment}
+        <PaymentForm
+          disabled={!guestDetailsConfirmed}
+          method={payment_type}
+          onMethodChange={handleMethodChange}
+          onComplete={handleBookingConfirmed}
+          onBackToGuestDetails={handleBackToGuestDetails}
         />
       </AccordionStep>
 

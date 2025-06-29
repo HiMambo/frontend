@@ -1,6 +1,3 @@
-import React from "react";
-import Image from "next/image";
-
 type FavoritePartner = {
   name: string;
   location: string;
@@ -47,7 +44,9 @@ export default function FavoritesCard({
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div className="bg-gradient-to-br from-orange-100 to-orange-300 p-4 rounded-lg shadow-md border border-orange-200">
           <div className="w-full flex justify-between items-center mb-3">
-            <h3 className="text-sm font-semibold text-orange-800">Favorite HiPartners</h3>
+            <h3 className="text-sm font-semibold text-orange-800">
+              Favorite HiPartners
+            </h3>
             <InfoTooltip text="View your saved favorite sustainable tourism partners." />
           </div>
           <div className="flex items-center gap-3">
@@ -61,7 +60,9 @@ export default function FavoritesCard({
               onClick={onShowFavoritePartners}
               className="flex flex-col cursor-pointer group"
             >
-              <div className="text-xs font-medium text-orange-800">Saved Partners</div>
+              <div className="text-xs font-medium text-orange-800">
+                Saved Partners
+              </div>
               <div className="text-xs text-orange-500 group-hover:text-orange-600">
                 Click to view all
               </div>
@@ -71,7 +72,9 @@ export default function FavoritesCard({
 
         <div className="bg-gradient-to-br from-orange-100 to-orange-300 p-4 rounded-lg shadow-md border border-orange-200">
           <div className="w-full flex justify-between items-center mb-3">
-            <h3 className="text-sm font-semibold text-orange-800">Favorite Experiences</h3>
+            <h3 className="text-sm font-semibold text-orange-800">
+              Favorite Experiences
+            </h3>
             <InfoTooltip text="View your saved favorite sustainable experiences." />
           </div>
           <div className="flex items-center gap-3">
@@ -85,7 +88,9 @@ export default function FavoritesCard({
               onClick={onShowFavoriteExperiences}
               className="flex flex-col cursor-pointer group"
             >
-              <div className="text-xs font-medium text-orange-800">Saved Experiences</div>
+              <div className="text-xs font-medium text-orange-800">
+                Saved Experiences
+              </div>
               <div className="text-xs text-orange-500 group-hover:text-orange-600">
                 Click to view all
               </div>
