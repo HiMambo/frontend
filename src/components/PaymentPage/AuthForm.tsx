@@ -8,7 +8,24 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export function AuthForm({ onSuccess }: { onSuccess: () => void }) {
+type AuthFormProps = {
+  onComplete: () => void;
+};
+
+export function AuthForm({ 
+  onComplete,
+}: AuthFormProps) {
+
+  const handleSignup = async () => {
+    // Authentication placeholder
+    onComplete(); 
+  };
+
+  const handleLogin = async () => {
+    // Authentication placeholder
+    onComplete(); 
+  };
+
   const [tab, setTab] = useState<'login' | 'signup'>('signup');
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
@@ -67,7 +84,7 @@ export function AuthForm({ onSuccess }: { onSuccess: () => void }) {
                 </Label>
               </div>
 
-              <Button className="w-full" onClick={onSuccess} disabled={!acceptedTerms}>
+              <Button className="w-full" onClick={handleSignup} disabled={!acceptedTerms}>
                 Sign up
               </Button>
             </div>
@@ -77,7 +94,7 @@ export function AuthForm({ onSuccess }: { onSuccess: () => void }) {
             <div className="space-y-4">
               <Input placeholder="Email" />
               <Input placeholder="Password" type="password" />
-              <Button className="w-full" onClick={onSuccess}>Login</Button>
+              <Button className="w-full" onClick={handleLogin}>Login</Button>
             </div>
           )}
     </CenteredCard>

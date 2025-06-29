@@ -7,9 +7,10 @@ import { SDGIcons } from "../ExperienceCard/SDGIcons";
 import { SkeletonCard } from "../shared/SkeletonCard";
 import ErrorMessage from "../shared/ErrorMessage";
 import LocationDisplay from "../ExperienceCard/LocationDisplay";
+import { format } from "date-fns";
 
 const BookingSummary: React.FC = () => {
-  const { cartExperience, priceBreakdown, isHydrated } = useCart(); // Get the experience from the Cart context
+  const { cartExperience, priceBreakdown, selectedSlot, isHydrated } = useCart(); // Get the experience from the Cart context
   const { searchParams } = useSearch();
 
   // Component mount and data check
@@ -43,6 +44,20 @@ const BookingSummary: React.FC = () => {
 
   console.log("Rendering BookingSummary with experience:", cartExperience);
 
+  const travelDate = selectedSlot?.start_datetime
+    ? format(new Date(selectedSlot.start_datetime), "MMMM do yyyy")
+    : "Select a time slot";
+
+  const departure = selectedSlot?.start_datetime
+    ? format(new Date(selectedSlot.start_datetime), "HH:mm a")
+    : "Select a time slot";
+
+  const duration = selectedSlot?.start_datetime && selectedSlot?.end_datetime
+    ? `${Math.round(
+        (new Date(selectedSlot.end_datetime).getTime() - new Date(selectedSlot.start_datetime).getTime()) / (1000 * 60 * 60)
+      )} hours`
+    : "Select a time slot";
+
   return (
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden">
       {/* Top image */}
@@ -75,11 +90,11 @@ const BookingSummary: React.FC = () => {
         <div className="text-sm text-gray-700 space-y-1 mb-6">
           <div className="flex justify-between">
             <span className="font-medium">Travel date</span>
-            <span>{cartExperience.travelDate || "June 13th 2025"}</span>
+            <span>{travelDate}</span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium">Departure</span>
-            <span>{cartExperience.departure || "09:30 a.m."}</span>
+            <span>{departure}</span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium">Travellers</span>
@@ -87,11 +102,11 @@ const BookingSummary: React.FC = () => {
           </div>
           <div className="flex justify-between">
             <span className="font-medium">Duration</span>
-            <span>{cartExperience.duration || "10 hours"}</span>
+            <span>{duration}</span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium">Refundability</span>
-            <span>{cartExperience.refundable || "Refundable"}</span>
+            <span>{cartExperience.refundable || "N/A"}</span>
           </div>
         </div>
 

@@ -1,37 +1,46 @@
-'use client';
+"use client";
 
 import { cn } from '@/lib/utils';
+import { Check } from 'lucide-react';
 
 interface AccordionStepProps {
-  show: boolean;
-  onClick?: () => void;
   title: string;
-  completed?: boolean;
+  status: 'pending' | 'active' | 'completed';
   children: React.ReactNode;
 }
 
 export function AccordionStep({
-  show,
-  onClick,
   title,
-  completed = false,
+  status,
   children,
 }: AccordionStepProps) {
+  const isActive = status === 'active';
+  const isCompleted = status === 'completed';
+
   return (
     <div className="border rounded-md overflow-hidden">
-      <button
-        onClick={onClick}
+      <div
         className={cn(
-          'w-full text-left px-6 py-4 bg-muted hover:bg-muted/80 transition flex justify-between items-center',
-          { 'cursor-pointer': !!onClick }
+          'w-full text-left px-6 py-4 transition flex justify-between items-center',
+          {
+            'bg-muted': status === 'pending', 
+            'bg-muted/80': isActive || isCompleted
+          }
         )}
       >
-        <span className="font-semibold">{title}</span>
-        {completed && <span className="text-xs text-green-600">✓</span>}
-      </button>
+        <span className='font-semibold'>
+          {title}
+        </span>
 
-      {show && (
-        <div className="p-6 min-h-[300px] transition-all duration-500 ease-in-out">
+        {isCompleted && 
+          <span className="text-green-600">
+            <Check className="w-5 h-5" />
+          </span>
+        }
+      </div>
+      
+      {isActive && (
+        <div className="p-6 transition-all duration-500 ease-in-out">
           {children}
         </div>
       )}

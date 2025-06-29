@@ -4,14 +4,14 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from '../ui/input';
 import CenteredCard from "./CenteredCard";
-import { useCart } from "@/context/Cart";
+import { AlertCircle } from 'lucide-react';
 
 type Guest = {
   firstName: string;
   lastName: string;
 };
 
-type GuestDetailsAndDiscountProps = {
+type GuestFormProps = {
   guests: number;
   setGuests: (guests: number) => void;
   guestDetails: Guest[];
@@ -19,15 +19,14 @@ type GuestDetailsAndDiscountProps = {
   onComplete: () => void;
 };
 
-export default function GuestDetailsAndDiscount({
+export default function GuestForm({
   guests,
   setGuests,
   guestDetails,
   setGuestDetails,
   onComplete
-}: GuestDetailsAndDiscountProps) {
-  const { basePriceDiscount, setBasePriceDiscount } = useCart();
-  const [promoCode, setPromoCode] = useState("");
+}: GuestFormProps) {
+
   const [error, setError] = useState<string | null>(null);
 
   const handleGuestChange = (increment: boolean) => {
@@ -61,26 +60,6 @@ export default function GuestDetailsAndDiscount({
     setError(null);
     console.log("Guest details:", guestDetails);
     onComplete();
-  };
-
-  const handleApplyPromoCode = () => {
-    console.log("Current discount in context:", basePriceDiscount);
-    if (promoCode === "COLOSSEUM") {
-      const discountValue = 20;
-      setBasePriceDiscount(discountValue);
-      setError(null);
-      console.log("Promo code applied: ", discountValue, "% discount for ", promoCode);
-    } else if (promoCode === "JAGER") {
-      const discountValue = 99.90;
-      setBasePriceDiscount(discountValue);
-      setError(null);
-      console.log("Promo code applied: ", discountValue, "% discount for ", promoCode);
-    } else if (promoCode.trim() === "") {
-      setError("Please enter a promo code");
-    } else {
-      setError("Invalid promo code");
-      setBasePriceDiscount(0);
-    }
   };
 
   return (
@@ -165,39 +144,19 @@ export default function GuestDetailsAndDiscount({
             </div>
           ))}
         </div>
-
-        {/* Promo Code Section */}
-        <div className="space-y-3">
-          <label htmlFor="promoCode" className="block text-sm font-medium text-gray-700">
-            Promo Code (Optional)
-          </label>
-          <div className="flex space-x-2">
-            <Input
-              id="promoCode"
-              type="text"
-              value={promoCode}
-              onChange={(e) => setPromoCode(e.target.value)}
-              className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm"
-              placeholder="Enter promo code"
-            />
-            <Button onClick={handleApplyPromoCode} className="px-4">
-              Apply
-            </Button>
-          </div>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          {basePriceDiscount > 0 && (
-            <p className="text-green-600 text-sm font-medium">
-              ✓ Discount applied: {basePriceDiscount}%
-            </p>
-          )}
-        </div>
+        {error && 
+          <p className="text-red-500 text-sm flex items-center gap-3">
+            <AlertCircle />
+            {error}
+          </p>
+        }
 
         {/* Continue Button */}
         <Button
           onClick={handleComplete}
           className="w-full"
         >
-          Continue to Payment
+          Continue to Time Slot Selection
         </Button>
       </div>
     </CenteredCard>

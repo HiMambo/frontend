@@ -9,7 +9,7 @@ import ProgressBar from "@/components/PaymentPage/ProgressBar";
 import { useCart } from "@/context/Cart";
 
 export default function PaymentPage() {
-  const [currentStep, setCurrentStep] = useState(1); // 1 = Login, 2 = Payment, 3 = Review
+  const [currentStep, setCurrentStep] = useState<number>(1);
   const { cartExperience, priceBreakdown, isHydrated } = useCart(); // Access the context values
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function PaymentPage() {
       <main className="grid md:grid-cols-5 gap-6 p-6">
         {/* Make LoginAndPaymentFlow */}
         <div className="md:col-span-3">
-          <LoginAndPaymentFlow setCurrentStep={setCurrentStep} />
+          <LoginAndPaymentFlow currentStep={currentStep} setCurrentStep={setCurrentStep} />
         </div>
         {/* BookingSummary */}
         <div className="md:col-span-2">

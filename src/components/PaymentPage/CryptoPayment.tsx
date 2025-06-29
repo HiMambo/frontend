@@ -25,12 +25,14 @@ const SHARE_PERCENTAGE_HIMAMBO = 0.1
 
 // Add props for integration
 type CryptoPaymentProps = {
-  onClose?: () => void;
-  onPaymentComplete?: () => void;
+  onClose: () => void;
+  onComplete: () => void;
 };
 
-export default function CryptoPayment({}: CryptoPaymentProps) {
-  const { priceBreakdown, booking_date, cartExperience} = useCart();
+export default function CryptoPayment({
+  onComplete,
+}: CryptoPaymentProps) {
+  const { priceBreakdown, cartExperience, selectedSlot } = useCart();
   const { searchParams } = useSearch();
   const [payment, setPayment] = useState<PaymentSession | null>(null);
   const [loading, setLoading] = useState(true);
@@ -39,12 +41,23 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>('USDC');
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [isBookingCreated, setIsBookingCreated] = useState(false); // Flag to prevent duplicate bookings
-
   
   const [isPaymentSessionInitialized, setIsPaymentSessionInitialized] = useState(false); // Tracks whether the session is initialized
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://127.0.0.1:8000';
   
+  if (!priceBreakdown) {
+    throw new Error("No price data");
+  };
+
+  if (!cartExperience) {
+    throw new Error("No experience data");
+  };
+
+  if (!selectedSlot) {
+    throw new Error("No time slot selected")
+  };
+
   // * Starting the payment session * // 
   useEffect(() => {
     const fetchPaymentData = async () => {
@@ -54,7 +67,7 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
   
         console.log('API URL:', API_URL); // Debugging: Log the API URL
 
-        const totalPrice = priceBreakdown?.finalPrice
+        const totalPrice = priceBreakdown.finalPrice
         console.log('Total Price (after discount):', totalPrice); // Debugging: Log the total price
 
         const response = await fetch(`${API_URL}/experience/${cartExperience?.id}/start_pay_session/price/${totalPrice}`);
@@ -209,7 +222,7 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
     const now = new Date(); 
 
     // Ensure experienceId is not null
-    if (!cartExperience?.id || !priceBreakdown) {
+    if (!cartExperience.id) {
       console.error("Experience ID is null. Cannot create booking.");
       setError("Experience ID is missing. Please try again.");
       return;
@@ -218,17 +231,18 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
     try {
       const bookingData = {
         experience_id: cartExperience.id,
+        slot_id: selectedSlot.id,
         booking_date: now.toISOString(),
-        client_id: 5,
-        duration_days: 2,
+        client_id: 5, // To be reviewed
+        duration_days: 2, // To be reviewed
         number_of_people: searchParams.guests,
-        total_price: priceBreakdown?.finalPrice*(1-SHARE_PERCENTAGE_HIMAMBO),
+        total_price: priceBreakdown.finalPrice*(1-SHARE_PERCENTAGE_HIMAMBO),
         created_at: now.toISOString(),
         updated_at: now.toISOString(),
-        discount: priceBreakdown.cryptoDiscount, //To be reviewed
-        baseDiscount: priceBreakdown.basePriceDiscount, //To be reviewed
+        discount: priceBreakdown.cryptoDiscount, // To be reviewed
+        baseDiscount: priceBreakdown.basePriceDiscount, // To be reviewed
         currency: payment.final_currency,
-        experience_date : booking_date.toISOString(),
+        experience_date : selectedSlot.start_datetime, // To be reviewed
         payment_type: "crypto",
         confirmation_code : "asij1823nasd",
         status: "paid"
@@ -239,6 +253,7 @@ export default function CryptoPayment({}: CryptoPaymentProps) {
       const response = await createBooking(bookingData);
       console.log("Booking created successfully:", response);
       setIsBookingCreated(true);
+      onComplete();
     } catch (err) {
       console.error("Error creating booking:", err);
       setError("Failed to create booking. Please contact support.");
