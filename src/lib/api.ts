@@ -18,6 +18,20 @@ export interface Experience {
   updated_at: string;
 }
 
+// Experience Slot interface
+export interface ExperienceSlot {
+  id: number;
+  experience_id: number;
+  start_datetime: string;
+  end_datetime: string;
+  max_spots: number;
+  booked_spots: number;
+  status: "open" | "full" | "canceled" | "past";
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export async function fetchExperiences(): Promise<Experience[]> {
   console.log("API URL for fetching experiences:");
   console.log(`${API_BASE_URL}/experiences/`); // Added trailing slash
@@ -45,9 +59,21 @@ export async function fetchExperienceById(id: number): Promise<Experience> {
   return res.json();
 }
 
+export async function fetchExperienceSlots(experienceId: number): Promise<ExperienceSlot[]> {
+  console.log(`${API_BASE_URL}/slots/experience/${experienceId}`);
+  const res = await fetch(`${API_BASE_URL}/slots/experience/${experienceId}`, {
+    next: { revalidate: 60 }, // Optional: caching for SSR
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch slots for experience ID: ${experienceId}`);
+  }
+  return res.json();
+}
+
 // Define the type for booking data
 export interface BookingData {
   experience_id: number;
+  slot_id: number;
   booking_date: string;
   client_id: number;
   duration_days: number;
@@ -55,9 +81,10 @@ export interface BookingData {
   total_price: number;
   created_at: string;
   updated_at: string;
-  discount: number;
+  baseDiscount: number; // To be reviewed
+  discount: number; // To be reviewed
   currency: string;
-  experience_date: string;
+  experience_date: string; //To be reviewed
   payment_type: string;
   confirmation_code: string;
   status: string;

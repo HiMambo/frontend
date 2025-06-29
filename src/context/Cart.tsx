@@ -1,7 +1,8 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, useMemo, useCallback, ReactNode } from "react";
-import { useSearch } from "@/context/SearchContext"
+import { useSearch } from "@/context/SearchContext";
+import { type ExperienceSlot } from "@/lib/api";
 
 const LOCAL_STORAGE_KEY = "cartState";
 const CART_EXPIRY_MS = 24 * 60 * 60 * 1000; // 1 day in ms
@@ -42,31 +43,38 @@ type CartContextType = {
   clearCart: () => void;
   isHydrated: boolean;
 
+  // Slot functionality
+  selectedSlot: ExperienceSlot | null;
+  setSelectedSlot: (slot: ExperienceSlot | null) => void;
+
   // Centralized price calculations
   priceBreakdown: PriceBreakdown | null;
   basePriceDiscount: number;
   setBasePriceDiscount: (basePriceDiscount: number) => void;
+  payment_type: "crypto" | "credit";
+  setPaymentType: (payment_type: "crypto" | "credit") => void;
   CRYPTO_DISCOUNT: number;
 
   // Legacy setters and states
   booking_date: Date;
   setBookingDate: (booking_date: Date) => void;
-  payment_type: "crypto" | "credit";
-  setPaymentType: (payment_type: "crypto" | "credit") => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const {searchParams} = useSearch();
+  const { searchParams } = useSearch();
 
   // Cart state
   const [cartExperience, setCartExperience] = useState<CartExperience | null>(null);
   const [basePriceDiscount, setBasePriceDiscount] = useState<number>(0);
-
-  ///Legacy
-  const [booking_date, setBookingDate] = useState<Date>(new Date());
   const [payment_type, setPaymentType] = useState<"crypto" | "credit">("crypto");
+
+  // Slot state
+  const [selectedSlot, setSelectedSlot] = useState<ExperienceSlot | null>(null);
+
+  // Legacy
+  const [booking_date, setBookingDate] = useState<Date>(new Date());
 
   // True when cart state loading from localStorage is complete
   const [isHydrated, setIsHydrated] = useState(false);
@@ -108,6 +116,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCartExperience(null);
     setBookingDate(new Date());
     setBasePriceDiscount(0);
+    setSelectedSlot(null);
     localStorage.removeItem(LOCAL_STORAGE_KEY);
   }, []);
 
@@ -121,6 +130,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         if (now - parsed.savedAt < CART_EXPIRY_MS) {
           setCartExperience(parsed.cartExperience);
           setBookingDate(new Date(parsed.booking_date));
+          // SelectedSlot is not persisted in localStorage as it should be revalidated
         } else {
           localStorage.removeItem(LOCAL_STORAGE_KEY); // Expired
         }
@@ -155,28 +165,31 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       clearCart,
       isHydrated,
 
+      // Slot functionality
+      selectedSlot,
+      setSelectedSlot,
+
       // Centralized price calculations
       priceBreakdown,
       basePriceDiscount,
       setBasePriceDiscount,
+      payment_type,
+      setPaymentType,
       CRYPTO_DISCOUNT,
 
       // Legacy functionality
       booking_date,
       setBookingDate,
-      payment_type,
-      setPaymentType,
     }),
     [
       cartExperience,
       isHydrated,
       clearCart,
-
+      selectedSlot,
       priceBreakdown,
       basePriceDiscount,
-
-      booking_date,
       payment_type,
+      booking_date,
     ]
   );
 

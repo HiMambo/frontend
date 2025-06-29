@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { fetchExperiences } from "@/lib/api";
-import type { Experience } from "@/lib/api";
+import { type Experience, fetchExperiences } from "@/lib/api";
 
 export function useExperiences() {
   const [experiences, setExperiences] = useState<Experience[]>([]);
@@ -9,10 +8,10 @@ export function useExperiences() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
+    setError(null)
     try {
       const data = await fetchExperiences();
       setExperiences(data);
-      setError(null);
     } catch (err) {
       console.error("Error fetching experiences:", err);
       setError("Failed to load experiences. Please try again later.");
