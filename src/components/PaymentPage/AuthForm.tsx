@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,40 +16,19 @@ export function AuthForm() {
   const onComplete = () => {
     markStepComplete(1);
     goToNextStep();
-  }
-
-  const handleSignup = () => {
-    // Authentication placeholder
-    onComplete(); 
   };
 
-  const handleLogin = () => {
-    // Authentication placeholder
-    onComplete(); 
-  };
-
-  const [tab, setTab] = useState<'login' | 'signup'>('signup');
   const [referralSource, setReferralSource] = useState<string | undefined>();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   return (
-    <div>
-      <div className="flex justify-around mb-6">
-        <button
-          className={`text-sm font-medium ${tab === 'signup' ? 'border-b-2 border-black' : 'text-muted-foreground'}`}
-          onClick={() => setTab('signup')}
-        >
-          Sign up
-        </button>
-        <button
-          className={`text-sm font-medium ${tab === 'login' ? 'border-b-2 border-black' : 'text-muted-foreground'}`}
-          onClick={() => setTab('login')}
-        >
-          Login
-        </button>
-      </div>
+    <Tabs defaultValue="signup" className="space-y-6">
+      <TabsList className="w-full flex justify-around">
+        <TabsTrigger value="signup" className="flex-1">Sign up</TabsTrigger>
+        <TabsTrigger value="login" className="flex-1">Login</TabsTrigger>
+      </TabsList>
 
-      {tab === 'signup' && (
+      <TabsContent value="signup">
         <div className="space-y-6">
           <Input placeholder="Email" />
           <Input placeholder="Password" type="password" />
@@ -81,24 +61,24 @@ export function AuthForm() {
             />
             <Label htmlFor="terms" className="text-sm leading-snug flex-1">
               <span className="leading-snug">
-                I accept the <a href="#" className="underline">Terms of Service</a> and the <a href="#" className="underline">Privacy Policy</a>.
+                I accept the <a href="#" className="underline">Terms of Service</a> and <a href="#" className="underline">Privacy Policy</a>.
               </span>
             </Label>
           </div>
 
-          <Button className="w-full" onClick={handleSignup} disabled={!acceptedTerms}>
+          <Button className="w-full" onClick={onComplete} disabled={!acceptedTerms}>
             Sign up
           </Button>
         </div>
-      )}
+      </TabsContent>
 
-      {tab === 'login' && (
+      <TabsContent value="login">
         <div className="space-y-4">
           <Input placeholder="Email" />
           <Input placeholder="Password" type="password" />
-          <Button className="w-full" onClick={handleLogin}>Login</Button>
+          <Button className="w-full" onClick={onComplete}>Login</Button>
         </div>
-      )}
-    </div>
+      </TabsContent>
+    </Tabs>
   );
 }
