@@ -10,7 +10,7 @@ import { useSearch } from "@/context/SearchContext";
 export default function SearchBox() {
   const router = useRouter();
 
-  const { searchParams, setGuests, setDate, setExperienceType } = useSearch();
+  const { searchParams, setTravellers, setDate, setExperienceType } = useSearch();
 
   const handleButtonClick = () => {
     router.push("/experiencepage/");
@@ -36,8 +36,8 @@ export default function SearchBox() {
           <CustomSelect<number>
             label="Guests"
             options={[1, 2, 3, 4, 5, 6]}
-            value={searchParams.guests}
-            setValue={setGuests}
+            value={searchParams.travellers}
+            setValue={setTravellers}
             formatLabel={(opt) => opt === 1 ? `${opt} Adult` : `${opt} Adults`}
           />
 

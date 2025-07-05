@@ -1,5 +1,5 @@
 import ExperienceCard from "@/components/ExperienceCard/ExperienceCard";
-import { Experience } from "@/types/experience";
+import { Experience } from "@/lib/api";
 import { SkeletonCard } from "../shared/SkeletonCard";
 import { useFilter } from "@/context/FilterContext";
 import { Button } from "../ui/button";

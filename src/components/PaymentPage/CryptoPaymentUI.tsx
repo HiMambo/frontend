@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { CountdownTimer } from '@/components/PaymentPage/CountdownTimer';
 import QRCode from 'react-qr-code';
-import CenteredCard from "./CenteredCard";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -192,7 +191,6 @@ export function CryptoPaymentUI({
   // Handle loading state
   if (loading) {
     return (
-      <CenteredCard>
         <div className="text-center space-y-4">
           <div className="flex justify-center space-x-1">
             <div className="w-3 h-3 bg-primary rounded-full animate-bounce"></div>
@@ -201,14 +199,12 @@ export function CryptoPaymentUI({
           </div>
           <p className="text-muted-foreground">Loading payment details...</p>
         </div>
-      </CenteredCard>
     );
   }
   
   // Handle error state
   if (error) {
     return (
-      <CenteredCard>
         <div className="text-center space-y-4">
           <Alert variant="destructive">
             <AlertDescription>{error}</AlertDescription>
@@ -217,42 +213,36 @@ export function CryptoPaymentUI({
             Try Again
           </Button>
         </div>
-      </CenteredCard>
     );
   }
   
   // Handle no payment data
   if (!payment?.price_data) {
     return (
-      <CenteredCard>
         <div className="text-center">
           <p className="text-muted-foreground">No payment data available</p>
         </div>
-      </CenteredCard>
     );
   }
 
   // Main payment selection UI
   return (
     <>
-      <CenteredCard>
         <div className="space-y-6">
           {/* Currency Selection */}
           <div>
             <Label className="mb-3 block text-sm font-medium">Select Currency</Label>
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full">
               {['USDC', 'SOL'].map((currency) => (
-                <button
+                <Button
                   key={currency}
                   onClick={() => onCurrencySelect(currency as Currency)}
-                  className={`flex-1 py-3 px-4 rounded-lg text-sm font-medium transition-colors ${
-                    selectedCurrency === currency
-                      ? 'bg-primary text-primary-foreground shadow-sm'
-                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                  }`}
+                  variant={selectedCurrency === currency ? "default" : "outline"}
+                  className="flex-1 h-12 text-base"
+                  size="lg"
                 >
                   {currency}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -270,7 +260,6 @@ export function CryptoPaymentUI({
             Proceed to Payment
           </Button>
         </div>
-      </CenteredCard>
 
       {/* Payment Modal */}
       <PaymentModal 

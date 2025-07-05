@@ -16,6 +16,7 @@ export interface Experience {
   sustainability_goal: string[];
   created_at: string;
   updated_at: string;
+  refundable?: boolean; // Must eventually come from backend
 }
 
 // Experience Slot interface

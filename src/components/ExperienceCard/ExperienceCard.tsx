@@ -3,9 +3,9 @@
 import { useState } from "react";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useCart } from "@/context/Cart";
+import { useBooking } from "@/context/Cart";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Experience } from "@/types/experience";
+import { Experience } from "@/lib/api";
 import { HomeLayout } from "./HomeLayout";
 import { GridLayout } from "./GridLayout";
 import { ListLayout } from "./ListLayout";
@@ -29,7 +29,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   view = "list",
 }) => {
   const router = useRouter();
-  const { setCartExperience } = useCart();
+  const { setCartExperience } = useBooking();
   const [isFavorited, setIsFavorited] = useState(false);
 
   // Helper functions
@@ -52,17 +52,9 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
 
   const handleCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    
-    const cartExperience = {
-      ...experience,
-      travelDate: undefined, //Must eventually come from backend
-      departure: undefined, //Must eventually come from backend
-      duration: undefined, //Must eventually come from backend
-      refundable: undefined, //Must eventually come from backend
-    };
 
-    console.log("Adding experience to cart:", cartExperience);
-    setCartExperience(cartExperience);
+    console.log("Adding experience to cart:", experience);
+    setCartExperience(experience);
     router.push("/payment");
   };
 

@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useCart } from "@/context/Cart"; // Import the Cart context
-import { useSearch } from '@/context/SearchContext';
 import { createBooking } from "@/lib/api"; // Import the createBooking function
 import { CryptoPaymentUI } from './CryptoPaymentUI';
+import { useBooking } from '@/context/Cart';
 
 type PaymentSession = {
   session_id: string;
@@ -32,8 +31,7 @@ type CryptoPaymentProps = {
 export default function CryptoPayment({
   onComplete,
 }: CryptoPaymentProps) {
-  const { priceBreakdown, cartExperience, selectedSlot } = useCart();
-  const { searchParams } = useSearch();
+  const { bookingState, priceBreakdown, cartExperience } = useBooking();
   const [payment, setPayment] = useState<PaymentSession | null>(null);
   const [loading, setLoading] = useState(true);
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
@@ -52,10 +50,6 @@ export default function CryptoPayment({
 
   if (!cartExperience) {
     throw new Error("No experience data");
-  };
-
-  if (!selectedSlot) {
-    throw new Error("No time slot selected")
   };
 
   // * Starting the payment session * // 
@@ -221,28 +215,34 @@ export default function CryptoPayment({
 
     const now = new Date(); 
 
-    // Ensure experienceId is not null
+    // Ensure experienceId and selectedSlot are not null
     if (!cartExperience.id) {
       console.error("Experience ID is null. Cannot create booking.");
       setError("Experience ID is missing. Please try again.");
       return;
     }
 
+    if (!bookingState.selectedSlot) {
+      console.error("SelectedSlot is null. Cannot create booking.");
+      setError("Slot ID is missing. Please try again.");
+      return;
+    }
+
     try {
       const bookingData = {
         experience_id: cartExperience.id,
-        slot_id: selectedSlot.id,
+        slot_id: bookingState.selectedSlot.id,
         booking_date: now.toISOString(),
         client_id: 5, // To be reviewed
         duration_days: 2, // To be reviewed
-        number_of_people: searchParams.guests,
+        number_of_people: bookingState.guests,
         total_price: priceBreakdown.finalPrice*(1-SHARE_PERCENTAGE_HIMAMBO),
         created_at: now.toISOString(),
         updated_at: now.toISOString(),
         discount: priceBreakdown.cryptoDiscount, // To be reviewed
         baseDiscount: priceBreakdown.basePriceDiscount, // To be reviewed
         currency: payment.final_currency,
-        experience_date : selectedSlot.start_datetime, // To be reviewed
+        experience_date : bookingState.selectedSlot.start_datetime, // To be reviewed
         payment_type: "crypto",
         confirmation_code : "asij1823nasd",
         status: "paid"

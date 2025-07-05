@@ -1,8 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import { useCart } from "@/context/Cart";
-import { useSearch } from "@/context/SearchContext";
+import { useBooking } from "@/context/Cart";
 import { SDGIcons } from "../ExperienceCard/SDGIcons";
 import { SkeletonCard } from "../shared/SkeletonCard";
 import ErrorMessage from "../shared/ErrorMessage";
@@ -10,8 +9,7 @@ import LocationDisplay from "../ExperienceCard/LocationDisplay";
 import { format } from "date-fns";
 
 const BookingSummary: React.FC = () => {
-  const { cartExperience, priceBreakdown, selectedSlot, isHydrated } = useCart(); // Get the experience from the Cart context
-  const { searchParams } = useSearch();
+  const { bookingState, cartExperience, priceBreakdown, isHydrated } = useBooking();
 
   // Component mount and data check
   useEffect(() => {
@@ -44,17 +42,17 @@ const BookingSummary: React.FC = () => {
 
   console.log("Rendering BookingSummary with experience:", cartExperience);
 
-  const travelDate = selectedSlot?.start_datetime
-    ? format(new Date(selectedSlot.start_datetime), "MMMM do yyyy")
+  const travelDate = bookingState.selectedSlot?.start_datetime
+    ? format(new Date(bookingState.selectedSlot.start_datetime), "MMMM do yyyy")
     : "Select a time slot";
 
-  const departure = selectedSlot?.start_datetime
-    ? format(new Date(selectedSlot.start_datetime), "HH:mm a")
+  const departure = bookingState.selectedSlot?.start_datetime
+    ? format(new Date(bookingState.selectedSlot.start_datetime), "HH:mm a")
     : "Select a time slot";
 
-  const duration = selectedSlot?.start_datetime && selectedSlot?.end_datetime
+  const duration = bookingState.selectedSlot?.start_datetime && bookingState.selectedSlot?.end_datetime
     ? `${Math.round(
-        (new Date(selectedSlot.end_datetime).getTime() - new Date(selectedSlot.start_datetime).getTime()) / (1000 * 60 * 60)
+        (new Date(bookingState.selectedSlot.end_datetime).getTime() - new Date(bookingState.selectedSlot.start_datetime).getTime()) / (1000 * 60 * 60)
       )} hours`
     : "Select a time slot";
 
@@ -98,7 +96,7 @@ const BookingSummary: React.FC = () => {
           </div>
           <div className="flex justify-between">
             <span className="font-medium">Travellers</span>
-            <span>{searchParams.guests}</span>
+            <span>{bookingState.guests}</span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium">Duration</span>
@@ -113,7 +111,7 @@ const BookingSummary: React.FC = () => {
         {/* Payment Section */}
         <div className="bg-gray-50 p-4 rounded-lg">
           {/* Base Price Section (only if more than one traveller) */}
-          {searchParams.guests > 1 && (
+          {bookingState.guests > 1 && (
             <div className="flex justify-between text-sm mb-2">
               <span className="text-gray-700">Price per person</span>
               <span className="text-gray-700">
@@ -138,7 +136,7 @@ const BookingSummary: React.FC = () => {
               {priceBreakdown.basePriceDiscount > 0 ? (
                 <div className="flex flex-col items-end">
                   <span className="line-through text-gray-400 text-xs">
-                    US$ {(priceBreakdown.basePrice * searchParams.guests).toFixed(2)}
+                    US$ {(priceBreakdown.basePrice * bookingState.guests).toFixed(2)}
                   </span>
                   <span>US$ {priceBreakdown.totalBeforeCryptoDiscount.toFixed(2)}</span>
                 </div>

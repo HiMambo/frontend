@@ -1,12 +1,14 @@
-import { useCart } from "@/context/Cart";
 import { useExperienceSlots } from "@/hooks/useExperienceSlots";
+import { useBookingSteps } from "@/context/BookingStepsContext";
+import { useBooking } from "@/context/Cart";
 import { Check, X } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { type ExperienceSlot } from "@/lib/api";
 import { useEffect } from "react";
 
 export const SlotSelector = () => {
-  const { cartExperience, selectedSlot, setSelectedSlot } = useCart();
+  const { cartExperience, bookingState, setSelectedSlot } = useBooking();
+  const { setIsValid, setValidationError } = useBookingSteps();
   const { 
     availableSlots,
     unavailableSlots,
@@ -20,8 +22,10 @@ export const SlotSelector = () => {
 
   // Validate selected slot whenever available slots change
   useEffect(() => {
-    validateAndClearSlotIfInvalid(selectedSlot, setSelectedSlot);
-  }, [availableSlots, validateAndClearSlotIfInvalid, selectedSlot, setSelectedSlot]);
+    if (!slotsLoading && availableSlots.length > 0) {
+      validateAndClearSlotIfInvalid(bookingState.selectedSlot, setSelectedSlot);
+    }
+  }, [slotsLoading, availableSlots, validateAndClearSlotIfInvalid, bookingState.selectedSlot, setSelectedSlot]);
 
   // Handle slot selection with availability check
   const handleSlotSelection = async (slot: ExperienceSlot) => {
@@ -30,6 +34,17 @@ export const SlotSelector = () => {
       console.warn("Slot is no longer available");
     }
   };
+
+  // Step validations
+  useEffect(() => {
+    if (!bookingState.selectedSlot && !isCheckingAvailability) {
+      setIsValid(false);
+      setValidationError("No time slot selected.");
+    } else {
+      setIsValid(true);
+      setValidationError(null);
+    }
+  }, [bookingState.selectedSlot, setIsValid, setValidationError, isCheckingAvailability]);
 
   // Helper function to format slot display
   const formatSlotDisplay = (slot: ExperienceSlot) => {
@@ -133,7 +148,7 @@ export const SlotSelector = () => {
           .sort((a, b) => new Date(a.start_datetime).getTime() - new Date(b.start_datetime).getTime())
           .map((slot) => {
             const { dateStr, timeRange, spotsAvailable, isLowCapacity } = formatSlotDisplay(slot);
-            const isSelected = selectedSlot?.id === slot.id;
+            const isSelected = bookingState.selectedSlot?.id === slot.id;
             const isAvailable = availableSlots.some(s => s.id === slot.id);
             const unavailableReason = !isAvailable ? getUnavailableReason(slot) : null;
 

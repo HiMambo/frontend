@@ -7,45 +7,38 @@ import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
 import { CreditCardForm } from "./CreditCardForm";
 import CryptoPayment from "./CryptoPayment";
-import CenteredCard from "./CenteredCard";
-import { useCart } from "@/context/Cart";
+import { useBooking } from "@/context/Cart";
+import { useBookingSteps } from "@/context/BookingStepsContext";
 
-interface PaymentFormProps {
-  payment_type: "crypto" | "credit";
-  setPaymentType: (payment_type: "crypto" | "credit") => void;
-  cryptoDiscount: number;
-  onComplete: () => void;
-  onBack: () => void;
-}
-
-export function PaymentForm({
-  payment_type,
-  setPaymentType,
-  cryptoDiscount,
-  onComplete,
-  onBack,
-}: PaymentFormProps) {
-
+export function PaymentForm() {
   const [showCryptoPayment, setShowCryptoPayment] = useState(false);
-  const { basePriceDiscount, setBasePriceDiscount } = useCart();
+  const [paymentInProgress, setPaymentInProgress] = useState(false);
+  const { basePriceDiscount, setBasePriceDiscount, payment_type, setPaymentType, CRYPTO_DISCOUNT } = useBooking();
+  const { markStepComplete, goToNextStep, goToPreviousStep } = useBookingSteps();
   const [promoCode, setPromoCode] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const handlePaymentSubmit = () => {
     if (payment_type === "crypto") {
       setShowCryptoPayment(true);
+      setPaymentInProgress(true);
     } else {
-      onComplete();
+      // credit card payment logic placeholder
+      handlePaymentComplete();
     }
   };
 
-  const handleCryptoPaymentComplete = () => {
+  const handlePaymentComplete = () => {
+    // Mark step 4 as complete
+    markStepComplete(4);
+    setPaymentInProgress(false);
     setShowCryptoPayment(false);
-    onComplete();
+    goToNextStep();
   };
 
   const handleCryptoPaymentClose = () => {
     setShowCryptoPayment(false);
+    setPaymentInProgress(false);
   };
 
   // Show crypto payment component if active
@@ -53,7 +46,7 @@ export function PaymentForm({
     return (
       <CryptoPayment 
         onClose={handleCryptoPaymentClose}
-        onComplete={handleCryptoPaymentComplete}
+        onComplete={handlePaymentComplete}
       />
     );
   }
@@ -80,49 +73,50 @@ export function PaymentForm({
 
   return (
     <div>
-      <CenteredCard>
-        <div className="space-y-4">
-          <div>
-            <h3 className="text-lg font-semibold">Select your payment method</h3>
-            <p className="text-sm text-muted-foreground">Choose how you&apos;d like to pay for your booking</p>
-          </div>
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-lg font-semibold">Select your payment method</h3>
+          <p className="text-sm text-muted-foreground">Choose how you&apos;d like to pay for your booking</p>
+        </div>
 
-          {/* Payment Method Selection */}
-          <div className="flex gap-4">
-            <Button
-              className="h-15 max-w-48 text-base flex-1"
-              variant={payment_type === "credit" ? "default" : "outline"}
-              onClick={() => setPaymentType("credit")}
-            >
-              <CreditCardIcon className="mr-3 size-10" />
-              Credit card
-            </Button>
-            <Button
-              className="h-15 max-w-48 text-base relative flex-1"
-              variant={payment_type === "crypto" ? "default" : "outline"}
-              onClick={() => setPaymentType("crypto")}
-            >
-              <div className="flex items-center gap-2">
-                <CryptoIcon className="size-12 mr-3" />
-                <span>Crypto</span>
-              </div>
-              <span className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 bg-pink-500 text-white text-xs font-semibold h-6 px-1 rounded-full flex items-center justify-center">
-                -{cryptoDiscount}%
-              </span>
-            </Button>
-          </div>
+        {/* Payment Method Selection */}
+        <div className="flex gap-4">
+          <Button
+            className="h-15 max-w-48 text-base flex-1"
+            variant={payment_type === "credit" ? "default" : "outline"}
+            onClick={() => setPaymentType("credit")}
+            disabled={paymentInProgress}
+          >
+            <CreditCardIcon className="mr-3 size-10" />
+            Credit card
+          </Button>
+          <Button
+            className="h-15 max-w-48 text-base relative flex-1"
+            variant={payment_type === "crypto" ? "default" : "outline"}
+            onClick={() => setPaymentType("crypto")}
+            disabled={paymentInProgress}
+          >
+            <div className="flex items-center gap-2">
+              <CryptoIcon className="size-12 mr-3" />
+              <span>Crypto</span>
+            </div>
+            <span className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 bg-pink-500 text-white text-xs font-semibold h-6 px-1 rounded-full flex items-center justify-center">
+              -{CRYPTO_DISCOUNT}%
+            </span>
+          </Button>
+        </div>
 
-          {/* Credit Card Form */}
-          {payment_type === "credit" && <CreditCardForm />}
+        {/* Credit Card Form */}
+        {payment_type === "credit" && <CreditCardForm />}
 
-          {/* Crypto Refund Policy */}
-          {payment_type === "crypto" && (
-            <p className="text-sm text-muted-foreground max-w-prose">
-              <em>
-                *Cryptocurrency Refund Policy: Due to price volatility and regulatory requirements, refunds (if applicable) will be processed in Travel Credits and credited to your hiMambo.com account.
-              </em>
-            </p>
-          )}
+        {/* Crypto Refund Policy */}
+        {payment_type === "crypto" && (
+          <p className="text-sm text-muted-foreground max-w-prose">
+            <em>
+              *Cryptocurrency Refund Policy: Due to price volatility and regulatory requirements, refunds (if applicable) will be processed in Travel Credits and credited to your hiMambo.com account.
+            </em>
+          </p>
+        )}
 
         {/* Promo Code Section */}
         <div className="space-y-3">
@@ -137,37 +131,48 @@ export function PaymentForm({
               onChange={(e) => setPromoCode(e.target.value)}
               className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm"
               placeholder="Enter promo code"
+              disabled={paymentInProgress}
             />
-            <Button onClick={handleApplyPromoCode} className="px-4">
+            <Button 
+              onClick={handleApplyPromoCode} 
+              className="px-4"
+              disabled={paymentInProgress}
+            >
               Apply
             </Button>
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
           {basePriceDiscount > 0 && (
             <p className="text-green-600 text-sm font-medium">
-              ✓ Discount applied: {basePriceDiscount}%
+              Discount applied: {basePriceDiscount}%
             </p>
           )}
         </div>
 
-          {/* Back Button */}
-          <Button
-            onClick={onBack}
-            variant="outline"
-            className="w-full"
-          >
-            Back to Slot Selection
-          </Button>
+        {/* Back Button */}
+        <Button
+          onClick={goToPreviousStep}
+          variant="outline"
+          className="w-full"
+          disabled={paymentInProgress}
+        >
+          Back to Slot Selection
+        </Button>
 
-          {/* Payment Submit Button */}
-          <Button
-            className="w-full"
-            onClick={handlePaymentSubmit}
-          >
-            {payment_type === "crypto" ? "Pay with Crypto" : "Pay with Credit Card"}
-          </Button>
-        </div>
-      </CenteredCard>
+        {/* Payment Submit Button */}
+        <Button
+          className="w-full"
+          onClick={handlePaymentSubmit}
+          disabled={paymentInProgress}
+        >
+          {paymentInProgress 
+            ? "Processing..." 
+            : payment_type === "crypto" 
+              ? "Pay with Crypto" 
+              : "Pay with Credit Card"
+          }
+        </Button>
+      </div>
     </div>
   );
 }

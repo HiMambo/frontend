@@ -1,16 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
 import BookingSummary from "@/components/PaymentPage/BookingSummary";
 import LoginAndPaymentFlow from "@/components/PaymentPage/LoginAndPaymentFlow";
 import ProgressBar from "@/components/PaymentPage/ProgressBar";
-import { useCart } from "@/context/Cart";
+import { useBooking } from '@/context/Cart';
+import { useSearch } from '@/context/SearchContext';
+import { BookingStepsProvider } from "@/context/BookingStepsContext";
 
 export default function PaymentPage() {
-  const [currentStep, setCurrentStep] = useState<number>(1);
-  const { cartExperience, priceBreakdown, isHydrated } = useCart(); // Access the context values
+  const { setGuests, cartExperience, priceBreakdown, isHydrated } = useBooking(); // Access the context values
+  const { searchParams } = useSearch();
 
   useEffect(() => {
     console.log("PaymentPage mounted");
@@ -22,22 +24,28 @@ export default function PaymentPage() {
     console.log("Context values updated - experience.Id:", cartExperience?.id, "price:", priceBreakdown?.finalPrice);
   }, [cartExperience?.id, priceBreakdown?.finalPrice, isHydrated]);
 
+  useEffect(() => {
+    setGuests(searchParams.travellers);
+  }, [searchParams.travellers, setGuests]);
+
   return (
     <>
       <Header />
-      <div className="justify-center w-full px-4">
-        <ProgressBar currentStep={currentStep} />
-      </div>
-      <main className="grid md:grid-cols-5 gap-6 p-6">
-        {/* Make LoginAndPaymentFlow */}
-        <div className="md:col-span-3">
-          <LoginAndPaymentFlow currentStep={currentStep} setCurrentStep={setCurrentStep} />
+      <BookingStepsProvider>
+        <div className="justify-center w-full px-4">
+          <ProgressBar />
         </div>
-        {/* BookingSummary */}
-        <div className="md:col-span-2">
-          <BookingSummary />
-        </div>
-      </main>
+        <main className="grid md:grid-cols-5 gap-6 p-6">
+          {/* Make LoginAndPaymentFlow */}
+          <div className="md:col-span-3">
+            <LoginAndPaymentFlow />
+          </div>
+          {/* BookingSummary */}
+          <div className="md:col-span-2">
+            <BookingSummary />
+          </div>
+        </main>
+      </BookingStepsProvider>
       <Footer />
     </>
   );

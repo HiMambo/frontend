@@ -11,7 +11,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ErrorMessage from "../shared/ErrorMessage";
-import { Experience } from "@/types/experience";
+import { Experience } from "@/lib/api";
 
 interface FeaturedExperiencesCarouselProps {
   experiences: Experience[]
