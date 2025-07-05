@@ -42,13 +42,19 @@ export default function Header() {
 
         {/* Logo */}
         <div className="flex-1 flex justify-center lg:justify-start">
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="/Logo.svg"
+              src="/logo.svg"
               alt="hiMAMBO logo"
-              width={160}
-              height={48}
-              className="h-12 w-auto"
+              width={65}
+              height={50}
+              priority
+            />
+            <Image
+              src="/logo_text.svg"
+              alt="hiMAMBO logo text"
+              width={163}
+              height={29}
               priority
             />
           </Link>
