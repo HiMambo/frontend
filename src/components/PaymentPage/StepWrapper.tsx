@@ -2,7 +2,7 @@
 
 import React, { ReactNode, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { useBooking } from '@/context/Cart';
+import { useBooking } from '@/context/BookingContext';
 import { type BookingStep, useBookingSteps } from '@/context/BookingStepsContext';
 import CenteredCard from './CenteredCard';
 import { AlertCircle } from 'lucide-react';

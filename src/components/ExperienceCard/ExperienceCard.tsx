@@ -3,7 +3,7 @@
 import { useState } from "react";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useBooking } from "@/context/Cart";
+import { useBooking } from "@/context/BookingContext";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Experience } from "@/lib/api";
 import { HomeLayout } from "./HomeLayout";

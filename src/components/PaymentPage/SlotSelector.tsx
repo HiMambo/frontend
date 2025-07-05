@@ -1,12 +1,12 @@
 import { useExperienceSlots } from "@/hooks/useExperienceSlots";
 import { useBookingSteps } from "@/context/BookingStepsContext";
-import { useBooking } from "@/context/Cart";
+import { useBooking } from "@/context/BookingContext";
 import { Check, X } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { type ExperienceSlot } from "@/lib/api";
 import { useEffect } from "react";
 
-export const SlotSelector = () => {
+export function SlotSelector() {
   const { cartExperience, bookingState, setSelectedSlot } = useBooking();
   const { setIsValid, setValidationError } = useBookingSteps();
   const { 

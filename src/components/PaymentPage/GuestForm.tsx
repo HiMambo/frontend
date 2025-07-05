@@ -3,10 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Input } from '../ui/input';
 import { useEffect } from "react";
-import { type Guest, useBooking, } from "@/context/Cart";
+import { type Guest, useBooking, } from "@/context/BookingContext";
 import { useBookingSteps } from "@/context/BookingStepsContext";
 
-export default function GuestForm() {
+export function GuestForm() {
   const { bookingState, setGuests, updateGuestDetails } = useBooking();
   const { setIsValid, setValidationError } = useBookingSteps();
 

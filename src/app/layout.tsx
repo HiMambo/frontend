@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import { BookingProvider } from "@/context/Cart";
+import { BookingProvider } from "@/context/BookingContext";
 import { SearchProvider } from "@/context/SearchContext";
 
 const geistSans = Geist({
@@ -30,7 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* Wrap all pages with the SearchProvider and CartProvider */}
+        {/* Wrap all pages with the SearchProvider and BookingProvider */}
         <SearchProvider>
           <BookingProvider>
             {children}

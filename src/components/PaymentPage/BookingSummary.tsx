@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import { useBooking } from "@/context/Cart";
+import { useBooking } from "@/context/BookingContext";
 import { SDGIcons } from "../ExperienceCard/SDGIcons";
 import { SkeletonCard } from "../shared/SkeletonCard";
 import ErrorMessage from "../shared/ErrorMessage";

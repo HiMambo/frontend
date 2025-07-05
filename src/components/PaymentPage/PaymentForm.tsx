@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
 import { CreditCardForm } from "./CreditCardForm";
 import CryptoPayment from "./CryptoPayment";
-import { useBooking } from "@/context/Cart";
+import { useBooking } from "@/context/BookingContext";
 import { useBookingSteps } from "@/context/BookingStepsContext";
 
 export function PaymentForm() {

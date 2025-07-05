@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
 import BookingSummary from "@/components/PaymentPage/BookingSummary";
-import LoginAndPaymentFlow from "@/components/PaymentPage/LoginAndPaymentFlow";
+import BookingFlow from "@/components/PaymentPage/BookingFlow";
 import ProgressBar from "@/components/PaymentPage/ProgressBar";
-import { useBooking } from '@/context/Cart';
+import { useBooking } from '@/context/BookingContext';
 import { useSearch } from '@/context/SearchContext';
 import { BookingStepsProvider } from "@/context/BookingStepsContext";
 
@@ -36,9 +36,8 @@ export default function PaymentPage() {
           <ProgressBar />
         </div>
         <main className="grid md:grid-cols-5 gap-6 p-6">
-          {/* Make LoginAndPaymentFlow */}
           <div className="md:col-span-3">
-            <LoginAndPaymentFlow />
+            <BookingFlow />
           </div>
           {/* BookingSummary */}
           <div className="md:col-span-2">

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { createBooking } from "@/lib/api"; // Import the createBooking function
 import { CryptoPaymentUI } from './CryptoPaymentUI';
-import { useBooking } from '@/context/Cart';
+import { useBooking } from '@/context/BookingContext';
 
 type PaymentSession = {
   session_id: string;
