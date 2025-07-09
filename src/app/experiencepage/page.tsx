@@ -7,11 +7,11 @@ import Footer from "@/components/shared/Footer";
 import Header from "@/components/shared/Header";
 import Search from "@/components/ExperiencesPage/Search";
 import { SearchControls } from "@/components/ExperiencesPage/SearchControls";
-
 import FilterToggleWrapper from "@/components/ExperiencesPage/FilterToggleWrapper";
 import ExperienceList from "@/components/ExperiencesPage/ExperienceList";
 import FilterSidebar from "@/components/ExperiencesPage/FilterSidebar";
 import { FilterProvider, useFilter } from "@/context/FilterContext";
+import { useSearch } from "@/context/SearchContext";
 
 function MainContent({
   view,
@@ -28,6 +28,9 @@ function MainContent({
 }) {
   const { filteredExperiences } = useFilter();
 
+  const noSearchResults = 
+    !loading && experiences.length === 0;
+  
   const noResultsForGivenFilters =
     !loading && experiences.length > 0 && filteredExperiences.length === 0;
 
@@ -67,6 +70,7 @@ function MainContent({
             loading={loading}
             error={error}
             noResultsForGivenFilters={noResultsForGivenFilters}
+            noSearchResults={noSearchResults}
           />
         </div>
       </div>
@@ -74,11 +78,15 @@ function MainContent({
   );
 }
 
-export default function Home() {
+export default function ExperiencePage() {
   const [view, setView] = useState<"list" | "grid">("list");
   const [sortBy, setSortBy] = useState("Best Match");
-
-  const { experiences, loading, error } = useExperiences();
+  
+  // Get search parameters from context
+  const { searchParams } = useSearch();
+  
+  // Use search parameters to fetch filtered experiences
+  const { experiences, loading, error } = useExperiences(searchParams);
 
   return (
     <>

@@ -10,10 +10,16 @@ import { useSearch } from "@/context/SearchContext";
 export default function SearchBox() {
   const router = useRouter();
 
-  const { searchParams, setTravellers, setDate, setExperienceType } = useSearch();
+  const { searchParams, setSearchQuery, setTravellers, setDate, setExperienceType } = useSearch();
 
-  const handleButtonClick = () => {
+  const handleSearch = () => {
     router.push("/experiencepage/");
+  };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
   };
 
   return (
@@ -23,9 +29,14 @@ export default function SearchBox() {
         <input
           type="text"
           placeholder="Search activities or Destinations"
+          value={searchParams.searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
           className="w-full bg-transparent text-gray-600 placeholder:text-gray-400 focus:outline-none"
         />
-        <SearchIcon className="w-5 h-5 text-gray-600" />
+        <button onClick={handleSearch} className="ml-2 cursor-pointer">
+          <SearchIcon className="w-5 h-5 text-gray-600" />
+        </button>
       </div>
 
       {/* Filters and Button in the same row on smaller screens*/}
@@ -59,7 +70,7 @@ export default function SearchBox() {
           <Button
             size={"lg"}
             className="bg-primary hover:bg-[#e18533] text-white text-lg font-semibold shadow-md px-6 py-2 rounded-md"
-            onClick={handleButtonClick}
+            onClick={handleSearch}
           >
             Book now
           </Button>

@@ -19,20 +19,6 @@ export interface Experience {
   refundable?: boolean; // Must eventually come from backend
 }
 
-// Experience Slot interface
-export interface ExperienceSlot {
-  id: number;
-  experience_id: number;
-  start_datetime: string;
-  end_datetime: string;
-  max_spots: number;
-  booked_spots: number;
-  status: "open" | "full" | "canceled" | "past";
-  notes?: string;
-  created_at: string;
-  updated_at: string;
-}
-
 export async function fetchExperiences(): Promise<Experience[]> {
   console.log("API URL for fetching experiences:");
   console.log(`${API_BASE_URL}/experiences/`); // Added trailing slash
@@ -58,6 +44,49 @@ export async function fetchExperienceById(id: number): Promise<Experience> {
   }
   
   return res.json();
+}
+
+export interface APISearchParams {
+  searchQuery?: string;
+  destination?: string;
+  date_from?: string;
+  date_to?: string;
+  travellers?: number;
+  experience_type?: string;
+  limit?: number;
+}
+
+export async function fetchFilteredExperiences(params: APISearchParams): Promise<Experience[]> {
+  const url = new URL(`${API_BASE_URL}/experiences/filter`);
+  
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      url.searchParams.append(key, value.toString());
+    }
+  });
+
+  console.log("URL: ", url)
+  const response = await fetch(url.toString());
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch filtered experiences');
+  }
+  
+  return response.json();
+}
+
+// Experience Slot interface
+export interface ExperienceSlot {
+  id: number;
+  experience_id: number;
+  start_datetime: string;
+  end_datetime: string;
+  max_spots: number;
+  booked_spots: number;
+  status: "open" | "full" | "canceled" | "past";
+  notes?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export async function fetchExperienceSlots(experienceId: number): Promise<ExperienceSlot[]> {
