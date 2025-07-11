@@ -41,10 +41,10 @@ export default function Header() {
 
 
         {/* Logo */}
-        <div className="flex-1 flex justify-center lg:justify-start">
+        <div className="flex justify-center lg:justify-start">
           <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="/logo.svg"
+              src="/Logo.svg"
               alt="hiMAMBO logo"
               width={65}
               height={50}
