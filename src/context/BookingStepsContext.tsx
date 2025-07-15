@@ -169,6 +169,14 @@ export function BookingStepsProvider({
   const goToNextStep = useCallback(() => {
     setStepState(prev => {
       const currentIndex = STEP_DEFINITIONS.findIndex(def => def.step === prev.currentStep);
+      
+      // Check if current step is actually completed before advancing
+      const isCurrentStepCompleted = prev.completedSteps.has(prev.currentStep);
+      if (!isCurrentStepCompleted) {
+        console.warn("Attempting to advance from incomplete step:", prev.currentStep);
+        return prev;
+      }
+
       const nextStep = STEP_DEFINITIONS[currentIndex + 1]?.step ?? -1; // Sentinel value when no next step exists
       console.log("Advanced from step:", prev.currentStep, "to step:", nextStep);
       return { ...prev, currentStep: nextStep };
