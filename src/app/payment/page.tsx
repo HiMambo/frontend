@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
 import BookingSummary from "@/components/PaymentPage/BookingSummary";
@@ -11,16 +12,16 @@ import { useSearch } from '@/context/SearchContext';
 import { BookingStepsProvider } from "@/context/BookingStepsContext";
 
 export default function PaymentPage() {
-  const { setGuests, cartExperience, priceBreakdown, isHydrated } = useBooking(); // Access the context values
+  const { data: session } = useSession();
+  const { setGuests, cartExperience, priceBreakdown, isHydrated } = useBooking();
   const { searchParams } = useSearch();
 
   useEffect(() => {
-    console.log("PaymentPage mounted");
-  }, []);
+    console.log("PaymentPage mounted", { session });
+  }, [session]);
 
   useEffect(() => {
     if (!isHydrated) return;
-    
     console.log("Context values updated - experience.Id:", cartExperience?.id, "price:", priceBreakdown?.finalPrice);
   }, [cartExperience?.id, priceBreakdown?.finalPrice, isHydrated]);
 
@@ -39,7 +40,6 @@ export default function PaymentPage() {
           <div className="md:col-span-3">
             <BookingFlow />
           </div>
-          {/* BookingSummary */}
           <div className="md:col-span-2">
             <BookingSummary />
           </div>
