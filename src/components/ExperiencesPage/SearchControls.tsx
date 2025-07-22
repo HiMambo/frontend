@@ -1,6 +1,9 @@
 "use client";
-
 import { useState } from "react";
+import { CustomSelect } from "../HomePage/CustomSelect";
+import { DateRangeSelect } from "../HomePage/DateRangeSelect";
+import { useSearch } from "@/context/SearchContext";
+import { LayoutGrid, LayoutList } from "lucide-react";
 
 type SearchControlsProps = {
   view: "grid" | "list";
@@ -9,102 +12,101 @@ type SearchControlsProps = {
   setSortBy: (value: string) => void;
 };
 
-export const SearchControls = ({ 
+export const SearchControls = ({
   view,
   setView,
   sortBy,
-  setSortBy 
+  setSortBy
 }: SearchControlsProps) => {
-  const [perPage, setPerPage] = useState("");
+  const [perPage, setPerPage] = useState(10);
+  const { searchParams, setTravellers, setDate, setExperienceType } = useSearch();
 
   return (
     <div className="bg-white shadow-md p-4 sm:p-6 md:p-8">
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-6">
-        {/* Heading */}
-        <div className="text-lg sm:text-xl font-semibold text-blue-900 text-center lg:text-left">
-          Let&apos;s find the right experience for you!
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-stretch lg:items-center gap-6">
+        {/* Left Section - Heading */}
+        <div className="flex items-center justify-center lg:justify-start lg:flex-1">
+          <div className="text-lg sm:text-xl font-semibold text-blue-900 text-center lg:text-left">
+            Let&apos;s find the right experience for you!
+          </div>
         </div>
-
-        {/* Controls */}
-        <div className="flex flex-wrap justify-center lg:justify-end items-center gap-4">
-          {/* Per Page */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Per Page:</span>
-            <input
-              type="number"
-              value={perPage}
-              onChange={(e) => setPerPage(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-1 text-sm w-20"
-              placeholder="10"
+        
+        {/* Right Section - Controls */}
+        <div className="flex flex-col items-center lg:items-end gap-3">
+          {/* First Row of Controls */}
+          <div className="flex flex-wrap justify-center lg:justify-end items-center gap-4">
+            <CustomSelect<number>
+              label="Travellers"
+              value={searchParams.travellers}
+              setValue={setTravellers}
+              minVal={1}
+              maxVal={12}
+              layout="horizontal"
+            />
+            
+            <DateRangeSelect
+              value={searchParams.date}
+              onChange={setDate}
+              layout="horizontal"
+            />
+            
+            <CustomSelect<string>
+              label="Experience Type"
+              options={["Any", "Nature & Wildlife", "Cultural Immersion", "Adventure & Outdoor", "Wellness & Retreats", "Social Impact", "Food & Gastronomy"]}
+              value={searchParams.experienceType}
+              setValue={setExperienceType}
+              layout="horizontal"
             />
           </div>
-
-          {/* Sort By */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Sort By:</span>
-            <select
+          
+          {/* Second Row of Controls */}
+          <div className="flex flex-wrap justify-center lg:justify-end items-center gap-4">
+            <CustomSelect<number>
+              label="Per Page"
+              options={[10, 20, 50, 100]}
+              value={perPage}
+              setValue={setPerPage}
+              layout="horizontal"
+            />
+            
+            <CustomSelect<string>
+              label="Sort By"
+              options={[
+                "Best Match",
+                "Newest",
+                "Price: Low to High",
+                "Price: High to Low"
+              ]}
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-1 text-sm"
-            >
-              <option value="Best Match">Best Match</option>
-              <option value="Newest">Newest</option>
-              <option value="Price: Low to High">Price: Low to High</option>
-              <option value="Price: High to Low">Price: High to Low</option>
-            </select>
-          </div>
-
-          {/* View Toggle */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">View:</span>
+              setValue={setSortBy}
+              layout="horizontal"
+            />
+            
+            {/* View Toggle */}
             <div className="flex items-center gap-2">
-              {/* Grid View */}
-              <button
-                onClick={() => setView("grid")}
-                className={`w-8 h-8 flex items-center justify-center border rounded-lg ${
-                  view === "grid" ? "bg-pink-100" : "bg-white"
-                }`}
-                aria-label="Grid View"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 text-gray-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+              <span className="text-sm text-gray-600">View:</span>
+              <div className="flex items-center gap-2">
+                {/* Grid View */}
+                <button
+                  onClick={() => setView("grid")}
+                  className={`w-8 h-8 flex items-center justify-center border rounded-lg ${
+                    view === "grid" ? "bg-pink-100" : "bg-white"
+                  }`}
+                  aria-label="Grid View"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"
-                  />
-                </svg>
-              </button>
-
-              {/* List View */}
-              <button
-                onClick={() => setView("list")}
-                className={`w-8 h-8 flex items-center justify-center border rounded-lg ${
-                  view === "list" ? "bg-pink-100" : "bg-white"
-                }`}
-                aria-label="List View"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 text-gray-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  <LayoutGrid className="w-5 h-5 text-gray-600" />
+                </button>
+                {/* List View */}
+                <button
+                  onClick={() => setView("list")}
+                  className={`w-8 h-8 flex items-center justify-center border rounded-lg ${
+                    view === "list" ? "bg-pink-100" : "bg-white"
+                  }`}
+                  aria-label="List View"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </button>
+                  <LayoutList className="w-5 h-5 text-gray-600" />
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -23,33 +23,33 @@ export default function SearchBox() {
   };
 
   return (
-    <div className="bg-home-searchbox rounded-xl px-4 py-4 shadow-md w-full max-w-6xl mx-auto flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+    <div className="bg-home-searchbox rounded-xl px-4 py-4 shadow-md w-full max-w-6xl mx-auto flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
       {/* Search box */}
       <div className="flex items-center bg-white rounded-md px-4 py-2 w-full xl:max-w-90">
         <input
           type="text"
-          placeholder="Search activities or Destinations"
+          placeholder="Search activities or destination"
           value={searchParams.searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           className="w-full bg-transparent text-gray-600 placeholder:text-gray-400 focus:outline-none"
         />
         <button onClick={handleSearch} className="ml-2 cursor-pointer">
-          <SearchIcon className="w-5 h-5 text-gray-600" />
+          <SearchIcon className="w-5 h-5 text-primary" />
         </button>
       </div>
 
       {/* Filters and Button in the same row on smaller screens*/}
-      <div className="flex flex-wrap items-center justify-center xl:justify-between gap-4 w-full text-white text-sm">
+      <div className="flex flex-wrap items-end justify-center xl:justify-between gap-4 w-full text-black text-sm">
         
         {/* Filters */}
         <div className="flex flex-wrap gap-4 md:gap-6 items-center justify-center flex-grow">
           <CustomSelect<number>
-            label="Guests"
-            options={[1, 2, 3, 4, 5, 6]}
+            label="Travellers"
             value={searchParams.travellers}
             setValue={setTravellers}
-            formatLabel={(opt) => opt === 1 ? `${opt} Adult` : `${opt} Adults`}
+            minVal={1}
+            maxVal={12}
           />
 
           <DateRangeSelect
@@ -69,7 +69,7 @@ export default function SearchBox() {
         <div className="flex xl:justify-end">
           <Button
             size={"lg"}
-            className="bg-primary hover:bg-[#e18533] text-white text-lg font-semibold shadow-md px-6 py-2 rounded-md"
+            className="bg-home-button hover:bg-[#0d5d56] text-white font-semibold shadow-md px-10 py-2 rounded-md"
             onClick={handleSearch}
           >
             Book now

@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { signIn, getSession } from 'next-auth/react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -14,10 +14,10 @@ export function AuthForm() {
   const { goToNextStep, markStepComplete } = useBookingSteps();
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   
-  const onComplete = () => {
+  const onComplete = useCallback(() => {
     markStepComplete(1);
     goToNextStep();
-  };
+  }, [markStepComplete, goToNextStep]);
 
   const [referralSource, setReferralSource] = useState<string | undefined>();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -40,7 +40,7 @@ export function AuthForm() {
     };
 
     checkExistingSession();
-  }, []);
+  }, [onComplete]);
 
   const handleGoogleAuth = async () => {
     setIsGoogleLoading(true);

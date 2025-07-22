@@ -10,15 +10,39 @@ interface DateRangePickerProps {
   label?: string
   value: DateRange | undefined
   onChange: (value: DateRange | undefined) => void
+  layout?: "vertical" | "horizontal"
+  containerClassName?: string
+  labelClassName?: string
+  buttonClassName?: string
 }
 
-export function DateRangeSelect({ label = "Dates", value, onChange }: DateRangePickerProps) {
+export function DateRangeSelect({ 
+  label = "Dates", 
+  value, 
+  onChange,
+  layout = "vertical",
+  containerClassName = "",
+  labelClassName = "",
+  buttonClassName = ""
+}: DateRangePickerProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [tempDate, setTempDate] = useState<DateRange | undefined>()
 
+  const defaultContainerClass = layout === "horizontal" 
+    ? "flex items-center gap-2" 
+    : ""
+  
+  const defaultLabelClass = layout === "vertical" 
+    ? "text-xs leading-none mb-3 h-3" 
+    : "text-sm text-gray-600 whitespace-nowrap"
+  
+  const defaultButtonClass = layout === "vertical"
+    ? "bg-white h-10 rounded-md items-center flex w-full bg-transparent border-none px-3 focus:outline-none"
+    : "border border-gray-300 rounded-lg px-3 py-1 text-sm h-8 bg-white items-center flex bg-transparent focus:outline-none w-auto"
+
   return (
-    <div>
-      <p className="text-xs leading-none mb-1 h-3">{label}</p>
+    <div className={`${defaultContainerClass} ${containerClassName}`.trim()}>
+      <p className={`${defaultLabelClass} ${labelClassName}`.trim()}>{label}:</p>
       <Popover
         open={isOpen}
         onOpenChange={(open) => {
@@ -27,7 +51,7 @@ export function DateRangeSelect({ label = "Dates", value, onChange }: DateRangeP
         }}
       >
         <PopoverTrigger asChild>
-          <button className="flex w-full font-semibold bg-transparent border-none p-0 h-auto focus:outline-none">
+          <button className={`${defaultButtonClass} ${buttonClassName}`.trim()}>
             {value?.from ? (
               value.to ? (
                 <span>
