@@ -48,30 +48,30 @@ export default function UserBadge() {
             </span>
           </button>
         </PopoverTrigger>
-<PopoverContent
-  align="end"
-  sideOffset={10}
-  className="inline-block max-w-xs p-4 bg-white rounded-xl shadow-xl border break-words"
->
-  <div className="flex items-center space-x-3 mb-4">
-    {renderUserAvatar(40)}
-    <div className="min-w-0">
-      <p className="font-medium text-gray-900 truncate">{session.user.name}</p>
-      <p className="text-sm text-gray-600 break-all">{session.user.email}</p>
-    </div>
-  </div>
+        <PopoverContent
+          align="end"
+          sideOffset={10}
+          className="inline-block max-w-xs p-4 bg-white rounded-xl shadow-xl border break-words"
+        >
+          <div className="flex items-center space-x-3 mb-4">
+            {renderUserAvatar(40)}
+            <div className="min-w-0">
+              <p className="font-medium text-gray-900 truncate">{session.user.name}</p>
+              <p className="text-sm text-gray-600 break-all">{session.user.email}</p>
+            </div>
+          </div>
 
-  <div className="border-t pt-3">
-    <Button
-      variant="ghost"
-      className="w-full justify-start text-left p-2 hover:bg-gray-50"
-      onClick={handleSignOut}
-    >
-      <LogOut className="w-4 h-4 mr-2" />
-      Sign Out
-    </Button>
-  </div>
-</PopoverContent>
+          <div className="border-t pt-3">
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-left p-2 hover:bg-gray-50"
+              onClick={handleSignOut}
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </Button>
+          </div>
+        </PopoverContent>
       </Popover>
     );
   }

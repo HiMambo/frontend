@@ -5,7 +5,7 @@ import type { Experience } from "@/lib/api";
 import { useState } from "react";
 import Footer from "@/components/shared/Footer";
 import Header from "@/components/shared/Header";
-import Search from "@/components/ExperiencesPage/Search";
+import SearchBox from "@/components/HomePage/SearchBox";
 import { SearchControls } from "@/components/ExperiencesPage/SearchControls";
 import FilterToggleWrapper from "@/components/ExperiencesPage/FilterToggleWrapper";
 import ExperienceList from "@/components/ExperiencesPage/ExperienceList";
@@ -92,7 +92,10 @@ export default function ExperiencePage() {
     <>
       <Header />
       <FilterProvider experiences={experiences}>
-        <Search />
+        <p className="text-4xl text-center pb-10 pt-30 font-semibold text-home-text-secondary mt-3 tracking-wider">
+          Start your sustainable adventure!
+        </p>
+        <SearchBox />
         <SearchControls
           view={view}
           setView={setView}

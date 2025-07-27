@@ -32,34 +32,7 @@ export const SearchControls = ({
         </div>
         
         {/* Right Section - Controls */}
-        <div className="flex flex-col items-center lg:items-end gap-3">
-          {/* First Row of Controls */}
-          <div className="flex flex-wrap justify-center lg:justify-end items-center gap-4">
-            <CustomSelect<number>
-              label="Travellers"
-              value={searchParams.travellers}
-              setValue={setTravellers}
-              minVal={1}
-              maxVal={12}
-              layout="horizontal"
-            />
-            
-            <DateRangeSelect
-              value={searchParams.date}
-              onChange={setDate}
-              layout="horizontal"
-            />
-            
-            <CustomSelect<string>
-              label="Experience Type"
-              options={["Any", "Nature & Wildlife", "Cultural Immersion", "Adventure & Outdoor", "Wellness & Retreats", "Social Impact", "Food & Gastronomy"]}
-              value={searchParams.experienceType}
-              setValue={setExperienceType}
-              layout="horizontal"
-            />
-          </div>
-          
-          {/* Second Row of Controls */}
+        <div className="flex items-center lg:items-end gap-3">
           <div className="flex flex-wrap justify-center lg:justify-end items-center gap-4">
             <CustomSelect<number>
               label="Per Page"
