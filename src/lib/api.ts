@@ -160,3 +160,35 @@ export async function fetchTotalPaymentPartnerById(id: number): Promise<PartnerF
 
   return res.json();
 }
+
+// Define the interface for user creation API
+export interface CreateUserData {
+  user_email: string;
+  login_type: 'google' | 'credentials';
+  user_type: 'client' | 'partner';
+}
+
+// Function to create user in backend
+export async function createOrUpdateUser(userData: CreateUserData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (!response.ok) {
+      console.error('Failed to create/update user:', response.statusText);
+      return false;
+    }
+
+    const result = await response.json();
+    console.log('User created/updated successfully:', result);
+    return true;
+  } catch (error) {
+    console.error('Error creating/updating user:', error);
+    return false;
+  }
+}
