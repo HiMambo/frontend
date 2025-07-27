@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
 import { CustomSelect } from "../HomePage/CustomSelect";
-import { DateRangeSelect } from "../HomePage/DateRangeSelect";
-import { useSearch } from "@/context/SearchContext";
 import { LayoutGrid, LayoutList } from "lucide-react";
 
 type SearchControlsProps = {
@@ -19,7 +17,6 @@ export const SearchControls = ({
   setSortBy
 }: SearchControlsProps) => {
   const [perPage, setPerPage] = useState(10);
-  const { searchParams, setTravellers, setDate, setExperienceType } = useSearch();
 
   return (
     <div className="bg-white shadow-md p-4 sm:p-6 md:p-8">
