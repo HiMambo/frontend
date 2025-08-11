@@ -94,7 +94,7 @@ export default function DocumentsForm() {
             onKeyDown={(e) =>
               (e.key === "Enter" || e.key === " ") && openPicker()
             }
-            className="bg-neutral-50 border border-neutral-200 rounded-300 px-250 py-200"
+            className="bg-neutral-50 border border-neutral-200 rounded-300  py-200"
           >
             <div className="flex items-center gap-200">
               <Paperclip className="w-4 h-4 text-neutral-500 shrink-0" />
