@@ -1,34 +1,143 @@
+@import "../styles/tokens.css";
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* 
+If you're on Tailwind v4, these are fine. On v3, delete the two @custom-variant/@theme blocks. */
 @custom-variant dark (&:is(.dark *));
+/* Hoist token vars into Tailwind color slots (no self-reference) */
 @theme {
-  --color-midnight: #121063;
-  --color-tahiti: #3ab7bf;
-  --color-bermuda: #78dcca;
+  /* --- Homepage --- */
+  --tw-home-button: var(--color-home-button);
+  --color-home-button: var(--tw-home-button);
 
-  /* Homepage */
-  --color-home-searchbox: #E6F0D7;
-  --color-home-button: #079A8A;
-  --color-home-text-secondary: #763426;
-  
-  /* Footer */
-  --color-footer-background: #FFCC2E;
-  --color-footer-text: #722856;
-  --color-footer-texthover: #FFF4D3;
-  --color-footer-inputBackground: #ffffff;
-  --color-footer-inputPlaceholder: #9A9AB0;
-  --color-footer-button: #FA9439;
-  --color-footer-socialIcon: #573E3E;
+  --tw-home-searchbox: var(--color-home-searchbox);
+  --color-home-searchbox: var(--tw-home-searchbox);
 
-  --color-footerhome-background: #065109;
-  --color-footerhome-button: #F7D524;
-  --color-footerhome-texthover: #A7F3D0;
-  --color-footerhome-buttonhover: #e5c319;
+  --tw-home-text-secondary: var(--color-home-text-secondary);
+  --color-home-text-secondary: var(--tw-home-text-secondary);
 
-  /* Filter Sidebar */
-  --color-filter-primary: #FFCC2E;
-  --color-filter-secondary: #FFC722;
+  /* --- Footer --- */
+  --tw-footer-background: var(--color-footer-background);
+  --color-footer-background: var(--tw-footer-background);
+
+  --tw-footer-text: var(--color-footer-text);
+  --color-footer-text: var(--tw-footer-text);
+
+  --tw-footer-texthover: var(--color-footer-texthover);
+  --color-footer-texthover: var(--tw-footer-texthover);
+
+  --tw-footer-inputBackground: var(--color-footer-inputBackground);
+  --color-footer-inputBackground: var(--tw-footer-inputBackground);
+
+  --tw-footer-inputPlaceholder: var(--color-footer-inputPlaceholder);
+  --color-footer-inputPlaceholder: var(--tw-footer-inputPlaceholder);
+
+  --tw-footer-button: var(--color-footer-button);
+  --color-footer-button: var(--tw-footer-button);
+
+  --tw-footer-socialIcon: var(--color-footer-socialIcon);
+  --color-footer-socialIcon: var(--tw-footer-socialIcon);
+
+  --tw-footerhome-background: var(--color-footerhome-background);
+  --color-footerhome-background: var(--tw-footerhome-background);
+
+  --tw-footerhome-button: var(--color-footerhome-button);
+  --color-footerhome-button: var(--tw-footerhome-button);
+
+  --tw-footerhome-texthover: var(--color-footerhome-texthover);
+  --color-footerhome-texthover: var(--tw-footerhome-texthover);
+
+  --tw-footerhome-buttonhover: var(--color-footerhome-buttonhover);
+  --color-footerhome-buttonhover: var(--tw-footerhome-buttonhover);
+
+  /* --- (optional) a few scale samples if you need utilities like bg-teal-600 --- */
+  --tw-teal-600: var(--teal-600);
+  --color-teal-600: var(--tw-teal-600);
+
+  --tw-yellow-500: var(--yellow-500);
+  --color-yellow-500: var(--tw-yellow-500);
+
+  --tw-terracotta-800: var(--terracotta-800);
+  --color-terracotta-800: var(--tw-terracotta-800);
+
+  /* ---- Typography (Headings) ---- */
+  --text-h1: 96px;
+  --leading-h1: 115px;
+  --tracking-h1: 0.1px;
+  --text-h2: 72px;
+  --leading-h2: 85px;
+  --tracking-h2: 0.1px;
+  --text-h3: 54px;
+  --leading-h3: 65px;
+  --tracking-h3: 0.1px;
+  --text-h4: 48px;
+  --leading-h4: 60px;
+  --tracking-h4: 0.1px;
+  --text-h5: 36px;
+  --leading-h5: 40px;
+  --tracking-h5: 0.1px;
+
+  /* ---- Typography (Body) ---- */
+  --text-body-xl: 24px;
+  --leading-body-xl: 32px;
+  --tracking-body-xl: 0.1px;
+  --text-body-l: 18px;
+  --leading-body-l: 24px;
+  --tracking-body-l: 0px;
+  --text-body-m: 16px;
+  --leading-body-m: 24px;
+  --tracking-body-m: 0.1px;
+  --text-body-s: 14px;
+  --leading-body-s: 20px;
+  --tracking-body-s: 0.1px;
+  --text-body-xs: 12px;
+  --leading-body-xs: 20px;
+  --tracking-body-xs: 0.1px;
+
+  /* ---- Spacing scale (Tailwind v5) ---- */
+  /* tokens: 0, 050, 100, 150, 200, 300, 400, 600, 800, 1200, 1600, 2400, 4000, 6000 */
+  --spacing-0: 0rem; /* 0px  */
+  --spacing-050: 0.125rem; /* 2px  */
+  --spacing-100: 0.25rem; /* 4px  */
+  --spacing-150: 0.375rem; /* 6px  */
+  --spacing-200: 0.5rem; /* 8px  */
+  --spacing-300: 0.75rem; /* 12px */
+  --spacing-400: 1rem; /* 16px */
+  --spacing-600: 1.5rem; /* 24px */
+  --spacing-800: 2rem; /* 32px */
+  --spacing-1200: 3rem; /* 48px */
+  --spacing-1600: 4rem; /* 64px */
+  --spacing-2400: 6rem; /* 96px */
+  --spacing-4000: 10rem; /* 160px */
+  --spacing-6000: 14rem; /* 224px */
+
+  /* ---- Border radius scale ----
+   Tokens from your spec:
+   100=4px, 200=8px, 300=12px, 600=24px, 800=32px, 1200=48px, 1000=full
+*/
+  --radius-100: 0.25rem; /* 4px  */
+  --radius-200: 0.5rem; /* 8px  */
+  --radius-300: 0.75rem; /* 12px */
+  --radius-600: 1.5rem; /* 24px */
+  --radius-800: 2rem; /* 32px */
+  --radius-1200: 3rem; /* 48px */
+
+  /* “full” token (pills/circles). 9999px behaves like 100% for corners */
+  --radius-1000: 9999px;
+
+  /* (optional) make bare `rounded` use one of your tokens */
+  --radius: var(--radius-200); /* so `rounded` = 8px */
+
+  /* optional: font family shortcut */
+  --font-sans: var(
+    --font-sans,
+    Montserrat,
+    Helvetica,
+    Arial,
+    ui-sans-serif,
+    system-ui
+  );
 }
 
 @theme inline {
@@ -83,7 +192,7 @@ body {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #FA9439; /* Custom color for primary buttons */
+  --primary: #fa9439; /* Custom color for primary buttons */
   --primary-foreground: #ffffff;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -154,9 +263,15 @@ body {
 }
 
 @keyframes wave {
-  0% { transform: translateX(-100%); }
-  50% { transform: translateX(100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .animate-wave {
@@ -165,14 +280,19 @@ body {
 }
 
 .animate-wave::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  animation: wave 1.0s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: wave 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   z-index: 1.6;
 }
 
@@ -186,4 +306,98 @@ body {
 /* Hide spinners in Firefox */
 .no-spinner[type="number"] {
   -moz-appearance: textfield;
+}
+
+@layer utilities {
+  /* Headings */
+  .heading-h1 {
+    @apply font-bold     text-h1 leading-h1 tracking-h1;
+  }
+  .heading-h2 {
+    @apply font-semibold text-h2 leading-h2 tracking-h2;
+  }
+  .heading-h3 {
+    @apply font-semibold text-h3 leading-h3 tracking-h3;
+  }
+  .heading-h4 {
+    @apply font-semibold text-h4 leading-h4 tracking-h4;
+  }
+  .heading-h5 {
+    @apply font-semibold text-h5 leading-h5 tracking-h5;
+  }
+
+  /* Body */
+  .body-xl {
+    @apply font-medium text-body-xl leading-body-xl tracking-body-xl;
+  }
+  .body-l {
+    @apply font-medium text-body-l  leading-body-l  tracking-body-l;
+  }
+  .body-m {
+    @apply font-medium text-body-m  leading-body-m  tracking-body-m;
+  }
+  .body-s {
+    @apply font-medium text-body-s  leading-body-s  tracking-body-s;
+  }
+  .body-xs {
+    @apply font-medium text-body-xs leading-body-xs tracking-body-xs;
+  }
+  /* Headings (now use .text-primary, not text-text-primary) */
+  .heading-h1 {
+    @apply font-bold text-[96px] leading-[115px] tracking-[0.1px] text-primary;
+  }
+  .heading-h2 {
+    @apply font-semibold text-[72px] leading-[85px] tracking-[0.1px] text-primary;
+  }
+  .heading-h3 {
+    @apply font-semibold text-[54px] leading-[65px] tracking-[0.1px] text-primary;
+  }
+  .heading-h4 {
+    @apply font-semibold text-[48px] leading-[60px] tracking-[0.1px] text-primary;
+  }
+  .heading-h5 {
+    @apply font-semibold text-[36px] leading-[40px] tracking-[0.1px] text-primary;
+  }
+
+  /* Body */
+  .body-xl {
+    @apply font-medium text-[24px] leading-[32px] tracking-[0.1px];
+  }
+  .body-l {
+    @apply font-medium text-[18px] leading-[24px];
+  }
+  .body-m {
+    @apply font-medium text-[16px] leading-[24px] tracking-[0.1px];
+  }
+  .body-s {
+    @apply font-medium text-[14px] leading-[20px] tracking-[0.1px];
+  }
+  .body-xs {
+    @apply font-medium text-[12px] leading-[20px] tracking-[0.1px];
+  }
+
+  /* Text semantic helpers (plain CSS utilities) */
+  .text-primary {
+    color: var(--text-primary);
+  }
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+  .text-disabled {
+    color: var(--text-disabled);
+  }
+  .text-inverted {
+    color: var(--text-inverted);
+  }
+
+  /* Surface helpers */
+  .bg-surface {
+    background-color: var(--surface);
+  }
+  .bg-surface-accent {
+    background-color: var(--surface-accent);
+  }
+  .bg-surface-accent-2 {
+    background-color: var(--surface-accent-2);
+  }
 }
