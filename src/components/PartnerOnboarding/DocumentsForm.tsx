@@ -165,7 +165,7 @@ export default function DocumentsForm() {
             <PopoverTrigger asChild>
               <button
                 type="button"
-                className="w-full bg-white border border-neutral-200 rounded-300 px-250 py-200 text-left text-sm hover:bg-neutral-50 inline-flex items-center justify-between"
+                className="w-full bg-white border border-neutral-200 rounded-300  py-200 text-left text-sm hover:bg-neutral-50 inline-flex items-center justify-between"
               >
                 <span className="truncate">
                   {types.length ? types.join(", ") : "Document type"}
