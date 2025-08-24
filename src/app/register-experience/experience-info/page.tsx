@@ -1,6 +1,7 @@
 "use client";
 
 import AccountStepper from "@/components/PartnerOnboarding/AccountStepper";
+import { ExperienceFormA } from "@/components/PartnerOnboarding/ExperienceFormA";
 import Footer from "@/components/shared/Footer";
 import Header from "@/components/shared/Header";
 import { Button } from "@/components/ui/button";
@@ -49,9 +50,11 @@ function NumberStepper({
 function ExpandRow({
   title,
   defaultOpen = false,
+  children,
 }: {
   title: string;
   defaultOpen?: boolean;
+  children?: React.ReactNode;
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
@@ -69,10 +72,9 @@ function ExpandRow({
           <ChevronDown className="w-5 h-5 text-neutral-600" />
         )}
       </button>
+
       {open ? (
-        <div className="px-300 pb-300 text-sm text-neutral-600">
-          {/* empty for now */}
-        </div>
+        <div className="px-300 pb-300 text-sm text-neutral-600">{children}</div>
       ) : null}
     </div>
   );
@@ -152,7 +154,10 @@ export default function ExperienceInfoPage() {
 
           {/* accordions — same max width as card */}
           <div className="mt-300 space-y-200 max-w-4xl mx-auto">
-            <ExpandRow title="Experience A" defaultOpen />
+            <ExpandRow title="Experience A" defaultOpen>
+              <ExperienceFormA />
+            </ExpandRow>
+
             <ExpandRow title="Experience B" />
             <ExpandRow title="Experience C" />
           </div>
