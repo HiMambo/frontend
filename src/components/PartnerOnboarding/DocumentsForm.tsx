@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/popover";
 import { Check, ChevronDown, Paperclip, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 const NEXT_STEP = "/register-experience/experience-info";
 const DOC_TYPES = [
@@ -23,66 +23,46 @@ const DOC_TYPES = [
 export default function DocumentsForm() {
   const router = useRouter();
 
-  // left (upload)
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [progress, setProgress] = useState(0);
-  const [uploading, setUploading] = useState(false);
-
-  // right (types)
-  const [types, setTypes] = useState<string[]>(["Tax ID / VAT Number"]);
+  const [types, setTypes] = useState<string[]>([]);
   const [typesOpen, setTypesOpen] = useState(false);
 
   function openPicker() {
     inputRef.current?.click();
   }
+
   function onPick(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0] ?? null;
     setFile(f);
-    setProgress(0);
   }
+
   function removeFile() {
     setFile(null);
-    setProgress(0);
     if (inputRef.current) inputRef.current.value = "";
   }
+
   function toggleType(label: string, checked: boolean) {
     setTypes((prev) =>
       checked ? [...new Set([...prev, label])] : prev.filter((t) => t !== label)
     );
   }
 
-  // simulate upload
   function onUpload(e: React.FormEvent) {
     e.preventDefault();
-    if (!file || !types.length || uploading) return;
-    setUploading(true);
-    setProgress(0);
-    const id = setInterval(() => {
-      setProgress((p) => {
-        const n = Math.min(p + 12, 100);
-        if (n === 100) {
-          clearInterval(id);
-          setUploading(false);
-        }
-        return n;
-      });
-    }, 100);
+    if (!file || !types.length) return;
+    // no progress bar → just accept upload
+    alert("File uploaded successfully ✅");
   }
 
-  useEffect(() => {
-    if (!file) setProgress(0);
-  }, [file]);
-
-  const canUpload = !!file && types.length > 0 && !uploading;
-  const canContinue = progress === 100;
+  const canUpload = !!file && types.length > 0;
+  const canContinue = !!file && types.length > 0;
 
   return (
     <>
-      {/* grid wrapper */}
-      <div className="grid md:grid-cols-2 gap-400 items-start">
-        {/* LEFT — add min-w-0 so contents can shrink */}
-        <div className="min-w-0 space-y-200">
+      <div className="grid md:grid-cols-2 gap-6 items-start">
+        {/* LEFT: Upload */}
+        <div className="space-y-2">
           <label className="text-sm font-semibold text-neutral-700">
             Upload documents
           </label>
@@ -94,15 +74,14 @@ export default function DocumentsForm() {
             onKeyDown={(e) =>
               (e.key === "Enter" || e.key === " ") && openPicker()
             }
-            className="bg-neutral-50 border border-neutral-200 rounded-300  py-200"
+            className="bg-neutral-50 border border-neutral-200 rounded-md py-2 px-3 cursor-pointer"
           >
-            <div className="flex items-center gap-200">
+            <div className="flex items-center gap-2">
               <Paperclip className="w-4 h-4 text-neutral-500 shrink-0" />
               <span
                 className={`flex-1 text-sm truncate ${
                   file ? "text-neutral-700" : "text-neutral-400"
                 }`}
-                title={file?.name}
               >
                 {file ? file.name : "Choose a PDF, image, or document"}
               </span>
@@ -114,13 +93,12 @@ export default function DocumentsForm() {
                     e.stopPropagation();
                     removeFile();
                   }}
-                  className="p-100 rounded-200 hover:bg-neutral-100 text-neutral-500"
+                  className="p-1 rounded-md hover:bg-neutral-100 text-neutral-500"
                   aria-label="Remove file"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
               )}
-
               <input
                 ref={inputRef}
                 type="file"
@@ -129,34 +107,20 @@ export default function DocumentsForm() {
                 onChange={onPick}
               />
             </div>
-
-            {file && (
-              <div className="mt-150">
-                <div className="h-2 rounded-full bg-neutral-200 overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-[width] duration-150 ease-out bg-[#b26fff]"
-                    style={{ width: `${progress}%` }}
-                  />
-                </div>
-                <div className="mt-050 text-right text-[12px] text-neutral-600">
-                  {progress}%
-                </div>
-              </div>
-            )}
           </div>
 
           <Button
             type="button"
             onClick={onUpload}
             disabled={!canUpload}
-            className="w-full bg-yellow-500 hover:bg-yellow-400 text-white rounded-300 h-800"
+            className="w-full bg-yellow-500 hover:bg-yellow-400 text-white rounded-md h-10"
           >
             Upload Documents
           </Button>
         </div>
 
-        {/* RIGHT — add min-w-0 so dropdown trigger doesn’t force overflow */}
-        <div className="min-w-0 space-y-200">
+        {/* RIGHT: Dropdown */}
+        <div className="space-y-2">
           <label className="text-sm font-semibold text-neutral-700">
             Choose one or more from drop down menu*
           </label>
@@ -165,7 +129,7 @@ export default function DocumentsForm() {
             <PopoverTrigger asChild>
               <button
                 type="button"
-                className="w-full bg-white border border-neutral-200 rounded-300  py-200 text-left text-sm hover:bg-neutral-50 inline-flex items-center justify-between"
+                className="w-full bg-white border border-neutral-200 rounded-md py-2 px-3 text-left text-sm hover:bg-neutral-50 inline-flex items-center justify-between"
               >
                 <span className="truncate">
                   {types.length ? types.join(", ") : "Document type"}
@@ -173,9 +137,9 @@ export default function DocumentsForm() {
                 <ChevronDown className="w-4 h-4 text-neutral-500 shrink-0" />
               </button>
             </PopoverTrigger>
-            {/* keep menu at sane width */}
+
             <PopoverContent align="start" className="w-[22rem] p-0">
-              <ul className="max-h-72 overflow-auto py-100">
+              <ul className="max-h-72 overflow-auto py-1">
                 {DOC_TYPES.map((label) => {
                   const checked = types.includes(label);
                   return (
@@ -183,7 +147,7 @@ export default function DocumentsForm() {
                       <button
                         type="button"
                         onClick={() => toggleType(label, !checked)}
-                        className="w-full px-200 py-150 text-sm text-left hover:bg-neutral-50 flex items-center gap-200"
+                        className="w-full px-2 py-1.5 text-sm text-left hover:bg-neutral-50 flex items-center gap-2"
                       >
                         <Checkbox
                           checked={checked}
@@ -204,14 +168,16 @@ export default function DocumentsForm() {
         </div>
       </div>
 
-      <div className="mt-400" />
-
-      <div className="flex flex-col sm:flex-row gap-300">
+      <div className="mt-6 flex flex-col sm:flex-row gap-3">
         <Button
           type="button"
           onClick={() => router.push(NEXT_STEP)}
           disabled={!canContinue}
-          className="flex-1 bg-home-button hover:brightness-110 text-white rounded-300 h-800"
+          className={`flex-1 rounded-md h-10 ${
+            canContinue
+              ? "bg-green-600 hover:bg-green-500 text-white"
+              : "bg-neutral-300 text-neutral-500 cursor-not-allowed"
+          }`}
         >
           Next step
         </Button>

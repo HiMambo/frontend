@@ -88,18 +88,18 @@ export default function VerifyEmailForm() {
         {code.map((c, i) => (
           <input
             key={i}
-            //     ref={(el) => (inputsRef.current[i] = el)}
+            ref={(el) => (inputsRef.current[i] = el)} // ✅ restore this line
             inputMode="numeric"
             pattern="[0-9]*"
             maxLength={1}
             autoComplete="one-time-code"
             className="
-              w-1200 h-1200 text-center text-3xl font-semibold
-              rounded-200 border-2 bg-white
-              border-[var(--green-300)] focus:border-[var(--green-600)]
-              focus:outline-none focus:ring-2 focus:ring-[var(--green-500)]
-              text-[color:var(--terracotta-900)]
-            "
+      w-12 h-12 text-center text-3xl font-semibold
+      rounded-md border-2 bg-white
+      border-green-300 focus:border-green-600
+      focus:outline-none focus:ring-2 focus:ring-green-500
+      text-[color:var(--terracotta-900)]
+    "
             value={c}
             onChange={(e) => handleChange(i, e.target.value)}
             onKeyDown={(e) => handleKeyDown(i, e)}

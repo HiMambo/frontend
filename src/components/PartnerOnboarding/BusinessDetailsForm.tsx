@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 // const NEXT_STEP = "/register-experience/documents";
 
@@ -53,15 +53,15 @@ export default function BusinessDetailsForm() {
   const [category, setCategory] = useState<string | undefined>();
 
   // Decorative initials badge (like your mock)
-  const initials = useMemo(() => {
-    const parts = businessName.trim().split(/\s+/);
-    return (
-      parts
-        .slice(0, 2)
-        .map((p) => p[0]?.toUpperCase() ?? "")
-        .join("") || "EM"
-    );
-  }, [businessName]);
+  // const initials = useMemo(() => {
+  //   const parts = businessName.trim().split(/\s+/);
+  //   return (
+  //     parts
+  //       .slice(0, 2)
+  //       .map((p) => p[0]?.toUpperCase() ?? "")
+  //       .join("") || "EM"
+  //   );
+  // }, [businessName]);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -73,11 +73,11 @@ export default function BusinessDetailsForm() {
   return (
     <form onSubmit={onSubmit} className="grid md:grid-cols-2 gap-400 relative">
       {/* Badge */}
-      <div className="hidden md:block absolute right-400 -top-200">
+      {/* <div className="hidden md:block absolute right-400 -top-100">
         <div className="w-1200 h-1200 rounded-1000 bg-neutral-100 grid place-items-center text-terracotta-900 font-semibold text-400">
           {initials}
         </div>
-      </div>
+      </div> */}
 
       {/* Business Name */}
       <div>
