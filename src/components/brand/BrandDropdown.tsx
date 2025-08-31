@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { ChevronDown } from "lucide-react";
 
 type Item = { value: string; label: string };
 type Props = {
@@ -34,7 +33,6 @@ export default function BrandDropdown({
       <Select value={value} onValueChange={onValueChange}>
         <SelectTrigger className="h-[58px] w-full rounded-300 border-neutral-200 bg-white px-400 text-sm focus:ring-2 focus:ring-yellow-500/30">
           <SelectValue placeholder={placeholder} />
-          <ChevronDown className="ml-auto w-4 h-4 text-neutral-500" />
         </SelectTrigger>
         <SelectContent className="rounded-300">
           {items.map((it) => (
