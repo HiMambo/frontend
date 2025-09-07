@@ -1,16 +1,9 @@
-import {
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-} from "chart.js";
-import { X as XIcon } from "lucide-react";
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
+import Image from "next/image";
+import { X as XIcon } from "lucide-react";
 import {
   FaApplePay,
   FaBitcoin,
@@ -26,30 +19,30 @@ import {
   FaUniversity,
 } from "react-icons/fa";
 import { SiSololearn } from "react-icons/si";
-import Image from "next/image";
-import { fetchTotalPaymentPartnerById } from "@/lib/api";
-import {
-  BrandButton,
-} from "@/components/brand";
 
-ChartJS.register(
+import { fetchTotalPaymentPartnerById } from "@/lib/api";
+import { BrandButton } from "@/components/brand";
+
+import {
   CategoryScale,
+  Chart as ChartJS,
+  ChartOptions,
+  Legend,
   LinearScale,
-  PointElement,
   LineElement,
+  PointElement,
   Title,
   Tooltip,
-  Legend
-);
+} from "chart.js";
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+
 
 type TimeView = "This Month" | "This Year" | "Forever View";
 type PaymentData = { totalValue: number; totalExperiences: number; average: number };
 type PaymentDataCrypto = { totalValue: number; totalExperiences: number; converted: number };
-type GraphOptions = {
-  responsive: boolean;
-  plugins: { legend: { position: "top" | "bottom" | "left" | "right" }; title: { display: boolean; text: string } };
-};
 type Transaction = { id: number; partner_name: string; experience_name: string; total_price: number; booking_date: string };
+
 
 const currencies = [
   { code: "EUR", flag: "🇪🇺", icon: FaEuroSign },
@@ -111,8 +104,6 @@ const CurrencyDropdown = ({
   </div>
 );
 
-
-
 export default function MamboWallet() {
   const [view, setView] = useState<TimeView>("This Month");
   const [isClient, setIsClient] = useState(false);
@@ -152,22 +143,20 @@ export default function MamboWallet() {
         const partnerId = 11;
         const data = await fetchTotalPaymentPartnerById(partnerId);
 
-        const dataDisplay = {
+        setSummaryPaymentFiat({
           "This Month": { totalValue: data.total_payments_USDC, totalExperiences: 2, average: 21 },
           "This Year": { totalValue: data.total_payments_USDC, totalExperiences: 18, average: 17 },
           "Forever View": { totalValue: data.total_payments_USDC, totalExperiences: 72, average: 16 },
-        };
-        setSummaryPaymentFiat(dataDisplay);
+        });
 
-        const dataDisplayCrypto = {
+        setSummaryPaymentCrypto({
           "This Month": { totalValue: data.total_payments_SOL, totalExperiences: 1, converted: 0.35 },
           "This Year": { totalValue: data.total_payments_SOL, totalExperiences: 30, converted: 0.4 },
           "Forever View": { totalValue: data.total_payments_SOL, totalExperiences: 45, converted: 0.2 },
-        };
-        setSummaryPaymentCrypto(dataDisplayCrypto);
+        });
 
         setError(null);
-      } catch (err) {
+      } catch {
         setError("Failed to load payment data. Please try again later.");
       } finally {
         setLoading(false);
@@ -177,15 +166,14 @@ export default function MamboWallet() {
     const fetchTransactions = async () => {
       try {
         const res = await fetch("https://backend-production-f498.up.railway.app/partners/11/bookings");
-        const data = await res.json();
-        setTransactions(data);
-      } catch (err) {
-      }
+        setTransactions(await res.json());
+      } catch {}
     };
 
     fetchPaymentData();
     fetchTransactions();
   }, []);
+
 
   const refundValues = {
     "This Month": { totalRefunds: 1, refundRate: 6.67 },
@@ -219,17 +207,24 @@ export default function MamboWallet() {
     ],
   };
 
-  const graphOptions: GraphOptions & any = {
-    responsive: true,
-    plugins: {
-      legend: { position: "top" },
-      title: { display: false, text: "" },
+const graphOptions: ChartOptions<"line"> = {
+  responsive: true,
+  plugins: {
+    legend: { position: "top" },
+    title: { display: false, text: "" },
+  },
+  scales: {
+    x: {
+      grid: { color: "rgba(0,0,0,0.06)" },
+      ticks: { color: "#6b7280", font: { size: 10 } },
     },
-    scales: {
-      x: { grid: { color: "rgba(0,0,0,0.06)" }, ticks: { color: "#6b7280", font: { size: 10 } } },
-      y: { grid: { color: "rgba(0,0,0,0.06)" }, ticks: { color: "#6b7280", font: { size: 10 } } },
+    y: {
+      grid: { color: "rgba(0,0,0,0.06)" },
+      ticks: { color: "#6b7280", font: { size: 10 } },
     },
-  };
+  },
+};
+
 
   if (loading) return <div className="p-8">Loading...</div>;
   if (error) return <div className="p-8 text-red-500">{error}</div>;
@@ -240,7 +235,6 @@ export default function MamboWallet() {
         showBankModal || showExpandedTransactions ? "overflow-hidden" : ""
       }`}
     >
-      {/* Header */}
       <header className="mb-6">
         <h2 className="text-3xl font-extrabold text-neutral-800">Mambo Wallet</h2>
         <div className="flex gap-2 mt-4">
@@ -274,7 +268,6 @@ export default function MamboWallet() {
       </header>
 
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* All Payments */}
         <div className="bg-white p-6 rounded-2xl shadow-sm relative">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-base font-semibold text-neutral-800">All Payments</h3>
@@ -299,7 +292,6 @@ export default function MamboWallet() {
           </div>
         </div>
 
-        {/* Crypto Payments */}
         <div className="bg-white p-6 rounded-2xl shadow-sm relative">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-base font-semibold text-neutral-800">Crypto Payments</h3>
@@ -330,7 +322,6 @@ export default function MamboWallet() {
           </div>
         </div>
 
-        {/* Payout */}
         <div className="bg-gradient-to-br from-amber-300 to-amber-400 p-6 rounded-2xl shadow-sm relative overflow-hidden">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-base font-semibold text-white">Payout</h3>
@@ -365,7 +356,6 @@ export default function MamboWallet() {
           </div>
         </div>
 
-        {/* Payments Comparison */}
         <div className="bg-white p-6 rounded-2xl shadow-sm relative col-span-2">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-base font-semibold text-neutral-800">Payment Comparison</h3>
@@ -379,7 +369,6 @@ export default function MamboWallet() {
           {isClient && <Line data={graphData} options={graphOptions} />}
         </div>
 
-        {/* Payment Methods */}
         <div className="bg-white p-6 rounded-2xl shadow-sm relative">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-base font-semibold text-neutral-800">Payment Methods</h3>
@@ -455,7 +444,6 @@ export default function MamboWallet() {
           </ul>
         </div>
 
-        {/* Transaction History */}
         <div className="bg-white p-6 rounded-2xl shadow-sm relative col-span-2">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-base font-semibold text-neutral-800">Transaction History</h3>
@@ -516,7 +504,6 @@ export default function MamboWallet() {
     </div>
 
 
-        {/* Refunds */}
         <div className="bg-white p-6 rounded-2xl shadow-sm relative">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-base font-semibold text-neutral-800">Refunds</h3>
@@ -544,7 +531,6 @@ export default function MamboWallet() {
         </div>
       </section>
 
-      {/* Bank Modal (unchanged logic; polished visuals) */}
       {showBankModal && (
         <>
           <div

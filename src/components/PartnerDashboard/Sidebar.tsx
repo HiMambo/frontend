@@ -10,7 +10,6 @@ import {
 	FaWallet,
 } from "react-icons/fa";
 
-// Define props directly here
 interface SidebarProps {
   selectedSection: string;
   setSelectedSection: (section: string) => void;
@@ -28,9 +27,7 @@ export default function Sidebar({
 
   return (
     <aside className="fixed top-0 left-0 h-full w-64 bg-white shadow-md p-6 overflow-y-auto flex flex-col">
-      {/* Logo and Navigation */}
       <div>
-        {/* Logo Section */}
         <div className="mb-8 flex items-center space-x-4">
           <Image
             src="/logo.png"
@@ -90,7 +87,6 @@ export default function Sidebar({
           </div>
         </nav>
 
-        {/* Help Section */}
         <div className="relative">
           <div className="border-t border-gray-200 my-3"></div>
           <div className="bg-orange-50 p-2 rounded-xl border border-orange-200">

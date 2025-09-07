@@ -6,7 +6,7 @@ import TopNav from "@/components/PartnerDashboard/TopNav";
 import { useState } from "react";
 
 export default function Home() {
-  const [selectedSection, setSelectedSection] = useState("dashboard");
+  const [selectedSection, setSelectedSection] = useState("business-page");
 
   return (
     <div className="min-h-screen bg-gray-100 font-sans text-gray-800">

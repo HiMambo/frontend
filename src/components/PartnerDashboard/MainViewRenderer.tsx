@@ -1,7 +1,6 @@
-import EducationHub from "./EducationHub";
+import EducationHub from "./EducationHub/EducationHub.container";
 import MamboWallet from "./MamboWallet";
-import BusinessPage from "./BusinessPage";
-
+import BusinessPage from "./BusinessPage/BusinessPage.container";
 
 type MainViewRendererProps = {
   selectedSection: string;
@@ -20,8 +19,6 @@ export default function MainViewRenderer({
     case "mambo-wallet":
       return <MamboWallet />;
     default:
-      return (
-        <h1 className="text-3xl font-bold">Welcome to HiMambo Dashboard</h1>
-      );
+      return <BusinessPage />;
   }
 }
