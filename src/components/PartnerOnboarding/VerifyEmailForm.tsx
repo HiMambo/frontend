@@ -88,7 +88,7 @@ export default function VerifyEmailForm() {
         {code.map((c, i) => (
           <input
             key={i}
-            ref={(el) => (inputsRef.current[i] = el)} // ✅ restore this line
+            ref={(el) => void (inputsRef.current[i] = el)}
             inputMode="numeric"
             pattern="[0-9]*"
             maxLength={1}
