@@ -43,4 +43,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 Make sure you are part of the Vercel team. Only one person can deploy for now.
 
-Test for public repo deployment on Vercel. Newest version. 
+Test for public repo deployment on Vercel. Newest version 
