@@ -14,7 +14,7 @@ export default function Home(){
   return (
     <>
       <Header />
-      <main className="relative pb-20">
+      <main className="relative pb-20 bg-surface">
         {/* Hero Image */}
         <div className="w-full relative">
           <Image
@@ -35,8 +35,8 @@ export default function Home(){
         {/* Featured Experiences Section */}
         <section className="max-w-6xl mx-auto px-4 py-20">
           <div className="text-center mb-20">
-            <h2 className="text-2xl text-black tracking-wide">Choose your next adventure</h2>
-            <p className="text-4xl font-semibold text-home-text-secondary mt-3 tracking-wider">Select the best experience for you!</p>
+            <h2 className="body-xl-light text-primary">Choose your next adventure</h2>
+            <p className="heading-h3 text-secondary mt-3">Select the best experience for you!</p>
           </div>
 
           <FeaturedExperiencesCarousel
@@ -46,7 +46,7 @@ export default function Home(){
           />
         </section>
       </main>
-      <Footer variant="home" />
+      <Footer />
     </>
   );
 }

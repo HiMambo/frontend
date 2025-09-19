@@ -2,18 +2,18 @@
 
 :root {
   /* ---- Semantic text ---- */
-  --text-primary: #3a1d17; /* red/950 from your spec */
-  --text-secondary: #5a2a22; /* red/900 */
-  --text-disabled: #cfc9bf; /* neutral/300 */
-  --text-inverted: #ffffff;
+  --text-primary: var(--terracotta-950);
+  --text-secondary: var(--terracotta-900);
+  --text-disabled: var(--neutral-300);
+  --text-inverted: #fffaf5;
 
   /* ---- Surfaces / accents ---- */
   --surface: #fffaf5; /* light canvas */
-  --surface-accent: #f1a501; /* yellow/600 */
-  --surface-accent-2: #a8c87a; /* green/300 */
+  --surface-accent: var(--yellow-500);
+  --surface-accent-2: var(--green-300);
 
   /* ---- Homepage + footer tokens ---- */
-  --color-home-searchbox: #e6f0d7;
+  --color-home-searchbox: var(--green-100);
   --color-home-button: #079a8a;
   --color-home-text-secondary: #763426;
 
@@ -30,10 +30,10 @@
   --color-footerhome-texthover: #a7f3d0;
   --color-footerhome-buttonhover: #e5c319;
 
-  /* ---- Palette scales (fill any hex you want to adjust) ---- */
-  /* Warm Neutral */
+    /* --- Color Palette from Design System --- */
+  /* Warm Neutral Scale */
   --neutral-50: #f7f6f5;
-  --neutral-100: #e0ebe7;
+  --neutral-100: #edebe7;
   --neutral-200: #dad6ce;
   --neutral-300: #c2bdaf;
   --neutral-400: #a49a87;
@@ -41,55 +41,55 @@
   --neutral-600: #8b7d6b;
   --neutral-700: #74675a;
   --neutral-800: #60554c;
-  --neutral-900: #41463f;
+  --neutral-900: #4f463f;
   --neutral-950: #292521;
 
-  /* Terracotta (Warning) */
+  /* Terracotta-Warning Scale */
   --terracotta-50: #fdf5f3;
   --terracotta-100: #fbe9e5;
   --terracotta-200: #f9d6cf;
   --terracotta-300: #f4b9ad;
   --terracotta-400: #ec907d;
-  --terracotta-500: #d76591;
+  --terracotta-500: #df6951;
   --terracotta-600: #cb5037;
   --terracotta-700: #ab402a;
   --terracotta-800: #8e3826;
   --terracotta-900: #763426;
   --terracotta-950: #40170f;
 
-  /* Yellow (Positive) */
+  /* Yellow-Positive Scale */
   --yellow-50: #fffcea;
   --yellow-100: #fff7c5;
   --yellow-200: #fff086;
   --yellow-300: #ffe146;
   --yellow-400: #ffd01c;
-  --yellow-500: #ffa501;
+  --yellow-500: #f1a501;
   --yellow-600: #e18400;
   --yellow-700: #bb5c02;
   --yellow-800: #974709;
   --yellow-900: #7c3a0b;
   --yellow-950: #481d00;
 
-  /* Green (Primary) */
+  /* Green-Primary Scale */
   --green-50: #f4f8ed;
   --green-100: #e6f0d7;
-  --green-200: #c6de9a;
-  --green-300: #afd08a;
+  --green-200: #c6dea6;
+  --green-300: #afd086;
   --green-400: #92bb60;
   --green-500: #73a042;
-  --green-600: #59731a;
+  --green-600: #597f31;
   --green-700: #446229;
   --green-800: #3a4f25;
   --green-900: #324423;
   --green-950: #18240f;
 
-  /* Teal */
+  /* Teal Scale */
   --teal-50: #effefa;
   --teal-100: #cafdf1;
   --teal-200: #95fae5;
   --teal-300: #58f0d5;
-  --teal-400: #26dbcc;
-  --teal-500: #0ddaf8;
+  --teal-400: #26dbc0;
+  --teal-500: #0dbfa8;
   --teal-600: #079a8a;
   --teal-700: #0a7b6f;
   --teal-800: #0d5d56;
@@ -97,7 +97,17 @@
   --teal-950: #02312f;
 
   /* Font family hook (used by next/font) */
-  --font-sans: Montserrat, Helvetica, Arial, ui-sans-serif, system-ui;
+  --font-sans: --font-parkinsans, Helvetica, Arial, ui-sans-serif, system-ui;
+
+  /* Icon sizing tokens */
+  --icon-xs: 16px;
+  --icon-s: 24px;
+  --icon-m: 32px;
+  --icon-l: 48px;
+  --icon-xl: 64px;
+
+  /* Elevation token */
+  --elevation-1: 14px 14px 12px 0px rgba(118, 52, 38, 0.15);
 }
 
 /* Optional dark theme: override only what you need */

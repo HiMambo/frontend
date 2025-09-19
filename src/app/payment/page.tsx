@@ -6,7 +6,6 @@ import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
 import BookingSummary from "@/components/PaymentPage/BookingSummary";
 import BookingFlow from "@/components/PaymentPage/BookingFlow";
-import ProgressBar from "@/components/PaymentPage/ProgressBar";
 import { useBooking } from '@/context/BookingContext';
 import { useSearch } from '@/context/SearchContext';
 import { BookingStepsProvider } from "@/context/BookingStepsContext";
@@ -33,10 +32,7 @@ export default function PaymentPage() {
     <>
       <Header />
       <BookingStepsProvider>
-        <div className="justify-center w-full px-4">
-          <ProgressBar />
-        </div>
-        <main className="grid md:grid-cols-5 gap-6 p-6">
+        <main className="grid md:grid-cols-5 gap-6 p-6 bg-surface">
           <div className="md:col-span-3">
             <BookingFlow />
           </div>

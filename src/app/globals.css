@@ -58,8 +58,14 @@ If you're on Tailwind v4, these are fine. On v3, delete the two @custom-variant/
   --tw-yellow-500: var(--yellow-500);
   --color-yellow-500: var(--tw-yellow-500);
 
+  --tw-terracotta-600: var(--terracotta-600);
+  --color-terracotta-600: var(--tw-terracotta-600);
+
   --tw-terracotta-800: var(--terracotta-800);
   --color-terracotta-800: var(--tw-terracotta-800);
+
+  --tw-teal-500: var(--teal-500);
+  --color-teal-500: var(--tw-teal-500);
 
   /* ---- Typography (Headings) ---- */
   --text-h1: 96px;
@@ -97,20 +103,20 @@ If you're on Tailwind v4, these are fine. On v3, delete the two @custom-variant/
 
   /* ---- Spacing scale (Tailwind v5) ---- */
   /* tokens: 0, 050, 100, 150, 200, 300, 400, 600, 800, 1200, 1600, 2400, 4000, 6000 */
-  --spacing-0: 0rem; /* 0px  */
-  --spacing-050: 0.125rem; /* 2px  */
-  --spacing-100: 0.25rem; /* 4px  */
-  --spacing-150: 0.375rem; /* 6px  */
-  --spacing-200: 0.5rem; /* 8px  */
-  --spacing-300: 0.75rem; /* 12px */
-  --spacing-400: 1rem; /* 16px */
-  --spacing-600: 1.5rem; /* 24px */
-  --spacing-800: 2rem; /* 32px */
-  --spacing-1200: 3rem; /* 48px */
-  --spacing-1600: 4rem; /* 64px */
-  --spacing-2400: 6rem; /* 96px */
-  --spacing-4000: 10rem; /* 160px */
-  --spacing-6000: 14rem; /* 224px */
+  --spacing-0: 0rem; /* 0px */
+  --spacing-050: 0.25rem; /* 2px */
+  --spacing-100: 0.5rem; /* 4px */
+  --spacing-150: 0.75rem; /* 6px */
+  --spacing-200: 1rem; /* 8px */
+  --spacing-300: 1.5rem; /* 12px */
+  --spacing-400: 2rem; /* 16px */
+  --spacing-600: 3rem; /* 24px */
+  --spacing-800: 4rem; /* 32px */
+  --spacing-1200: 6rem; /* 48px */
+  --spacing-1600: 8rem; /* 64px */
+  --spacing-2400: 12rem; /* 96px */
+  --spacing-4000: 20rem; /* 160px */
+  --spacing-6000: 28rem; /* 224px */
 
   /* ---- Border radius scale ----
    Tokens from your spec:
@@ -123,27 +129,20 @@ If you're on Tailwind v4, these are fine. On v3, delete the two @custom-variant/
   --radius-800: 2rem; /* 32px */
   --radius-1200: 3rem; /* 48px */
 
-  /* “full” token (pills/circles). 9999px behaves like 100% for corners */
+  /* "full" token (pills/circles). 9999px behaves like 100% for corners */
   --radius-1000: 9999px;
 
   /* (optional) make bare `rounded` use one of your tokens */
   --radius: var(--radius-200); /* so `rounded` = 8px */
 
-  /* optional: font family shortcut */
-  --font-sans: var(
-    --font-sans,
-    Montserrat,
-    Helvetica,
-    Arial,
-    ui-sans-serif,
-    system-ui
-  );
+  /* Font family shortcut */
+  --font-sans: var(--font-parkinsans, ui-sans-serif, system-ui, sans-serif);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-parkinsans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -180,10 +179,6 @@ If you're on Tailwind v4, these are fine. On v3, delete the two @custom-variant/
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-body {
-  font-family: Montserrat, Helvetica, sans-serif;
-}
-
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -192,7 +187,7 @@ body {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #fa9439; /* Custom color for primary buttons */
+  --primary: var(--yellow-500);
   --primary-foreground: #ffffff;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -309,74 +304,161 @@ body {
 }
 
 @layer utilities {
-  /* Headings */
+  /* Typography utilities using explicit font properties */
   .heading-h1 {
-    @apply font-bold     text-h1 leading-h1 tracking-h1;
+    font-family: var(--font-parkinsans);
+    font-weight: 700; /* Bold */
+    font-size: 96px;
+    line-height: 115px;
+    letter-spacing: 0.1px;
   }
+  
   .heading-h2 {
-    @apply font-semibold text-h2 leading-h2 tracking-h2;
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: 72px;
+    line-height: 85px;
+    letter-spacing: 0.1px;
   }
+  
   .heading-h3 {
-    @apply font-semibold text-h3 leading-h3 tracking-h3;
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: 54px;
+    line-height: 65px;
+    letter-spacing: 0.1px;
   }
+  
   .heading-h4 {
-    @apply font-semibold text-h4 leading-h4 tracking-h4;
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: 48px;
+    line-height: 60px;
+    letter-spacing: 0.1px;
   }
+  
   .heading-h5 {
-    @apply font-semibold text-h5 leading-h5 tracking-h5;
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: 36px;
+    line-height: 40px;
+    letter-spacing: 0.1px;
   }
 
-  /* Body */
+  .heading-h5-light {
+    font-family: var(--font-parkinsans);
+    font-weight: 300; /* Light */
+    font-size: 36px;
+    line-height: 40px;
+    letter-spacing: 0.1px;
+  }
+
+  /* Body typography */
+  .body-xxl-label {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: 32px;
+    line-height: 32px;
+    letter-spacing: 0.1px;
+  }
+
+  .body-xxl {
+    font-family: var(--font-parkinsans);
+    font-weight: 500; /* Medium */
+    font-size: 32px;
+    line-height: 32px;
+    letter-spacing: 0.1px;
+  }
+
+  .body-xl-bold {
+    font-family: var(--font-parkinsans);
+    font-weight: 700; /* Bold */
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: 0.1px;
+  }
+
+  .body-xl-label {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: 0.1px;
+  }
+
   .body-xl {
-    @apply font-medium text-body-xl leading-body-xl tracking-body-xl;
-  }
-  .body-l {
-    @apply font-medium text-body-l  leading-body-l  tracking-body-l;
-  }
-  .body-m {
-    @apply font-medium text-body-m  leading-body-m  tracking-body-m;
-  }
-  .body-s {
-    @apply font-medium text-body-s  leading-body-s  tracking-body-s;
-  }
-  .body-xs {
-    @apply font-medium text-body-xs leading-body-xs tracking-body-xs;
-  }
-  /* Headings (now use .text-primary, not text-text-primary) */
-  .heading-h1 {
-    @apply font-bold text-[96px] leading-[115px] tracking-[0.1px] text-primary;
-  }
-  .heading-h2 {
-    @apply font-semibold text-[72px] leading-[85px] tracking-[0.1px] text-primary;
-  }
-  .heading-h3 {
-    @apply font-semibold text-[54px] leading-[65px] tracking-[0.1px] text-primary;
-  }
-  .heading-h4 {
-    @apply font-semibold text-[48px] leading-[60px] tracking-[0.1px] text-primary;
-  }
-  .heading-h5 {
-    @apply font-semibold text-[36px] leading-[40px] tracking-[0.1px] text-primary;
+    font-family: var(--font-parkinsans);
+    font-weight: 500; /* Medium */
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: 0.1px;
   }
 
-  /* Body */
-  .body-xl {
-    @apply font-medium text-[24px] leading-[32px] tracking-[0.1px];
+  .body-xl-light {
+    font-family: var(--font-parkinsans);
+    font-weight: 300; /* Light */
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: 0.1px;
   }
-  .body-l {
-    @apply font-medium text-[18px] leading-[24px];
-  }
-  .body-m {
-    @apply font-medium text-[16px] leading-[24px] tracking-[0.1px];
-  }
-  .body-s {
-    @apply font-medium text-[14px] leading-[20px] tracking-[0.1px];
-  }
-  .body-xs {
-    @apply font-medium text-[12px] leading-[20px] tracking-[0.1px];
+  
+  .body-l-button {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0px;
   }
 
-  /* Text semantic helpers (plain CSS utilities) */
+  .body-l {
+    font-family: var(--font-parkinsans);
+    font-weight: 500; /* Medium */
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0px;
+  }
+
+  .body-l-light {
+    font-family: var(--font-parkinsans);
+    font-weight: 300; /* Light */
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0px;
+  }
+  
+  .body-m-button {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+  }
+
+  .body-m {
+    font-family: var(--font-parkinsans);
+    font-weight: 500; /* Medium */
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+  }
+  
+  .body-s {
+    font-family: var(--font-parkinsans);
+    font-weight: 500; /* Medium */
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+  }
+  
+  .body-xs {
+    font-family: var(--font-parkinsans);
+    font-weight: 500; /* Medium */
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+  }
+
+  /* text semantic helpers */
   .text-primary {
     color: var(--text-primary);
   }
@@ -400,4 +482,48 @@ body {
   .bg-surface-accent-2 {
     background-color: var(--surface-accent-2);
   }
+}
+
+  /* Utility classes for icons */
+  .icon-xs {
+    width: var(--icon-xs);
+    height: var(--icon-xs);
+  }
+
+  .icon-s {
+    width: var(--icon-s);
+    height: var(--icon-s);
+  }
+
+  .icon-m {
+    width: var(--icon-m);
+    height: var(--icon-m);
+  }
+
+  .icon-l {
+    width: var(--icon-l);
+    height: var(--icon-l);
+  }
+
+  .icon-xl {
+    width: var(--icon-xl);
+    height: var(--icon-xl);
+  }
+
+/* Utility classes for border radius */
+.rounded-100 { border-radius: var(--radius-100); }
+.rounded-200 { border-radius: var(--radius-200); }
+.rounded-300 { border-radius: var(--radius-300); }
+.rounded-600 { border-radius: var(--radius-600); }
+.rounded-800 { border-radius: var(--radius-800); }
+.rounded-1200 { border-radius: var(--radius-1200); }
+
+/* Utility class for elevation */
+.shadow-elevation-1 {
+  box-shadow: var(--elevation-1);
+}
+
+/* create the hover-prefixed class Tailwind would normally emit */
+.hover\:shadow-elevation-1:hover {
+  box-shadow: var(--elevation-1);
 }

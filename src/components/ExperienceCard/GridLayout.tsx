@@ -5,7 +5,7 @@ import { ActionButton } from "./ActionButton";
 import { SDGIcons } from "./SDGIcons";
 import { SharedExperienceCardProps } from "./ExperienceCard";
 import LocationDisplay from "./LocationDisplay";
-
+import { FilledHeart, EmptyHeart, ShoppingCart } from "../shared/IconComponents";
 export const GridLayout: React.FC<SharedExperienceCardProps> = ({
   experience,
   isFavorited,
@@ -31,11 +31,10 @@ export const GridLayout: React.FC<SharedExperienceCardProps> = ({
       {/* Favorite Icon */}
       <div className="absolute top-2 right-2 z-10">
         <ActionButton
-          icon={isFavorited ? "/assets/HeartFilled.svg" : "/assets/Heart.svg"}
-          alt="Favorite"
+          icon={isFavorited ? FilledHeart : EmptyHeart}
           tooltip={isFavorited ? "Remove from favorites" : "Add to favorites"}
           onClick={onFavoriteClick}
-          className="w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center transition-colors cursor-pointer"
+          className="w-9 h-9 rounded-full bg-white/90 hover:bg-white flex items-center justify-center transition-colors cursor-pointer"
           size={20}
         />
       </div>
@@ -70,8 +69,7 @@ export const GridLayout: React.FC<SharedExperienceCardProps> = ({
               $ {getPrice().toFixed(2)}
             </span>
             <ActionButton
-              icon="/assets/shopping.svg"
-              alt="Cart"
+              icon={ShoppingCart}
               tooltip="Checkout"
               onClick={onCartClick}
               size={25}

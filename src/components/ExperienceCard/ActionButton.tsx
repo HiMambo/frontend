@@ -1,29 +1,27 @@
-import Image from "next/image";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import React from "react";
 
 export const ActionButton: React.FC<{
-  icon: string;
-  alt: string;
+  icon: React.ElementType;
   tooltip: string;
   onClick: (e: React.MouseEvent) => void;
-  size: number;
+  size?: number;
   className?: string;
 }> = ({
-  icon,
-  alt,
+  icon: Icon,
   tooltip,
   onClick,
-  size,
-  className = "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors cursor-pointer",
+  size = 20,
+  className = "w-9 h-9 rounded-full bg-white hover:bg-[var(--green-300)] hover:text-white flex items-center justify-center transition-colors cursor-pointer",
 }) => (
   <Tooltip>
     <TooltipTrigger asChild>
-      <button className={className} onClick={onClick}>
-        <Image src={icon} alt={alt} width={size} height={size} />
+      <button className={className} onClick={onClick} aria-label={tooltip}>
+        <Icon width={size} height={size} />
       </button>
     </TooltipTrigger>
     <TooltipContent>{tooltip}</TooltipContent>

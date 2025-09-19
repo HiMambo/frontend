@@ -5,6 +5,7 @@ import { useFilter } from "@/context/FilterContext";
 import PriceFilter from "./PriceFilter";
 import { FilterSection } from "./FilterSection";
 import { Button } from "../ui/button";
+import { CategoriesFilterIcon, BudgetFilterIcon, RatingFilterIcon, SpecialFeaturesFilterIcon, DiscountFilterIcon, SDGFilterIcon } from "../shared/IconComponents";
 
 const FilterSidebar: React.FC = () => {
   const {
@@ -18,8 +19,6 @@ const FilterSidebar: React.FC = () => {
     setMaxPrice,
     selectedDiscount,
     toggleDiscount,
-    selectedPillar,
-    togglePillar,
     selectedSDG,
     toggleSDG,
     resetPriceFilter,
@@ -29,9 +28,9 @@ const FilterSidebar: React.FC = () => {
   } = useFilter();
 
   return (
-    <div className="text-gray-600 w-full">
+    <div className="bg-surface w-full">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-blue-800">Filter by</h2>
+        <h2 className="body-xl text-secondary">Filter by</h2>
         {anyFilterSelected && (
           <Button
             variant="ghost"
@@ -45,7 +44,7 @@ const FilterSidebar: React.FC = () => {
       </div>
       {/* Categories */}
       <FilterSection
-        title="Category"
+        title="Categories"
         options={[
           "Nature & Wildlife",
           "Cultural Immersion",
@@ -57,31 +56,16 @@ const FilterSidebar: React.FC = () => {
         selected={selectedCategories}
         onToggle={toggleCategory}
         disabled
+        TitleIcon={CategoriesFilterIcon}
       />
 
-      {/* Discount Offer */}
-      <FilterSection
-        title="Discount"
-        options={["20% Cashback", "5% Cashback Offer", "25% Discount Offer"]}
-        selected={selectedDiscount}
-        onToggle={toggleDiscount}
-        disabled
-      />
-
-      {/* Rating */}
-      <FilterSection
-        title="Rating"
-        options={[5, 4, 3]}
-        selected={selectedRating}
-        onToggle={toggleRating}
-        renderLabel={(val) => val === 5 ? `${val} Stars` : `${val}+ Stars`}
-        single={true}
-      />
-
-      {/* Price */}
+      {/* Budget */}
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="font-semibold text-lg text-blue-800">Price Range</h3>
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-2 border-b-2 border-[var(--text-secondary)] pb-1 text-secondary">
+            <BudgetFilterIcon className="w-5 h-5" aria-hidden="true" />
+            <h3 className="body-xl">Budget</h3>
+          </div>
             {/* Reset Button */}
             {(!noPriceSelection) && (
               <Button
@@ -104,6 +88,27 @@ const FilterSidebar: React.FC = () => {
         />
       </div>
 
+      {/* Rating */}
+      <FilterSection
+        title="Rating"
+        options={[5, 4, 3]}
+        selected={selectedRating}
+        onToggle={toggleRating}
+        renderLabel={(val) => val === 5 ? `${val} Stars` : `${val}+ Stars`}
+        single={true}
+        TitleIcon={RatingFilterIcon}
+      />
+
+      {/* Discount Offer */}
+      <FilterSection
+        title="Discount"
+        options={["20% Cashback", "5% Cashback Offer", "25% Discount Offer"]}
+        selected={selectedDiscount}
+        onToggle={toggleDiscount}
+        disabled
+        TitleIcon={DiscountFilterIcon}
+      />
+
       {/* Special Features */}
       <FilterSection
         title="Special Features"
@@ -111,38 +116,30 @@ const FilterSidebar: React.FC = () => {
         selected={[]}
         onToggle={() => {}}
         disabled
-      />
-
-      {/* Pillars */}
-      <FilterSection
-        title="Pillar"
-        options={["People", "Planet", "Prosperity", "Peace", "Partnership"]}
-        selected={selectedPillar}
-        onToggle={togglePillar}
-        disabled
+        TitleIcon={SpecialFeaturesFilterIcon}
       />
 
       {/* Filter By SDG */}
       <FilterSection
-        title="Sustainable Development Goals"
+        title="Filter by SDG"
         options={[
-          { value: "1", label: "SDG 1: No Poverty" },
-          { value: "2", label: "SDG 2: Zero Hunger" },
-          { value: "3", label: "SDG 3: Good Health And Well-Being" },
-          { value: "4", label: "SDG 4: Quality Education" },
-          { value: "5", label: "SDG 5: Gender Equality" },
-          { value: "6", label: "SDG 6: Clean Water And Sanitation" },
-          { value: "7", label: "SDG 7: Affordable And Clean Energy" },
-          { value: "8", label: "SDG 8: Decent Work And Economic Growth" },
-          { value: "9", label: "SDG 9: Industry, Innovation And Infrastructure" },
-          { value: "10", label: "SDG 10: Reduced Inequalities" },
-          { value: "11", label: "SDG 11: Sustainable Cities And Communities" },
-          { value: "12", label: "SDG 12: Responsible Consumption And Production" },
-          { value: "13", label: "SDG 13: Climate Action" },
-          { value: "14", label: "SDG 14: Life Below Water" },
-          { value: "15", label: "SDG 15: Life On Land" },
-          { value: "16", label: "SDG 16: Peace, Justice And Strong Institutions" },
-          { value: "17", label: "SDG 17: Partnerships For The Goals" },
+          { value: "1", label: "1: No Poverty" },
+          { value: "2", label: "2: Zero Hunger" },
+          { value: "3", label: "3: Good Health And Well-Being" },
+          { value: "4", label: "4: Quality Education" },
+          { value: "5", label: "5: Gender Equality" },
+          { value: "6", label: "6: Clean Water And Sanitation" },
+          { value: "7", label: "7: Affordable And Clean Energy" },
+          { value: "8", label: "8: Decent Work And Economic Growth" },
+          { value: "9", label: "9: Industry, Innovation And Infrastructure" },
+          { value: "10", label: "10: Reduced Inequalities" },
+          { value: "11", label: "11: Sustainable Cities And Communities" },
+          { value: "12", label: "12: Responsible Consumption And Production" },
+          { value: "13", label: "13: Climate Action" },
+          { value: "14", label: "14: Life Below Water" },
+          { value: "15", label: "15: Life On Land" },
+          { value: "16", label: "16: Peace, Justice And Strong Institutions" },
+          { value: "17", label: "17: Partnerships For The Goals" },
         ]}
         selected={selectedSDG}
         onToggle={toggleSDG}
@@ -152,6 +149,7 @@ const FilterSidebar: React.FC = () => {
         emptyMessage="No SDG found."
         renderBadgeLabel={(val) => `SDG ${val}`}
         iconPath={(val) => `/assets/sdg/E-WEB-Goal-${val.padStart(2, "0")}.png`}
+        TitleIcon={SDGFilterIcon}
       />
     </div>
   );

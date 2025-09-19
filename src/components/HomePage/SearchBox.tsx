@@ -23,7 +23,7 @@ export default function SearchBox() {
   };
 
   return (
-    <div className="bg-home-searchbox rounded-xl px-4 py-4 shadow-md w-full max-w-6xl mx-auto flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+    <div className="bg-home-searchbox rounded-600 px-4 py-4 w-full max-w-6xl mx-auto flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
       {/* Search box */}
       <div className="flex items-center bg-white rounded-md px-4 py-2 w-full xl:max-w-90">
         <input
@@ -32,10 +32,10 @@ export default function SearchBox() {
           value={searchParams.searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="w-full bg-transparent text-gray-600 placeholder:text-gray-400 focus:outline-none"
+          className="w-full bg-transparent text-gray-600 body-s focus:outline-none"
         />
         <button onClick={handleSearch} className="ml-2 cursor-pointer">
-          <SearchIcon className="w-5 h-5 text-primary" />
+          <SearchIcon className="icon-s text-disabled" />
         </button>
       </div>
 
@@ -43,36 +43,42 @@ export default function SearchBox() {
       <div className="flex flex-wrap items-end justify-center xl:justify-between gap-4 w-full text-black text-sm">
         
         {/* Filters */}
-        <div className="flex flex-wrap gap-4 md:gap-6 items-center justify-center flex-grow">
-          <CustomSelect<number>
-            label="Travellers"
-            value={searchParams.travellers}
-            setValue={setTravellers}
-            minVal={1}
-            maxVal={12}
-          />
+        <div className="flex flex-wrap gap-1 md:gap-3 items-center justify-center flex-grow">
+          <div className="flex-1 max-w-[100px]">
+            <CustomSelect<number>
+              label="Travellers"
+              value={searchParams.travellers}
+              setValue={setTravellers}
+              minVal={1}
+              maxVal={12}
+            />
+          </div>
 
+          <div className="min-w-[170px] flex-1">
           <DateRangeSelect
             value={searchParams.date}
             onChange={setDate}
           />
+          </div>
 
+          <div className="min-w-[200px] flex-1">
           <CustomSelect<string>
             label="Experience Type"
             options={["Any", "Nature & Wildlife", "Cultural Immersion", "Adventure & Outdoor", "Wellness & Retreats", "Social Impact", "Food & Gastronomy"]}
             value={searchParams.experienceType}
             setValue={setExperienceType}
           />
+          </div>
         </div>
 
         {/* Button */}
         <div className="flex xl:justify-end">
           <Button
             size={"lg"}
-            className="bg-home-button hover:bg-[#0d5d56] text-white font-semibold shadow-md px-10 py-2 rounded-md"
+            className="bg-home-button hover:bg-[#0d5d56] body-l-button text-inverted shadow-md px-10 py-2 rounded-md"
             onClick={handleSearch}
           >
-            Book now
+            Search now
           </Button>
         </div>
       </div>

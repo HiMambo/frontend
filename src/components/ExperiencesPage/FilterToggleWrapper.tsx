@@ -19,13 +19,13 @@ const FilterToggleWrapper: React.FC<FilterToggleWrapperProps> = ({ children }) =
     <div className="lg:hidden mb-4 flex justify-end">
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" className="flex items-center gap-2">
+          <Button variant="outline" className="flex items-center body-xs gap-2">
             <Filter className="w-4 h-4" />
             Filters
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="backdrop-blur-md bg-white/90 w-[400px] overflow-auto p-6">
-          <SheetTitle className="text-2xl font-bold text-blue-800 mb-1">Filters</SheetTitle>
+        <SheetContent side="left" className="backdrop-blur-md bg-surface w-[400px] overflow-auto p-6">
+          <SheetTitle className="hidden">Filters</SheetTitle>
           <div>
             {children}
           </div>

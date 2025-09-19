@@ -147,16 +147,16 @@ export default function PriceFilter({
       <div className="relative mb-4">
         <div
           ref={sliderRef}
-          className={`relative h-1 w-full rounded cursor-pointer ${
+          className={`relative h-2 w-full rounded cursor-pointer ${
             isDisabled 
               ? 'bg-gray-200 cursor-not-allowed opacity-50' 
-              : 'bg-filter-secondary/30'
+              : 'bg-[var(--neutral-300)]/40'
           }`}
         >
           {/* Active track */}
           {!isDisabled && (
             <div
-              className="absolute h-1 rounded bg-filter-secondary"
+              className="absolute h-2 rounded bg-[var(--neutral-300)]"
               style={{ left: trackFillLeft, width: trackFillWidth }}
             />
           )}
@@ -166,8 +166,8 @@ export default function PriceFilter({
             className={`absolute h-5 w-5 rounded-full shadow transform -translate-x-1/2 -translate-y-1/2 top-1/2 transition-transform duration-100 ${
               isDisabled 
                 ? 'bg-gray-400 cursor-not-allowed opacity-80' 
-                : `bg-filter-primary cursor-grab active:cursor-grabbing ${
-                    isDragging === 0 ? 'scale-110 ring-10 ring-filter-primary/30' : ''
+                : `bg-surface-accent cursor-grab active:cursor-grabbing ${
+                    isDragging === 0 ? 'scale-130' : ''
                   }`
             }`}
             style={{ left: getThumbPosition(minValue) }}
@@ -179,8 +179,8 @@ export default function PriceFilter({
             className={`absolute h-5 w-5 rounded-full shadow transform -translate-x-1/2 -translate-y-1/2 top-1/2 transition-transform duration-100 ${
               isDisabled 
                 ? 'bg-gray-400 cursor-not-allowed opacity-80' 
-                : `bg-filter-primary cursor-grab active:cursor-grabbing ${
-                    isDragging === 1 ? 'scale-110 ring-10 ring-filter-primary/30' : ''
+                : `bg-surface-accent cursor-grab active:cursor-grabbing ${
+                    isDragging === 1 ? 'scale-130' : ''
                   }`
             }`}
             style={{ left: getThumbPosition(maxValue) }}
@@ -256,7 +256,7 @@ function ManualInput({ id, label, value, setValue, onConfirm, resetValue, disabl
         className={`border rounded p-2 h-8 w-16 text-center focus:outline-none no-spinner ${
           disabled 
             ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-            : 'focus:ring-2 focus:ring-filter-primary'
+            : 'focus:ring-2 focus:ring'
         }`}
         disabled={disabled}
       />

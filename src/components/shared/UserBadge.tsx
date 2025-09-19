@@ -79,7 +79,7 @@ export default function UserBadge() {
   return (
     <Link
       href="/signup"
-      className="bg-primary text-white shadow-lg py-2 px-12 rounded-md text-center hover:bg-[#e18533] text-lg"
+      className="bg-surface-accent body-m-button text-inverted py-2 px-12 rounded-300 text-center hover:bg-[var(--terracotta-900)] hover:text-[var(--yellow-500)]"
     >
       {loading ? "Loading..." : "Sign up"}
     </Link>

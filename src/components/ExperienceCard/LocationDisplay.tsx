@@ -75,12 +75,12 @@ const LocationDisplay: React.FC<LocationDisplayProps> = ({ city, country }) => {
   const countryCode = getCountryCode(country);
 
   return (
-    <p className="text-sm text-gray-500 mt-1 flex items-center">
+    <p className="body-s mt-1 flex items-center">
       {countryCode && (
         <Image 
-          src={`/assets/flags/${countryCode.toLowerCase()}.png`}
+          src={`/assets/flags/${countryCode.toLowerCase()}.svg`}
           alt={`${country} flag`}
-          width={24}
+          width={18}
           height={18}
           className="mr-2 object-cover"
         />

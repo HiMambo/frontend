@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { Checkbox } from "../ui/checkbox";
+import { CheckedIcon, NotCheckedIcon } from "../shared/IconComponents";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import {
@@ -34,6 +34,7 @@ interface FilterSectionProps<T extends string | number> {
   emptyMessage?: string;
   iconPath?: (val: T) => string | undefined;
   single?: boolean;
+  TitleIcon?: React.ComponentType<React.SVGProps<SVGSVGElement>>; 
 }
 
 export const FilterSection = <T extends string | number>({
@@ -50,6 +51,7 @@ export const FilterSection = <T extends string | number>({
   emptyMessage = "No items found.",
   iconPath,
   single = false,
+  TitleIcon,
 }: FilterSectionProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -102,8 +104,11 @@ const handleToggle = (val: T) => {
   if (dropdown) {
     return (
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="font-semibold text-lg text-blue-800">{title}</h3>
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-2 border-b-2 border-[var(--text-secondary)] pb-1 text-secondary">
+            {TitleIcon && <TitleIcon className="icon-s" aria-hidden="true" />}
+            <h3 className="body-xl">{title}</h3>
+          </div>
           {selected.length > 0 && (
             <Button
               variant="ghost"
@@ -112,7 +117,7 @@ const handleToggle = (val: T) => {
               className="text-muted-foreground hover:text-foreground h-auto p-1"
               disabled={disabled}
             >
-              Clear Selection
+              Clear
             </Button>
           )}
         </div>
@@ -166,7 +171,7 @@ const handleToggle = (val: T) => {
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full p-0" align="start">
+          <PopoverContent className="w-full p-0 shadow-elevation-1" align="start">
             <Command>
               <CommandInput placeholder={searchPlaceholder} />
               <CommandEmpty>{emptyMessage}</CommandEmpty>
@@ -211,9 +216,12 @@ const handleToggle = (val: T) => {
   // Default checkbox rendering
   return (
     <div className="mb-6">
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="font-semibold text-lg text-blue-800 mb-2">{title}</h3>
-          {(selected.length > 0 && !single) && (
+      <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-2 border-b-2 border-[var(--text-secondary)] pb-1 text-secondary">
+            {TitleIcon && <TitleIcon className="icon-s" aria-hidden="true" />}
+            <h3 className="body-xl">{title}</h3>
+          </div>
+          {(selected.length > 0) && (
             <Button
               variant="ghost"
               size="sm"
@@ -221,7 +229,7 @@ const handleToggle = (val: T) => {
               className="text-muted-foreground hover:text-foreground h-auto p-1"
               disabled={disabled}
             >
-              Clear Selection
+              Clear
             </Button>
           )}
       </div>
@@ -232,16 +240,25 @@ const handleToggle = (val: T) => {
 
           return (
             <li key={String(value)}>
-              <label className="flex items-center space-x-3 cursor-pointer select-none">
-                <Checkbox
-                  id={String(value)}
+              <label className="flex items-center space-x-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
                   checked={selected.includes(value)}
+                  onChange={() => !disabled && handleToggle(value)}
                   disabled={disabled}
-                  onCheckedChange={() => !disabled && handleToggle(value)}
-                  className="filter-checkbox"
+                  className="hidden"
                 />
+                <span
+                  className={`w-5 h-5 text-primary flex-shrink-0 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                >
+                  {selected.includes(value) ? (
+                    <CheckedIcon className="w-full h-full" />
+                  ) : (
+                    <NotCheckedIcon className="w-full h-full" />
+                  )}
+                </span>
                 {renderIcon(value, 20)}
-                <span className={`text-gray-700 ${disabled ? "opacity-50" : ""}`}>
+                <span className={`body-m text-gray-500 ${disabled ? "opacity-50" : ""}`}>
                   {label}
                 </span>
               </label>

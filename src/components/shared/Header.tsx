@@ -1,25 +1,25 @@
 "use client";
-
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Menu } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import UserBadge from "./UserBadge";
+import { LogoHeader } from "./IconComponents";
+import { NavLink } from "./NavLink";
 
 const NAV_LINKS = [
   { href: "/about", label: "About us" },
-  { href: "/partner-dashboard", label: "Partner Program" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact us" },
+  { href: "/partner-dashboard", label: "Partner Program" },
 ];
 
 export default function Header() {
   return (
-    <header className="bg-white px-6 sm:px-10 shadow-md">
+    <header className="bg-surface px-[var(--spacing-2400)] sm:px-10">
       <div className="flex items-center justify-between py-4 relative">
         {/* Mobile: Menu toggle */}
         <div className="lg:hidden">
@@ -49,20 +49,17 @@ export default function Header() {
         {/* Logo */}
         <div className="flex justify-center lg:justify-start">
           <Link href="/" className="flex items-center ml-16 mb-2">
-            <Image
-              src="/logo.svg"
-              alt="hiMAMBO logo"
+            <LogoHeader
               width={200}
               height={37}
-              priority
             />
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex space-x-10 relative ml-20">
+        <nav className="hidden lg:flex space-x-10 relative ml-20 body-l text-primary">
           {NAV_LINKS.map(({ href, label }) => (
-            <NavLink key={href} href={href}>
+            <NavLink key={href} href={href} hoverColor="hover:text-terracotta-600">
               {label}
             </NavLink>
           ))}
@@ -74,22 +71,5 @@ export default function Header() {
         </div>
       </div>
     </header>
-  );
-}
-
-function NavLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      className="text-gray-700 text-lg hover:text-indigo-600 hover:scale-103 transition-colors"
-    >
-      {children}
-    </Link>
   );
 }

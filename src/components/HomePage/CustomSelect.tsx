@@ -39,16 +39,16 @@ export function CustomSelect<T extends string | number>({
     : "";
   
   const defaultLabelClass = layout === "vertical" 
-    ? "text-xs leading-none mb-3 h-3" 
-    : "text-sm text-gray-600 whitespace-nowrap";
+    ? "text-xs font-semibold leading-none mb-3 h-3" 
+    : "text-sm font-semibold text-gray-500 whitespace-nowrap";
   
   const defaultButtonClass = layout === "vertical"
     ? isNumeric && !options 
       ? "bg-white flex items-center justify-between border border-none rounded-md h-10 px-2 py-1"
-      : "bg-white rounded-md flex w-full bg-transparent border-none h-10 px-3 items-center focus:outline-none"
+      : "bg-white rounded-md w-full bg-transparent border-none h-10 px-3 focus:outline-none"
     : isNumeric && !options
-      ? "border border-gray-300 rounded-lg px-2 py-1 text-sm h-8 bg-white flex items-center justify-between w-auto"
-      : "border border-gray-300 rounded-lg px-3 py-1 text-sm h-8 bg-white flex items-center bg-transparent focus:outline-none w-auto";
+      ? "border-none rounded-lg px-2 py-1 text-sm h-8 bg-surface flex items-center justify-between w-auto cursor-pointer"
+      : "border-none rounded-lg px-3 py-1 text-sm h-8 bg-surface bg-transparent focus:outline-none w-auto cursor-pointer";
 
   return (
     <div className={`${defaultContainerClass} ${containerClassName}`.trim()}>
@@ -58,38 +58,41 @@ export function CustomSelect<T extends string | number>({
         <div className={`${defaultButtonClass} ${buttonClassName}`.trim()}>
           <button
             type="button"
-            className="p-1 text-primary disabled:opacity-50"
+            className="p-1 text-[var(--yellow-500)] disabled:text-[var(--neutral-300)]"
             onClick={() => setValue((value as number) - 1 as T)}
             disabled={(minVal !== undefined && (value as number) <= minVal)}
           >
-            <Minus className="h-4 w-4" />
+            <Minus className="icon-xs" />
           </button>
-          <span className="text-black font-semibold px-3">{formatLabel(value)}</span>
+
+          <span className="body-m text-primary px-3">{formatLabel(value)}</span>
           <button
             type="button"
-            className="p-1 text-primary disabled:opacity-50"
+            className="p-1 text-[var(--yellow-500)] disabled:text-[var(--neutral-300)]"
             onClick={() => setValue((value as number) + 1 as T)}
             disabled={(maxVal !== undefined && (value as number) >= maxVal)}
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="icon-xs" />
           </button>
         </div>
       ) : (
         // Dropdown for strings
         <Popover open={isOpen} onOpenChange={setIsOpen}>
           <PopoverTrigger asChild>
-            <button className={`${defaultButtonClass} ${buttonClassName}`.trim()}>
-              <span>{formatLabel(value)}</span>
+            <button
+              className={`${defaultButtonClass} ${buttonClassName} flex justify-between items-center`.trim()}
+            >
+              <span className="body-s text-primary truncate">{formatLabel(value)}</span>
               {isOpen ? (
-                <ChevronUp className="ml-1 h-5 w-5 text-primary" />
+                <ChevronUp className="icon-s text-primary" />
               ) : (
-                <ChevronDown className="ml-1 h-5 w-5 text-primary" />
+                <ChevronDown className="icon-s text-primary" />
               )}
             </button>
           </PopoverTrigger>
           <PopoverContent
             align="start"
-            className="p-0 text-sm bg-white text-black border border-gray-300 min-w-[100%] w-auto max-w-fit"
+            className="p-0 body-s bg-surface shadow-elevation-1 text-primary border-none rounded-300 min-w-[100%] w-auto max-w-fit"
           >
             {options?.map((option) => {
               const isSelected = value === option;
@@ -100,12 +103,15 @@ export function CustomSelect<T extends string | number>({
                     setValue(option);
                     setIsOpen(false);
                   }}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-gray-100/80 ${
-                    isSelected ? "bg-gray-100/50 font-medium" : ""
-                  }`}
+                  className={`
+                    w-full flex items-center gap-2 px-3 py-2 text-left
+                    hover:bg-gray-100/80
+                    ${isSelected ? "bg-gray-100/50 font-medium" : ""}
+                    first:rounded-t-300 last:rounded-b-300
+                  `}
                 >
                   <Check
-                    className={`h-4 w-4 text-black ml-2 ${
+                    className={`icon-xs text-primary ml-2 ${
                       isSelected ? "opacity-100" : "opacity-0"
                     }`}
                   />

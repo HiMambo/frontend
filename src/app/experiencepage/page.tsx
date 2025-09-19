@@ -48,7 +48,7 @@ function MainContent({
   });
 
   return (
-    <main className="bg-white min-h-screen p-4 sm:p-6 md:p-8 xl:p-12">
+    <main className="bg-surface min-h-screen p-4 sm:p-6 md:p-8 xl:p-12">
       {/* Mobile / toggleable filters */}
       <FilterToggleWrapper>
         <FilterSidebar />
@@ -57,7 +57,7 @@ function MainContent({
       <div className="grid grid-cols-1 lg:grid-cols-4 lg:gap-8 gap-4">
         {/* Sidebar for large screens */}
         <div className="hidden lg:block lg:col-span-1">
-          <div className="bg-white p-6 text-gray-600 rounded-lg shadow-md w-full">
+          <div className="bg-surface p-6 w-full">
             <FilterSidebar />
           </div>
         </div>
@@ -92,10 +92,12 @@ export default function ExperiencePage() {
     <>
       <Header />
       <FilterProvider experiences={experiences}>
-        <p className="text-4xl text-center pb-10 pt-30 font-semibold text-home-text-secondary mt-3 tracking-wider">
+        <p className="bg-surface heading-h3 text-secondary text-center pb-10 pt-30 pt-3">
           Start your sustainable adventure!
         </p>
-        <SearchBox />
+        <div className="py-3 bg-surface">
+          <SearchBox />
+        </div>
         <SearchControls
           view={view}
           setView={setView}
