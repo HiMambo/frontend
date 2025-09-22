@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { User, LogOut } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import {
@@ -77,11 +76,21 @@ export default function UserBadge() {
   }
 
   return (
-    <Link
-      href="/signup"
-      className="bg-surface-accent body-m-button text-inverted py-2 px-12 rounded-300 text-center hover:bg-[var(--terracotta-900)] hover:text-[var(--yellow-500)]"
-    >
-      {loading ? "Loading..." : "Sign up"}
-    </Link>
+    <div className="flex items-center gap-[var(--spacing-600)]">
+      <Button 
+        variant="outline"
+        onClick={() => {}}
+        className="rounded-300"
+      >
+        {loading ? "Loading..." : "Login"}
+      </Button>
+
+      <Button 
+        className="px-[var(--spacing-1200)] rounded-300"
+        onClick={() => {}}
+      >
+        Sign up
+      </Button>
+    </div>
   );
 }

@@ -105,7 +105,7 @@ const handleToggle = (val: T) => {
     return (
       <div className="mb-6">
         <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-2 border-b-2 border-[var(--text-secondary)] pb-1 text-secondary">
+          <div className="flex items-center gap-[var(--spacing-250)] border-b-2 border-[var(--text-secondary)] pb-1 text-secondary">
             {TitleIcon && <TitleIcon className="icon-s" aria-hidden="true" />}
             <h3 className="body-xl">{title}</h3>
           </div>
@@ -215,32 +215,35 @@ const handleToggle = (val: T) => {
 
   // Default checkbox rendering
   return (
-    <div className="mb-6">
+    <main>
       <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-2 border-b-2 border-[var(--text-secondary)] pb-1 text-secondary">
+          <div className="flex items-center gap-[var(--spacing-250)] border-b-2 border-[var(--text-secondary)] pb-1 text-secondary">
             {TitleIcon && <TitleIcon className="icon-s" aria-hidden="true" />}
             <h3 className="body-xl">{title}</h3>
           </div>
-          {(selected.length > 0) && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={clearAll}
-              className="text-muted-foreground hover:text-foreground h-auto p-1"
-              disabled={disabled}
-            >
-              Clear
-            </Button>
-          )}
+          {/* Reset Button */}
+          <div className="h-[1.5rem]">
+            {(selected.length > 0) && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearAll}
+                className="text-muted-foreground hover:text-foreground h-full p-2 body-m"
+                disabled={disabled}
+              >
+                Clear
+              </Button>
+            )}
+          </div>
       </div>
-      <ul className="space-y-2">
+      <ul className="flex flex-col gap-[var(--spacing-400)]">
         {options.map((option) => {
           const value = getValue(option);
           const label = renderLabel ? renderLabel(value) : getLabel(option);
 
           return (
             <li key={String(value)}>
-              <label className="flex items-center space-x-2 cursor-pointer select-none">
+              <label className={`flex items-center space-x-2 select-none ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
                 <input
                   type="checkbox"
                   checked={selected.includes(value)}
@@ -249,7 +252,7 @@ const handleToggle = (val: T) => {
                   className="hidden"
                 />
                 <span
-                  className={`w-5 h-5 text-primary flex-shrink-0 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                  className={`icon-s text-primary flex-shrink-0 ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                 >
                   {selected.includes(value) ? (
                     <CheckedIcon className="w-full h-full" />
@@ -266,6 +269,6 @@ const handleToggle = (val: T) => {
           );
         })}
       </ul>
-    </div>
+    </main>
   );
 };

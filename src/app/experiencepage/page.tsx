@@ -54,16 +54,16 @@ function MainContent({
         <FilterSidebar />
       </FilterToggleWrapper>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 lg:gap-8 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-5 lg:gap-8 gap-4">
         {/* Sidebar for large screens */}
         <div className="hidden lg:block lg:col-span-1">
-          <div className="bg-surface p-6 w-full">
+          <div className="bg-surface w-full">
             <FilterSidebar />
           </div>
         </div>
 
         {/* Experience list */}
-        <div className="lg:col-span-3 flex flex-col gap-8">
+        <div className="lg:col-span-4 flex flex-col gap-8">
           <ExperienceList
             view={view}
             experiences={sortedExperiences}
@@ -92,7 +92,7 @@ export default function ExperiencePage() {
     <>
       <Header />
       <FilterProvider experiences={experiences}>
-        <p className="bg-surface heading-h3 text-secondary text-center pb-10 pt-30 pt-3">
+        <p className="bg-surface heading-h2 text-secondary text-center pb-10 pt-30">
           Start your sustainable adventure!
         </p>
         <div className="py-3 bg-surface">

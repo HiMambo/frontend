@@ -23,7 +23,7 @@ export const SearchControls = ({
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-stretch lg:items-center gap-6 pl-20">
         {/* Left Section - Heading */}
         <div className="justify-center lg:justify-start lg:flex-1">
-          <div className="body-l text-primary text-center">
+          <div className="body-xl text-primary text-center">
             Let&apos;s find the right experience for you!
           </div>
         </div>
@@ -55,7 +55,7 @@ export const SearchControls = ({
             
           {/* View Toggle */}
           <div className="flex items-center gap-2">
-            <span className="body-s text-muted-foreground">View:</span>
+            <span className="body-m text-muted-foreground">View:</span>
             <button
               onClick={() => setView(view === "grid" ? "list" : "grid")}
               className="w-10 h-10 flex items-center justify-center text-muted-foreground cursor-pointer"

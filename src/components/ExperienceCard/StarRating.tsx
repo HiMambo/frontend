@@ -75,7 +75,7 @@ export const StarRating: React.FC<StarRatingProps> = ({ rating, size, showValue 
   };
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center gap-[var(--spacing-300)]">
       {/* Star row */}
       <div className="flex items-center space-x-1">
         {/* Full stars */}
@@ -93,7 +93,12 @@ export const StarRating: React.FC<StarRatingProps> = ({ rating, size, showValue 
       </div>
         {/* Numeric rating */}
         {showValue && (
-          <span className="bg-[#F1A501] rounded-md px-2 py-1 text-sm text-white font-semibold">{rating.toFixed(1)}</span>
+          <div className="flex items-center gap-2">
+            <span className="bg-primary rounded-100 px-[var(--spacing-150)] py-[var(--spacing-050)] body-xs text-inverted">
+              {rating.toFixed(1)}
+            </span>
+            <span className="body-xxs-light text-secondary">XXX reviews</span>
+          </div>
         )}
     </div>
   );

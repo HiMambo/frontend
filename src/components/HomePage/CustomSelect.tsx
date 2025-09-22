@@ -39,8 +39,8 @@ export function CustomSelect<T extends string | number>({
     : "";
   
   const defaultLabelClass = layout === "vertical" 
-    ? "text-xs font-semibold leading-none mb-3 h-3" 
-    : "text-sm font-semibold text-gray-500 whitespace-nowrap";
+    ? "body-s text-primary leading-none mb-3 h-3" 
+    : "body-m text-tertiary whitespace-nowrap";
   
   const defaultButtonClass = layout === "vertical"
     ? isNumeric && !options 
@@ -62,17 +62,17 @@ export function CustomSelect<T extends string | number>({
             onClick={() => setValue((value as number) - 1 as T)}
             disabled={(minVal !== undefined && (value as number) <= minVal)}
           >
-            <Minus className="icon-xs" />
+            <Minus className="icon-s" />
           </button>
 
-          <span className="body-m text-primary px-3">{formatLabel(value)}</span>
+          <span className="body-xl text-primary px-3">{formatLabel(value)}</span>
           <button
             type="button"
             className="p-1 text-[var(--yellow-500)] disabled:text-[var(--neutral-300)]"
             onClick={() => setValue((value as number) + 1 as T)}
             disabled={(maxVal !== undefined && (value as number) >= maxVal)}
           >
-            <Plus className="icon-xs" />
+            <Plus className="icon-s" />
           </button>
         </div>
       ) : (
@@ -82,7 +82,7 @@ export function CustomSelect<T extends string | number>({
             <button
               className={`${defaultButtonClass} ${buttonClassName} flex justify-between items-center`.trim()}
             >
-              <span className="body-s text-primary truncate">{formatLabel(value)}</span>
+              <span className="body-m text-primary truncate">{formatLabel(value)}</span>
               {isOpen ? (
                 <ChevronUp className="icon-s text-primary" />
               ) : (
@@ -92,7 +92,7 @@ export function CustomSelect<T extends string | number>({
           </PopoverTrigger>
           <PopoverContent
             align="start"
-            className="p-0 body-s bg-surface shadow-elevation-1 text-primary border-none rounded-300 min-w-[100%] w-auto max-w-fit"
+            className="p-0 body-m bg-surface shadow-elevation-1 text-primary border-none rounded-300 min-w-[100%] w-auto max-w-fit"
           >
             {options?.map((option) => {
               const isSelected = value === option;

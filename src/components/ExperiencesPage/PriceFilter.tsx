@@ -142,7 +142,7 @@ export default function PriceFilter({
   }, [minValue, maxValue, min, max]);
 
   return (
-    <div className="p-4 mb-6">
+    <div className="p-4">
       {/* Range Slider */}
       <div className="relative mb-4">
         <div
@@ -190,7 +190,7 @@ export default function PriceFilter({
       </div>
 
       {/* Manual Inputs */}
-      <div className="flex justify-center items-center gap-4 mt-4 text-gray-700">
+      <div className="flex justify-center items-center gap-4 mt-4 text-tertiary">
         <ManualInput
           id="minInput"
           label="From (€)"
@@ -201,7 +201,7 @@ export default function PriceFilter({
           disabled={isDisabled}
           
         />
-        <div className="w-3 h-[1.5px] bg-gray-700 mt-7 rounded-sm" />
+        <div className="w-3 h-[1.5px] bg-[var(--text-tertiary)] mt-7 rounded-sm" />
         <ManualInput
           id="maxInput"
           label="To (€)"
@@ -242,8 +242,8 @@ function ManualInput({ id, label, value, setValue, onConfirm, resetValue, disabl
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <label htmlFor={id} className="text-sm text-gray-600 mb-2">
+    <div className="flex flex-col items-center body-l">
+      <label htmlFor={id} className="mb-2">
         {label}
       </label>
       <input
@@ -255,8 +255,8 @@ function ManualInput({ id, label, value, setValue, onConfirm, resetValue, disabl
         onBlur={() => setValue(resetValue)}
         className={`border rounded p-2 h-8 w-16 text-center focus:outline-none no-spinner ${
           disabled 
-            ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-            : 'focus:ring-2 focus:ring'
+            ? 'bg-gray-100 text-disabled cursor-not-allowed' 
+            : 'focus:ring-2'
         }`}
         disabled={disabled}
       />

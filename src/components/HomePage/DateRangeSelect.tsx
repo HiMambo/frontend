@@ -33,8 +33,8 @@ export function DateRangeSelect({
     : ""
   
   const defaultLabelClass = layout === "vertical" 
-    ? "text-xs font-semibold leading-none mb-3 h-3" 
-    : "text-sm font-semibold text-gray-600 whitespace-nowrap"
+    ? "body-s text-primary leading-none mb-3 h-3" 
+    : "body-m text-tertiary whitespace-nowrap";
   
   const defaultButtonClass = layout === "vertical"
     ? "bg-white h-10 rounded-md w-full bg-transparent border-none px-3 focus:outline-none"

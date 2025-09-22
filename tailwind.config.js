@@ -13,6 +13,12 @@ config = {
   theme: {
     extend: {
       colors: {
+        /* text semantic utilities */
+        "text-primary": "var(--text-primary)",
+        "text-secondary": "var(--text-secondary)",
+        "text-tertiary": "var(--text-tertiary)",
+        "text-disabled": "var(--text-disabled)",
+        "text-inverted": "var(--text-inverted)",
         /* full palette scales */
         neutral: {
           50: "var(--neutral-50)",
@@ -88,18 +94,6 @@ config = {
         "home-searchbox": "var(--color-home-searchbox)",
         "home-button": "var(--color-home-button)", // <- bg-home-button
         "home-text-secondary": "var(--color-home-text-secondary)",
-
-        "footer-background": "var(--color-footer-background)",
-        "footer-text": "var(--color-footer-text)",
-        "footer-texthover": "var(--color-footer-texthover)",
-        "footer-inputBackground": "var(--color-footer-inputBackground)",
-        "footer-inputPlaceholder": "var(--color-footer-inputPlaceholder)",
-        "footer-button": "var(--color-footer-button)",
-        "footer-socialIcon": "var(--color-footer-socialIcon)",
-        "footerhome-background": "var(--color-footerhome-background)",
-        "footerhome-button": "var(--color-footerhome-button)",
-        "footerhome-texthover": "var(--color-footerhome-texthover)",
-        "footerhome-buttonhover": "var(--color-footerhome-buttonhover)",
       },
 
       /* map Tailwind color names to your CSS variables in tokens.css */

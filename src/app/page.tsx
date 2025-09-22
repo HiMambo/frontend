@@ -28,15 +28,15 @@ export default function Home(){
         </div>
 
         {/* Search Box */}
-        <div className="-mt-9 relative z-10">
+        <div className="-mt-11 relative z-10">
           <SearchBox />
         </div>
 
         {/* Featured Experiences Section */}
-        <section className="max-w-6xl mx-auto px-4 py-20">
+        <section className="px-4 py-20">
           <div className="text-center mb-20">
-            <h2 className="body-xl-light text-primary">Choose your next adventure</h2>
-            <p className="heading-h3 text-secondary mt-3">Select the best experience for you!</p>
+            <h2 className="heading-h5-light text-primary">Choose your next adventure</h2>
+            <p className="heading-h2 text-secondary mt-3">Select the best experience for you!</p>
           </div>
 
           <FeaturedExperiencesCarousel

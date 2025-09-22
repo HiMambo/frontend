@@ -19,8 +19,8 @@ const NAV_LINKS = [
 
 export default function Header() {
   return (
-    <header className="bg-surface px-[var(--spacing-2400)] sm:px-10">
-      <div className="flex items-center justify-between py-4 relative">
+    <header className="bg-surface px-[var(--spacing-2400)] py-[var(--spacing-600)]">
+      <div className="flex items-center justify-between relative gap-[var(--spacing-2400)]">
         {/* Mobile: Menu toggle */}
         <div className="lg:hidden">
           <Popover>
@@ -46,27 +46,29 @@ export default function Header() {
           </Popover>
         </div>
 
-        {/* Logo */}
-        <div className="flex justify-center lg:justify-start">
-          <Link href="/" className="flex items-center ml-16 mb-2">
-            <LogoHeader
-              width={200}
-              height={37}
-            />
+        {/* Desktop: Left side (Logo + Nav) */}
+        <div className="hidden lg:flex flex-1 items-center justify-between">
+          {/* Logo left-aligned */}
+          <Link href="/" className="flex items-center">
+            <LogoHeader width={200} height={36} />
           </Link>
+
+          {/* Nav right-aligned */}
+          <nav className="flex gap-[var(--spacing-1600)] body-l text-primary">
+            {NAV_LINKS.map(({ href, label }) => (
+              <NavLink
+                key={href}
+                href={href}
+                hoverColor="hover:text-terracotta-600"
+              >
+                {label}
+              </NavLink>
+            ))}
+          </nav>
         </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex space-x-10 relative ml-20 body-l text-primary">
-          {NAV_LINKS.map(({ href, label }) => (
-            <NavLink key={href} href={href} hoverColor="hover:text-terracotta-600">
-              {label}
-            </NavLink>
-          ))}
-        </nav>
-
-        {/* User Badge or Sign Up Button */}
-        <div className="flex items-center mr-16">
+        {/* Desktop: Right side (User Badge) */}
+        <div className="hidden lg:flex items-center">
           <UserBadge />
         </div>
       </div>

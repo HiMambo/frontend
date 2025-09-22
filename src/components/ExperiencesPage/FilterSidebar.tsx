@@ -28,19 +28,21 @@ const FilterSidebar: React.FC = () => {
   } = useFilter();
 
   return (
-    <div className="bg-surface w-full">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="body-xl text-secondary">Filter by</h2>
-        {anyFilterSelected && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={resetAllFilters}
-            className="text-muted-foreground hover:text-foreground h-auto p-1 text-base"
-          >
-            Clear All Filters
-          </Button>
-        )}
+    <div className="bg-surface w-full grid gap-[var(--spacing-1200)]">
+      <div className="flex items-center justify-between">
+        <h2 className="heading-h5 text-secondary">Filter by</h2>
+        <div className="h-[1.5rem]">
+          {anyFilterSelected && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={resetAllFilters}
+              className="text-muted-foreground hover:text-foreground h-full p-2 body-l"
+            >
+              Clear All Filters
+            </Button>
+          )}
+        </div>
       </div>
       {/* Categories */}
       <FilterSection
@@ -55,28 +57,30 @@ const FilterSidebar: React.FC = () => {
         ]}
         selected={selectedCategories}
         onToggle={toggleCategory}
-        disabled
+
         TitleIcon={CategoriesFilterIcon}
       />
 
       {/* Budget */}
-      <div className="mb-6">
+      <div>
         <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-2 border-b-2 border-[var(--text-secondary)] pb-1 text-secondary">
-            <BudgetFilterIcon className="w-5 h-5" aria-hidden="true" />
+          <div className="flex items-center gap-[var(--spacing-250)] border-b-2 border-[var(--text-secondary)] pb-1 text-secondary">
+            <BudgetFilterIcon className="icon-s" aria-hidden="true" />
             <h3 className="body-xl">Budget</h3>
           </div>
             {/* Reset Button */}
-            {(!noPriceSelection) && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={resetPriceFilter}
-                className="text-muted-foreground hover:text-foreground h-auto p-1"
-              >
-                Reset
-              </Button>
-            )}
+            <div className="h-[1.5rem]">
+              {(!noPriceSelection) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={resetPriceFilter}
+                  className="text-muted-foreground hover:text-foreground h-full p-2 body-m"
+                >
+                  Reset
+                </Button>
+              )}
+            </div>
         </div>
         <PriceFilter
           min={availablePriceRange[0]}

@@ -2,140 +2,28 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* 
-If you're on Tailwind v4, these are fine. On v3, delete the two @custom-variant/@theme blocks. */
+/* Tailwind v4 theme mappings */
 @custom-variant dark (&:is(.dark *));
-/* Hoist token vars into Tailwind color slots (no self-reference) */
 @theme {
-  /* --- Homepage --- */
+  /* Homepage + footer color mappings */
   --tw-home-button: var(--color-home-button);
   --color-home-button: var(--tw-home-button);
-
   --tw-home-searchbox: var(--color-home-searchbox);
   --color-home-searchbox: var(--tw-home-searchbox);
-
-  --tw-home-text-secondary: var(--color-home-text-secondary);
-  --color-home-text-secondary: var(--tw-home-text-secondary);
-
-  /* --- Footer --- */
-  --tw-footer-background: var(--color-footer-background);
-  --color-footer-background: var(--tw-footer-background);
-
-  --tw-footer-text: var(--color-footer-text);
-  --color-footer-text: var(--tw-footer-text);
-
-  --tw-footer-texthover: var(--color-footer-texthover);
-  --color-footer-texthover: var(--tw-footer-texthover);
-
-  --tw-footer-inputBackground: var(--color-footer-inputBackground);
-  --color-footer-inputBackground: var(--tw-footer-inputBackground);
-
-  --tw-footer-inputPlaceholder: var(--color-footer-inputPlaceholder);
-  --color-footer-inputPlaceholder: var(--tw-footer-inputPlaceholder);
-
-  --tw-footer-button: var(--color-footer-button);
-  --color-footer-button: var(--tw-footer-button);
-
-  --tw-footer-socialIcon: var(--color-footer-socialIcon);
-  --color-footer-socialIcon: var(--tw-footer-socialIcon);
-
-  --tw-footerhome-background: var(--color-footerhome-background);
-  --color-footerhome-background: var(--tw-footerhome-background);
-
-  --tw-footerhome-button: var(--color-footerhome-button);
-  --color-footerhome-button: var(--tw-footerhome-button);
-
-  --tw-footerhome-texthover: var(--color-footerhome-texthover);
-  --color-footerhome-texthover: var(--tw-footerhome-texthover);
-
-  --tw-footerhome-buttonhover: var(--color-footerhome-buttonhover);
-  --color-footerhome-buttonhover: var(--tw-footerhome-buttonhover);
-
-  /* --- (optional) a few scale samples if you need utilities like bg-teal-600 --- */
+  
+  /* Brand color samples */
   --tw-teal-600: var(--teal-600);
   --color-teal-600: var(--tw-teal-600);
-
   --tw-yellow-500: var(--yellow-500);
   --color-yellow-500: var(--tw-yellow-500);
-
   --tw-terracotta-600: var(--terracotta-600);
   --color-terracotta-600: var(--tw-terracotta-600);
-
   --tw-terracotta-800: var(--terracotta-800);
   --color-terracotta-800: var(--tw-terracotta-800);
-
   --tw-teal-500: var(--teal-500);
   --color-teal-500: var(--tw-teal-500);
 
-  /* ---- Typography (Headings) ---- */
-  --text-h1: 96px;
-  --leading-h1: 115px;
-  --tracking-h1: 0.1px;
-  --text-h2: 72px;
-  --leading-h2: 85px;
-  --tracking-h2: 0.1px;
-  --text-h3: 54px;
-  --leading-h3: 65px;
-  --tracking-h3: 0.1px;
-  --text-h4: 48px;
-  --leading-h4: 60px;
-  --tracking-h4: 0.1px;
-  --text-h5: 36px;
-  --leading-h5: 40px;
-  --tracking-h5: 0.1px;
-
-  /* ---- Typography (Body) ---- */
-  --text-body-xl: 24px;
-  --leading-body-xl: 32px;
-  --tracking-body-xl: 0.1px;
-  --text-body-l: 18px;
-  --leading-body-l: 24px;
-  --tracking-body-l: 0px;
-  --text-body-m: 16px;
-  --leading-body-m: 24px;
-  --tracking-body-m: 0.1px;
-  --text-body-s: 14px;
-  --leading-body-s: 20px;
-  --tracking-body-s: 0.1px;
-  --text-body-xs: 12px;
-  --leading-body-xs: 20px;
-  --tracking-body-xs: 0.1px;
-
-  /* ---- Spacing scale (Tailwind v5) ---- */
-  /* tokens: 0, 050, 100, 150, 200, 300, 400, 600, 800, 1200, 1600, 2400, 4000, 6000 */
-  --spacing-0: 0rem; /* 0px */
-  --spacing-050: 0.25rem; /* 2px */
-  --spacing-100: 0.5rem; /* 4px */
-  --spacing-150: 0.75rem; /* 6px */
-  --spacing-200: 1rem; /* 8px */
-  --spacing-300: 1.5rem; /* 12px */
-  --spacing-400: 2rem; /* 16px */
-  --spacing-600: 3rem; /* 24px */
-  --spacing-800: 4rem; /* 32px */
-  --spacing-1200: 6rem; /* 48px */
-  --spacing-1600: 8rem; /* 64px */
-  --spacing-2400: 12rem; /* 96px */
-  --spacing-4000: 20rem; /* 160px */
-  --spacing-6000: 28rem; /* 224px */
-
-  /* ---- Border radius scale ----
-   Tokens from your spec:
-   100=4px, 200=8px, 300=12px, 600=24px, 800=32px, 1200=48px, 1000=full
-*/
-  --radius-100: 0.25rem; /* 4px  */
-  --radius-200: 0.5rem; /* 8px  */
-  --radius-300: 0.75rem; /* 12px */
-  --radius-600: 1.5rem; /* 24px */
-  --radius-800: 2rem; /* 32px */
-  --radius-1200: 3rem; /* 48px */
-
-  /* "full" token (pills/circles). 9999px behaves like 100% for corners */
-  --radius-1000: 9999px;
-
-  /* (optional) make bare `rounded` use one of your tokens */
-  --radius: var(--radius-200); /* so `rounded` = 8px */
-
-  /* Font family shortcut */
+  /* Font family */
   --font-sans: var(--font-parkinsans, ui-sans-serif, system-ui, sans-serif);
 }
 
@@ -257,16 +145,11 @@ If you're on Tailwind v4, these are fine. On v3, delete the two @custom-variant/
   }
 }
 
+/* ===== ANIMATIONS ===== */
 @keyframes wave {
-  0% {
-    transform: translateX(-100%);
-  }
-  50% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
 }
 
 .animate-wave {
@@ -281,16 +164,12 @@ If you're on Tailwind v4, these are fine. On v3, delete the two @custom-variant/
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   animation: wave 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   z-index: 1.6;
 }
 
+/* ===== INPUT UTILITIES ===== */
 /* Hide spinners in Chrome, Safari, Edge */
 .no-spinner::-webkit-outer-spin-button,
 .no-spinner::-webkit-inner-spin-button {
@@ -303,167 +182,192 @@ If you're on Tailwind v4, these are fine. On v3, delete the two @custom-variant/
   -moz-appearance: textfield;
 }
 
+/* ===== FLUID TYPOGRAPHY UTILITIES ===== */
 @layer utilities {
-  /* Typography utilities using explicit font properties */
+  /* ========================================
+     FLUID TYPOGRAPHY CLASSES
+     Now automatically responsive using CSS variables
+     ======================================== */
+  
+  /* Heading Classes - Now Fluid */
   .heading-h1 {
     font-family: var(--font-parkinsans);
     font-weight: 700; /* Bold */
-    font-size: 96px;
-    line-height: 115px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-h1);
+    line-height: var(--leading-h1);
+    letter-spacing: var(--tracking-h1);
   }
   
   .heading-h2 {
     font-family: var(--font-parkinsans);
     font-weight: 600; /* Semibold */
-    font-size: 72px;
-    line-height: 85px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-h2);
+    line-height: var(--leading-h2);
+    letter-spacing: var(--tracking-h2);
   }
   
   .heading-h3 {
     font-family: var(--font-parkinsans);
     font-weight: 600; /* Semibold */
-    font-size: 54px;
-    line-height: 65px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-h3);
+    line-height: var(--leading-h3);
+    letter-spacing: var(--tracking-h3);
   }
   
   .heading-h4 {
     font-family: var(--font-parkinsans);
     font-weight: 600; /* Semibold */
-    font-size: 48px;
-    line-height: 60px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-h4);
+    line-height: var(--leading-h4);
+    letter-spacing: var(--tracking-h4);
   }
   
   .heading-h5 {
     font-family: var(--font-parkinsans);
     font-weight: 600; /* Semibold */
-    font-size: 36px;
-    line-height: 40px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-h5);
+    line-height: var(--leading-h5);
+    letter-spacing: var(--tracking-h5);
   }
 
   .heading-h5-light {
     font-family: var(--font-parkinsans);
     font-weight: 300; /* Light */
-    font-size: 36px;
-    line-height: 40px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-h5);
+    line-height: var(--leading-h5);
+    letter-spacing: var(--tracking-h5);
   }
 
-  /* Body typography */
+  /* Body Typography Classes - Now Fluid */
   .body-xxl-label {
     font-family: var(--font-parkinsans);
     font-weight: 600; /* Semibold */
-    font-size: 32px;
-    line-height: 32px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-body-xxl);
+    line-height: var(--leading-body-xxl);
+    letter-spacing: var(--tracking-body-xxl);
   }
 
   .body-xxl {
     font-family: var(--font-parkinsans);
     font-weight: 500; /* Medium */
-    font-size: 32px;
-    line-height: 32px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-body-xxl);
+    line-height: var(--leading-body-xxl);
+    letter-spacing: var(--tracking-body-xxl);
   }
 
   .body-xl-bold {
     font-family: var(--font-parkinsans);
     font-weight: 700; /* Bold */
-    font-size: 24px;
-    line-height: 32px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-body-xl);
+    line-height: var(--leading-body-xl);
+    letter-spacing: var(--tracking-body-xl);
   }
 
   .body-xl-label {
     font-family: var(--font-parkinsans);
     font-weight: 600; /* Semibold */
-    font-size: 24px;
-    line-height: 32px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-body-xl);
+    line-height: var(--leading-body-xl);
+    letter-spacing: var(--tracking-body-xl);
   }
 
   .body-xl {
     font-family: var(--font-parkinsans);
     font-weight: 500; /* Medium */
-    font-size: 24px;
-    line-height: 32px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-body-xl);
+    line-height: var(--leading-body-xl);
+    letter-spacing: var(--tracking-body-xl);
   }
 
   .body-xl-light {
     font-family: var(--font-parkinsans);
     font-weight: 300; /* Light */
-    font-size: 24px;
-    line-height: 32px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-body-xl);
+    line-height: var(--leading-body-xl);
+    letter-spacing: var(--tracking-body-xl);
   }
   
   .body-l-button {
     font-family: var(--font-parkinsans);
     font-weight: 600; /* Semibold */
-    font-size: 18px;
-    line-height: 24px;
-    letter-spacing: 0px;
+    font-size: var(--text-body-l);
+    line-height: var(--leading-body-l);
+    letter-spacing: var(--tracking-body-l);
   }
 
   .body-l {
     font-family: var(--font-parkinsans);
     font-weight: 500; /* Medium */
-    font-size: 18px;
-    line-height: 24px;
-    letter-spacing: 0px;
+    font-size: var(--text-body-l);
+    line-height: var(--leading-body-l);
+    letter-spacing: var(--tracking-body-l);
   }
 
   .body-l-light {
     font-family: var(--font-parkinsans);
     font-weight: 300; /* Light */
-    font-size: 18px;
-    line-height: 24px;
-    letter-spacing: 0px;
+    font-size: var(--text-body-l);
+    line-height: var(--leading-body-l);
+    letter-spacing: var(--tracking-body-l);
   }
   
   .body-m-button {
     font-family: var(--font-parkinsans);
     font-weight: 600; /* Semibold */
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-body-m);
+    line-height: var(--leading-body-m);
+    letter-spacing: var(--tracking-body-m);
   }
 
   .body-m {
     font-family: var(--font-parkinsans);
     font-weight: 500; /* Medium */
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 0.1px;
+    font-size: var(--text-body-m);
+    line-height: var(--leading-body-m);
+    letter-spacing: var(--tracking-body-m);
   }
   
   .body-s {
     font-family: var(--font-parkinsans);
-    font-weight: 500; /* Medium */
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.1px;
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-body-s);
+    line-height: var(--leading-body-s);
+    letter-spacing: var(--tracking-body-s);
   }
   
   .body-xs {
     font-family: var(--font-parkinsans);
-    font-weight: 500; /* Medium */
-    font-size: 12px;
-    line-height: 20px;
-    letter-spacing: 0.1px;
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-body-xs);
+    line-height: var(--leading-body-xs);
+    letter-spacing: var(--tracking-body-xs);
   }
 
-  /* text semantic helpers */
+    .body-xxs {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-body-xxs);
+    line-height: var(--leading-body-xxs);
+    letter-spacing: var(--tracking-body-xxs);
+  }
+
+    .body-xxs-light {
+    font-family: var(--font-parkinsans);
+    font-weight: 500; /* Regular */
+    font-size: var(--text-body-xxs);
+    line-height: var(--leading-body-xxs);
+    letter-spacing: var(--tracking-body-xxs);
+  }
+
+  /* ===== SEMANTIC TEXT UTILITIES ===== */
   .text-primary {
     color: var(--text-primary);
   }
   .text-secondary {
     color: var(--text-secondary);
+  }
+  .text-tertiary {
+    color: var(--text-tertiary);
   }
   .text-disabled {
     color: var(--text-disabled);
@@ -472,7 +376,7 @@ If you're on Tailwind v4, these are fine. On v3, delete the two @custom-variant/
     color: var(--text-inverted);
   }
 
-  /* Surface helpers */
+  /* ===== SURFACE UTILITIES ===== */
   .bg-surface {
     background-color: var(--surface);
   }
@@ -482,9 +386,8 @@ If you're on Tailwind v4, these are fine. On v3, delete the two @custom-variant/
   .bg-surface-accent-2 {
     background-color: var(--surface-accent-2);
   }
-}
 
-  /* Utility classes for icons */
+  /* ===== ICON UTILITIES ===== */
   .icon-xs {
     width: var(--icon-xs);
     height: var(--icon-xs);
@@ -510,20 +413,20 @@ If you're on Tailwind v4, these are fine. On v3, delete the two @custom-variant/
     height: var(--icon-xl);
   }
 
-/* Utility classes for border radius */
-.rounded-100 { border-radius: var(--radius-100); }
-.rounded-200 { border-radius: var(--radius-200); }
-.rounded-300 { border-radius: var(--radius-300); }
-.rounded-600 { border-radius: var(--radius-600); }
-.rounded-800 { border-radius: var(--radius-800); }
-.rounded-1200 { border-radius: var(--radius-1200); }
+  /* ===== BORDER RADIUS UTILITIES ===== */
+  .rounded-100 { border-radius: var(--radius-100); }
+  .rounded-200 { border-radius: var(--radius-200); }
+  .rounded-300 { border-radius: var(--radius-300); }
+  .rounded-600 { border-radius: var(--radius-600); }
+  .rounded-800 { border-radius: var(--radius-800); }
+  .rounded-1200 { border-radius: var(--radius-1200); }
 
-/* Utility class for elevation */
-.shadow-elevation-1 {
-  box-shadow: var(--elevation-1);
-}
+  /* ===== ELEVATION UTILITIES ===== */
+  .shadow-elevation-1 {
+    box-shadow: var(--elevation-1);
+  }
 
-/* create the hover-prefixed class Tailwind would normally emit */
-.hover\:shadow-elevation-1:hover {
-  box-shadow: var(--elevation-1);
+  .hover\:shadow-elevation-1:hover {
+    box-shadow: var(--elevation-1);
+  }
 }

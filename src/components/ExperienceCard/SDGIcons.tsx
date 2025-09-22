@@ -43,7 +43,7 @@ export const SDGIcons: React.FC<{
   maxDisplay,
   iconSize,
   showPopover = true,
-  wrapperClassName = "flex items-center gap-1",
+  wrapperClassName = "flex items-center gap-[var(--spacing-200)]",
 }) => {
   if (!goals.length) return null;
 
@@ -78,14 +78,14 @@ export const SDGIcons: React.FC<{
                   color: "white",
                   border: "none",
                 }}
-                className="text-inverted body-s cursor-pointer"
+                className="text-inverted body-l cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
                   window.open(unUrl, '_blank', 'noopener,noreferrer');
                 }}
               >
                 <p>{label}</p>
-                <p className="body-xs opacity-90 mt-1">Click to learn more</p>
+                <p className="body-s opacity-90 mt-1">Click to learn more</p>
               </TooltipContent>
             </Tooltip>
           );
@@ -103,7 +103,7 @@ export const SDGIcons: React.FC<{
             </PopoverTrigger>
             <PopoverContent className="p-3 w-50">
               <div className="space-y-3 text-start">
-                <h4 className="font-semibold text-sm text-gray-900">
+                <h4 className="font-semibold text-sm text-primary">
                   All Sustainable Development Goals ({goals.length}):
                 </h4>
                 <SDGIcons 

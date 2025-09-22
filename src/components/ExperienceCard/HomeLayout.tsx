@@ -20,7 +20,7 @@ export const HomeLayout: React.FC<SharedExperienceCardProps> = ({
 
     return (
     <div
-      className="relative w-full aspect-[3/5] max-w-4xl rounded-lg shadow-md transition-transform transform hover:scale-[1.02] hover:shadow-xl cursor-pointer overflow-hidden flex flex-col"
+      className="relative w-full aspect-[3/5] max-w-4xl rounded-lg transition-transform transform hover:scale-[1.02] hover:shadow-elevation-1 cursor-pointer overflow-hidden flex flex-col"
       onClick={onDetailsClick}
     >
     {/* Image */}
