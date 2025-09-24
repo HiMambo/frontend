@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import Header from "@/components/shared/Header";
+import Header from "@/components/shared/Header/Header";
 import Footer from "@/components/shared/Footer";
 import BookingSummary from "@/components/PaymentPage/BookingSummary";
 import BookingFlow from "@/components/PaymentPage/BookingFlow";

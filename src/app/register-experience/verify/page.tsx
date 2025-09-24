@@ -3,7 +3,7 @@
 import AccountStepper from "@/components/PartnerOnboarding/AccountStepper";
 import VerifyEmailForm from "@/components/PartnerOnboarding/VerifyEmailForm";
 import Footer from "@/components/shared/Footer";
-import Header from "@/components/shared/Header";
+import Header from "@/components/shared/Header/Header";
 
 export default function VerifyEmailPage() {
   return (

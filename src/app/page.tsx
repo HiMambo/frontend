@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "@/components/shared/Header";
+import Header from "@/components/shared/Header/Header";
 import Footer from "@/components/shared/Footer";
 import Image from "next/image";
 import SearchBox from "@/components/HomePage/SearchBox";

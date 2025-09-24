@@ -4,7 +4,7 @@ import { useExperiences } from "@/hooks/useExperiences";
 import type { Experience } from "@/lib/api";
 import { useState } from "react";
 import Footer from "@/components/shared/Footer";
-import Header from "@/components/shared/Header";
+import Header from "@/components/shared/Header/Header";
 import SearchBox from "@/components/HomePage/SearchBox";
 import { SearchControls } from "@/components/ExperiencesPage/SearchControls";
 import FilterToggleWrapper from "@/components/ExperiencesPage/FilterToggleWrapper";

@@ -172,9 +172,6 @@
   --radius-1200: clamp(24px, 1.92vw + 8px, 48px);
   --radius-1000: 9999px;
 
-  /* Default radius */
-  --radius: var(--radius-200);
-
   /* Elevation token */
   --elevation-1: 14px 14px 12px 0px rgba(118, 52, 38, 0.15);
 }

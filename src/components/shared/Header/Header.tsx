@@ -1,14 +1,11 @@
 "use client";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import UserBadge from "./UserBadge";
-import { LogoHeader } from "./IconComponents";
-import { NavLink } from "./NavLink";
+import { LogoHeader } from "../IconComponents";
+import { NavLink } from "../NavLink";
+import HeaderRight from "./HeaderRight";
 
 const NAV_LINKS = [
   { href: "/about", label: "About us" },
@@ -52,7 +49,6 @@ export default function Header() {
           <Link href="/" className="flex items-center">
             <LogoHeader width={200} height={36} />
           </Link>
-
           {/* Nav right-aligned */}
           <nav className="flex gap-[var(--spacing-1600)] body-l text-primary">
             {NAV_LINKS.map(({ href, label }) => (
@@ -67,10 +63,8 @@ export default function Header() {
           </nav>
         </div>
 
-        {/* Desktop: Right side (User Badge) */}
-        <div className="hidden lg:flex items-center">
-          <UserBadge />
-        </div>
+        {/* Desktop: Auth and Notifications */}
+        <HeaderRight />
       </div>
     </header>
   );
