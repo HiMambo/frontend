@@ -21,21 +21,21 @@ export default function SearchBox() {
 
   return (
     <div
-      className="bg-home-searchbox rounded-600 px-[var(--spacing-600)] py-[var(--spacing-400)] flex items-end gap-[var(--spacing-1200)] mx-auto"
+      className="bg-home-searchbox overflow-hidden rounded-600 px-searchbox-fluid py-searchbox-fluid flex items-end gap-searchbox-main mx-auto"
       style={{
         width: "min(74vw, 1421px)",
         minWidth: "700px",
       }}
     >
       {/* Section 1: Search Input (flexible) */}
-      <div className="flex-1 flex items-center bg-white text-tertiary rounded-300 px-4 h-10">
+      <div className="flex-1 flex items-center bg-white text-tertiary rounded-300 px-4 h-input-fluid">
         <input
           type="text"
           placeholder="Search activities or destination"
           value={searchParams.searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="w-full bg-transparent body-s focus:outline-none h-full"
+          className="w-full bg-transparent body-m text-primary placeholder:text-[var(--text-tertiary)]/50 focus:outline-none h-full"
         />
         <button onClick={handleSearch} className="ml-2 cursor-pointer">
           <SearchIcon className="icon-s" />
@@ -43,27 +43,33 @@ export default function SearchBox() {
       </div>
 
       {/* Section 2: Search Parameters */}
-      <div className="flex gap-[var(--spacing-800)]">
-        <div className="flex-1">
+      <div className="flex gap-searchbox-params">
+        <div className="flex-1 min-w-[var(--width-search-travellers)]">
           <CustomSelect<number>
             label="Travellers"
             value={searchParams.travellers}
             setValue={setTravellers}
             minVal={1}
             maxVal={12}
+            inputHeight="fluid"
           />
         </div>
 
-        <div className="flex-1 min-w-[170px]">
-          <DateRangeSelect value={searchParams.date} onChange={setDate} />
+        <div className="flex-1 min-w-[var(--width-search-date)]">
+          <DateRangeSelect 
+            value={searchParams.date} 
+            onChange={setDate}
+            inputHeight="fluid"
+          />
         </div>
 
-        <div className="flex-1 min-w-[180px]">
+        <div className="flex-1 min-w-[var(--width-search-experience)]">
           <CustomSelect<string>
             label="Experience Type"
             options={["Any", "Nature & Wildlife", "Cultural Immersion", "Adventure & Outdoor", "Wellness & Retreats", "Social Impact", "Food & Gastronomy"]}
             value={searchParams.experienceType}
             setValue={setExperienceType}
+            inputHeight="fluid"
           />
         </div>
       </div>
@@ -71,8 +77,7 @@ export default function SearchBox() {
       {/* Section 3: Button */}
       <div className="flex-none">
         <Button
-          size="lg"
-          className="bg-home-button body-l-button text-inverted px-10 py-2 rounded-md hover:bg-[#0d5d56] hover:text-inverted hover:shadow-lg"
+          className="bg-home-button body-l-button text-inverted px-10 h-input-fluid rounded-md hover:bg-[#0d5d56] hover:text-inverted hover:shadow-lg"
           onClick={handleSearch}
         >
           Search now

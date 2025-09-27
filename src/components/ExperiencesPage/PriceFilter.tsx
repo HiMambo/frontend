@@ -253,7 +253,7 @@ function ManualInput({ id, label, value, setValue, onConfirm, resetValue, disabl
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         onBlur={() => setValue(resetValue)}
-        className={`border rounded p-2 h-8 w-16 text-center focus:outline-none no-spinner ${
+        className={`border rounded p-[var(--spacing-100)]  w-16 text-center focus:outline-none no-spinner ${
           disabled 
             ? 'bg-gray-100 text-disabled cursor-not-allowed' 
             : 'focus:ring-2'

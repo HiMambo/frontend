@@ -14,6 +14,7 @@ interface SelectorProps<T extends string | number> {
   containerClassName?: string;
   labelClassName?: string;
   buttonClassName?: string;
+  inputHeight?: "fixed" | "fluid";  // New prop for height control
 }
 
 export function CustomSelect<T extends string | number>({
@@ -27,12 +28,16 @@ export function CustomSelect<T extends string | number>({
   layout = "vertical",
   containerClassName = "",
   labelClassName = "",
-  buttonClassName = ""
+  buttonClassName = "",
+  inputHeight = "fixed"  // Default to fixed for backwards compatibility
 }: SelectorProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
 
   // Check if this is a numeric selector
   const isNumeric = typeof value === "number";
+
+  // Determine height class based on inputHeight prop
+  const heightClass = inputHeight === "fluid" ? "h-input-fluid" : "h-10";
 
   const defaultContainerClass = layout === "horizontal" 
     ? "flex items-center gap-2" 
@@ -44,11 +49,11 @@ export function CustomSelect<T extends string | number>({
   
   const defaultButtonClass = layout === "vertical"
     ? isNumeric && !options 
-      ? "bg-white flex items-center justify-between border border-none rounded-md h-10 px-2 py-1"
-      : "bg-white rounded-md w-full bg-transparent border-none h-10 px-3 focus:outline-none"
+      ? `bg-white flex items-center justify-between border border-none rounded-300 ${heightClass} px-[var(--spacing-200)]`
+      : `bg-white rounded-300 w-full bg-transparent border-none ${heightClass} px-3 focus:outline-none`
     : isNumeric && !options
-      ? "border-none rounded-lg px-2 py-1 text-sm h-8 bg-surface flex items-center justify-between w-auto cursor-pointer"
-      : "border-none rounded-lg px-3 py-1 text-sm h-8 bg-surface bg-transparent focus:outline-none w-auto cursor-pointer";
+      ? "border-none rounded-300 px-2 py-1 text-sm h-8 bg-surface flex items-center justify-between w-auto cursor-pointer"
+      : "border-none rounded-300 px-3 py-1 text-sm h-8 bg-surface bg-transparent focus:outline-none w-auto cursor-pointer";
 
   return (
     <div className={`${defaultContainerClass} ${containerClassName}`.trim()}>
@@ -58,17 +63,17 @@ export function CustomSelect<T extends string | number>({
         <div className={`${defaultButtonClass} ${buttonClassName}`.trim()}>
           <button
             type="button"
-            className="p-1 text-[var(--yellow-500)] disabled:text-[var(--neutral-300)]"
+            className="text-[var(--yellow-500)] disabled:text-[var(--neutral-300)]"
             onClick={() => setValue((value as number) - 1 as T)}
             disabled={(minVal !== undefined && (value as number) <= minVal)}
           >
             <Minus className="icon-s" />
           </button>
 
-          <span className="body-xl text-primary px-3">{formatLabel(value)}</span>
+          <span className="body-xl text-primary">{formatLabel(value)}</span>
           <button
             type="button"
-            className="p-1 text-[var(--yellow-500)] disabled:text-[var(--neutral-300)]"
+            className="text-[var(--yellow-500)] disabled:text-[var(--neutral-300)]"
             onClick={() => setValue((value as number) + 1 as T)}
             disabled={(maxVal !== undefined && (value as number) >= maxVal)}
           >

@@ -29,7 +29,7 @@ export default function ExperienceList({
   const layoutClass =
     view === "grid"
       ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
-      : "flex flex-col gap-6";
+      : "flex flex-col gap-[var(--spacing-1200)]";
 
   if (loading) {
     return (

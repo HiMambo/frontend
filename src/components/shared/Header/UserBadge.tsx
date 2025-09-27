@@ -39,11 +39,12 @@ export default function UserBadge({ user }: UserBadgeProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="flex items-center space-x-2 hover:shadow-elevation-1 rounded-200 py-2 px-3 transition-colors">
+        <button className="flex items-center hover:shadow-elevation-1 rounded-200 py-2 px-3 transition-colors">
           {renderUserAvatar(32)}
-          <span className="body-xs text-gray-700 hidden sm:block">
-            {user.name}
-          </span>
+          <div className="flex flex-col items-start justify-start ml-[var(--spacing-200)] gap-[var(--spacing-050)]">
+            <span className="body-xs text-primary">{user.name}</span>
+            <span className="body-xxs-light text-tertiary">{user.email}</span>
+          </div>
         </button>
       </PopoverTrigger>
       <PopoverContent

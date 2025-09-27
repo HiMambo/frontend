@@ -174,50 +174,22 @@
 
   /* Elevation token */
   --elevation-1: 14px 14px 12px 0px rgba(118, 52, 38, 0.15);
+
+  --height-input: clamp(36px, 2.5vw + 10px, 56px);  /* ~40px at 1440px, ~56px at 1920px */
+  --height-searchbox-py: clamp(12px, 1vw + 4px, 24px);  /* padding-y for searchbox */
+  --height-searchbox-px: clamp(16px, 1.2vw + 6px, 32px);  /* padding-x for searchbox */
+  --gap-searchbox-main: clamp(32px, 2.5vw + 10px, 64px);  /* main gap between sections */
+  --gap-searchbox-params: clamp(20px, 1.6vw + 6px, 40px);  /* gap between parameters */
+
+  /* ---- Search parameter widths - fluid ---- */
+  --width-search-travellers: clamp(80px, 6.25vw, 120px);   /* 120px @1920px */
+  --width-search-date: clamp(133px, 11vw, 200px);  /* 200px @1920px */
+  --width-search-experience:       clamp(160px, 12.5vw, 240px);  /* 240px @1920px */
+
+  --card-height: clamp(20rem, 14.4vw + 6.8rem, 28.75rem);
 }
 
 /* ===== RESPONSIVE BREAKPOINT OVERRIDES ===== */
-
-/* Fine-tune for very small screens (below 375px) */
-@media (max-width: 374px) {
-  :root {
-    --spacing-400: clamp(0.75rem, 0.8vw + 0.2rem, 2rem);
-    --spacing-600: clamp(1rem, 1.2vw + 0.3rem, 3rem);
-    --spacing-800: clamp(1.5rem, 1.6vw + 0.4rem, 4rem);
-  }
-}
-
-/* Optimize for common laptop range (1280px - 1600px) */
-@media (min-width: 1280px) and (max-width: 1600px) {
-  :root {
-    /* Fine-tune scaling for better 1440px experience */
-    --text-h1: clamp(72px, 4.5vw + 8px, 96px);
-    --text-h2: clamp(54px, 3.4vw + 6px, 72px);
-    --text-h3: clamp(41px, 2.6vw + 4px, 54px);
-    --text-h4: clamp(36px, 2.3vw + 3px, 48px);
-    --text-h5: clamp(27px, 1.7vw + 2px, 36px);
-    
-    --text-body-xxl: clamp(24px, 1.5vw + 2px, 32px);
-    --text-body-xl: clamp(18px, 1.1vw + 1.5px, 24px);
-    --text-body-l: clamp(14px, 0.85vw + 1px, 18px);
-    --text-body-m: clamp(12px, 0.75vw + 0.8px, 16px);
-    --text-body-s: clamp(11px, 0.65vw + 0.6px, 14px);
-    
-    --icon-xs: clamp(12px, 0.75vw + 0.8px, 16px);
-    --icon-s: clamp(18px, 1.1vw + 1.2px, 24px);
-    --icon-m: clamp(24px, 1.5vw + 1.6px, 32px);
-    --icon-l: clamp(36px, 2.3vw + 2.4px, 48px);
-  }
-}
-
-/* Optimize for tablet range (768px - 1024px) */
-@media (min-width: 768px) and (max-width: 1024px) {
-  :root {
-    --text-h1: clamp(60px, 4.2vw + 8px, 96px);
-    --text-h2: clamp(45px, 3.2vw + 6px, 72px);
-    --text-h3: clamp(35px, 2.4vw + 4px, 54px);
-  }
-}
 
 /* Cap growth on very large screens (above 1920px) */
 @media (min-width: 1921px) {
@@ -250,4 +222,27 @@
   --text-disabled: #9aa0a6;
   --surface: #121212;
   /* keep brand accents if you like the pop */
+}
+
+/* Utility classes for fluid heights */
+.h-input-fluid {
+  height: var(--height-input);
+}
+
+.py-searchbox-fluid {
+  padding-top: var(--height-searchbox-py);
+  padding-bottom: var(--height-searchbox-py);
+}
+
+.px-searchbox-fluid {
+  padding-left: var(--height-searchbox-px);
+  padding-right: var(--height-searchbox-px);
+}
+
+.gap-searchbox-main {
+  gap: var(--gap-searchbox-main);
+}
+
+.gap-searchbox-params {
+  gap: var(--gap-searchbox-params);
 }

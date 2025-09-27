@@ -28,11 +28,11 @@ export const ListLayout: React.FC<SharedExperienceCardProps> = ({
 
   return (
 <div 
-  className="group flex flex-col sm:flex-row h-[320px] rounded-800 hover:shadow-elevation-1 overflow-hidden hover:scale-[1.01] transition-transform bg-surface text-primary cursor-pointer"
+  className="group flex flex-col sm:flex-row h-[var(--card-height)] rounded-800 hover:shadow-elevation-1 overflow-hidden hover:scale-[1.01] transition-transform bg-surface text-primary cursor-pointer"
   onClick={onDetailsClick}
 >
   {/* Image */}
-  <div className="relative w-full sm:w-[320px] h-[320px] flex-shrink-0">
+  <div className="relative w-full sm:w-[var(--card-height)] h-[var(--card-height)] flex-shrink-0">
     <Image
       className="object-cover"
       src={experience_promo_image}
@@ -84,7 +84,7 @@ export const ListLayout: React.FC<SharedExperienceCardProps> = ({
 
       <div className="relative h-[40px] flex items-end">
         {/* Price */}
-        <p className="absolute right-0 bottom-0 font-semibold transition-transform duration-200 group-hover:-translate-y-11 whitespace-nowrap">
+        <p className="absolute right-0 bottom-0 font-semibold transition-transform duration-200 group-hover:-translate-y-[190%] whitespace-nowrap">
           <span className="body-xxl">€ {getPrice().toFixed(2)}</span>
           <span className="body-s ml-1">/person</span>
         </p>
@@ -92,7 +92,7 @@ export const ListLayout: React.FC<SharedExperienceCardProps> = ({
         {/* Button */}
         <Button
           onClick={onCartClick}
-          className="absolute body-l-button right-0 bottom-0 opacity-0 translate-y-[44px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200"
+          className="absolute body-l-button right-0 bottom-0 opacity-0 translate-y-[100%] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200"
           size="default"
         >
           <ShoppingCart className="icon-s" />

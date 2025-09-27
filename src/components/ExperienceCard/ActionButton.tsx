@@ -24,6 +24,6 @@ export const ActionButton: React.FC<{
         <Icon width={size} height={size} />
       </button>
     </TooltipTrigger>
-    <TooltipContent>{tooltip}</TooltipContent>
+    <TooltipContent className="body-m text-inverted">{tooltip}</TooltipContent>
   </Tooltip>
 );
