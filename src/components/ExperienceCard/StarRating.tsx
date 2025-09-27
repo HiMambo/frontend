@@ -4,9 +4,11 @@ interface StarRatingProps {
   rating: number;
   size: number;
   showValue?: boolean;
+  ratingClassName?: string;
+  ratingnumberClassName?: string;
 }
 
-export const StarRating: React.FC<StarRatingProps> = ({ rating, size, showValue = true }) => {
+export const StarRating: React.FC<StarRatingProps> = ({ rating, size, showValue = true, ratingClassName="body-xs", ratingnumberClassName="body-xxs-light" }) => {
   if (!rating) {
     return <span className="text-sm text-gray-500">No rating yet!</span>;
   }
@@ -94,10 +96,10 @@ export const StarRating: React.FC<StarRatingProps> = ({ rating, size, showValue 
         {/* Numeric rating */}
         {showValue && (
           <div className="flex items-center gap-2">
-            <span className="bg-primary rounded-100 px-[var(--spacing-150)] py-[var(--spacing-050)] body-xs text-inverted">
+            <span className={`bg-primary rounded-100 px-[var(--spacing-200)] py-[var(--spacing-050)] ${ratingClassName} text-inverted`}>
               {rating.toFixed(1)}
             </span>
-            <span className="body-xxs-light text-secondary">XXX reviews</span>
+            <span className={`${ratingnumberClassName} text-secondary`}>XXX reviews</span>
           </div>
         )}
     </div>

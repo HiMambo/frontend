@@ -4,9 +4,10 @@ import Image from 'next/image';
 interface LocationDisplayProps {
   city: string;
   country: string;
+  className?: string;
 }
 
-const LocationDisplay: React.FC<LocationDisplayProps> = ({ city, country }) => {
+const LocationDisplay: React.FC<LocationDisplayProps> = ({ city, country, className="body-s" }) => {
   // Convert country names to ISO codes
   const getCountryCode = (countryName: string | undefined): string | null => {
     if (!countryName) return null;
@@ -75,7 +76,7 @@ const LocationDisplay: React.FC<LocationDisplayProps> = ({ city, country }) => {
   const countryCode = getCountryCode(country);
 
   return (
-    <div className="body-s flex gap-[var(--spacing-200)] items-center">
+    <div className={`${className} flex gap-[var(--spacing-200)] items-center`}>
       {countryCode && (
         <div className="icon-s relative">
           <Image

@@ -187,6 +187,8 @@
   --width-search-experience:       clamp(160px, 12.5vw, 240px);  /* 240px @1920px */
 
   --card-height: clamp(20rem, 14.4vw + 6.8rem, 28.75rem);
+
+  --homepage-card-width: clamp(240px, 27.3vw, 525px); /* 525px @1920px */
 }
 
 /* ===== RESPONSIVE BREAKPOINT OVERRIDES ===== */

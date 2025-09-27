@@ -31,26 +31,26 @@ export const FeaturedExperiencesCarousel: React.FC<FeaturedExperiencesCarouselPr
   }
 
   return (
-<Carousel
-  opts={{
-    align: "center", // instead of "start"
-  }}
-  className="w-full max-w-6xl mx-auto"
->
-  <CarouselContent className="gap-1"> {/* use flex gap instead of pl */}
-    {(loading ? Array(6).fill(null) : experiences).map((experience, index) => (
-      <CarouselItem
-        key={loading ? `skeleton-${index}` : experience.id}
-        className="py-8 md:basis-1/2 lg:basis-1/3 max-w-sm"
-      >
-        {loading ? (
-          <SkeletonCard index={index} view={view} />
-        ) : (
-          <ExperienceCard experience={experience} view={view} />
-        )}
-      </CarouselItem>
-    ))}
-  </CarouselContent>
+    <Carousel
+      opts={{
+        align: "center",
+      }}
+      className="w-full"
+    >
+      <CarouselContent className="gap-[var(--spacing-600)] py-[var(--spacing-1600)]">
+        {(loading ? Array(6).fill(null) : experiences).map((experience, index) => (
+          <CarouselItem
+            key={loading ? `skeleton-${index}` : experience.id}
+            className="md:basis-1/2 lg:basis-1/3 w-[var(--homepage-card-width)]"
+          >
+            {loading ? (
+              <SkeletonCard index={index} view={view} />
+            ) : (
+              <ExperienceCard experience={experience} view={view} />
+            )}
+          </CarouselItem>
+        ))}
+      </CarouselContent>
 
       {/* Navigation Buttons */}
       <CarouselPrevious />
