@@ -61,9 +61,9 @@ export function DateRangeSelect({
           >
             <span className="body-s text-primary">{formatDateRange(value)}</span>
             {isOpen ? (
-              <ChevronUp className="ml-1 icon-s text-primary" />
+              <ChevronUp className="ml-1 icon-size-s text-primary" />
             ) : (
-              <ChevronDown className="ml-1 icon-s text-primary" />
+              <ChevronDown className="ml-1 icon-size-s text-primary" />
             )}
           </button>
         </PopoverTrigger>

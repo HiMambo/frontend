@@ -95,7 +95,7 @@ export const ListLayout: React.FC<SharedExperienceCardProps> = ({
           className="absolute body-l-button right-0 bottom-0 opacity-0 translate-y-[100%] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200"
           size="default"
         >
-          <ShoppingCart className="icon-s" />
+          <ShoppingCart className="icon-size-s" />
           Book now
         </Button>
       </div>

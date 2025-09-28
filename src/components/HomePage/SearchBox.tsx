@@ -38,7 +38,7 @@ export default function SearchBox() {
           className="w-full bg-transparent body-m text-primary placeholder:text-[var(--text-tertiary)]/50 focus:outline-none h-full"
         />
         <button onClick={handleSearch} className="ml-2 cursor-pointer">
-          <SearchIcon className="icon-s" />
+          <SearchIcon className="icon-size-s" />
         </button>
       </div>
 

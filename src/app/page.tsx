@@ -14,7 +14,7 @@ export default function Home(){
   return (
     <>
       <Header />
-      <main className="relative pb-20 bg-surface">
+      <main className="relative pb-20 bg-white">
       {/* Hero with overlaid SearchBox */}
       <div className="relative w-full">
         <Image

@@ -67,7 +67,7 @@ export function CustomSelect<T extends string | number>({
             onClick={() => setValue((value as number) - 1 as T)}
             disabled={(minVal !== undefined && (value as number) <= minVal)}
           >
-            <Minus className="icon-s" />
+            <Minus className="icon-size-s" />
           </button>
 
           <span className="body-xl text-primary">{formatLabel(value)}</span>
@@ -77,7 +77,7 @@ export function CustomSelect<T extends string | number>({
             onClick={() => setValue((value as number) + 1 as T)}
             disabled={(maxVal !== undefined && (value as number) >= maxVal)}
           >
-            <Plus className="icon-s" />
+            <Plus className="icon-size-s" />
           </button>
         </div>
       ) : (
@@ -89,9 +89,9 @@ export function CustomSelect<T extends string | number>({
             >
               <span className="body-m text-primary truncate">{formatLabel(value)}</span>
               {isOpen ? (
-                <ChevronUp className="icon-s text-primary" />
+                <ChevronUp className="icon-size-s text-primary" />
               ) : (
-                <ChevronDown className="icon-s text-primary" />
+                <ChevronDown className="icon-size-s text-primary" />
               )}
             </button>
           </PopoverTrigger>
@@ -116,7 +116,7 @@ export function CustomSelect<T extends string | number>({
                   `}
                 >
                   <Check
-                    className={`icon-xs text-primary ml-2 ${
+                    className={`icon-size-xs text-primary ml-2 ${
                       isSelected ? "opacity-100" : "opacity-0"
                     }`}
                   />

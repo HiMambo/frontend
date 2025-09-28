@@ -65,7 +65,7 @@ const FilterSidebar: React.FC = () => {
       <div>
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-[var(--spacing-250)] border-b-2 border-[var(--text-secondary)] pb-1 text-secondary">
-            <BudgetFilterIcon className="icon-s" aria-hidden="true" />
+            <BudgetFilterIcon className="icon-size-s" aria-hidden="true" />
             <h3 className="body-xl">Budget</h3>
           </div>
             {/* Reset Button */}

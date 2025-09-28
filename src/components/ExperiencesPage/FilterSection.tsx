@@ -106,7 +106,7 @@ const handleToggle = (val: T) => {
       <div className="mb-6">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-[var(--spacing-250)] border-b-2 border-[var(--text-secondary)] pb-1 text-secondary">
-            {TitleIcon && <TitleIcon className="icon-s" aria-hidden="true" />}
+            {TitleIcon && <TitleIcon className="icon-size-s" aria-hidden="true" />}
             <h3 className="body-xl">{title}</h3>
           </div>
           {selected.length > 0 && (
@@ -218,7 +218,7 @@ const handleToggle = (val: T) => {
     <main>
       <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-[var(--spacing-250)] border-b-2 border-[var(--text-secondary)] pb-1 text-secondary">
-            {TitleIcon && <TitleIcon className="icon-s" aria-hidden="true" />}
+            {TitleIcon && <TitleIcon className="icon-size-s" aria-hidden="true" />}
             <h3 className="body-xl">{title}</h3>
           </div>
           {/* Reset Button */}
@@ -252,7 +252,7 @@ const handleToggle = (val: T) => {
                   className="hidden"
                 />
                 <span
-                  className={`icon-s text-primary flex-shrink-0 ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                  className={`icon-size-s text-primary flex-shrink-0 ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                 >
                   {selected.includes(value) ? (
                     <CheckedIcon className="w-full h-full" />

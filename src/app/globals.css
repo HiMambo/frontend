@@ -388,27 +388,27 @@
   }
 
   /* ===== ICON UTILITIES ===== */
-  .icon-xs {
+  .icon-size-xs {
     width: var(--icon-xs);
     height: var(--icon-xs);
   }
 
-  .icon-s {
+  .icon-size-s {
     width: var(--icon-s);
     height: var(--icon-s);
   }
 
-  .icon-m {
+  .icon-size-m {
     width: var(--icon-m);
     height: var(--icon-m);
   }
 
-  .icon-l {
+  .icon-size-l {
     width: var(--icon-l);
     height: var(--icon-l);
   }
 
-  .icon-xl {
+  .icon-size-xl {
     width: var(--icon-xl);
     height: var(--icon-xl);
   }

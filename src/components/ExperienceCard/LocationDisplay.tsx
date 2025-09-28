@@ -78,7 +78,7 @@ const LocationDisplay: React.FC<LocationDisplayProps> = ({ city, country, classN
   return (
     <div className={`${className} flex gap-[var(--spacing-200)] items-center`}>
       {countryCode && (
-        <div className="icon-s relative">
+        <div className="icon-size-s relative">
           <Image
             src={`/assets/flags/${countryCode.toLowerCase()}.svg`}
             alt={`${country} flag`}

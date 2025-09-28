@@ -23,13 +23,13 @@ export default function Footer() {
           <p className="body-l-light text-inverted mb-[var(--spacing-600)]">Follow us</p>
           <div className="flex items-center gap-[var(--spacing-400)]">
             <Link href="#" aria-label="Instagram">
-              <Instagram className="icon-s hover:scale-105" />
+              <Instagram className="icon-size-s hover:scale-105" />
             </Link>
             <Link href="#" aria-label="Twitter">
-              <X className="icon-s hover:scale-105" />
+              <X className="icon-size-s hover:scale-105" />
             </Link>
             <Link href="#" aria-label="LinkedIn">
-              <LinkedIn className="icon-s hover:scale-105" />
+              <LinkedIn className="icon-size-s hover:scale-105" />
             </Link>
           </div>
         </div>
