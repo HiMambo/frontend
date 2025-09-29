@@ -55,7 +55,7 @@ export function DateRangeSelect({
           if (open) setTempDate(value)
         }}
       >
-        <PopoverTrigger asChild>
+        <PopoverTrigger asChild className="cursor-pointer">
           <button
             className={`flex justify-between items-center ${defaultButtonClass} ${buttonClassName}`.trim()}
           >

@@ -29,8 +29,8 @@ export function PaymentForm() {
   };
 
   const handlePaymentComplete = () => {
-    // Mark step 4 as complete
-    markStepComplete(4);
+    // Mark step 3 as complete
+    markStepComplete(3);
     setPaymentInProgress(false);
     setShowCryptoPayment(false);
     goToNextStep();

@@ -84,7 +84,7 @@ export const ListLayout: React.FC<SharedExperienceCardProps> = ({
 
       <div className="relative h-[40px] flex items-end">
         {/* Price */}
-        <p className="absolute right-0 bottom-0 font-semibold transition-transform duration-200 group-hover:-translate-y-[190%] whitespace-nowrap">
+        <p className="absolute right-0 bottom-0 font-semibold transition-transform duration-200 group-hover:-translate-y-[120%] whitespace-nowrap">
           <span className="body-xxl">€ {getPrice().toFixed(2)}</span>
           <span className="body-s ml-1">/person</span>
         </p>

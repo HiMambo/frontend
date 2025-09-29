@@ -5,9 +5,15 @@ interface LocationDisplayProps {
   city: string;
   country: string;
   className?: string;
+  badgeOnly?: boolean;
 }
 
-const LocationDisplay: React.FC<LocationDisplayProps> = ({ city, country, className="body-s" }) => {
+const LocationDisplay: React.FC<LocationDisplayProps> = ({ 
+  city, 
+  country, 
+  className="body-s",
+  badgeOnly = false
+}) => {
   // Convert country names to ISO codes
   const getCountryCode = (countryName: string | undefined): string | null => {
     if (!countryName) return null;
@@ -75,10 +81,25 @@ const LocationDisplay: React.FC<LocationDisplayProps> = ({ city, country, classN
 
   const countryCode = getCountryCode(country);
 
+  if (badgeOnly) {
+    return (
+      countryCode && (
+        <div className="icon-size-l relative shrink-0">
+          <Image
+            src={`/assets/flags/${countryCode.toLowerCase()}.svg`}
+            alt={`${country} flag`}
+            fill
+            className="object-cover"
+          />
+        </div>
+      )
+    );
+  }
+
   return (
     <div className={`${className} flex gap-[var(--spacing-200)] items-center`}>
       {countryCode && (
-        <div className="icon-size-s relative">
+        <div className="icon-size-s relative shrink-0">
           <Image
             src={`/assets/flags/${countryCode.toLowerCase()}.svg`}
             alt={`${country} flag`}

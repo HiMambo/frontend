@@ -63,17 +63,17 @@ export function CustomSelect<T extends string | number>({
         <div className={`${defaultButtonClass} ${buttonClassName}`.trim()}>
           <button
             type="button"
-            className="text-[var(--yellow-500)] disabled:text-[var(--neutral-300)]"
+            className="text-[var(--yellow-500)] cursor-pointer disabled:text-[var(--neutral-300)] disabled:cursor-not-allowed"
             onClick={() => setValue((value as number) - 1 as T)}
             disabled={(minVal !== undefined && (value as number) <= minVal)}
           >
             <Minus className="icon-size-s" />
           </button>
 
-          <span className="body-xl text-primary">{formatLabel(value)}</span>
+          <span className="body-xl text-primary tabular-nums min-w-[2ch] text-center">{formatLabel(value)}</span>
           <button
             type="button"
-            className="text-[var(--yellow-500)] disabled:text-[var(--neutral-300)]"
+            className="text-[var(--yellow-500)] cursor-pointer disabled:text-[var(--neutral-300)] disabled:cursor-not-allowed"
             onClick={() => setValue((value as number) + 1 as T)}
             disabled={(maxVal !== undefined && (value as number) >= maxVal)}
           >
@@ -83,7 +83,7 @@ export function CustomSelect<T extends string | number>({
       ) : (
         // Dropdown for strings
         <Popover open={isOpen} onOpenChange={setIsOpen}>
-          <PopoverTrigger asChild>
+          <PopoverTrigger asChild className="cursor-pointer">
             <button
               className={`${defaultButtonClass} ${buttonClassName} flex justify-between items-center`.trim()}
             >

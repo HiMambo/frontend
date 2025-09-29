@@ -14,8 +14,10 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
-          "bg-none body-l-button text-tertiary border-[var(--text-tertiary)] border-[3px] hover:bg-[var(--text-tertiary)] hover:text-[var(--text-inverted)] dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
-        secondary:
+          "bg-none body-l-button text-tertiary shadow-[inset_0_0_0_3px_var(--text-tertiary)] hover:bg-[var(--text-tertiary)] hover:text-[var(--text-inverted)] dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+        "outline-yellow":
+          "bg-none body-l-button text-yellow-500 shadow-[inset_0_0_0_3px_theme(colors.yellow.500)] hover:bg-yellow-500 hover:text-[var(--text-inverted)] hover:shadow-[inset_0_0_0_3px_theme(colors.yellow.500)]",
+          secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
@@ -26,6 +28,7 @@ const buttonVariants = cva(
         sm: "h-[var(--spacing-800)] rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
         icon: "size-9",
+        custom: "",
       },
     },
     defaultVariants: {

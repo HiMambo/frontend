@@ -13,7 +13,7 @@ export const STEP_DEFINITIONS = [
     showBackButton: false,
     showNextButton: false,
   },
-  {
+  /*{
     step: 2,
     label: 'Guests',
     title: 'Step 2: Guest Details',
@@ -22,22 +22,22 @@ export const STEP_DEFINITIONS = [
     showBackButton: false,
     showNextButton: true,
     nextButtonText: 'Continue to Time Slot Selection',
-  },
+  },*/
   {
-    step: 3,
+    step: 2,
     label: 'Slots',
-    title: 'Step 3: Select Time Slot',
+    title: 'Step 2: Select Time Slot',
     completedTitle: 'Time Slot Selected',
     component: 'SlotSelector',
-    showBackButton: true,
+    showBackButton: false,
     showNextButton: true,
-    backButtonText: 'Back to Guest Details',
+    backButtonText: '',
     nextButtonText: 'Continue to Payment Details',
   },
   {
-    step: 4,
+    step: 3,
     label: 'Payment',
-    title: 'Step 4: Payment',
+    title: 'Step 3: Payment',
     completedTitle: 'Payment Successful',
     component: 'PaymentForm',
     showBackButton: false,
@@ -197,6 +197,13 @@ export function BookingStepsProvider({
 
   const markStepComplete = useCallback((step: BookingStep) => {
     if (step === -1) return; // Don't mark sentinel step as completed
+
+    const stepExists = STEP_DEFINITIONS.some(def => def.step === step); // Don't mark invalid step as complete
+    if (!stepExists) {
+      console.error(`Attempted to complete invalid step: ${step}`);
+      return;
+    }
+
     setStepState(prev => {
       const newCompleted = new Set(prev.completedSteps);
       newCompleted.add(step);

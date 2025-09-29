@@ -9,14 +9,14 @@ export default function NotificationBadge() {
   
   return (
     <Link href={cartExperience ? "/payment" : "#"} >
-        <div className="hidden lg:flex items-center border-3 border-[var(--text-disabled)] hover:border-[var(--teal-500)] rounded-200 relative">
-            <ShoppingCart className="icon-size-m text-disabled m-[var(--spacing-100)]" />
-            {cartExperience &&
-            <span className="absolute top-[-0.75rem] right-[-0.75rem] flex items-center justify-center icon-size-s bg-[var(--teal-500)] body-xxs text-inverted rounded-full">
-                1
-            </span>
-            }
-        </div>
+      <div className="hidden lg:flex items-center shadow-[inset_0_0_0_3px_var(--text-disabled)] hover:shadow-[inset_0_0_0_3px_var(--teal-500)] rounded-200 relative transition-shadow">
+        <ShoppingCart className="icon-size-m text-disabled m-[var(--spacing-200)]" />
+        {cartExperience &&
+        <span className="absolute top-[-20%] right-[-20%] flex items-center justify-center icon-size-s bg-[var(--teal-500)] body-xxs text-inverted rounded-full">
+          1
+        </span>
+        }
+      </div>
     </Link>
   );
 }

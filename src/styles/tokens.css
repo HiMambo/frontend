@@ -112,7 +112,7 @@
 
   /* ---- Typography (Body) - fluid scaling ---- */
   --text-body-xxl: clamp(18px, 1.6vw + 2px, 32px);
-  --leading-body-xxl: clamp(20px, 1.6vw + 2px, 32px);
+  --leading-body-xxl: clamp(27px, 2.4vw + 3px, 48px);
   --tracking-body-xxl: 0.1px;
 
   --text-body-xl: clamp(14px, 1.2vw + 1px, 24px);
@@ -189,6 +189,10 @@
   --card-height: clamp(20rem, 14.4vw + 6.8rem, 28.75rem);
 
   --homepage-card-width: clamp(240px, 27.3vw, 525px); /* 525px @1920px */
+
+  /* BookingSummary component tokens */
+  --bookingsummary-width: clamp(320px, 30vw, 589px);
+  --bookingsummary-image-height: clamp(180px, 14.5vw, 278px);
 }
 
 /* ===== RESPONSIVE BREAKPOINT OVERRIDES ===== */

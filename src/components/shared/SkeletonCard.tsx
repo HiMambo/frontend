@@ -182,46 +182,67 @@ export const SkeletonCard: React.FC<SkeletonCardProps> = ({ view, index = 0 }) =
       
     case "bookingSummary":
       return (
-        <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden animate-wave">
-          {/* Placeholder Image */}
-          <div className="w-full h-48 bg-gray-200" />
+        <div className="w-[var(--bookingsummary-width)] rounded-600 bg-white flex flex-col gap-[var(--spacing-1200)] overflow-hidden animate-pulse">
+          {/* 1. Image Section */}
+          <div className="w-full h-[var(--bookingsummary-image-height)] bg-gray-200" />
 
-          <div className="p-6 space-y-4 mb-2">
+          {/* 2. Main Content Section */}
+          <div className="flex flex-col px-[var(--spacing-800)] gap-[var(--spacing-400)]">
             {/* Title */}
-            <div className="h-6 bg-gray-200 rounded w-2/3 mb-2" />
+            <div className="h-6 bg-gray-200 rounded w-2/3" />
 
-            {/* Location and SDGs */}
-            <div className="flex items-center justify-between text-sm mb-4">
-              <div className="h-4 bg-gray-200 rounded w-1/3" />
-              <div className="flex gap-1">
-                {Array.from({ length: 1 }).map((_, i) => (
-                  <div key={i} className="w-8 h-8 bg-gray-200 rounded-md" />
-                ))}
-              </div>
-            </div>
-
-            {/* Information Table */}
-            <div className="space-y-1 mb-6">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="flex justify-between">
-                  <div className="h-4 bg-gray-200 rounded w-1/4 mb-1" />
-                  <div className="h-4 bg-gray-200 rounded w-1/5" />
-                </div>
+            {/* Star Rating */}
+            <div className="flex items-center gap-1">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="w-6 h-6 bg-gray-200 rounded-full" />
               ))}
             </div>
 
-            {/* Price Section */}
-            <div className="bg-gray-100 p-3 rounded-lg">
-              <div className="flex justify-between text-sm mb-2">
-                <div className="h-4 bg-gray-300 rounded w-1/4" />
-                <div className="h-4 bg-gray-300 rounded w-1/4" />
+            {/* Main Info */}
+            <div className="flex flex-col gap-[var(--spacing-400)]">
+              {/* Location */}
+              <div className="h-4 bg-gray-200 rounded w-1/2" />
+              
+              {/* Travellers */}
+              <div className="flex justify-between items-center border-b-2 border-gray-200 pb-[var(--spacing-200)]">
+                <div className="h-4 bg-gray-200 rounded w-1/4" />
+                <div className="flex items-center gap-[var(--spacing-300)]">
+                  <div className="w-4 h-4 bg-gray-200 rounded" />
+                  <div className="h-4 bg-gray-200 rounded w-6" />
+                  <div className="w-4 h-4 bg-gray-200 rounded" />
+                </div>
               </div>
-              <hr className="my-2" />
-              <div className="flex justify-between text-lg font-bold">
-                <div className="h-6 bg-gray-300 rounded w-1/3" />
-                <div className="h-6 bg-gray-300 rounded w-1/4" />
+
+              {/* Travel Date */}
+              <div className="flex justify-between">
+                <div className="h-4 bg-gray-200 rounded w-1/3" />
+                <div className="h-4 bg-gray-200 rounded w-1/4" />
+              </div>
+
+              {/* Departure */}
+              <div className="flex justify-between">
+                <div className="h-4 bg-gray-200 rounded w-1/3" />
+                <div className="h-4 bg-gray-200 rounded w-1/5" />
+              </div>
+
+              {/* Duration */}
+              <div className="flex justify-between">
+                <div className="h-4 bg-gray-200 rounded w-1/3" />
+                <div className="h-4 bg-gray-200 rounded w-1/5" />
+              </div>
+
+              {/* Refundable */}
+              <div className="flex justify-between">
+                <div className="h-4 bg-gray-200 rounded w-1/3" />
+                <div className="h-4 bg-gray-200 rounded w-1/6" />
               </div>
             </div>
+          </div>
+
+          {/* 3. Price Breakdown Section */}
+          <div className="flex justify-between items-center border-t-2 border-gray-200 px-[var(--spacing-800)] py-[var(--spacing-600)]">
+            <div className="h-4 bg-gray-200 rounded w-16" />
+            <div className="h-6 bg-gray-200 rounded w-24" />
           </div>
         </div>
       );

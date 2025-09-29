@@ -3,7 +3,6 @@
 import { AccordionStep } from './AccordionStep';
 import { AuthForm } from './AuthForm';
 import { PaymentForm } from './PaymentForm';
-import { GuestForm } from './GuestForm';
 import { SlotSelector } from './SlotSelector';
 import { StepWrapper } from './StepWrapper';
 import { useBooking } from '@/context/BookingContext';
@@ -12,7 +11,6 @@ import { useBookingSteps, STEP_DEFINITIONS } from '@/context/BookingStepsContext
 // Component map to dynamically render the correct form
 const componentMap: Record<string, React.ComponentType> = {
   AuthForm,
-  GuestForm,
   SlotSelector,
   PaymentForm,
 };

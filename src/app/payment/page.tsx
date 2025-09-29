@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import Header from "@/components/shared/Header/Header";
 import Footer from "@/components/shared/Footer";
 import BookingSummary from "@/components/PaymentPage/BookingSummary";
@@ -9,6 +10,9 @@ import BookingFlow from "@/components/PaymentPage/BookingFlow";
 import { useBooking } from '@/context/BookingContext';
 import { useSearch } from '@/context/SearchContext';
 import { BookingStepsProvider } from "@/context/BookingStepsContext";
+import { Button } from '@/components/ui/button';
+import { ChevronLeftDuo, OctagonHelp } from '@/components/shared/IconComponents';
+import { ChevronUp } from 'lucide-react';
 
 export default function PaymentPage() {
   const { data: session } = useSession();
@@ -28,20 +32,43 @@ export default function PaymentPage() {
     setGuests(searchParams.travellers);
   }, [searchParams.travellers, setGuests]);
 
-  return (
-    <>
-      <Header />
-      <BookingStepsProvider>
-        <main className="grid md:grid-cols-5 gap-6 p-6 bg-surface">
-          <div className="md:col-span-3">
-            <BookingFlow />
+return (
+  <>
+    <Header />
+    <BookingStepsProvider>
+      <main className="flex flex-col gap-[var(--spacing-1200)] py-[var(--spacing-800)] px-[var(--spacing-2400)] bg-surface">
+        {/* === Top Section === */}
+        <section className="items-center justify-center">
+          <Link href="/experiencepage">
+              <Button
+                variant="outline-yellow"
+                size="custom"
+                className="px-[var(--spacing-400)] py-[var(--spacing-300)] gap-[var(--spacing-200)]"
+              >
+                <ChevronLeftDuo className="icon-size-s" />
+                Go Back
+              </Button>
+            </Link>
+        </section>
+
+        {/* === Main Section === */}
+        <section className="flex justify-between">
+          <BookingFlow />
+          <BookingSummary />
+        </section>
+
+        {/* === Bottom Section === */}
+        <section className="flex justify-between items-center gap-[var(--spacing-200)] p-[var(--spacing-800)] pl-[var(--spacing-1600)] text-tertiary body-xxl-label">
+          <div className="flex items-center gap-[var(--spacing-200)]">
+            <OctagonHelp className="icon-size-l text-disabled" />
+            Your questions answered
           </div>
-          <div className="md:col-span-2">
-            <BookingSummary />
-          </div>
-        </main>
-      </BookingStepsProvider>
-      <Footer />
-    </>
-  );
+          <ChevronUp className='text-disabled icon-size-l' />
+        </section>
+      </main>
+    </BookingStepsProvider>
+    <Footer />
+  </>
+);
+
 }
