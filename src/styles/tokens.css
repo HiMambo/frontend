@@ -112,31 +112,31 @@
 
   /* ---- Typography (Body) - fluid scaling ---- */
   --text-body-xxl: clamp(18px, 1.6vw + 2px, 32px);
-  --leading-body-xxl: clamp(27px, 2.4vw + 3px, 48px);
+  --leading-body-xxl: 1.5;
   --tracking-body-xxl: 0.1px;
 
   --text-body-xl: clamp(14px, 1.2vw + 1px, 24px);
-  --leading-body-xl: clamp(20px, 1.6vw + 2px, 32px);
+  --leading-body-xl: 1.5;
   --tracking-body-xl: 0.1px;
 
   --text-body-l: clamp(12px, 0.9vw + 1px, 18px);
-  --leading-body-l: clamp(18px, 1.2vw + 1px, 24px);
+  --leading-body-l: 1.5;
   --tracking-body-l: 0px;
 
   --text-body-m: clamp(11px, 0.8vw + 0.5px, 16px);
-  --leading-body-m: clamp(16px, 1.2vw + 1px, 24px);
+  --leading-body-m: 1.5;
   --tracking-body-m: 0.1px;
 
   --text-body-s: clamp(10px, 0.7vw + 0.5px, 14px);
-  --leading-body-s: clamp(14px, 1.0vw + 1px, 20px);
+  --leading-body-s: 1.5;
   --tracking-body-s: 0.1px;
 
   --text-body-xs: clamp(9px, 0.6vw + 0.3px, 12px);
-  --leading-body-xs: clamp(14px, 1.0vw + 1px, 20px);
+  --leading-body-xs: 1.5;
   --tracking-body-xs: 0.1px;
 
   --text-body-xxs: clamp(8px, 0.5vw + 0.2px, 10px);
-  --leading-body-xxs: clamp(14px, 1.0vw + 1px, 20px);
+  --leading-body-xxs: 1.5;
   --tracking-body-xxs: 0.1px;
 
   /* ---- Icon sizing tokens - fluid ---- */
@@ -193,6 +193,9 @@
   /* BookingSummary component tokens */
   --bookingsummary-width: clamp(320px, 30vw, 589px);
   --bookingsummary-image-height: clamp(180px, 14.5vw, 278px);
+
+  --experiencedetails-image-width: clamp(320px, 43.75vw, 840px); /* 840px @1920px */
+  --experiencedetails-image-height: clamp(240px, 29.1vw, 559px); /* 559px @1920px */
 }
 
 /* ===== RESPONSIVE BREAKPOINT OVERRIDES ===== */

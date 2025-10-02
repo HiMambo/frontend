@@ -19,7 +19,7 @@ export const SearchControls = ({
   const [perPage, setPerPage] = useState(10);
 
   return (
-    <div className="bg-surface shadow-md p-4 sm:p-6 md:p-8">
+    <div className="bg-surface p-4 sm:p-6 md:p-8">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-stretch lg:items-center gap-6 pl-20">
         {/* Left Section - Heading */}
         <div className="justify-center lg:justify-start lg:flex-1">

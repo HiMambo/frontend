@@ -34,8 +34,6 @@ export const GridLayout: React.FC<SharedExperienceCardProps> = ({
           icon={isFavorited ? FilledHeart : EmptyHeart}
           tooltip={isFavorited ? "Remove from favorites" : "Add to favorites"}
           onClick={onFavoriteClick}
-          className="w-9 h-9 rounded-full bg-white/90 hover:bg-white flex items-center justify-center transition-colors cursor-pointer"
-          size={20}
         />
       </div>
 
@@ -72,12 +70,11 @@ export const GridLayout: React.FC<SharedExperienceCardProps> = ({
               icon={ShoppingCart}
               tooltip="Checkout"
               onClick={onCartClick}
-              size={25}
             />
           </div>
 
           {/* SDGs */}
-          <SDGIcons goals={sustainability_goal} iconSize={30} maxDisplay={2} />
+          <SDGIcons goals={sustainability_goal} iconClassName="icon-size-l" maxDisplay={2} />
         </div>
       </div>
     </div>

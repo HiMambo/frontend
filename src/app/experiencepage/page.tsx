@@ -92,7 +92,7 @@ export default function ExperiencePage() {
     <>
       <Header />
       <FilterProvider experiences={experiences}>
-        <p className="bg-surface heading-h2 text-secondary text-center pb-10 pt-30">
+        <p className="bg-surface heading-h2 text-secondary text-center pb-10 pt-[var(--spacing-4000)]">
           Start your sustainable adventure!
         </p>
         <div className="py-3 bg-surface">

@@ -11,8 +11,8 @@ import { useBooking } from '@/context/BookingContext';
 import { useSearch } from '@/context/SearchContext';
 import { BookingStepsProvider } from "@/context/BookingStepsContext";
 import { Button } from '@/components/ui/button';
-import { ChevronLeftDuo, OctagonHelp } from '@/components/shared/IconComponents';
-import { ChevronUp } from 'lucide-react';
+import { ChevronLeftDuo } from '@/components/shared/IconComponents';
+import { FAQ } from '@/components/shared/FAQ';
 
 export default function PaymentPage() {
   const { data: session } = useSession();
@@ -36,7 +36,7 @@ return (
   <>
     <Header />
     <BookingStepsProvider>
-      <main className="flex flex-col gap-[var(--spacing-1200)] py-[var(--spacing-800)] px-[var(--spacing-2400)] bg-surface">
+      <main className="flex flex-col gap-[var(--spacing-1600)] py-[var(--spacing-800)] px-[var(--spacing-2400)] bg-surface">
         {/* === Top Section === */}
         <section className="items-center justify-center">
           <Link href="/experiencepage">
@@ -57,14 +57,8 @@ return (
           <BookingSummary />
         </section>
 
-        {/* === Bottom Section === */}
-        <section className="flex justify-between items-center gap-[var(--spacing-200)] p-[var(--spacing-800)] pl-[var(--spacing-1600)] text-tertiary body-xxl-label">
-          <div className="flex items-center gap-[var(--spacing-200)]">
-            <OctagonHelp className="icon-size-l text-disabled" />
-            Your questions answered
-          </div>
-          <ChevronUp className='text-disabled icon-size-l' />
-        </section>
+        {/* === FAQ Section === */}
+        <FAQ />
       </main>
     </BookingStepsProvider>
     <Footer />

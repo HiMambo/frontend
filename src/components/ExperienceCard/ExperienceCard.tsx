@@ -9,10 +9,11 @@ import { Experience } from "@/lib/api";
 import { HomeLayout } from "./HomeLayout";
 import { GridLayout } from "./GridLayout";
 import { ListLayout } from "./ListLayout";
+import { DetailsLayout } from "./DetailsLayout";
 
 interface ExperienceCardProps {
   experience: Experience;
-  view?: "list" | "grid" | "home";
+  view?: "list" | "grid" | "home" | "details";
 }
 
 export interface SharedExperienceCardProps {
@@ -74,15 +75,14 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   };
 
   return (
-    <TooltipProvider>
-      {view === "home" ? (
-        <HomeLayout {...sharedProps} />
-      ) : view === "grid" ? (
-        <GridLayout {...sharedProps} />
-      ) : (
-        <ListLayout {...sharedProps} />
-      )}
-    </TooltipProvider>
+  <TooltipProvider>
+    {{
+      home: <HomeLayout {...sharedProps} />,
+      grid: <GridLayout {...sharedProps} />,
+      list: <ListLayout {...sharedProps} />,
+      details: <DetailsLayout {...sharedProps} />,
+    }[view]}
+  </TooltipProvider>
   );
 };
 

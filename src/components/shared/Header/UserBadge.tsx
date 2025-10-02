@@ -48,12 +48,12 @@ export default function UserBadge({ user }: UserBadgeProps) {
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild className="cursor-pointer">
         <button
-          className={`flex items-center rounded-200 gap-[var(--spacing-200)] px-[var(--spacing-200)] py-[var(--spacing-100)] transition-colors ${
+          className={`flex items-center rounded-200 min-w-[var(--spacing-4000)] gap-[var(--spacing-200)] px-[var(--spacing-200)] py-[var(--spacing-100)] transition-colors ${
             isOpen ? "shadow-elevation-1" : "hover:shadow-elevation-1"
           }`}
         >
           {renderUserAvatar(32)}
-          <div className="flex flex-col items-start justify-start gap-[var(--spacing-050)]">
+          <div className="flex flex-col w-full items-start justify-start gap-[var(--spacing-050)]">
             <span className="body-xs text-primary">{user.name}</span>
             <span className="body-xxs-light text-tertiary">Placeholder: UserID</span>
           </div>
@@ -69,7 +69,7 @@ export default function UserBadge({ user }: UserBadgeProps) {
       <PopoverContent
         align="start"
         sideOffset={10}
-        className="inline-block bg-surface w-auto px-[var(--spacing-200)] py-[var(--spacing-100)] flex flex-col gap-[var(--spacing-250)] shadow-elevation-1 rounded-200 border-none"
+        className="inline-block bg-surface w-[var(--radix-popover-trigger-width)] px-[var(--spacing-200)] py-[var(--spacing-100)] flex flex-col gap-[var(--spacing-250)] shadow-elevation-1 rounded-200 border-none"
       >
         {/* Client Account + email */}
         <div className="flex flex-col px-[var(--spacing-200)] py-[var(--spacing-150)] gap-[var(--spacing-050)] border-b border-[var(--text-disabled)]">

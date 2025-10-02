@@ -9,21 +9,29 @@ export const ActionButton: React.FC<{
   icon: React.ElementType;
   tooltip: string;
   onClick: (e: React.MouseEvent) => void;
-  size?: number;
-  className?: string;
+  containerSizeClassName?: string;
+  iconSizeClassName?: string;
 }> = ({
   icon: Icon,
   tooltip,
   onClick,
-  size = 20,
-  className = "w-9 h-9 rounded-full bg-white hover:bg-[var(--green-300)] hover:text-white flex items-center justify-center transition-colors cursor-pointer",
+  containerSizeClassName = "icon-size-l",
+  iconSizeClassName = "icon-size-m",
 }) => (
   <Tooltip>
     <TooltipTrigger asChild>
-      <button className={className} onClick={onClick} aria-label={tooltip}>
-        <Icon width={size} height={size} />
+      <button 
+        className={`${containerSizeClassName} rounded-full bg-white hover:bg-[var(--green-300)] hover:text-white flex items-center justify-center transition-colors cursor-pointer`}
+        onClick={onClick}
+        aria-label={tooltip}
+      >
+        <div className={`relative ${iconSizeClassName}`}>
+          <Icon className="fill-current" />
+        </div>
       </button>
     </TooltipTrigger>
-    <TooltipContent className="body-m text-inverted bg-[var(--green-300)]">{tooltip}</TooltipContent>
+    <TooltipContent className="body-m text-inverted bg-[var(--green-300)]">
+      {tooltip}
+    </TooltipContent>
   </Tooltip>
 );

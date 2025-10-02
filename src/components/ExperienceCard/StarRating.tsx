@@ -6,9 +6,17 @@ interface StarRatingProps {
   showValue?: boolean;
   ratingClassName?: string;
   ratingnumberClassName?: string;
+  renderPartner?: boolean;
 }
 
-export const StarRating: React.FC<StarRatingProps> = ({ rating, size, showValue = true, ratingClassName="body-xs", ratingnumberClassName="body-xxs-light" }) => {
+export const StarRating: React.FC<StarRatingProps> = ({ 
+  rating,
+  size,
+  showValue = true,
+  ratingClassName="body-xs",
+  ratingnumberClassName="body-xxs-light" ,
+  renderPartner=false
+}) => {
   if (!rating) {
     return <span className="text-sm text-gray-500">No rating yet!</span>;
   }
@@ -79,7 +87,7 @@ export const StarRating: React.FC<StarRatingProps> = ({ rating, size, showValue 
   return (
     <div className="flex items-center gap-[var(--spacing-300)]">
       {/* Star row */}
-      <div className="flex items-center space-x-1">
+      <div className="flex items-center gap-[var(--spacing-100)]">
         {/* Full stars */}
         {Array.from({ length: fullStars }, (_, index) => 
           renderStar('full', index)
@@ -95,11 +103,16 @@ export const StarRating: React.FC<StarRatingProps> = ({ rating, size, showValue 
       </div>
         {/* Numeric rating */}
         {showValue && (
-          <div className="flex items-center gap-2">
-            <span className={`bg-primary rounded-100 px-[var(--spacing-200)] py-[var(--spacing-050)] ${ratingClassName} text-inverted`}>
+          <div className="flex items-center gap-[var(--spacing-200)]">
+            <span className={`bg-primary rounded-100 px-[var(--spacing-150)] ${ratingClassName} text-inverted`}>
               {rating.toFixed(1)}
             </span>
             <span className={`${ratingnumberClassName} text-secondary`}>XXX reviews</span>
+            {renderPartner && (
+              <span className={`${ratingnumberClassName} text-secondary`}>
+                By &quot;Partner name&quot;
+              </span>
+            )}
           </div>
         )}
     </div>
