@@ -104,7 +104,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
         {/* Numeric rating */}
         {showValue && (
           <div className="flex items-center gap-[var(--spacing-200)]">
-            <span className={`bg-primary rounded-100 px-[var(--spacing-150)] ${ratingClassName} text-inverted`}>
+            <span className={`bg-primary rounded-100 px-[var(--spacing-150)] py-[var(--spacing-050)] ${ratingClassName} text-inverted`}>
               {rating.toFixed(1)}
             </span>
             <span className={`${ratingnumberClassName} text-secondary`}>XXX reviews</span>

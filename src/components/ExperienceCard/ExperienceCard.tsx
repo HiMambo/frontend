@@ -22,6 +22,7 @@ export interface SharedExperienceCardProps {
   onFavoriteClick: (e: React.MouseEvent) => void;
   onCartClick: (e: React.MouseEvent) => void;
   onDetailsClick: (e: React.MouseEvent) => void;
+  onShareClick: (e: React.MouseEvent) => void;
   getPrice: () => number;
 }
 
@@ -44,7 +45,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
       await fetch("/api/favorites", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ experience_id: experience.id }), //Placeholders. Needs to be implemented with backend
+        body: JSON.stringify({ experience_id: experience.id }), //Placeholders. Needs to be implemented with backend. Add loading state when that happens
       });
     } catch (error) {
       console.error("Failed to favorite", error);
@@ -64,6 +65,11 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     router.push(`/experience/${experience.id}`);
   };
 
+  const handleShareClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    //Placeholder for share logic
+  };
+
   // Shared props for layout components
   const sharedProps: SharedExperienceCardProps = {
     experience,
@@ -71,6 +77,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     onFavoriteClick: handleFavoriteClick,
     onCartClick: handleCartClick,
     onDetailsClick: handleDetailsClick,
+    onShareClick: handleShareClick,
     getPrice,
   };
 

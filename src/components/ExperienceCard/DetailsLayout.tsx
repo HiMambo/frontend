@@ -14,6 +14,7 @@ export const DetailsLayout: React.FC<SharedExperienceCardProps> = ({
   onCartClick,
   isFavorited,
   onFavoriteClick,
+  onShareClick,
   getPrice,
 }) => {
   const {
@@ -82,11 +83,11 @@ export const DetailsLayout: React.FC<SharedExperienceCardProps> = ({
           </div>
         </div>
         {/* === Action buttons === */}
-        <div className="absolute top-[var(--spacing-200)] right-[var(--spacing-200)] flex gap-[var(--spacing-600)]">
+        <div className="absolute top-[var(--spacing-400)] right-[var(--spacing-300)] flex gap-[var(--spacing-600)]">
           <ActionButton
             icon={Share}
             tooltip="Share experience" 
-            onClick={() => {}} 
+            onClick={onShareClick} 
           />
           <ActionButton
             icon={isFavorited ? FilledHeart : EmptyHeart}
