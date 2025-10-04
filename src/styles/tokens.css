@@ -197,6 +197,11 @@
 
   --experiencedetails-image-width: clamp(320px, 43.75vw, 840px); /* 840px @1920px */
   --experiencedetails-image-height: clamp(240px, 29.1vw, 559px); /* 559px @1920px */
+
+  --width-authforms: clamp(280px, 20.8vw + 40px, 400px);
+  --width-authbuttons: clamp(240px, 13vw + 94px, 344px);
+  --width-authscreen: clamp(640px, 47.6vw + 92px, 915px);
+
 }
 
 /* ===== RESPONSIVE BREAKPOINT OVERRIDES ===== */
