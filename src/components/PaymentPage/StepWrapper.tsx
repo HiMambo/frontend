@@ -4,7 +4,6 @@ import React, { ReactNode, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useBooking } from '@/context/BookingContext';
 import { type BookingStep, useBookingSteps } from '@/context/BookingStepsContext';
-import CenteredCard from './CenteredCard';
 import { AlertCircle } from 'lucide-react';
 
 interface StepWrapperProps {
@@ -45,42 +44,45 @@ export const StepWrapper = ({
   };
 
   return (
-    <div className="flex justify-center">
-      <CenteredCard>
-        <div>
-          {children}
-        </div>
-
+     <div className="flex justify-center w-full">
+      <div className="w-[var(--width-authscreen)]">
+        {children}
+        
+        {/* Error message */}
         {hasAttemptedNext && validationError && (
-          <p className="text-red-500 text-sm flex items-center gap-3">
-            <AlertCircle />
-            {validationError}
-          </p>
+          <div className="flex justify-center mt-[var(--spacing-600)]">
+            <p className="text-red-500 text-sm flex items-center gap-3">
+              <AlertCircle />
+              {validationError}
+            </p>
+          </div>
         )}
-
-        <div className="space-y-4">
-          {showBackButton && (
-            <Button
-              onClick={handleBack}
-              variant="outline"
-              className="w-full"
-              disabled={bookingState.isBookingInProgress}
-            >
-              {backButtonText}
-            </Button>
-          )}
-
-          {showNextButton && (
-            <Button
-              onClick={handleNext}
-              className="w-full"
-              disabled={bookingState.isBookingInProgress}
-            >
-              {nextButtonText}
-            </Button>
-          )}
-        </div>
-      </CenteredCard>
+        
+        {/* Buttons */}
+        {(showBackButton || showNextButton) && (
+          <div className="flex flex-col gap-[var(--spacing-600)] items-center mt-[var(--spacing-800)]">
+            {showNextButton && (
+              <Button 
+                onClick={handleNext}
+                className="w-[var(--width-authforms)]"
+                disabled={bookingState.isBookingInProgress}
+              >
+                {nextButtonText}
+              </Button>
+            )}
+            {showBackButton && (
+              <Button
+                onClick={handleBack}
+                variant="outline"
+                className="w-[var(--width-authforms)]"
+                disabled={bookingState.isBookingInProgress}
+              >
+                {backButtonText}
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

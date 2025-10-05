@@ -79,18 +79,24 @@ export function SlotSelector() {
 
   if (!cartExperience) {
     return (
-      <div className="p-4 border rounded-lg bg-gray-50">
-        <p className="text-gray-600">Please select an experience first</p>
+      <div className="flex flex-col bg-surface gap-[var(--spacing-1000)] p-[var(--spacing-600)] items-center w-full">
+        <h2 className="heading-h5-light text-secondary text-center border-b-2 border-[var(--text-disabled)] py-[var(--spacing-600)] w-full">
+          Select Time Slot
+        </h2>
+        <p className="body-m text-tertiary">Please select an experience first</p>
       </div>
     );
   }
 
   if (slotsLoading || isCheckingAvailability) {
     return (
-      <div className="p-4 border rounded-lg">
-        <div className="flex items-center space-x-2">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
-          <span>
+      <div className="flex flex-col bg-surface gap-[var(--spacing-1000)] p-[var(--spacing-600)] items-center w-full">
+        <h2 className="heading-h5-light text-secondary text-center border-b-2 border-[var(--text-disabled)] py-[var(--spacing-600)] w-full">
+          Select Time Slot
+        </h2>
+        <div className="flex flex-col items-center gap-[var(--spacing-600)]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <span className="body-m text-tertiary">
             {slotsLoading ? "Loading available time slots..." : "Checking slot availability..."}
           </span>
         </div>
@@ -100,50 +106,70 @@ export function SlotSelector() {
 
   if (slotsError) {
     return (
-      <div className="p-4 border rounded-lg bg-red-50 border-red-200">
-        <p className="text-red-600">Error loading slots: {slotsError}</p>
-        <button 
-          onClick={() => cartExperience && refetchSlots()}
-          className="mt-2 text-red-700 underline hover:no-underline"
-        >
-          Try again
-        </button>
+      <div className="flex flex-col bg-surface gap-[var(--spacing-1000)] p-[var(--spacing-600)] items-center w-full">
+        <h2 className="heading-h5-light text-secondary text-center border-b-2 border-[var(--text-disabled)] py-[var(--spacing-600)] w-full">
+          Select Time Slot
+        </h2>
+        <div className="flex flex-col items-center gap-[var(--spacing-600)]">
+          <p className="body-m text-red-600">Error loading slots: {slotsError}</p>
+          <button 
+            onClick={() => cartExperience && refetchSlots()}
+            className="body-m text-primary hover:text-[var(--terracotta-600)] hover:underline hover:cursor-pointer"
+          >
+            Try again
+          </button>
+        </div>
       </div>
     );
   }
 
   if (allSlots.length === 0) {
     return (
-      <div className="p-4 border rounded-lg bg-yellow-50 border-yellow-200">
-        <p className="text-yellow-800">No time slots found for this experience.</p>
-        <p className="text-sm text-yellow-600 mt-1">Please check back later or contact support.</p>
+      <div className="flex flex-col bg-surface gap-[var(--spacing-1000)] p-[var(--spacing-600)] items-center w-full">
+        <h2 className="heading-h5-light text-secondary text-center border-b-2 border-[var(--text-disabled)] py-[var(--spacing-600)] w-full">
+          Select Time Slot
+        </h2>
+        <div className="flex flex-col items-center gap-[var(--spacing-400)]">
+          <p className="body-m text-tertiary">No time slots found for this experience.</p>
+          <p className="body-s text-disabled">Please check back later or contact support.</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Select Time Slot</h3>
-        <div className="text-sm text-gray-600">
-          <span className="text-green-600 font-medium">{availableSlots.length} available</span>
+    <div className="flex flex-col bg-surface gap-[var(--spacing-1000)] p-[var(--spacing-600)] items-center w-full">
+      {/* Header */}
+      <div className="w-full">
+        <h2 className="heading-h5-light text-secondary text-center border-b-2 border-[var(--text-disabled)] py-[var(--spacing-600)]">
+          Select Time Slot
+        </h2>
+        <div className="flex justify-center gap-[var(--spacing-400)] mt-[var(--spacing-600)]">
+          <span className="body-s text-primary">
+            <span className="font-medium">{availableSlots.length}</span> available
+          </span>
           {unavailableSlots.length > 0 && (
-            <span className="ml-2 text-gray-500">
-              • {unavailableSlots.length} unavailable
-            </span>
+            <>
+              <span className="body-s text-disabled">•</span>
+              <span className="body-s text-disabled">
+                {unavailableSlots.length} unavailable
+              </span>
+            </>
           )}
         </div>
       </div>
 
+      {/* No available slots warning */}
       {availableSlots.length === 0 && unavailableSlots.length > 0 && (
-        <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
-          <p className="text-orange-800 text-sm">
+        <div className="w-full p-[var(--spacing-600)] bg-orange-50 border-2 border-orange-200 rounded-300">
+          <p className="body-s text-orange-800 text-center">
             All upcoming slots are currently unavailable. Check the dates below to see when new slots might open up.
           </p>
         </div>
       )}
 
-      <div className="space-y-2">
+      {/* Slots list */}
+      <div className="flex flex-col gap-[var(--spacing-600)] w-full px-[var(--spacing-800)]">
         {[...allSlots]
           .sort((a, b) => new Date(a.start_datetime).getTime() - new Date(b.start_datetime).getTime())
           .map((slot) => {
@@ -156,12 +182,12 @@ export function SlotSelector() {
               <div
                 key={slot.id}
                 className={`
-                  p-4 border rounded-lg transition-all duration-200
+                  p-[var(--spacing-600)] border-2 rounded-300 transition-all duration-200
                   ${isSelected 
-                    ? 'border-primary/40 bg-primary/5 ring-2 ring-primary/20' 
+                    ? 'border-[var(--teal-500)] bg-[var(--teal-500)]/2' 
                     : isAvailable
-                      ? 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 cursor-pointer'
-                      : 'border-gray-200 bg-gray-50 opacity-75'
+                      ? 'border-[var(--text-disabled)] hover:border-[var(--teal-500)]/40 hover:bg-surface-hover cursor-pointer'
+                      : 'border-[var(--text-disabled)] bg-gray-50 opacity-75'
                   }
                   ${isCheckingAvailability ? 'pointer-events-none opacity-60' : ''}
                 `}
@@ -169,40 +195,40 @@ export function SlotSelector() {
               >
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <div className="flex items-center space-x-2">
-                      <h4 className={`font-medium ${isAvailable ? 'text-gray-900' : 'text-gray-600'}`}>
+                    <div className="flex items-center gap-[var(--spacing-400)] flex-wrap">
+                      <h4 className={`body-l font-medium ${isAvailable ? 'text-secondary' : 'text-tertiary'}`}>
                         {dateStr}
                       </h4>
                       {isLowCapacity && isAvailable && (
-                        <span className="px-2 py-1 text-xs bg-orange-100 text-orange-800 rounded-full">
+                        <span className="px-[var(--spacing-400)] py-[var(--spacing-200)] body-s bg-orange-100 text-orange-800 rounded-full">
                           Only {spotsAvailable} spots left
                         </span>
                       )}
                       {!isAvailable && (
-                        <span className="px-2 py-1 text-xs bg-red-100 text-red-800 rounded-full">
+                        <span className="px-[var(--spacing-400)] py-[var(--spacing-200)] body-s bg-red-100 text-red-800 rounded-full">
                           {unavailableReason}
                         </span>
                       )}
                     </div>
-                    <p className={`text-sm mt-1 ${isAvailable ? 'text-gray-600' : 'text-gray-500'}`}>
+                    <p className={`body-m mt-[var(--spacing-200)] ${isAvailable ? 'text-tertiary' : 'text-disabled'}`}>
                       {timeRange}
                     </p>
-                    <p className={`text-sm mt-1 ${isAvailable ? 'text-gray-500' : 'text-gray-400'}`}>
+                    <p className={`body-s mt-[var(--spacing-200)] ${isAvailable ? 'text-disabled' : 'text-disabled'}`}>
                       {isAvailable 
                         ? `${spotsAvailable} of ${slot.max_spots} spots available`
                         : `${slot.max_spots - slot.booked_spots} of ${slot.max_spots} spots available`
                       }
                     </p>
                     {slot.notes && (
-                      <p className={`text-sm mt-2 italic ${isAvailable ? 'text-gray-600' : 'text-gray-500'}`}>
+                      <p className={`body-s mt-[var(--spacing-400)] italic ${isAvailable ? 'text-tertiary' : 'text-disabled'}`}>
                         {slot.notes}
                       </p>
                     )}
                   </div>
                   
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center ml-[var(--spacing-400)]">
                     {isSelected && isAvailable && (
-                      <div className="w-5 h-5 bg-primary/90 rounded-full flex items-center justify-center">
+                      <div className="w-5 h-5 bg-[var(--teal-500)] rounded-full flex items-center justify-center">
                         <Check className="w-3 h-3 text-white" />
                       </div>
                     )}
@@ -219,4 +245,4 @@ export function SlotSelector() {
       </div>
     </div>
   );
-};
+}

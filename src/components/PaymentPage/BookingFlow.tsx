@@ -1,12 +1,14 @@
 'use client'
 
-import { AccordionStep } from './AccordionStep';
+import { useEffect } from 'react';
+import { AccordionStep } from './TemporaryDisplayWrapper';
 import { AuthForm } from './AuthForm';
 import { PaymentForm } from './PaymentForm';
 import { SlotSelector } from './SlotSelector';
 import { StepWrapper } from './StepWrapper';
 import { useBooking } from '@/context/BookingContext';
 import { useBookingSteps, STEP_DEFINITIONS } from '@/context/BookingStepsContext';
+import { Success } from './Success';
 
 // Component map to dynamically render the correct form
 const componentMap: Record<string, React.ComponentType> = {
@@ -16,11 +18,21 @@ const componentMap: Record<string, React.ComponentType> = {
 };
 
 export default function BookingFlow() {
-  const { bookingState } = useBooking();
-  const { getStepStatus, currentStep } = useBookingSteps();
+  const { bookingState, cartExperience, setSelectedSlot } = useBooking();
+  const { getStepStatus, currentStep, resetSteps } = useBookingSteps();
+
+  // Reset booking flow when cart experience changes.
+  useEffect(() => {
+    if (!cartExperience) return;
+
+    // Clear booking state and reset steps
+    setSelectedSlot(null);
+    resetSteps();
+    
+  }, [cartExperience, resetSteps, setSelectedSlot]);
 
   return (
-    <div className="mx-auto space-y-4 max-w-xl min-h-[500px] transition-all duration-500">
+    <div className="transition-all duration-500">
       {STEP_DEFINITIONS.map((steps) => {
         const StepComponent = componentMap[steps.component];
 
@@ -46,10 +58,7 @@ export default function BookingFlow() {
 
       {/* Confirmation */}
       {currentStep === -1 && !bookingState.isBookingInProgress && (
-        <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-          <h3 className="text-lg font-medium text-green-800">Booking Confirmed!</h3>
-          <p className="text-green-700">Thank you for your booking.</p>
-        </div>
+        <Success/>
       )}
     </div>
   );
