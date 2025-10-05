@@ -9,9 +9,11 @@ import LocationDisplay from "../ExperienceCard/LocationDisplay";
 import { format } from "date-fns";
 import { StarRating } from "../ExperienceCard/StarRating";
 import { BadgeCheck, CalendarCheck, Clock, Minus, Plus, Timer, Users } from "lucide-react";
+import { useBookingSteps } from "@/context/BookingStepsContext";
 
 const BookingSummary: React.FC = () => {
   const { bookingState, setGuests, cartExperience, priceBreakdown, isHydrated } = useBooking();
+  const { currentStep } = useBookingSteps();
 
   // Component mount and data check
   useEffect(() => {
@@ -57,8 +59,8 @@ const BookingSummary: React.FC = () => {
       : "Select a time slot";
 
   const guests = bookingState.guests;
-  const canDecrement = guests > 1;
-  const canIncrement = guests < 12;
+  const canDecrement = guests > 1 && (currentStep === 1 || currentStep === 2);
+  const canIncrement = guests < 12 && (currentStep === 1 || currentStep === 2);
 
   const handleGuestChange = (increment: boolean) => {
     if (increment && canIncrement) {
@@ -96,7 +98,7 @@ const BookingSummary: React.FC = () => {
         <div>
           <StarRating 
             rating={cartExperience.rating_avg} 
-            size={6} ratingClassName="body-l-button" 
+            size={6} ratingClassName="body-l-button px-[var(--spacing-200)] py-[var(--spacing-050)]" 
             ratingnumberClassName="body-l-light"
           />
         </div>
@@ -159,11 +161,19 @@ const BookingSummary: React.FC = () => {
       </div>
 
       {/* 3. Price Breakdown Section */}
-      <div className="flex justify-between items-center border-t-2 border-[var(--text-disabled)] px-[var(--spacing-800)] py-[var(--spacing-600)]">
-        <span className="body-s text-primary">TOTAL</span>
+      <div className="relative flex justify-between items-center border-t-2 border-[var(--text-disabled)] px-[var(--spacing-800)] py-[var(--spacing-600)]">
+        <div className="flex flex-col gap-[var(--spacing-100)]">
+          <span className="body-m text-primary">Total</span>
+          <span className="body-m text-tertiary">Including €{(priceBreakdown.finalPrice * 0.0224).toFixed(2)} in taxes</span>
+        </div>
         <span className="body-xxl text-primary">
           € {priceBreakdown.finalPrice.toFixed(2)}
         </span>
+        {priceBreakdown.cryptoDiscount > 0 &&
+          <span className="absolute top-[1rem] -right-[0rem] flex items-center justify-center px-[var(--spacing-200)] h-5 bg-[var(--teal-500)] body-xs text-inverted rounded-full">
+            -{priceBreakdown.cryptoDiscount}%
+          </span>
+        }
       </div>
     </div>
   );

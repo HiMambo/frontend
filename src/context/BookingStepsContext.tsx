@@ -85,6 +85,8 @@ interface BookingStepsContextType {
   getStepStatus: (stepNumber: BookingStep) => StepStatus;
   setIsValid: (isValid: boolean) => void;
   setValidationError: (error: string | null) => void;
+
+  resetSteps: () => void;
 }
 
 const BookingStepsContext = createContext<BookingStepsContextType | undefined>(undefined);
@@ -220,6 +222,16 @@ export function BookingStepsProvider({
     setStepState(prev => ({ ...prev, validationError: error }));
   }, []);
 
+  const resetSteps = useCallback(() => {
+    setStepState({
+      currentStep: STEP_DEFINITIONS[0].step,
+      completedSteps: new Set(),
+      isValid: true,
+      validationError: null,
+    });
+    console.log("Booking steps reset to initial state");
+  }, []);
+
   const value: BookingStepsContextType = {
     currentStep: stepState.currentStep,
     completedSteps: stepState.completedSteps,
@@ -237,6 +249,8 @@ export function BookingStepsProvider({
     getStepStatus,
     setIsValid,
     setValidationError,
+
+    resetSteps,
   };
 
   return (

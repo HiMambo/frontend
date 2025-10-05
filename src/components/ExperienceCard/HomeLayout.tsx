@@ -43,7 +43,7 @@ export const HomeLayout: React.FC<SharedExperienceCardProps> = ({
       <StarRating
         rating={rating_avg}
         size={5}
-        ratingClassName="body-l-button"
+        ratingClassName="body-l-button px-[var(--spacing-200)] py-[var(--spacing-050)]"
         ratingnumberClassName="body-l-light"
       />
 
