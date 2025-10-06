@@ -2,7 +2,7 @@
 
 import AccountStepper from "@/components/PartnerOnboarding/AccountStepper";
 import Footer from "@/components/shared/Footer";
-import Header from "@/components/shared/Header";
+import Header from "@/components/shared/Header/Header";
 import {
   CheckCircle2,
   Clock4,

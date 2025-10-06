@@ -1,9 +1,8 @@
 import React from "react";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
-import { SDGIcons } from "./SDGIcons";
 import { SharedExperienceCardProps } from "./ExperienceCard";
 import LocationDisplay from "./LocationDisplay";
+import { StarRating } from "./StarRating";
 
 export const HomeLayout: React.FC<SharedExperienceCardProps> = ({
   experience,
@@ -15,12 +14,12 @@ export const HomeLayout: React.FC<SharedExperienceCardProps> = ({
     experience_promo_image = "/assets/Rectangle.png",
     experience_city,
     experience_country,
-    sustainability_goal = [],
+    rating_avg,
   } = experience;
 
     return (
     <div
-      className="relative w-full aspect-[3/5] max-w-4xl rounded-lg shadow-md transition-transform transform hover:scale-[1.02] hover:shadow-xl cursor-pointer overflow-hidden flex flex-col"
+      className="relative w-full aspect-[3/5] gap-[var(--spacing-1200)] rounded-800 p-[var(--spacing-800)] transition-all transform hover:shadow-elevation-1 hover:bg-[var(--surface)] cursor-pointer overflow-hidden flex flex-col"
       onClick={onDetailsClick}
     >
     {/* Image */}
@@ -30,33 +29,33 @@ export const HomeLayout: React.FC<SharedExperienceCardProps> = ({
         alt={name}
         layout="fill"
         objectFit="cover"
-        className="rounded-t-lg"
+        className="rounded-600"
       />
     </div>
 
     {/* Content */}
-    <div className="flex-grow bg-white p-4 flex flex-col justify-between">
-      <div className="flex flex-col gap-1">
-        <h3 className="font-bold text-xl text-gray-900">{name}</h3>
-        <LocationDisplay city={experience_city} country={experience_country} />
-        <p className="text-sm text-gray-500 mt-5">{experience_description}</p>
+    <div className="flex flex-col gap-[var(--spacing-400)]">
+      {/* Title */}
+      <div className="h-[calc(var(--leading-body-xxl)*2.3)] overflow-hidden">
+        <h3 className="body-xxl-label text-secondary">{name}</h3>
       </div>
 
-      {/* SDGs */}  
-      <div className="flex justify-between items-center mt-4">
-      <SDGIcons goals={sustainability_goal} iconSize={50} maxDisplay={2} />
+      <StarRating
+        rating={rating_avg}
+        size={5}
+        ratingClassName="body-l-button px-[var(--spacing-200)] py-[var(--spacing-050)]"
+        ratingnumberClassName="body-l-light"
+      />
 
-      {/* Learn More */}
-      <button
-        onClick={onDetailsClick}
-        className="flex items-center gap-1 text-sm text-gray-500 underline hover:text-gray-900 transition-colors"
-      >
-        Learn more
-        <ArrowRight className="w-4 h-4" />
-      </button>
+      <div className="flex flex-col gap-[var(--spacing-300)]">
+        <LocationDisplay
+          city={experience_city}
+          country={experience_country}
+          className="body-l"
+        />
+        <p className="body-xl text-primary">{experience_description}</p>
+      </div>
     </div>
   </div>
-</div>
-
   );
 };

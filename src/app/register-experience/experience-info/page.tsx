@@ -3,7 +3,7 @@
 import AccountStepper from "@/components/PartnerOnboarding/AccountStepper";
 import { ExperienceFormA } from "@/components/PartnerOnboarding/ExperienceFormA";
 import Footer from "@/components/shared/Footer";
-import Header from "@/components/shared/Header";
+import Header from "@/components/shared/Header/Header";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ChevronDown, ChevronUp, Minus, Plus } from "lucide-react";

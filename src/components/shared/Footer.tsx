@@ -1,144 +1,62 @@
+import Link from "next/link";
 import {
-  Facebook,
   Instagram,
   LinkedIn,
-  Twitter,
-  RightArrow,
+  X,
+  LogoFooter,
 } from "./IconComponents";
-import { Button } from "../ui/button";
+import { NavLink } from "./NavLink";
 
-interface FooterProps {
-  variant?: "default" | "home";
-}
+const FOOTER_LINKS = [
+  { href: "/about", label: "About us" },
+  { href: "/partner-dashboard", label: "Partner Program" },
+  { href: "/contact", label: "Contact Us" },
+];
 
-const variantStyles = {
-  default: {
-    footerBg: "bg-footer-background",
-    text: "text-footer-text",
-    iconColor: "text-footer-socialIcon",
-    inputBg: "bg-footer-inputBackground",
-    placeholder: "placeholder-footer-inputPlaceholder",
-    button: "bg-footer-button text-footer-text hover:brightness-110",
-    hoverText: "hover:text-footer-texthover",
-  },
-  home: {
-    footerBg: "bg-footerhome-background",
-    text: "text-white",
-    iconColor: "text-white",
-    inputBg: "bg-footer-inputBackground",
-    placeholder: "placeholder-footer-inputPlaceholder",
-    button: "bg-footerhome-button text-white hover:bg-footerhome-buttonhover",
-    hoverText: "hover:text-footerhome-texthover",
-  },
-};
-
-export default function Footer({ variant = "default" }: FooterProps) {
-  const styles = variantStyles[variant];
-
-  const Hover = ({ children }: { children: React.ReactNode }) => (
-    <span
-      className={`transition hover:scale-[1.03] ${styles.hoverText}`}
-    >
-      {children}
-    </span>
-  );
-
+export default function Footer() {
   return (
-    <footer className={`py-10 px-6 md:px-16 ${styles.footerBg} ${styles.text}`}>
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-        {/* Left Column */}
-        <div className="space-y-6">
-          <div>
-            <h2 className="text-2xl font-bold">
-              If you have any questions,<br />Let us help you!
-            </h2>
-            <p className="mt-4 text-sm max-w-md">
-              If you have any questions or would like to book a tour with us, please don’t hesitate to contact us.
-            </p>
-            <p className="flex mt-2 text-sm">
-              Email:<Hover><a href="mailto:info@himambo.com" className="ml-1">contact@himambo.com</a></Hover>
-            </p>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="font-semibold text-base mb-2">Subscribe to our newspaper</h3>
-            <form className="flex w-full max-w-md gap-2">
-              <input
-                type="email"
-                placeholder="Input your email here"
-                className={`flex-1 ${styles.inputBg} ${styles.placeholder} text-sm px-4 py-2 rounded-md text-black`}
-                required
-              />
-              <Button
-                type="submit"
-                size="icon"
-                aria-label="Subscribe"
-                className={styles.button}
-              >
-                <RightArrow className="w-5 h-5" />
-              </Button>
-            </form>
+    <footer className="bg-teal-800 px-[var(--spacing-4000)] py-[var(--spacing-1200)] text-inverted">
+      {/* Top Section */}
+      <div className="flex justify-between items-center">
+        {/* Left: Follow us */}
+        <div>
+          <p className="body-l-light text-inverted mb-[var(--spacing-600)]">Follow us</p>
+          <div className="flex items-center gap-[var(--spacing-400)]">
+            <Link href="#" aria-label="Instagram">
+              <Instagram className="icon-size-s hover:scale-105" />
+            </Link>
+            <Link href="#" aria-label="Twitter">
+              <X className="icon-size-s hover:scale-105" />
+            </Link>
+            <Link href="#" aria-label="LinkedIn">
+              <LinkedIn className="icon-size-s hover:scale-105" />
+            </Link>
           </div>
         </div>
 
-        {/* Right Column */}
-        <div className="flex flex-col justify-between space-y-6 text-sm">
-          {/* Social Icons */}
-          <div className={`flex items-center gap-4 ${styles.iconColor}`}>
-            <Hover>
-              <a href="#" aria-label="Facebook">
-                <Facebook className="w-6 h-6" />
-              </a>
-            </Hover>
-            <Hover>
-              <a href="#" aria-label="Twitter">
-                <Twitter className="w-6 h-6" />
-              </a>
-            </Hover>
-            <Hover>
-              <a href="#" aria-label="LinkedIn">
-                <LinkedIn className="w-6 h-6" />
-              </a>
-            </Hover>
-            <Hover>
-              <a href="#" aria-label="Instagram">
-                <Instagram className="w-6 h-6" />
-              </a>
-            </Hover>
-          </div>
-
-          {/* Description Text */}
-          <p className="max-w-md">
-            A new way of exploring the world!
-          </p>
-
-          {/* Navigation Links */}
-          <nav aria-label="Footer links" className="grid grid-cols-3 gap-x-6">
-            <div className="flex flex-col space-y-2">
-              <Hover><a href="#">Home</a></Hover>
-              <Hover><a href="#">Testimonials</a></Hover>
-              <Hover><a href="#">Destinations</a></Hover>
-              <Hover><a href="#">Sign In</a></Hover>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <Hover><a href="#">About Us</a></Hover>
-              <Hover><a href="#">Packages</a></Hover>
-              <Hover><a href="#">Events</a></Hover>
-              <Hover><a href="#">Gallery</a></Hover>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <Hover><a href="#">Our Team</a></Hover>
-              <Hover><a href="#">Blog</a></Hover>
-              <Hover><a href="#">Contact Us</a></Hover>
-            </div>
-          </nav>
+        {/* Right: Links */}
+        <div className="flex items-center gap-[var(--spacing-1600)] body-l">
+          {FOOTER_LINKS.map(({ href, label }) => (
+            <NavLink key={href} href={href}>
+              {label}
+            </NavLink>
+          ))}
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="text-center text-xs mt-10">
-        Copyright HiMambo 2025
+      {/* Divider */}
+      <hr className="border-t-[1.5px] border-current my-[var(--spacing-800)] bg-surface opacity-30" />
+
+      {/* Bottom Section */}
+      <div className="flex items-center">
+        {/* Logo */}
+        <LogoFooter width={172} height={30}/>
+
+        {/* Copyright */}
+        <p className="ml-[var(--spacing-2400)] body-l-light opacity-50">
+          Copyright 2025 HiMambo. {"  "}
+          <Link href="#" className="hover:underline">Terms & Privacy</Link>
+        </p>
       </div>
     </footer>
   );

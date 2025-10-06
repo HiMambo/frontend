@@ -14,6 +14,7 @@ interface DateRangePickerProps {
   containerClassName?: string
   labelClassName?: string
   buttonClassName?: string
+  inputHeight?: "fixed" | "fluid";
 }
 
 export function DateRangeSelect({ 
@@ -23,22 +24,26 @@ export function DateRangeSelect({
   layout = "vertical",
   containerClassName = "",
   labelClassName = "",
-  buttonClassName = ""
+  buttonClassName = "",
+  inputHeight = "fixed"
 }: DateRangePickerProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [tempDate, setTempDate] = useState<DateRange | undefined>()
+
+  // Determine height class based on inputHeight prop
+  const heightClass = inputHeight === "fluid" ? "h-input-fluid" : "h-10";
 
   const defaultContainerClass = layout === "horizontal" 
     ? "flex items-center gap-2" 
     : ""
   
   const defaultLabelClass = layout === "vertical" 
-    ? "text-xs leading-none mb-3 h-3" 
-    : "text-sm text-gray-600 whitespace-nowrap"
+    ? "body-s text-primary leading-none mb-3 h-3" 
+    : "body-m text-tertiary whitespace-nowrap";
   
   const defaultButtonClass = layout === "vertical"
-    ? "bg-white h-10 rounded-md items-center flex w-full bg-transparent border-none px-3 focus:outline-none"
-    : "border border-gray-300 rounded-lg px-3 py-1 text-sm h-8 bg-white items-center flex bg-transparent focus:outline-none w-auto"
+    ? `bg-white ${heightClass} rounded-300 w-full bg-transparent border-none px-3 focus:outline-none`
+    : "border border-gray-300 rounded-300 px-3 py-1 text-sm h-8 bg-white bg-transparent focus:outline-none w-auto"
 
   return (
     <div className={`${defaultContainerClass} ${containerClassName}`.trim()}>
@@ -50,42 +55,36 @@ export function DateRangeSelect({
           if (open) setTempDate(value)
         }}
       >
-        <PopoverTrigger asChild>
-          <button className={`${defaultButtonClass} ${buttonClassName}`.trim()}>
-            {value?.from ? (
-              value.to ? (
-                <span>
-                  {format(value.from, "dd MMM yyyy")} - {format(value.to, "dd MMM yyyy")}
-                </span>
-              ) : (
-                <span>{format(value.from, "dd MMM yyyy")} - ...</span>
-              )
-            ) : (
-              <span>Pick a date range</span>
-            )}
+        <PopoverTrigger asChild className="cursor-pointer">
+          <button
+            className={`flex justify-between items-center ${defaultButtonClass} ${buttonClassName}`.trim()}
+          >
+            <span className="body-s text-primary">{formatDateRange(value)}</span>
             {isOpen ? (
-              <ChevronUp className="ml-1 h-5 w-5 text-primary" />
+              <ChevronUp className="ml-1 icon-size-s text-primary" />
             ) : (
-              <ChevronDown className="ml-1 h-5 w-5 text-primary" />
+              <ChevronDown className="ml-1 icon-size-s text-primary" />
             )}
           </button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0 bg-white">
+        <PopoverContent className="w-auto p-0 bg-surface border-none shadow-elevation-1 rounded-300">
           <Calendar
-            className="text-black"
+            className="text-primary"
             mode="range"
             selected={tempDate}
             onSelect={setTempDate}
           />
-          <div className="flex justify-end gap-x-2 pr-2 pb-2">
+          <div className="flex justify-end gap-x-2 pr-4 pb-4">
             <Button
-              variant="outline"
+              variant="link"
+              className="text-m font-semibold text-secondary"
               onClick={() => setTempDate(undefined)}
             >
               Reset
             </Button>
             <Button
-              variant="default"
+              variant="link"
+              className="text-m font-semibold text-secondary"
               onClick={() => {
                 if (tempDate?.from && tempDate?.to) {
                   onChange(tempDate)
@@ -100,4 +99,27 @@ export function DateRangeSelect({
       </Popover>
     </div>
   )
+}
+
+function formatDateRange(value: DateRange | undefined) {
+  if (!value?.from) return "Pick a date range";
+  const from = value.from;
+  const to = value.to;
+
+  if (!to) return `${format(from, "dd MMM yy")} - ...`;
+
+  const fromDay = from.getDate();
+  const toDay = to.getDate();
+  const fromMonth = format(from, "MMM");
+  const toMonth = format(to, "MMM");
+  const fromYear = format(from, "yy");
+  const toYear = format(to, "yy");
+
+  if (fromMonth === toMonth && fromYear === toYear) {
+    return `${fromDay} - ${toDay} ${fromMonth} ${fromYear}`;
+  } else if (fromYear === toYear) {
+    return `${fromDay} ${fromMonth} - ${toDay} ${toMonth} ${fromYear}`;
+  } else {
+    return `${fromDay} ${fromMonth} ${fromYear} - ${toDay} ${toMonth} ${toYear}`;
+  }
 }

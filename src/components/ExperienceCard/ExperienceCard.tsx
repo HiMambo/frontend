@@ -9,10 +9,11 @@ import { Experience } from "@/lib/api";
 import { HomeLayout } from "./HomeLayout";
 import { GridLayout } from "./GridLayout";
 import { ListLayout } from "./ListLayout";
+import { DetailsLayout } from "./DetailsLayout";
 
 interface ExperienceCardProps {
   experience: Experience;
-  view?: "list" | "grid" | "home";
+  view?: "list" | "grid" | "home" | "details";
 }
 
 export interface SharedExperienceCardProps {
@@ -21,6 +22,7 @@ export interface SharedExperienceCardProps {
   onFavoriteClick: (e: React.MouseEvent) => void;
   onCartClick: (e: React.MouseEvent) => void;
   onDetailsClick: (e: React.MouseEvent) => void;
+  onShareClick: (e: React.MouseEvent) => void;
   getPrice: () => number;
 }
 
@@ -43,7 +45,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
       await fetch("/api/favorites", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ experience_id: experience.id }), //Placeholders. Needs to be implemented with backend
+        body: JSON.stringify({ experience_id: experience.id }), //Placeholders. Needs to be implemented with backend. Add loading state when that happens
       });
     } catch (error) {
       console.error("Failed to favorite", error);
@@ -63,6 +65,11 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     router.push(`/experience/${experience.id}`);
   };
 
+  const handleShareClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    //Placeholder for share logic
+  };
+
   // Shared props for layout components
   const sharedProps: SharedExperienceCardProps = {
     experience,
@@ -70,19 +77,19 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     onFavoriteClick: handleFavoriteClick,
     onCartClick: handleCartClick,
     onDetailsClick: handleDetailsClick,
+    onShareClick: handleShareClick,
     getPrice,
   };
 
   return (
-    <TooltipProvider>
-      {view === "home" ? (
-        <HomeLayout {...sharedProps} />
-      ) : view === "grid" ? (
-        <GridLayout {...sharedProps} />
-      ) : (
-        <ListLayout {...sharedProps} />
-      )}
-    </TooltipProvider>
+  <TooltipProvider>
+    {{
+      home: <HomeLayout {...sharedProps} />,
+      grid: <GridLayout {...sharedProps} />,
+      list: <ListLayout {...sharedProps} />,
+      details: <DetailsLayout {...sharedProps} />,
+    }[view]}
+  </TooltipProvider>
   );
 };
 

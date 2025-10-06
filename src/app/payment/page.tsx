@@ -2,14 +2,17 @@
 
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import Header from "@/components/shared/Header";
+import Link from 'next/link';
+import Header from "@/components/shared/Header/Header";
 import Footer from "@/components/shared/Footer";
 import BookingSummary from "@/components/PaymentPage/BookingSummary";
 import BookingFlow from "@/components/PaymentPage/BookingFlow";
-import ProgressBar from "@/components/PaymentPage/ProgressBar";
 import { useBooking } from '@/context/BookingContext';
 import { useSearch } from '@/context/SearchContext';
 import { BookingStepsProvider } from "@/context/BookingStepsContext";
+import { Button } from '@/components/ui/button';
+import { ChevronLeftDuo } from '@/components/shared/IconComponents';
+import { FAQ } from '@/components/shared/FAQ';
 
 export default function PaymentPage() {
   const { data: session } = useSession();
@@ -29,23 +32,37 @@ export default function PaymentPage() {
     setGuests(searchParams.travellers);
   }, [searchParams.travellers, setGuests]);
 
-  return (
-    <>
-      <Header />
-      <BookingStepsProvider>
-        <div className="justify-center w-full px-4">
-          <ProgressBar />
-        </div>
-        <main className="grid md:grid-cols-5 gap-6 p-6">
-          <div className="md:col-span-3">
-            <BookingFlow />
-          </div>
-          <div className="md:col-span-2">
-            <BookingSummary />
-          </div>
-        </main>
-      </BookingStepsProvider>
-      <Footer />
-    </>
-  );
+return (
+  <>
+    <Header />
+    <BookingStepsProvider>
+      <main className="flex flex-col gap-[var(--spacing-1600)] py-[var(--spacing-800)] px-[var(--spacing-2400)] bg-surface">
+        {/* === Top Section === */}
+        <section className="items-center justify-center">
+          <Link href="/experiencepage">
+              <Button
+                variant="outline-yellow"
+                size="custom"
+                className="px-[var(--spacing-400)] py-[var(--spacing-300)] gap-[var(--spacing-200)]"
+              >
+                <ChevronLeftDuo className="icon-size-s" />
+                Go Back
+              </Button>
+            </Link>
+        </section>
+
+        {/* === Main Section === */}
+        <section className="flex justify-between">
+          <BookingFlow />
+          <BookingSummary />
+        </section>
+
+        {/* === FAQ Section === */}
+        <FAQ />
+      </main>
+    </BookingStepsProvider>
+    <Footer />
+  </>
+);
+
 }

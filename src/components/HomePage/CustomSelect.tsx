@@ -14,6 +14,7 @@ interface SelectorProps<T extends string | number> {
   containerClassName?: string;
   labelClassName?: string;
   buttonClassName?: string;
+  inputHeight?: "fixed" | "fluid";  // New prop for height control
 }
 
 export function CustomSelect<T extends string | number>({
@@ -27,28 +28,32 @@ export function CustomSelect<T extends string | number>({
   layout = "vertical",
   containerClassName = "",
   labelClassName = "",
-  buttonClassName = ""
+  buttonClassName = "",
+  inputHeight = "fixed"  // Default to fixed for backwards compatibility
 }: SelectorProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
 
   // Check if this is a numeric selector
   const isNumeric = typeof value === "number";
 
+  // Determine height class based on inputHeight prop
+  const heightClass = inputHeight === "fluid" ? "h-input-fluid" : "h-10";
+
   const defaultContainerClass = layout === "horizontal" 
     ? "flex items-center gap-2" 
     : "";
   
   const defaultLabelClass = layout === "vertical" 
-    ? "text-xs leading-none mb-3 h-3" 
-    : "text-sm text-gray-600 whitespace-nowrap";
+    ? "body-s text-primary leading-none mb-3 h-3" 
+    : "body-m text-tertiary whitespace-nowrap";
   
   const defaultButtonClass = layout === "vertical"
     ? isNumeric && !options 
-      ? "bg-white flex items-center justify-between border border-none rounded-md h-10 px-2 py-1"
-      : "bg-white rounded-md flex w-full bg-transparent border-none h-10 px-3 items-center focus:outline-none"
+      ? `bg-white flex items-center justify-between border border-none rounded-300 ${heightClass} px-[var(--spacing-200)]`
+      : `bg-white rounded-300 w-full bg-transparent border-none ${heightClass} px-3 focus:outline-none`
     : isNumeric && !options
-      ? "border border-gray-300 rounded-lg px-2 py-1 text-sm h-8 bg-white flex items-center justify-between w-auto"
-      : "border border-gray-300 rounded-lg px-3 py-1 text-sm h-8 bg-white flex items-center bg-transparent focus:outline-none w-auto";
+      ? "border-none rounded-300 px-2 py-1 text-sm h-8 bg-surface flex items-center justify-between w-auto cursor-pointer"
+      : "border-none rounded-300 px-3 py-1 text-sm h-8 bg-surface bg-transparent focus:outline-none w-auto cursor-pointer";
 
   return (
     <div className={`${defaultContainerClass} ${containerClassName}`.trim()}>
@@ -58,38 +63,41 @@ export function CustomSelect<T extends string | number>({
         <div className={`${defaultButtonClass} ${buttonClassName}`.trim()}>
           <button
             type="button"
-            className="p-1 text-primary disabled:opacity-50"
+            className="text-[var(--yellow-500)] cursor-pointer disabled:text-[var(--neutral-300)] disabled:cursor-not-allowed"
             onClick={() => setValue((value as number) - 1 as T)}
             disabled={(minVal !== undefined && (value as number) <= minVal)}
           >
-            <Minus className="h-4 w-4" />
+            <Minus className="icon-size-s" />
           </button>
-          <span className="text-black font-semibold px-3">{formatLabel(value)}</span>
+
+          <span className="body-xl text-primary tabular-nums min-w-[2ch] text-center">{formatLabel(value)}</span>
           <button
             type="button"
-            className="p-1 text-primary disabled:opacity-50"
+            className="text-[var(--yellow-500)] cursor-pointer disabled:text-[var(--neutral-300)] disabled:cursor-not-allowed"
             onClick={() => setValue((value as number) + 1 as T)}
             disabled={(maxVal !== undefined && (value as number) >= maxVal)}
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="icon-size-s" />
           </button>
         </div>
       ) : (
         // Dropdown for strings
         <Popover open={isOpen} onOpenChange={setIsOpen}>
-          <PopoverTrigger asChild>
-            <button className={`${defaultButtonClass} ${buttonClassName}`.trim()}>
-              <span>{formatLabel(value)}</span>
+          <PopoverTrigger asChild className="cursor-pointer">
+            <button
+              className={`${defaultButtonClass} ${buttonClassName} flex justify-between items-center`.trim()}
+            >
+              <span className="body-m text-primary truncate">{formatLabel(value)}</span>
               {isOpen ? (
-                <ChevronUp className="ml-1 h-5 w-5 text-primary" />
+                <ChevronUp className="icon-size-s text-primary" />
               ) : (
-                <ChevronDown className="ml-1 h-5 w-5 text-primary" />
+                <ChevronDown className="icon-size-s text-primary" />
               )}
             </button>
           </PopoverTrigger>
           <PopoverContent
             align="start"
-            className="p-0 text-sm bg-white text-black border border-gray-300 min-w-[100%] w-auto max-w-fit"
+            className="p-0 body-m bg-surface shadow-elevation-1 text-primary border-none rounded-300 min-w-[100%] w-auto max-w-fit"
           >
             {options?.map((option) => {
               const isSelected = value === option;
@@ -100,12 +108,15 @@ export function CustomSelect<T extends string | number>({
                     setValue(option);
                     setIsOpen(false);
                   }}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-gray-100/80 ${
-                    isSelected ? "bg-gray-100/50 font-medium" : ""
-                  }`}
+                  className={`
+                    w-full flex items-center gap-2 px-3 py-2 text-left
+                    hover:bg-gray-100/80
+                    ${isSelected ? "bg-gray-100/50 font-medium" : ""}
+                    first:rounded-t-300 last:rounded-b-300
+                  `}
                 >
                   <Check
-                    className={`h-4 w-4 text-black ml-2 ${
+                    className={`icon-size-xs text-primary ml-2 ${
                       isSelected ? "opacity-100" : "opacity-0"
                     }`}
                   />

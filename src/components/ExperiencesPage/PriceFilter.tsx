@@ -142,21 +142,21 @@ export default function PriceFilter({
   }, [minValue, maxValue, min, max]);
 
   return (
-    <div className="p-4 mb-6">
+    <div className="p-4">
       {/* Range Slider */}
       <div className="relative mb-4">
         <div
           ref={sliderRef}
-          className={`relative h-1 w-full rounded cursor-pointer ${
+          className={`relative h-2 w-full rounded cursor-pointer ${
             isDisabled 
               ? 'bg-gray-200 cursor-not-allowed opacity-50' 
-              : 'bg-filter-secondary/30'
+              : 'bg-[var(--neutral-300)]/40'
           }`}
         >
           {/* Active track */}
           {!isDisabled && (
             <div
-              className="absolute h-1 rounded bg-filter-secondary"
+              className="absolute h-2 rounded bg-[var(--neutral-300)]"
               style={{ left: trackFillLeft, width: trackFillWidth }}
             />
           )}
@@ -166,8 +166,8 @@ export default function PriceFilter({
             className={`absolute h-5 w-5 rounded-full shadow transform -translate-x-1/2 -translate-y-1/2 top-1/2 transition-transform duration-100 ${
               isDisabled 
                 ? 'bg-gray-400 cursor-not-allowed opacity-80' 
-                : `bg-filter-primary cursor-grab active:cursor-grabbing ${
-                    isDragging === 0 ? 'scale-110 ring-10 ring-filter-primary/30' : ''
+                : `bg-surface-accent cursor-grab active:cursor-grabbing ${
+                    isDragging === 0 ? 'scale-130' : ''
                   }`
             }`}
             style={{ left: getThumbPosition(minValue) }}
@@ -179,8 +179,8 @@ export default function PriceFilter({
             className={`absolute h-5 w-5 rounded-full shadow transform -translate-x-1/2 -translate-y-1/2 top-1/2 transition-transform duration-100 ${
               isDisabled 
                 ? 'bg-gray-400 cursor-not-allowed opacity-80' 
-                : `bg-filter-primary cursor-grab active:cursor-grabbing ${
-                    isDragging === 1 ? 'scale-110 ring-10 ring-filter-primary/30' : ''
+                : `bg-surface-accent cursor-grab active:cursor-grabbing ${
+                    isDragging === 1 ? 'scale-130' : ''
                   }`
             }`}
             style={{ left: getThumbPosition(maxValue) }}
@@ -190,7 +190,7 @@ export default function PriceFilter({
       </div>
 
       {/* Manual Inputs */}
-      <div className="flex justify-center items-center gap-4 mt-4 text-gray-700">
+      <div className="flex justify-center items-center gap-4 mt-4 text-tertiary">
         <ManualInput
           id="minInput"
           label="From (€)"
@@ -201,7 +201,7 @@ export default function PriceFilter({
           disabled={isDisabled}
           
         />
-        <div className="w-3 h-[1.5px] bg-gray-700 mt-7 rounded-sm" />
+        <div className="w-3 h-[1.5px] bg-[var(--text-tertiary)] mt-7 rounded-sm" />
         <ManualInput
           id="maxInput"
           label="To (€)"
@@ -242,8 +242,8 @@ function ManualInput({ id, label, value, setValue, onConfirm, resetValue, disabl
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <label htmlFor={id} className="text-sm text-gray-600 mb-2">
+    <div className="flex flex-col items-center body-l">
+      <label htmlFor={id} className="mb-2">
         {label}
       </label>
       <input
@@ -253,10 +253,10 @@ function ManualInput({ id, label, value, setValue, onConfirm, resetValue, disabl
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         onBlur={() => setValue(resetValue)}
-        className={`border rounded p-2 h-8 w-16 text-center focus:outline-none no-spinner ${
+        className={`border rounded p-[var(--spacing-100)]  w-16 text-center focus:outline-none no-spinner ${
           disabled 
-            ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-            : 'focus:ring-2 focus:ring-filter-primary'
+            ? 'bg-gray-100 text-disabled cursor-not-allowed' 
+            : 'focus:ring-2'
         }`}
         disabled={disabled}
       />
