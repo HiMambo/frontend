@@ -29,7 +29,7 @@ export const ListLayout: React.FC<SharedExperienceCardProps> = ({
 
   return (
     <div
-      className="group relative flex h-[var(--card-height)] gap-[var(--spacing-800)] rounded-800 hover:shadow-elevation-1 overflow-hidden hover:scale-[1.01] transition-transform bg-surface text-primary cursor-pointer"
+      className="group relative flex h-[var(--card-height)] gap-[var(--spacing-800)] rounded-800 hover:shadow-elevation-1 overflow-hidden transition-all duration-300 bg-surface text-primary cursor-pointer"
       onClick={onDetailsClick}
     >
       {/* Absolutely positioned action buttons */}
@@ -57,10 +57,10 @@ export const ListLayout: React.FC<SharedExperienceCardProps> = ({
       </div>
 
       {/* Content */}
-      <div className="flex flex-col justify-between px-[var(--spacing-800)] py-[var(--spacing-1000)] gap-[var(--spacing-600)]">
+      <div className="flex flex-col justify-between px-[var(--spacing-800)] py-[var(--spacing-1000)] gap-[var(--spacing-600)] flex-grow">
         {/* === Top section: Title + rating === */}
         <div className="flex flex-col gap-[var(--spacing-400)]">
-          <h3 className="body-xxl-label text-secondary">{name}</h3>
+          <h3 className="body-xxl-label text-secondary line-clamp-1">{name}</h3>
           <StarRating rating={rating_avg} size={5} />
         </div>
 

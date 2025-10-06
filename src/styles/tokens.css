@@ -147,22 +147,22 @@
   --icon-xl: clamp(36px, 3.2vw + 4px, 64px);
 
   /* ---- Spacing scale - fluid scaling ---- */
-  --spacing-0: 0rem;
-  --spacing-050: clamp(0.1rem, 0.08vw + 0.02rem, 0.25rem);
-  --spacing-100: clamp(0.2rem, 0.16vw + 0.05rem, 0.5rem);
-  --spacing-150: clamp(0.3rem, 0.24vw + 0.07rem, 0.75rem);
-  --spacing-200: clamp(0.45rem, 0.36vw + 0.11rem, 1rem);
-  --spacing-250: clamp(0.55rem, 0.44vw + 0.14rem, 1.25rem);
-  --spacing-300: clamp(0.65rem, 0.52vw + 0.17rem, 1.5rem);
-  --spacing-400: clamp(1rem, 0.8vw + 0.27rem, 2rem);
-  --spacing-600: clamp(1.5rem, 1.2vw + 0.42rem, 3rem);
-  --spacing-800: clamp(2rem, 1.6vw + 0.56rem, 4rem);
-  --spacing-1000: clamp(2.5rem, 2vw + 0.7rem, 5rem);
-  --spacing-1200: clamp(3rem, 2.4vw + 0.83rem, 6rem);
-  --spacing-1600: clamp(4rem, 3.2vw + 1.11rem, 8rem);
-  --spacing-2400: clamp(6rem, 4.8vw + 1.67rem, 12rem);
-  --spacing-4000: clamp(10rem, 8.0vw + 2.78rem, 20rem);
-  --spacing-6000: clamp(14rem, 11.2vw + 3.89rem, 28rem);
+  --spacing-0: 0px;
+  --spacing-050: clamp(0.8px, 0.08vw + 0.16px, 2px);
+  --spacing-100: clamp(1.6px, 0.16vw + 0.4px, 4px);
+  --spacing-150: clamp(2.4px, 0.24vw + 0.56px, 6px);
+  --spacing-200: clamp(3.6px, 0.36vw + 0.88px, 8px);
+  --spacing-250: clamp(4.4px, 0.44vw + 1.12px, 10px);
+  --spacing-300: clamp(5.2px, 0.52vw + 1.36px, 12px);
+  --spacing-400: clamp(8px, 0.8vw + 2.16px, 16px);
+  --spacing-600: clamp(12px, 1.2vw + 3.36px, 24px);
+  --spacing-800: clamp(16px, 1.6vw + 4.48px, 32px);
+  --spacing-1000: clamp(20px, 2vw + 5.6px, 40px);
+  --spacing-1200: clamp(24px, 2.4vw + 6.64px, 48px);
+  --spacing-1600: clamp(32px, 3.2vw + 8.88px, 64px);
+  --spacing-2400: clamp(48px, 4.8vw + 13.36px, 96px);
+  --spacing-4000: clamp(80px, 8.0vw + 22.24px, 160px);
+  --spacing-6000: clamp(112px, 11.2vw + 31.12px, 224px);
 
   /* ---- Border radius scale - fluid ---- */
   --radius-100: clamp(2px, 0.16vw + 0.67px, 4px);
@@ -187,7 +187,14 @@
   --width-search-date: clamp(133px, 11vw, 200px);  /* 200px @1920px */
   --width-search-experience:       clamp(160px, 12.5vw, 240px);  /* 240px @1920px */
 
+  --width-search-controls: clamp(640px, 60.6vw, 1164px); /* 1164px @1920px */
+
   --card-height: clamp(360px, 23.96vw, 460px); /* 460px @1920px */
+
+  --width-filtersidebar: clamp(220px, 15.15vw, 291px); /* 291px @1920px */
+
+  --width-experience-gridcard: clamp(300px, 31.6vw, 607px); /* 607px @1920px */
+  --height-image-gridcard: clamp(220px, 23.4vw, 450px); /* 450px @1920px */
 
   --homepage-card-width: clamp(240px, 27.3vw, 525px); /* 525px @1920px */
 

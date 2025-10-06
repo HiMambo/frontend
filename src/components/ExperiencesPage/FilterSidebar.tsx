@@ -37,7 +37,7 @@ const FilterSidebar: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={resetAllFilters}
-              className="text-muted-foreground hover:text-foreground h-full p-2 body-l"
+              className="text-tertiary hover:text-foreground h-full p-2 body-s"
             >
               Clear All Filters
             </Button>
@@ -75,7 +75,7 @@ const FilterSidebar: React.FC = () => {
                   variant="ghost"
                   size="sm"
                   onClick={resetPriceFilter}
-                  className="text-muted-foreground hover:text-foreground h-full p-2 body-m"
+                  className="text-tertiary hover:text-foreground h-full p-2 body-s"
                 >
                   Reset
                 </Button>

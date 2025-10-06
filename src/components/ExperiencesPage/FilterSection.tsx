@@ -114,7 +114,7 @@ const handleToggle = (val: T) => {
               variant="ghost"
               size="sm"
               onClick={clearAll}
-              className="text-muted-foreground hover:text-foreground h-auto p-1"
+              className="text-tertiary hover:text-foreground body-s h-auto p-1"
               disabled={disabled}
             >
               Clear
@@ -228,7 +228,7 @@ const handleToggle = (val: T) => {
                 variant="ghost"
                 size="sm"
                 onClick={clearAll}
-                className="text-muted-foreground hover:text-foreground h-full p-2 body-m"
+                className="text-tertiary hover:text-foreground h-full p-2 body-s"
                 disabled={disabled}
               >
                 Clear

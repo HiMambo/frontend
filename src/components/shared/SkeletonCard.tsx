@@ -22,43 +22,53 @@ export const SkeletonCard: React.FC<SkeletonCardProps> = ({ view, index = 0 }) =
   switch (view) {
     case "grid":
       return (
-        <div className="relative w-full max-w-xs aspect-[2/3] bg-white rounded-lg shadow-md animate-wave flex flex-col overflow-hidden">
-          <div className="absolute top-2 right-2 z-10 rounded-full bg-white w-10 h-10 flex items-center justify-center">
-            <Heart size={24} fill="#E5E7EB" stroke="none"/>
+        <div className="relative w-[var(--width-experience-gridcard)] flex flex-col rounded-800 overflow-hidden bg-white shadow-md animate-wave">
+          {/* Favorite Icon */}
+          <div className="absolute top-[var(--spacing-400)] right-[var(--spacing-400)] z-10 rounded-full bg-white w-10 h-10 flex items-center justify-center">
+            <Heart size={24} fill="#E5E7EB" stroke="none" />
           </div>
+
           {/* Image */}
-          <div className="h-2/3 bg-gray-200 w-full" />
+          <div className="relative w-full h-[var(--height-image-gridcard)] bg-gray-200" />
 
           {/* Content */}
-          <div className="p-4 space-y-2 flex-grow flex flex-col justify-between">
-            <div>
-              <div className="min-h-[4.5rem]">
-                {/* Title and location */}
+          <div className="flex flex-col justify-between p-[var(--spacing-800)] gap-[var(--spacing-600)] flex-grow">
+            {/* Title + Rating */}
+            <div className="flex flex-col gap-[var(--spacing-400)]">
+              <div className="min-h-[3.6rem] space-y-2">
                 <div className="h-5 bg-gray-200 rounded" style={{ width: variant.titleWidth }} />
-                <div className="h-3 bg-gray-200 rounded mt-2" style={{ width: variant.locationWidth }} />
+                <div className="h-3 bg-gray-200 rounded" style={{ width: variant.locationWidth }} />
               </div>
-              
               {/* Star rating */}
-              <div className="flex gap-1 mt-2">
+              <div className="flex gap-1">
                 {Array.from({ length: variant.starCount }).map((_, i) => (
                   <Star key={i} className="w-4 h-4" fill="#E5E7EB" stroke="none" />
                 ))}
               </div>
             </div>
 
-            {/* Bottom section - Price and SDG badges */}
-            <div className="flex justify-between items-center">
-              {/* Price with cart icon */}
-              <div className="flex items-center gap-2">
-                <div className="h-5 w-20 bg-gray-200 rounded" />
-                <div className="w-10 h-10 bg-gray-200 rounded-full" />
-              </div>
+            {/* Description placeholders */}
+            <div className="flex flex-col gap-[var(--spacing-300)]">
+              <div className="h-4 bg-gray-200 rounded w-[70%]" />
+              <div className="h-4 bg-gray-200 rounded w-[80%]" />
+              <div className="h-4 bg-gray-200 rounded w-[60%]" />
+            </div>
 
-              {/* SDG badges */}
+            {/* Bottom section */}
+            <div className="flex justify-between items-end mt-auto">
+              {/* SDG placeholders */}
               <div className="flex gap-1">
                 {Array.from({ length: variant.sdgCount }).map((_, i) => (
                   <div key={i} className="w-7 h-7 bg-gray-200 rounded-md" />
                 ))}
+              </div>
+
+              {/* Price + button placeholder */}
+              <div className="relative h-[40px] flex items-end">
+                <div className="flex flex-col gap-0 items-end">
+                  <div className="h-5 w-20 bg-gray-200 rounded mb-2" />
+                  <div className="h-10 w-24 bg-gray-200 rounded" />
+                </div>
               </div>
             </div>
           </div>

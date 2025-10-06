@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { CountdownTimer } from '@/components/PaymentPage/CountdownTimer';
 import QRCode from 'react-qr-code';
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogOverlay } from "@/components/ui/dialog";
 import Image from 'next/image';
@@ -55,16 +54,16 @@ const PaymentModal = ({
 }) => (
   <Dialog open={showPaymentModal} onOpenChange={onCloseModal}>
     <DialogOverlay className="bg-black/50 backdrop-blur-sm" />
-    <DialogContent className="max-w-sm p-4">
+    <DialogContent className="max-w-sm p-[var(--spacing-600)]">
       {payment?.status === 'pending' ? (
         <>
-          <DialogHeader className="pb-2">
-            <DialogTitle className="text-center text-xl">
+          <DialogHeader className="pb-[var(--spacing-400)]">
+            <DialogTitle className="heading-h5-light text-secondary text-center">
               Pay {getAmount()} {selectedCurrency}
             </DialogTitle>
           </DialogHeader>
           
-          <div className="space-y-4">
+          <div className="flex flex-col gap-[var(--spacing-600)]">
             {payment && (
               <CountdownTimer
                 expiresAt={payment.expires_at}
@@ -74,33 +73,33 @@ const PaymentModal = ({
               />
             )}
 
-            {/* Compact QR Code section */}
-            <div className="rounded-lg p-4 space-y-3">
-              <div className="w-full aspect-square bg-white rounded-lg flex items-center justify-center p-2 max-w-[200px] max-h-[200px] mx-auto">
+            {/* QR Code section */}
+            <div className="flex flex-col gap-[var(--spacing-400)]">
+              <div className="w-full aspect-square bg-white rounded-300 flex items-center justify-center p-[var(--spacing-400)] max-w-[200px] mx-auto">
                 <QRCode
                   value={payment.public_key}
                   style={{ width: '100%', height: '100%' }}
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Payment Address (click to copy)</Label>
+              <div className="flex flex-col gap-[var(--spacing-200)]">
+                <span className="body-m text-tertiary text-center">Payment Address (click to copy)</span>
                 <div 
                   onClick={() => onCopy(payment?.public_key || '')}
-                  className="bg-background rounded border p-2 font-mono text-xs cursor-pointer hover:bg-muted/50 transition-colors truncate text-center"
+                  className="bg-white rounded-300 border-2 border-[var(--text-disabled)] p-[var(--spacing-400)] font-mono text-xs cursor-pointer hover:bg-surface transition-colors truncate text-center text-tertiary"
                   title={payment?.public_key}
                 >
                   {payment?.public_key}
                 </div>
                 {copySuccess && (
-                  <div className="text-xs text-green-600 font-medium text-center">
+                  <div className="body-m text-secondary text-center">
                     ✓ {copySuccess}
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="flex justify-center space-x-1 py-2">
+            <div className="flex justify-center gap-[var(--spacing-200)] py-[var(--spacing-400)]">
               <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
               <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></div>
               <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></div>
@@ -109,12 +108,12 @@ const PaymentModal = ({
         </>
       ) : payment?.status === 'success' ? (
         <>
-          <DialogHeader className="pb-2">
-            <DialogTitle className="text-center text-xl text-green-600">
+          <DialogHeader className="pb-[var(--spacing-400)]">
+            <DialogTitle className="heading-h5-light text-secondary text-center">
               Payment Successful!
             </DialogTitle>
           </DialogHeader>
-          <div className="text-center space-y-4 py-2">
+          <div className="flex flex-col gap-[var(--spacing-600)] items-center py-[var(--spacing-400)]">
             <Image
               src="/happy-face.png"
               alt="Happy Face"
@@ -122,11 +121,11 @@ const PaymentModal = ({
               height={64}
               className="mx-auto"
             />
-            <p className="text-sm text-muted-foreground">
+            <p className="body-m text-tertiary text-center">
               Thank you for your payment. Your transaction has been confirmed.
             </p>
-            <Link href="/mybookings">
-              <Button className="w-full" variant="default" size="sm">
+            <Link href="/mybookings" className="w-full">
+              <Button className="w-full">
                 View Your Bookings
               </Button>
             </Link>
@@ -134,12 +133,12 @@ const PaymentModal = ({
         </>
       ) : payment?.status === 'checked' ? (
         <>
-          <DialogHeader className="pb-2">
-            <DialogTitle className="text-center text-xl text-green-600">
+          <DialogHeader className="pb-[var(--spacing-400)]">
+            <DialogTitle className="heading-h5-light text-secondary text-center">
               Just a bit longer
             </DialogTitle>
           </DialogHeader>
-          <div className="text-center space-y-4 py-2">
+          <div className="flex flex-col gap-[var(--spacing-600)] items-center py-[var(--spacing-400)]">
             <Image
               src="/paper-plane.png"
               alt="Paper Plane"
@@ -147,25 +146,25 @@ const PaymentModal = ({
               height={64}
               className="mx-auto"
             />
-            <p className="text-sm text-muted-foreground">
+            <p className="body-m text-tertiary text-center">
               We are letting our HiMambo partner know you are on your way!
             </p>
           </div>
         </>
       ) : (
         <>
-          <DialogHeader className="pb-2">
-            <DialogTitle className="text-center text-lg">
+          <DialogHeader className="pb-[var(--spacing-400)]">
+            <DialogTitle className="heading-h5-light text-secondary text-center">
               Processing Payment
             </DialogTitle>
           </DialogHeader>
-          <div className="text-center space-y-4 py-2">
-            <div className="flex justify-center space-x-1">
+          <div className="flex flex-col gap-[var(--spacing-600)] items-center py-[var(--spacing-400)]">
+            <div className="flex justify-center gap-[var(--spacing-200)]">
               <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
               <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></div>
               <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></div>
             </div>
-            <p className="text-sm text-muted-foreground">Processing payment...</p>
+            <p className="body-m text-tertiary">Processing payment...</p>
           </div>
         </>
       )}
@@ -191,75 +190,76 @@ export function CryptoPaymentUI({
   // Handle loading state
   if (loading) {
     return (
-        <div className="text-center space-y-4">
-          <div className="flex justify-center space-x-1">
-            <div className="w-3 h-3 bg-primary rounded-full animate-bounce"></div>
-            <div className="w-3 h-3 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-            <div className="w-3 h-3 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-          </div>
-          <p className="text-muted-foreground">Loading payment details...</p>
+      <div className="flex flex-col bg-surface gap-[var(--spacing-600)] p-[var(--spacing-600)] items-center w-full">
+        <div className="flex justify-center gap-[var(--spacing-200)]">
+          <div className="w-3 h-3 bg-primary rounded-full animate-bounce"></div>
+          <div className="w-3 h-3 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+          <div className="w-3 h-3 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></div>
         </div>
+        <p className="body-m text-tertiary">Loading payment details...</p>
+      </div>
     );
   }
   
   // Handle error state
   if (error) {
     return (
-        <div className="text-center space-y-4">
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-          <Button onClick={onRetry} variant="outline" className="w-full">
-            Try Again
-          </Button>
-        </div>
+      <div className="flex flex-col bg-surface gap-[var(--spacing-600)] p-[var(--spacing-600)] items-center w-full">
+        <Alert variant="destructive">
+          <AlertDescription className="body-m">{error}</AlertDescription>
+        </Alert>
+        <Button onClick={onRetry} variant="outline" className="w-full">
+          Try Again
+        </Button>
+      </div>
     );
   }
   
   // Handle no payment data
   if (!payment?.price_data) {
     return (
-        <div className="text-center">
-          <p className="text-muted-foreground">No payment data available</p>
-        </div>
+      <div className="flex flex-col bg-surface gap-[var(--spacing-600)] p-[var(--spacing-600)] items-center w-full">
+        <p className="body-m text-tertiary">No payment data available</p>
+      </div>
     );
   }
 
   // Main payment selection UI
   return (
     <>
-        <div className="space-y-6">
-          {/* Currency Selection */}
-          <div>
-            <Label className="mb-3 block text-sm font-medium">Select Currency</Label>
-            <div className="flex gap-2 w-full">
-              {['USDC', 'SOL'].map((currency) => (
-                <Button
-                  key={currency}
-                  onClick={() => onCurrencySelect(currency as Currency)}
-                  variant={selectedCurrency === currency ? "default" : "outline"}
-                  className="flex-1 h-12 text-base"
-                  size="lg"
-                >
-                  {currency}
-                </Button>
-              ))}
-            </div>
-          </div>
+      <div className="flex flex-col bg-surface gap-[var(--spacing-1000)] p-[var(--spacing-600)] items-center w-full">
+        {/* Header */}
+        <h2 className="heading-h5-light text-secondary text-center border-b-2 border-[var(--text-disabled)] py-[var(--spacing-600)] w-full">
+          Complete Payment
+        </h2>
 
-          {/* Amount Display */}
-          <div className="bg-muted/30 rounded-lg p-6 text-center space-y-2">
-            <Label className="text-sm text-muted-foreground">Total Amount</Label>
-            <div className="text-3xl font-bold text-foreground">
-              {getAmount()} {selectedCurrency}
-            </div>
-          </div>
-
-          {/* Proceed Button */}
-          <Button onClick={onProceedClick} className="w-full" size="lg">
-            Proceed to Payment
-          </Button>
+        {/* Currency Selection */}
+        <div className="flex gap-[var(--spacing-800)] justify-center w-full body-l-button">
+          {['USDC', 'SOL'].map((currency) => (
+            <span
+              key={currency}
+              className={`transition-colors cursor-pointer ${
+                selectedCurrency === currency
+                  ? "underline text-[var(--terracotta-600)] decoration-2 underline-offset-10"
+                  : "text-primary hover:underline hover:decoration-2 hover:underline-offset-10"
+              }`}
+              onClick={() => onCurrencySelect(currency as Currency)}
+            >
+              {currency}
+            </span>
+          ))}
         </div>
+
+        {/* Amount Display */}
+          <div className="heading-h5-light text-secondary">
+            {getAmount()} {selectedCurrency}
+          </div>
+
+        {/* Proceed Button */}
+        <Button onClick={onProceedClick} className="w-[var(--width-authforms)]">
+          Proceed to Payment
+        </Button>
+      </div>
 
       {/* Payment Modal */}
       <PaymentModal 

@@ -1,5 +1,4 @@
 "use client";
-
 import { useExperiences } from "@/hooks/useExperiences";
 import type { Experience } from "@/lib/api";
 import { useState } from "react";
@@ -22,15 +21,13 @@ function MainContent({
 }: {
   view: "list" | "grid";
   sortBy: string;
-  experiences: Experience[]
+  experiences: Experience[];
   loading: boolean;
   error: string | null;
 }) {
   const { filteredExperiences } = useFilter();
-
-  const noSearchResults = 
-    !loading && experiences.length === 0;
   
+  const noSearchResults = !loading && experiences.length === 0;
   const noResultsForGivenFilters =
     !loading && experiences.length > 0 && filteredExperiences.length === 0;
 
@@ -43,27 +40,32 @@ function MainContent({
       case "Price: High to Low":
         return Number(b.experience_price) - Number(a.experience_price);
       default:
-        return 0; // "Best Match" or unknown – no sorting
+        return 0;
     }
   });
 
   return (
-    <main className="bg-surface min-h-screen p-4 sm:p-6 md:p-8 xl:p-12">
+    <>
       {/* Mobile / toggleable filters */}
       <FilterToggleWrapper>
         <FilterSidebar />
       </FilterToggleWrapper>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 lg:gap-8 gap-4">
-        {/* Sidebar for large screens */}
-        <div className="hidden lg:block lg:col-span-1">
-          <div className="bg-surface w-full">
-            <FilterSidebar />
-          </div>
-        </div>
+      {/* Desktop layout */}
+      <div
+        className={`hidden lg:flex ${
+          view === "list"
+            ? "gap-[var(--spacing-2400)]"
+            : "gap-[var(--spacing-4000)]"
+        }`}
+      >
+        {/* Sidebar */}
+        <aside className="flex-shrink-0 w-[var(--width-filtersidebar)]">
+          <FilterSidebar />
+        </aside>
 
-        {/* Experience list */}
-        <div className="lg:col-span-4 flex flex-col gap-8">
+        {/* Experience List */}
+        <section className="flex-grow">
           <ExperienceList
             view={view}
             experiences={sortedExperiences}
@@ -72,47 +74,71 @@ function MainContent({
             noResultsForGivenFilters={noResultsForGivenFilters}
             noSearchResults={noSearchResults}
           />
-        </div>
+        </section>
       </div>
-    </main>
+    </>
   );
 }
 
 export default function ExperiencePage() {
   const [view, setView] = useState<"list" | "grid">("list");
   const [sortBy, setSortBy] = useState("Best Match");
-  
-  // Get search parameters from context
+
   const { searchParams } = useSearch();
-  
-  // Use search parameters to fetch filtered experiences
   const { experiences, loading, error } = useExperiences(searchParams);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
+      {/* Header */}
       <Header />
-      <FilterProvider experiences={experiences}>
-        <p className="bg-surface heading-h2 text-secondary text-center pb-10 pt-[var(--spacing-4000)]">
-          Start your sustainable adventure!
-        </p>
-        <div className="py-3 bg-surface">
-          <SearchBox />
-        </div>
-        <SearchControls
-          view={view}
-          setView={setView}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-        />
-        <MainContent
-          view={view}
-          sortBy={sortBy}
-          experiences={experiences}
-          loading={loading}
-          error={error}
-        />
-      </FilterProvider>
-      <Footer />
-    </>
+
+      {/* Main content wrapper */}
+      <div className="flex-grow bg-surface">
+        <FilterProvider experiences={experiences}>
+          {/* spacing-4000 gap */}
+          <div className="pt-[var(--spacing-4000)]">
+            {/* Heading */}
+            <h2 className="heading-h2 text-secondary text-center">
+              Start your sustainable adventure!
+            </h2>
+          </div>
+
+          {/* spacing-1600 gap */}
+          <div className="pt-[var(--spacing-1600)]">
+            {/* Search Box */}
+            <SearchBox />
+          </div>
+
+          {/* spacing-1600 gap */}
+          <div className="pt-[var(--spacing-1600)] px-[var(--spacing-2400)] pb-[var(--spacing-1200)]">
+            {/* Search Controls - aligned right */}
+            <div className="flex justify-end">
+              <SearchControls
+                view={view}
+                setView={setView}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+              />
+            </div>
+          </div>
+
+          {/* spacing-1200 gap */}
+          <div className="pt-[var(--spacing-1200)] py-[var(--spacing-2400)] px-[var(--spacing-2400)]">
+            {/* Filter and Experience Cards Section */}
+            <MainContent
+              view={view}
+              sortBy={sortBy}
+              experiences={experiences}
+              loading={loading}
+              error={error}
+            />
+          </div>
+        </FilterProvider>
+      </div>
+
+      <div className="pt-[var(--spacing-4000)] bg-surface">
+        <Footer />
+      </div>
+    </div>
   );
 }
