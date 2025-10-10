@@ -10,10 +10,10 @@ export default function RegisterExperiencePage() {
     <>
       <Header />
       <section className="bg-neutral-50">
-        <div className="max-w-6xl mx-auto px-400 md:px-800 py-800 md:py-1200">
+        <div className="max-w-6xl mx-auto px-[var(--spacing-400)] md:px-[var(--spacing-800)] py-[var(--spacing-800)] md:py-[var(--spacing-1200)]">
           {/* Title + subtitle */}
-          <header className="text-center mb-800 md:mb-1200">
-            <h1 className="heading-h2 text-primary mb-200">
+          <header className="text-center mb-[var(--spacing-800)] md:mb-[var(--spacing-1200)]">
+            <h1 className="heading-h2 text-primary mb-[var(--spacing-200)]">
               Create a HiMambo Partner Profile
             </h1>
             <p className="text-neutral-700 body-m">
@@ -23,7 +23,7 @@ export default function RegisterExperiencePage() {
           </header>
 
           {/* Stepper */}
-          <div className="mb-800 md:mb-1200">
+          <div className="mb-800 md:mb-[var(--spacing-1200)]">
             <AccountStepper
               steps={[
                 "Create Account",
@@ -37,7 +37,7 @@ export default function RegisterExperiencePage() {
           </div>
 
           {/* Card */}
-          <div className="bg-white rounded-800 shadow-sm ring-1 ring-black/5 p-400 md:p-600">
+          <div className="bg-white rounded-800 shadow-sm ring-1 ring-black/5 p-400 md:p-[var(--spacing-600)]">
             <CreateAccountForm />
           </div>
         </div>
