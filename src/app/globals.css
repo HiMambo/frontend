@@ -25,6 +25,24 @@
 
   /* Font family */
   --font-sans: var(--font-parkinsans, ui-sans-serif, system-ui, sans-serif);
+
+  /* Spacing scale */
+  --spacing-0: var(--spacing-0);
+  --spacing-50: var(--spacing-050);
+  --spacing-100: var(--spacing-100);
+  --spacing-150: var(--spacing-150);
+  --spacing-200: var(--spacing-200);
+  --spacing-250: var(--spacing-250);
+  --spacing-300: var(--spacing-300);
+  --spacing-400: var(--spacing-400);
+  --spacing-600: var(--spacing-600);
+  --spacing-800: var(--spacing-800);
+  --spacing-1000: var(--spacing-1000);
+  --spacing-1200: var(--spacing-1200);
+  --spacing-1600: var(--spacing-1600);
+  --spacing-2400: var(--spacing-2400);
+  --spacing-4000: var(--spacing-4000);
+  --spacing-6000: var(--spacing-6000);
 }
 
 @theme inline {
