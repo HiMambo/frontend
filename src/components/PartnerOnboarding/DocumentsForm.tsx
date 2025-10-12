@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 const NEXT_STEP = "/register-experience/experience-info";
+const PREV_STEP = "/register-experience/business-details";
 const DOC_TYPES = [
   "Tax ID / VAT Number",
   "Tourism License",
@@ -169,6 +170,14 @@ export default function DocumentsForm() {
       </div>
 
       <div className="mt-6 flex flex-col sm:flex-row gap-3">
+        <Button
+          type="button"
+          onClick={() => router.push(PREV_STEP)}
+          variant="outline"
+          className="flex-1 rounded-md h-10"
+        >
+          Go Back
+        </Button>
         <Button
           type="button"
           onClick={() => router.push(NEXT_STEP)}

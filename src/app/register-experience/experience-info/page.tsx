@@ -12,6 +12,7 @@ import { useMemo, useState } from "react";
 
 /* ───────── helpers ───────── */
 const NEXT_STEP = "/register-experience/success";
+const PREV_STEP = "/register-experience/documents";
 
 function NumberStepper({
   value,
@@ -163,10 +164,17 @@ export default function ExperienceInfoPage() {
           </div>
 
           {/* submit button */}
-          <div className="mt-6 max-w-4xl mx-auto">
+          <div className="mt-6 flex justify-between gap-300 max-w-4xl mx-auto">
+            <Button
+              onClick={() => router.push(PREV_STEP)}
+              variant="outline"
+              className="flex-grow"
+            >
+              Go Back
+            </Button>
             <Button
               onClick={() => router.push(NEXT_STEP)}
-              className="w-full h-12 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-white font-semibold"
+              className="flex-grow"
             >
               Submit Experience &amp; Finish Registration
             </Button>
