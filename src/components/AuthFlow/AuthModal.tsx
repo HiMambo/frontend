@@ -37,7 +37,7 @@ export function AuthModal({
       onClick={handleClose}
     >
       <div
-        className="relative bg-surface rounded-800 shadow-elevation-1 w-auto transition-all duration-300 overflow-hidden scale-100 opacity-100 p-1200"
+        className="relative bg-surface rounded-800 shadow-elevation-1 w-auto transition-all duration-300 overflow-hidden scale-100 opacity-100 px-1200 pb-1200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
