@@ -6,11 +6,10 @@ import { CheckedIcon, GoogleIcon, NotCheckedIcon } from "../IconComponents";
 import { InputForm } from "./InputForm";
 import { FaApple } from "react-icons/fa";
 import { ChevronDown } from "lucide-react";
+import { useGoogleAuth } from "@/hooks/auth/useGoogleAuth";
 
 interface SignUpProps {
   onSwitchToLogin: () => void;
-  onGoogleAuth: () => Promise<void>;
-  isGoogleLoading: boolean;
   acceptedTerms: boolean;
   setAcceptedTerms: (accepted: boolean) => void;
   onComplete: () => void;
@@ -18,12 +17,13 @@ interface SignUpProps {
 
 export const SignUp: React.FC<SignUpProps> = ({ 
   onSwitchToLogin, 
-  onGoogleAuth, 
-  isGoogleLoading,
   acceptedTerms,
   setAcceptedTerms,
   onComplete,
 }) => {
+
+  const { isGoogleLoading, handleGoogleAuth } = useGoogleAuth(onComplete);
+
   return (
     <div className="flex flex-col bg-surface gap-[var(--spacing-1000)] p-[var(--spacing-600)] items-center w-full">
       {/* Header */}
@@ -93,7 +93,7 @@ export const SignUp: React.FC<SignUpProps> = ({
         <Button 
           variant="outline" 
           className="w-[var(--width-authbuttons)] flex items-center gap-[var(--spacing-200)]"
-          onClick={onGoogleAuth}
+          onClick={handleGoogleAuth}
           disabled={isGoogleLoading}
         >
           <GoogleIcon className="icon-size-s" />

@@ -13,16 +13,6 @@ export const STEP_DEFINITIONS = [
     showBackButton: false,
     showNextButton: false,
   },
-  /*{
-    step: 2,
-    label: 'Guests',
-    title: 'Step 2: Guest Details',
-    completedTitle: 'Guest Details Confirmed',
-    component: 'GuestForm',
-    showBackButton: false,
-    showNextButton: true,
-    nextButtonText: 'Continue to Time Slot Selection',
-  },*/
   {
     step: 2,
     label: 'Slots',

@@ -1,7 +1,5 @@
 'use client'
-
 import { useEffect } from 'react';
-import { AccordionStep } from './TemporaryDisplayWrapper';
 import { AuthForm } from './AuthForm';
 import { PaymentForm } from './PaymentForm';
 import { SlotSelector } from './SlotSelector';
@@ -10,55 +8,59 @@ import { useBooking } from '@/context/BookingContext';
 import { useBookingSteps, STEP_DEFINITIONS } from '@/context/BookingStepsContext';
 import { Success } from './Success';
 
-// Component map to dynamically render the correct form
-const componentMap: Record<string, React.ComponentType> = {
-  AuthForm,
-  SlotSelector,
-  PaymentForm,
-};
-
 export default function BookingFlow() {
   const { bookingState, cartExperience, setSelectedSlot } = useBooking();
-  const { getStepStatus, currentStep, resetSteps } = useBookingSteps();
+  const { getStepStatus, currentStep, resetSteps, markStepComplete, goToNextStep, goToPreviousStep } = useBookingSteps();
+
+  const handleNext = (stepNumber: number) => {
+    markStepComplete(stepNumber);
+    goToNextStep();
+  };
+
+  const handleBack = () => {
+    goToPreviousStep();
+  };
+  // Component map to dynamically render the correct form
+  const componentMap: Record<string, React.ComponentType> = {
+    SlotSelector,
+    PaymentForm,
+  };
 
   // Reset booking flow when cart experience changes.
   useEffect(() => {
     if (!cartExperience) return;
-
     // Clear booking state and reset steps
     setSelectedSlot(null);
     resetSteps();
-    
   }, [cartExperience, resetSteps, setSelectedSlot]);
 
   return (
     <div className="transition-all duration-500">
       {STEP_DEFINITIONS.map((steps) => {
         const StepComponent = componentMap[steps.component];
-
         return (
-          <AccordionStep
+          <StepWrapper
             key={steps.step}
-            title={steps.title}
-            completedTitle={steps.completedTitle}
             status={getStepStatus(steps.step)}
+            showBackButton={steps.showBackButton}
+            showNextButton={steps.showNextButton}
+            backButtonText={steps.backButtonText}
+            nextButtonText={steps.nextButtonText}
+            onNext={() => handleNext(steps.step)}
+            onBack={handleBack}     
           >
-            <StepWrapper
-              stepNumber={steps.step}
-              showBackButton={steps.showBackButton}
-              showNextButton={steps.showNextButton}
-              backButtonText={steps.backButtonText}
-              nextButtonText={steps.nextButtonText}
-            >
+            {steps.component === "AuthForm" ? (
+              <AuthForm onComplete={() => handleNext(steps.step)} />
+            ) : (
               <StepComponent />
-            </StepWrapper>
-          </AccordionStep>
+            )}
+          </StepWrapper>
         );
       })}
 
       {/* Confirmation */}
       {currentStep === -1 && !bookingState.isBookingInProgress && (
-        <Success/>
+        <Success />
       )}
     </div>
   );

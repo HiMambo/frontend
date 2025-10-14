@@ -1,69 +1,25 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
-import { signIn, getSession } from 'next-auth/react';
-import { useBookingSteps } from '@/context/BookingStepsContext';
+import { useState } from 'react';
 import { Login } from '../shared/AuthTabs/Login';
 import { SignUp } from '../shared/AuthTabs/SignUp';
 import { ForgotPassword } from '../shared/AuthTabs/ForgotPassword';
+import { useCheckSession } from '@/hooks/auth/useCheckSession';
 
-export function AuthForm() {
-  const { goToNextStep, markStepComplete } = useBookingSteps();
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const [activeView, setActiveView] = useState<'signup' | 'login' | 'forgot'>('signup');
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+interface AuthFormProps {
+  onComplete: () => void;
+  initialView?: 'signup' | 'login';
+  autoCheckSession?: boolean;
+}
+
+export function AuthForm({ 
+  onComplete, 
+  initialView = 'signup',
+  autoCheckSession = true
+}: AuthFormProps) {
+  const [activeView, setActiveView] = useState<'signup' | 'login' | 'forgot'>(initialView);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  
-  const onComplete = useCallback(() => {
-    markStepComplete(1);
-    goToNextStep();
-  }, [markStepComplete, goToNextStep]);
 
-  // Check if user is already logged in on component mount
-  useEffect(() => {
-    const checkExistingSession = async () => {
-      try {
-        const session = await getSession();
-        if (session?.user) {
-          console.log('User already logged in:', session.user);
-          onComplete();
-        }
-      } catch (err) {
-        console.error('Error checking session:', err);
-      } finally {
-        setIsCheckingAuth(false);
-      }
-    };
-
-    checkExistingSession();
-  }, [onComplete]);
-
-  const handleGoogleAuth = async () => {
-    setIsGoogleLoading(true);
-    
-    try {
-      const result = await signIn('google', {
-        redirect: false,
-      });
-      
-      if (result?.error) {
-        console.error('Google sign in error:', result.error);
-      } else if (result?.ok) {
-        // Wait a moment for the session to be established
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Check if session was created
-        const session = await getSession();
-        if (session?.user) {
-          console.log('Authentication successful:', session.user);
-          onComplete();
-        }
-      }
-    } catch (err) {
-      console.error('Google auth error:', err);
-    } finally {
-      setIsGoogleLoading(false);
-    }
-  };
+  const isCheckingAuth = useCheckSession(onComplete, autoCheckSession);
 
   // Show loading state while checking authentication
   if (isCheckingAuth) {
@@ -78,29 +34,26 @@ export function AuthForm() {
   }
 
   return (
-    <div className='w-[var(--width-authscreen)]'>
+    <div className="w-[var(--width-authscreen)]">
       {activeView === 'signup' ? (
-        <SignUp 
+        <SignUp
           onSwitchToLogin={() => setActiveView('login')}
-          onGoogleAuth={handleGoogleAuth}
-          isGoogleLoading={isGoogleLoading}
           acceptedTerms={acceptedTerms}
           setAcceptedTerms={setAcceptedTerms}
           onComplete={onComplete}
         />
       ) : activeView === 'login' ? (
-        <Login 
+        <Login
           onSwitchToSignup={() => setActiveView('signup')}
           onSwitchToForgot={() => setActiveView('forgot')}
-          onGoogleAuth={handleGoogleAuth}
-          isGoogleLoading={isGoogleLoading}
           onComplete={onComplete}
         />
       ) : (
-        <ForgotPassword 
+        <ForgotPassword
           onSwitchToSignup={() => setActiveView('signup')}
           onSwitchToLogin={() => setActiveView('login')}
-        />)}
+        />
+      )}
     </div>
   );
 }

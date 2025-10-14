@@ -1,53 +1,60 @@
 "use client";
-
 import React, { ReactNode, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useBooking } from '@/context/BookingContext';
-import { type BookingStep, useBookingSteps } from '@/context/BookingStepsContext';
+import { useBookingSteps, type StepStatus } from '@/context/BookingStepsContext';
 import { AlertCircle } from 'lucide-react';
 
 interface StepWrapperProps {
   children: ReactNode;
-  stepNumber: BookingStep;
+  status: StepStatus;
   showBackButton?: boolean;
   showNextButton?: boolean;
   nextButtonText?: string;
   backButtonText?: string;
+  onNext: () => void;
+  onBack: () => void;
 }
 
 export const StepWrapper = ({
   children,
-  stepNumber,
+  status,
   showBackButton = true,
   showNextButton = true,
   nextButtonText = "Continue",
   backButtonText = "Back",
+  onNext,
+  onBack,
 }: StepWrapperProps) => {
   const { bookingState } = useBooking();
-  const { markStepComplete, goToNextStep, goToPreviousStep, validationError, isValid } = useBookingSteps();
-
+  const { validationError, isValid } = useBookingSteps();
   const [hasAttemptedNext, setHasAttemptedNext] = useState(false);
 
   const handleNext = () => {
-    setHasAttemptedNext(true);
-
-    if (isValid) {
-      markStepComplete(stepNumber);
-      setHasAttemptedNext(false);
-      goToNextStep();
+    if (!isValid) {
+      setHasAttemptedNext(true);
+      return;
     }
+    setHasAttemptedNext(false);
+    onNext();
   };
 
   const handleBack = () => {
     setHasAttemptedNext(false);
-    goToPreviousStep();
+    onBack();
   };
 
+  // Only render if step is active or revisited
+  const isExpanded = status === 'active' || status === 'revisited';
+  if (!isExpanded) {
+    return null;
+  }
+
   return (
-     <div className="flex justify-center w-full">
+    <div className="flex justify-center w-full">
       <div className="w-[var(--width-authscreen)]">
         {children}
-        
+
         {/* Error message */}
         {hasAttemptedNext && validationError && (
           <div className="flex justify-center mt-[var(--spacing-600)]">
@@ -57,12 +64,12 @@ export const StepWrapper = ({
             </p>
           </div>
         )}
-        
+
         {/* Buttons */}
         {(showBackButton || showNextButton) && (
           <div className="flex flex-col gap-[var(--spacing-600)] items-center mt-[var(--spacing-800)]">
             {showNextButton && (
-              <Button 
+              <Button
                 onClick={handleNext}
                 className="w-[var(--width-authforms)]"
                 disabled={bookingState.isBookingInProgress}

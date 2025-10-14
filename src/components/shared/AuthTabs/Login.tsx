@@ -5,22 +5,22 @@ import { Button } from "@/components/ui/button";
 import { GoogleIcon } from "../IconComponents";
 import { InputForm } from "./InputForm";
 import { FaApple } from "react-icons/fa";
+import { useGoogleAuth } from "@/hooks/auth/useGoogleAuth";
 
 interface LoginProps {
   onSwitchToSignup: () => void;
   onSwitchToForgot: () => void;
-  onGoogleAuth: () => Promise<void>;
-  isGoogleLoading: boolean;
   onComplete: () => void;
 }
 
 export const Login: React.FC<LoginProps> = ({ 
   onSwitchToSignup,
   onSwitchToForgot,
-  onGoogleAuth, 
-  isGoogleLoading,
   onComplete
 }) => {
+
+  const { isGoogleLoading, handleGoogleAuth } = useGoogleAuth(onComplete);
+
   return (
     <div className="flex flex-col bg-surface gap-[var(--spacing-1000)] p-[var(--spacing-600)] items-center w-full">
       {/* Header */}
@@ -60,7 +60,7 @@ export const Login: React.FC<LoginProps> = ({
         <Button 
           variant="outline"
           className="w-[var(--width-authbuttons)] flex items-center gap-[var(--spacing-200)]"
-          onClick={onGoogleAuth}
+          onClick={handleGoogleAuth}
           disabled={isGoogleLoading}
         >
           <GoogleIcon className="icon-size-s" />
