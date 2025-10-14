@@ -31,7 +31,7 @@ export default async function ExperiencePage({ params }: { params: Promise<{ id:
         <section className="items-center justify-center">
           <Link href="/experiencepage">
               <Button
-                variant="outline-yellow"
+                variant="outlineYellow"
                 size="custom"
                 className="px-[var(--spacing-400)] py-[var(--spacing-300)] gap-[var(--spacing-200)]"
               >
