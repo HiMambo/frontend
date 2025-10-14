@@ -1,6 +1,6 @@
 'use client'
 import { useEffect } from 'react';
-import { AuthForm } from './AuthForm';
+import { AuthFlow } from '../AuthFlow/AuthFlow';
 import { PaymentForm } from './PaymentForm';
 import { SlotSelector } from './SlotSelector';
 import { StepWrapper } from './StepWrapper';
@@ -49,8 +49,8 @@ export default function BookingFlow() {
             onNext={() => handleNext(steps.step)}
             onBack={handleBack}     
           >
-            {steps.component === "AuthForm" ? (
-              <AuthForm onComplete={() => handleNext(steps.step)} />
+            {steps.component === "AuthFlow" ? (
+              <AuthFlow onComplete={() => handleNext(steps.step)} />
             ) : (
               <StepComponent />
             )}

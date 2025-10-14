@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { CheckedIcon, GoogleIcon, NotCheckedIcon } from "../IconComponents";
+import { CheckedIcon, GoogleIcon, NotCheckedIcon } from "@/components/shared/IconComponents"
 import { InputForm } from "./InputForm";
 import { FaApple } from "react-icons/fa";
 import { ChevronDown } from "lucide-react";

@@ -1,21 +1,21 @@
 'use client';
 import { useState } from 'react';
-import { Login } from '../shared/AuthTabs/Login';
-import { SignUp } from '../shared/AuthTabs/SignUp';
-import { ForgotPassword } from '../shared/AuthTabs/ForgotPassword';
+import { Login } from './AuthTabs/Login';
+import { SignUp } from './AuthTabs/SignUp';
+import { ForgotPassword } from './AuthTabs/ForgotPassword';
 import { useCheckSession } from '@/hooks/auth/useCheckSession';
 
-interface AuthFormProps {
+interface AuthFlowProps {
   onComplete: () => void;
   initialView?: 'signup' | 'login';
   autoCheckSession?: boolean;
 }
 
-export function AuthForm({ 
+export function AuthFlow({ 
   onComplete, 
   initialView = 'signup',
   autoCheckSession = true
-}: AuthFormProps) {
+}: AuthFlowProps) {
   const [activeView, setActiveView] = useState<'signup' | 'login' | 'forgot'>(initialView);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthForm } from "@/components/PaymentPage/AuthForm";
+import { AuthFlow } from "./AuthFlow";
 import { X } from "lucide-react";
 
 interface AuthModalProps {
@@ -51,7 +51,7 @@ export function AuthModal({
 
         {/* Auth Flow */}
         <div>
-          <AuthForm
+          <AuthFlow
             onComplete={handleAuthComplete}
             initialView={initialView}
             autoCheckSession={false}

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AuthModal } from "../AuthTabs/AuthModal";
+import { AuthModal } from "@/components/AuthFlow/AuthModal";
 
 export default function AuthButtons() {
   const [showAuthModal, setShowAuthModal] = useState(false);

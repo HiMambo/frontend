@@ -9,7 +9,7 @@ export const STEP_DEFINITIONS = [
     label: 'Login',
     title: 'Step 1: Log In',
     completedTitle: 'Logged In',
-    component: 'AuthForm',
+    component: 'AuthFlow',
     showBackButton: false,
     showNextButton: false,
   },

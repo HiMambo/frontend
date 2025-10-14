@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { GoogleIcon } from "../IconComponents";
+import { GoogleIcon } from "../../shared/IconComponents";
 import { InputForm } from "./InputForm";
 import { FaApple } from "react-icons/fa";
 import { useGoogleAuth } from "@/hooks/auth/useGoogleAuth";
