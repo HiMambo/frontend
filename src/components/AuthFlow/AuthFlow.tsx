@@ -1,24 +1,21 @@
 'use client';
-import { useState } from 'react';
+
 import { Login } from './AuthTabs/Login';
 import { SignUp } from './AuthTabs/SignUp';
 import { ForgotPassword } from './AuthTabs/ForgotPassword';
 import { useCheckSession } from '@/hooks/auth/useCheckSession';
+import { useAuth } from '@/context/AuthContext';
+import { ResetPassword } from './AuthTabs/ResetPassword';
+import { Success } from './AuthTabs/Success';
 
 interface AuthFlowProps {
-  onComplete: () => void;
-  initialView?: 'signup' | 'login';
   autoCheckSession?: boolean;
 }
 
 export function AuthFlow({ 
-  onComplete, 
-  initialView = 'signup',
   autoCheckSession = true
 }: AuthFlowProps) {
-  const [activeView, setActiveView] = useState<'signup' | 'login' | 'forgot'>(initialView);
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
-
+  const {activeView, onComplete } = useAuth();
   const isCheckingAuth = useCheckSession(onComplete, autoCheckSession);
 
   // Show loading state while checking authentication
@@ -35,25 +32,11 @@ export function AuthFlow({
 
   return (
     <div className="w-[var(--width-authscreen)]">
-      {activeView === 'signup' ? (
-        <SignUp
-          onSwitchToLogin={() => setActiveView('login')}
-          acceptedTerms={acceptedTerms}
-          setAcceptedTerms={setAcceptedTerms}
-          onComplete={onComplete}
-        />
-      ) : activeView === 'login' ? (
-        <Login
-          onSwitchToSignup={() => setActiveView('signup')}
-          onSwitchToForgot={() => setActiveView('forgot')}
-          onComplete={onComplete}
-        />
-      ) : (
-        <ForgotPassword
-          onSwitchToSignup={() => setActiveView('signup')}
-          onSwitchToLogin={() => setActiveView('login')}
-        />
-      )}
+      {activeView === 'signup' && <SignUp />}
+      {activeView === 'login' && <Login />}
+      {activeView === 'forgot' && <ForgotPassword />}
+      {activeView === 'reset' && <ResetPassword />}
+      {activeView === 'success' && <Success />}
     </div>
   );
 }

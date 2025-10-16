@@ -3,16 +3,12 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { InputForm } from "./InputForm";
+import { useAuth } from "@/context/AuthContext";
 
-interface ForgotPasswordProps {
-  onSwitchToSignup: () => void;
-  onSwitchToLogin: () => void;
-}
+export const ForgotPassword: React.FC = () => {
 
-export const ForgotPassword: React.FC<ForgotPasswordProps> = ({
-  onSwitchToSignup,
-  onSwitchToLogin
-}) => {
+  const { formData, updateFormData, setActiveView } = useAuth();
+
   return (
     <div className="flex flex-col bg-surface gap-[var(--spacing-800)] p-[var(--spacing-600)] items-center w-full">
       {/* Header */}
@@ -26,20 +22,29 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({
       </p>
 
       {/* Form */}
-      <InputForm formLabel="Email" />
+      <InputForm 
+        formLabel="Email"
+        value={formData.forgot.email}
+        onChange={(val) => updateFormData("forgot", "email", val)}
+      />
 
       {/* Submit */}
-      <Button className="w-[var(--width-authforms)]">Reset Password</Button>
+      <Button 
+        className="w-[var(--width-authforms)]"
+        onClick={() => setActiveView('reset')}
+      >
+        Reset Password
+      </Button>
 
       {/* Links: forgot + signup */}
       <div className="flex flex-col gap-[var(--spacing-300)] items-center">
         <div className="flex items-center body-m gap-2">
           <span className="text-tertiary">Remember your password?</span>
-          <button className="text-primary hover:text-[var(--terracotta-600)] hover:underline hover:cursor-pointer" onClick={onSwitchToLogin}>Log in</button>
+          <button className="text-primary hover:text-[var(--terracotta-600)] hover:underline hover:cursor-pointer" onClick={() => setActiveView("login")}>Log in</button>
         </div>
         <div className="flex items-center body-m gap-2">
           <span className="text-tertiary">Don’t have an account?</span>
-          <button className="text-primary hover:text-[var(--terracotta-600)] hover:underline hover:cursor-pointer" onClick={onSwitchToSignup}>Sign up</button>
+          <button className="text-primary hover:text-[var(--terracotta-600)] hover:underline hover:cursor-pointer" onClick={() => setActiveView("signup")}>Sign up</button>
         </div>
       </div>
     </div>

@@ -6,19 +6,11 @@ import { GoogleIcon } from "../../shared/IconComponents";
 import { InputForm } from "./InputForm";
 import { FaApple } from "react-icons/fa";
 import { useGoogleAuth } from "@/hooks/auth/useGoogleAuth";
+import { useAuth } from "@/context/AuthContext";
 
-interface LoginProps {
-  onSwitchToSignup: () => void;
-  onSwitchToForgot: () => void;
-  onComplete: () => void;
-}
+export const Login: React.FC = () => {
 
-export const Login: React.FC<LoginProps> = ({ 
-  onSwitchToSignup,
-  onSwitchToForgot,
-  onComplete
-}) => {
-
+  const { formData, updateFormData, setActiveView, onComplete } = useAuth();
   const { isGoogleLoading, handleGoogleAuth } = useGoogleAuth(onComplete);
 
   return (
@@ -30,8 +22,17 @@ export const Login: React.FC<LoginProps> = ({
 
       {/* Form fields */}
       <div className="flex flex-col gap-[var(--spacing-800)] items-center w-full">
-        <InputForm formLabel="Login" />
-        <InputForm formLabel="Password" contentHidden />
+        <InputForm 
+          formLabel="Login" 
+          value={formData.login.email}
+          onChange={(val) => updateFormData("login", "email", val)}
+        />
+        <InputForm 
+          formLabel="Password" 
+          contentHidden 
+          value={formData.login.password}
+          onChange={(val) => updateFormData("login", "password", val)}
+        />
       </div>
 
       {/* Submit */}
@@ -39,10 +40,10 @@ export const Login: React.FC<LoginProps> = ({
 
       {/* Links: forgot + signup */}
       <div className="flex flex-col gap-[var(--spacing-600)] items-center text-primary body-m">
-        <button className="text-primary hover:text-[var(--terracotta-600)] hover:underline hover:cursor-pointer" onClick={onSwitchToForgot}>Forgot your password?</button>
+        <button className="text-primary hover:text-[var(--terracotta-600)] hover:underline hover:cursor-pointer" onClick={() => setActiveView("forgot")}>Forgot your password?</button>
         <div className="flex gap-2">
           <span className="text-tertiary">Don’t have an account?</span>
-          <button className="text-primary hover:text-[var(--terracotta-600)] hover:underline hover:cursor-pointer" onClick={onSwitchToSignup}>Sign up</button>
+          <button className="text-primary hover:text-[var(--terracotta-600)] hover:underline hover:cursor-pointer" onClick={() => setActiveView("signup")}>Sign up</button>
         </div>
       </div>
 

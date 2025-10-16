@@ -7,21 +7,11 @@ import { InputForm } from "./InputForm";
 import { FaApple } from "react-icons/fa";
 import { ChevronDown } from "lucide-react";
 import { useGoogleAuth } from "@/hooks/auth/useGoogleAuth";
+import { useAuth } from "@/context/AuthContext";
 
-interface SignUpProps {
-  onSwitchToLogin: () => void;
-  acceptedTerms: boolean;
-  setAcceptedTerms: (accepted: boolean) => void;
-  onComplete: () => void;
-}
+export const SignUp: React.FC = () => {
 
-export const SignUp: React.FC<SignUpProps> = ({ 
-  onSwitchToLogin, 
-  acceptedTerms,
-  setAcceptedTerms,
-  onComplete,
-}) => {
-
+  const { formData, updateFormData, setActiveView, onComplete } = useAuth();
   const { isGoogleLoading, handleGoogleAuth } = useGoogleAuth(onComplete);
 
   return (
@@ -34,12 +24,29 @@ export const SignUp: React.FC<SignUpProps> = ({
       {/* Form fields */}
       <div className="grid grid-cols-2 gap-[var(--spacing-800)] w-full">
         {/* Row 1 */}
-        <InputForm formLabel="First Name *" />
-        <InputForm formLabel="Last Name *" />
+        <InputForm 
+          formLabel="First Name *" 
+          value={formData.signup.firstName}
+          onChange={(val) => updateFormData("signup", "firstName", val)}
+        />
+        <InputForm 
+          formLabel="Last Name *" 
+          value={formData.signup.lastName}
+          onChange={(val) => updateFormData("signup", "lastName", val)}
+        />
 
         {/* Row 2 */}
-        <InputForm formLabel="Email *" />
-        <InputForm formLabel="Set password *" contentHidden />
+        <InputForm 
+          formLabel="Email *" 
+          value={formData.signup.email}
+          onChange={(val) => updateFormData("signup", "email", val)}
+        />
+        <InputForm 
+          formLabel="Set password *"
+          contentHidden 
+          value={formData.signup.password}
+          onChange={(val) => updateFormData("signup", "password", val)}
+        />
 
         {/* Row 3 */}
         <div className="relative">
@@ -56,15 +63,15 @@ export const SignUp: React.FC<SignUpProps> = ({
         <div className="flex items-center gap-[var(--spacing-200)]">
           <div 
             className="icon-size-s text-primary flex-shrink-0 cursor-pointer"
-            onClick={() => setAcceptedTerms(!acceptedTerms)}
+            onClick={() => updateFormData('signup', 'acceptedTerms', !formData.signup.acceptedTerms)}
           >
-            {acceptedTerms? (
+            {formData.signup.acceptedTerms? (
               <CheckedIcon className="w-full h-full" />
             ) : (
               <NotCheckedIcon className="w-full h-full" />
             )}
           </div>
-          <label className="body-m text-tertiary cursor-pointer" onClick={() => setAcceptedTerms(!acceptedTerms)}>
+          <label className="body-m text-tertiary cursor-pointer">
             I have read & accept the <a href="#" className="underline">Terms of Service</a> and the <a href="#" className="underline">Privacy Policy</a>
           </label>
         </div>
@@ -76,7 +83,7 @@ export const SignUp: React.FC<SignUpProps> = ({
       {/* Or log in */}
       <div className="flex items-center text-primary body-m gap-2">
         <span className="text-tertiary">Already have an account?</span>
-        <button className="text-primary hover:text-[var(--terracotta-600)] hover:underline hover:cursor-pointer" onClick={onSwitchToLogin}>Log in</button>
+        <button className="text-primary hover:text-[var(--terracotta-600)] hover:underline hover:cursor-pointer" onClick={() => setActiveView("login")}>Log in</button>
       </div>
 
       {/* Divider + Google Sign Up */}

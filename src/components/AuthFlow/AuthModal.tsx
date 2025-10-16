@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthProvider } from "@/context/AuthContext";
 import { AuthFlow } from "./AuthFlow";
 import { X } from "lucide-react";
 
@@ -51,11 +52,14 @@ export function AuthModal({
 
         {/* Auth Flow */}
         <div>
-          <AuthFlow
+          <AuthProvider
             onComplete={handleAuthComplete}
             initialView={initialView}
-            autoCheckSession={false}
-          />
+          >
+            <AuthFlow
+              autoCheckSession={false}
+            />
+          </AuthProvider>
         </div>
       </div>
     </div>

@@ -9,6 +9,8 @@ interface InputFormProps {
   width?: string;
   contentHidden?: boolean;
   className?: string;
+  value: string;
+  onChange: (value: string) => void;
 }
 
 export const InputForm: React.FC<InputFormProps> = ({
@@ -17,6 +19,8 @@ export const InputForm: React.FC<InputFormProps> = ({
   width = "w-full max-w-[var(--width-authforms)]",
   contentHidden = false,
   className = "",
+  value,
+  onChange,
 }) => {
   const [showContent, setShowContent] = useState(!contentHidden);
 
@@ -29,6 +33,8 @@ export const InputForm: React.FC<InputFormProps> = ({
       <div className="relative">
         <input
           type={showContent ? "text" : "password"}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           className={`w-full bg-white body-m text-tertiary h-[var(--height-input)] px-[var(--spacing-600)] py-[var(--spacing-400)] rounded-300 focus:outline-none`}
         />
 

@@ -3,8 +3,12 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { InputForm } from "./InputForm";
+import { useAuth } from "@/context/AuthContext";
 
 export const ResetPassword: React.FC = () => {
+  
+  const { formData, updateFormData, setActiveView } = useAuth();
+
   return (
     <div className="flex flex-col bg-surface gap-[var(--spacing-800)] p-[var(--spacing-600)] items-center">
       {/* Header */}
@@ -19,12 +23,28 @@ export const ResetPassword: React.FC = () => {
 
       {/* Input Forms */}
       <div className="flex flex-col gap-[var(--spacing-800)] items-center w-full">
-        <InputForm formLabel="New password" contentHidden />
-        <InputForm formLabel="Confirm new password" contentHidden />
+        <InputForm 
+          formLabel="New password"
+          contentHidden 
+          value={formData.reset.password}
+          onChange={(val) => updateFormData("reset", "password", val)}
+        />
+        <InputForm 
+          formLabel="Confirm new password" 
+          contentHidden 
+          value={formData.reset.confirm}
+          onChange={(val) => updateFormData("reset", "confirm", val)}
+        />
       </div>
 
       {/* Submit */}
-      <Button className="w-[var(--width-authforms)]">Reset Password</Button>
+      <Button 
+        className="w-[var(--width-authforms)]"
+        onClick={() => setActiveView('success')}
+      >
+        Reset Password
+      </Button>
+      
     </div>
   );
 };
