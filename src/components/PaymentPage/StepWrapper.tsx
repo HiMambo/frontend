@@ -2,7 +2,7 @@
 import React, { ReactNode, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useBooking } from '@/context/BookingContext';
-import { useSteps, type StepStatus } from '@/context/BookingStepsContext';
+import { useSteps, type StepStatus } from '@/context/StepContext';
 import { AlertCircle } from 'lucide-react';
 
 interface StepWrapperProps {

@@ -9,7 +9,7 @@ import BookingSummary from "@/components/PaymentPage/BookingSummary";
 import BookingFlow from "@/components/PaymentPage/BookingFlow";
 import { useBooking } from '@/context/BookingContext';
 import { useSearch } from '@/context/SearchContext';
-import { StepProvider } from "@/context/BookingStepsContext";
+import { StepProvider } from "@/context/StepContext";
 import { BOOKING_STEP_DEFINITIONS } from "@/lib/bookingSteps";
 import { Button } from '@/components/ui/button';
 import { ChevronLeftDuo } from '@/components/shared/IconComponents';

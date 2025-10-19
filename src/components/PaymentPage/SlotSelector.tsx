@@ -1,5 +1,5 @@
 import { useExperienceSlots } from "@/hooks/useExperienceSlots";
-import { useSteps } from "@/context/BookingStepsContext";
+import { useSteps } from "@/context/StepContext";
 import { useBooking } from "@/context/BookingContext";
 import { Check, X } from "lucide-react";
 import { format, parseISO } from "date-fns";

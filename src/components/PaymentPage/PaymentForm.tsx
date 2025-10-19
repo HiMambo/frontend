@@ -6,7 +6,7 @@ import { Input } from "../ui/input";
 import { CreditCardForm } from "./CreditCardForm";
 import CryptoPayment from "./CryptoPayment";
 import { useBooking } from "@/context/BookingContext";
-import { useSteps } from "@/context/BookingStepsContext";
+import { useSteps } from "@/context/StepContext";
 
 export function PaymentForm() {
   const [showCryptoPayment, setShowCryptoPayment] = useState(false);

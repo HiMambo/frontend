@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { type StepStatus, useSteps } from "@/context/BookingStepsContext";
+import { type StepStatus, useSteps } from "@/context/StepContext";
 
 export default function ProgressBar() {
   const { getStepStatus, completedSteps, steps, canGoToStep, goToStep } = useSteps();

@@ -3,12 +3,13 @@ Future considerations:
 -Add a dependencies field to StepDefinition to specify which steps must be completed before a step becomes open.
 -Make validation step-specific by storing isValid and validationError per step in the StepState.
 */
+
 "use client";
 
 import { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react';
 
 const flowCompleteSentinel = -1;
-// Generic types
+
 export type StepNumber = number;
 export type StepStatus = 'completed' | 'active' | 'open' | 'revisited' | 'pending';
 

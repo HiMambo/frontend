@@ -5,7 +5,7 @@ import { PaymentForm } from './PaymentForm';
 import { SlotSelector } from './SlotSelector';
 import { StepWrapper } from './StepWrapper';
 import { useBooking } from '@/context/BookingContext';
-import { useSteps } from '@/context/BookingStepsContext';
+import { useSteps } from '@/context/StepContext';
 import { Success } from './Success';
 import { AuthProvider } from '@/context/AuthContext';
 

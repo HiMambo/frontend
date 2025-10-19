@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from '../ui/input';
 import { useEffect } from "react";
 import { type Guest, useBooking, } from "@/context/BookingContext";
-import { useSteps } from "@/context/BookingStepsContext";
+import { useSteps } from "@/context/StepContext";
 
 export function GuestForm() {
   const { bookingState, setGuests, updateGuestDetails } = useBooking();
