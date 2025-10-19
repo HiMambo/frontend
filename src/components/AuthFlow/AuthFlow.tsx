@@ -3,10 +3,10 @@
 import { Login } from './AuthTabs/Login';
 import { SignUp } from './AuthTabs/SignUp';
 import { ForgotPassword } from './AuthTabs/ForgotPassword';
-import { useCheckSession } from '@/hooks/auth/useCheckSession';
-import { useAuth } from '@/context/AuthContext';
 import { ResetPassword } from './AuthTabs/ResetPassword';
 import { Success } from './AuthTabs/Success';
+import { useCheckSession } from '@/hooks/auth/useCheckSession';
+import { useAuth } from '@/context/AuthContext';
 
 interface AuthFlowProps {
   autoCheckSession?: boolean;
