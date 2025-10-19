@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from '../ui/input';
 import { useEffect } from "react";
 import { type Guest, useBooking, } from "@/context/BookingContext";
-import { useBookingSteps } from "@/context/BookingStepsContext";
+import { useSteps } from "@/context/BookingStepsContext";
 
 export function GuestForm() {
   const { bookingState, setGuests, updateGuestDetails } = useBooking();
-  const { setIsValid, setValidationError } = useBookingSteps();
+  const { setIsValid, setValidationError } = useSteps();
 
   const guests = bookingState.guests;
   const guestDetails = bookingState.guestDetails;

@@ -1,8 +1,8 @@
 import { Check } from "lucide-react";
-import { type StepStatus, useBookingSteps } from "@/context/BookingStepsContext";
+import { type StepStatus, useSteps } from "@/context/BookingStepsContext";
 
 export default function ProgressBar() {
-  const { getStepStatus, completedSteps, steps, canGoToStep, goToStep } = useBookingSteps();
+  const { getStepStatus, completedSteps, steps, canGoToStep, goToStep } = useSteps();
 
   const totalSteps = steps.length;
   const totalWidth = (totalSteps - 1) / totalSteps;

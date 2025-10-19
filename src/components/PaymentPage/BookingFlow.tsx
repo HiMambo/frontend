@@ -5,13 +5,13 @@ import { PaymentForm } from './PaymentForm';
 import { SlotSelector } from './SlotSelector';
 import { StepWrapper } from './StepWrapper';
 import { useBooking } from '@/context/BookingContext';
-import { useBookingSteps, STEP_DEFINITIONS } from '@/context/BookingStepsContext';
+import { useSteps } from '@/context/BookingStepsContext';
 import { Success } from './Success';
 import { AuthProvider } from '@/context/AuthContext';
 
 export default function BookingFlow() {
   const { bookingState, cartExperience, setSelectedSlot } = useBooking();
-  const { getStepStatus, currentStep, resetSteps, markStepComplete, goToNextStep, goToPreviousStep } = useBookingSteps();
+  const { steps, flowCompleteSentinel, getStepStatus, currentStep, resetSteps, markStepComplete, goToNextStep, goToPreviousStep } = useSteps();
 
   const handleNext = (stepNumber: number) => {
     markStepComplete(stepNumber);
@@ -42,7 +42,7 @@ export default function BookingFlow() {
       initialView="signup"
     >
       <div className="transition-all duration-500">
-        {STEP_DEFINITIONS.map((steps) => {
+        {steps.map((steps) => {
           const StepComponent = componentMap[steps.component];
           return (
             <StepWrapper
@@ -61,7 +61,7 @@ export default function BookingFlow() {
         })}
 
         {/* Confirmation */}
-        {currentStep === -1 && !bookingState.isBookingInProgress && (
+        {currentStep === flowCompleteSentinel && !bookingState.isBookingInProgress && (
           <Success />
         )}
       </div>

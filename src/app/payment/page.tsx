@@ -9,7 +9,8 @@ import BookingSummary from "@/components/PaymentPage/BookingSummary";
 import BookingFlow from "@/components/PaymentPage/BookingFlow";
 import { useBooking } from '@/context/BookingContext';
 import { useSearch } from '@/context/SearchContext';
-import { BookingStepsProvider } from "@/context/BookingStepsContext";
+import { StepProvider } from "@/context/BookingStepsContext";
+import { BOOKING_STEP_DEFINITIONS } from "@/lib/bookingSteps";
 import { Button } from '@/components/ui/button';
 import { ChevronLeftDuo } from '@/components/shared/IconComponents';
 import { FAQ } from '@/components/shared/FAQ';
@@ -35,7 +36,7 @@ export default function PaymentPage() {
 return (
   <>
     <Header />
-    <BookingStepsProvider>
+    <StepProvider stepDefinitions={BOOKING_STEP_DEFINITIONS}>
       <main className="flex flex-col gap-[var(--spacing-1600)] py-[var(--spacing-800)] px-[var(--spacing-2400)] bg-surface">
         {/* === Top Section === */}
         <section className="items-center justify-center">
@@ -60,7 +61,7 @@ return (
         {/* === FAQ Section === */}
         <FAQ />
       </main>
-    </BookingStepsProvider>
+    </StepProvider>
     <Footer />
   </>
 );

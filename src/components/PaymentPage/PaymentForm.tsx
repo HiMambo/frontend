@@ -6,13 +6,13 @@ import { Input } from "../ui/input";
 import { CreditCardForm } from "./CreditCardForm";
 import CryptoPayment from "./CryptoPayment";
 import { useBooking } from "@/context/BookingContext";
-import { useBookingSteps } from "@/context/BookingStepsContext";
+import { useSteps } from "@/context/BookingStepsContext";
 
 export function PaymentForm() {
   const [showCryptoPayment, setShowCryptoPayment] = useState(false);
   const [paymentInProgress, setPaymentInProgress] = useState(false);
   const { basePriceDiscount, setBasePriceDiscount, payment_type, setPaymentType, CRYPTO_DISCOUNT } = useBooking();
-  const { markStepComplete, goToNextStep, goToPreviousStep } = useBookingSteps();
+  const { markStepComplete, goToNextStep, goToPreviousStep } = useSteps();
   const [promoCode, setPromoCode] = useState("");
   const [error, setError] = useState<string | null>(null);
 

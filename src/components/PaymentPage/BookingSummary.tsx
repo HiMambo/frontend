@@ -9,11 +9,11 @@ import LocationDisplay from "../ExperienceCard/LocationDisplay";
 import { format } from "date-fns";
 import { StarRating } from "../ExperienceCard/StarRating";
 import { BadgeCheck, CalendarCheck, Clock, Minus, Plus, Timer, Users } from "lucide-react";
-import { useBookingSteps } from "@/context/BookingStepsContext";
+import { useSteps } from "@/context/BookingStepsContext";
 
 const BookingSummary: React.FC = () => {
   const { bookingState, setGuests, cartExperience, priceBreakdown, isHydrated } = useBooking();
-  const { currentStep } = useBookingSteps();
+  const { currentStep } = useSteps();
 
   // Component mount and data check
   useEffect(() => {

@@ -2,7 +2,7 @@
 import React, { ReactNode, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useBooking } from '@/context/BookingContext';
-import { useBookingSteps, type StepStatus } from '@/context/BookingStepsContext';
+import { useSteps, type StepStatus } from '@/context/BookingStepsContext';
 import { AlertCircle } from 'lucide-react';
 
 interface StepWrapperProps {
@@ -27,7 +27,7 @@ export const StepWrapper = ({
   onBack,
 }: StepWrapperProps) => {
   const { bookingState } = useBooking();
-  const { validationError, isValid } = useBookingSteps();
+  const { validationError, isValid } = useSteps();
   const [hasAttemptedNext, setHasAttemptedNext] = useState(false);
 
   const handleNext = () => {
@@ -73,6 +73,7 @@ export const StepWrapper = ({
                 onClick={handleNext}
                 className="w-[var(--width-authforms)]"
                 disabled={bookingState.isBookingInProgress}
+                aria-label={nextButtonText}
               >
                 {nextButtonText}
               </Button>
@@ -83,6 +84,7 @@ export const StepWrapper = ({
                 variant="outline"
                 className="w-[var(--width-authforms)]"
                 disabled={bookingState.isBookingInProgress}
+                aria-label={backButtonText}
               >
                 {backButtonText}
               </Button>

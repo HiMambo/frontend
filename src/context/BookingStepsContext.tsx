@@ -1,46 +1,19 @@
+/*
+Future considerations:
+-Add a dependencies field to StepDefinition to specify which steps must be completed before a step becomes open.
+-Make validation step-specific by storing isValid and validationError per step in the StepState.
+*/
 "use client";
 
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react';
 
-// Centralized step definitions
-export const STEP_DEFINITIONS = [
-  {
-    step: 1,
-    label: 'Login',
-    title: 'Step 1: Log In',
-    completedTitle: 'Logged In',
-    component: 'AuthFlow',
-    showBackButton: false,
-    showNextButton: false,
-  },
-  {
-    step: 2,
-    label: 'Slots',
-    title: 'Step 2: Select Time Slot',
-    completedTitle: 'Time Slot Selected',
-    component: 'SlotSelector',
-    showBackButton: false,
-    showNextButton: true,
-    backButtonText: '',
-    nextButtonText: 'Continue to Payment Details',
-  },
-  {
-    step: 3,
-    label: 'Payment',
-    title: 'Step 3: Payment',
-    completedTitle: 'Payment Successful',
-    component: 'PaymentForm',
-    showBackButton: false,
-    showNextButton: false,
-  },
-];
-
-// Extract step numbers and append all steps complete sentinel value (-1)
-export type BookingStep = typeof STEP_DEFINITIONS[number]['step'] | -1;
+const flowCompleteSentinel = -1;
+// Generic types
+export type StepNumber = number;
 export type StepStatus = 'completed' | 'active' | 'open' | 'revisited' | 'pending';
 
 export interface StepDefinition {
-  step: BookingStep;
+  step: StepNumber;
   label: string;
   title: string;
   completedTitle: string;
@@ -52,42 +25,47 @@ export interface StepDefinition {
 }
 
 interface StepState {
-  currentStep: BookingStep;
-  completedSteps: Set<BookingStep>;
+  currentStep: StepNumber;
+  completedSteps: Set<StepNumber>;
   isValid: boolean;
   validationError: string | null;
 }
 
-interface BookingStepsContextType {
-  currentStep: BookingStep;
-  completedSteps: Set<BookingStep>;
+interface StepContextType {
+  currentStep: StepNumber;
+  completedSteps: Set<StepNumber>;
   isValid: boolean;
   validationError: string | null;
 
   steps: readonly StepDefinition[];
-  getStepDefinition: (step: BookingStep) => StepDefinition | undefined;
+  flowCompleteSentinel: StepNumber
+  getStepDefinition: (step: StepNumber) => StepDefinition | undefined;
 
-  canGoToStep: (step: BookingStep) => boolean;
-  goToStep: (step: BookingStep) => void;
+  canGoToStep: (step: StepNumber) => boolean;
+  goToStep: (step: StepNumber) => void;
   goToNextStep: () => void;
   goToPreviousStep: () => void;
-  markStepComplete: (step: BookingStep) => void;
-  getStepStatus: (stepNumber: BookingStep) => StepStatus;
+  markStepComplete: (step: StepNumber) => void;
+  getStepStatus: (stepNumber: StepNumber) => StepStatus;
   setIsValid: (isValid: boolean) => void;
   setValidationError: (error: string | null) => void;
 
   resetSteps: () => void;
 }
 
-const BookingStepsContext = createContext<BookingStepsContextType | undefined>(undefined);
+const StepContext = createContext<StepContextType | undefined>(undefined);
 
-export function BookingStepsProvider({ 
-  children, 
-  initialStep = STEP_DEFINITIONS[0].step,
-}: { 
+interface StepProviderProps {
   children: ReactNode;
-  initialStep?: BookingStep;
-}) {
+  stepDefinitions: readonly StepDefinition[];
+}
+
+export function StepProvider({ 
+  children, 
+  stepDefinitions,
+}: StepProviderProps) {
+  const initialStep = stepDefinitions[0].step;
+
   const [stepState, setStepState] = useState<StepState>({
     currentStep: initialStep,
     completedSteps: new Set(),
@@ -95,28 +73,28 @@ export function BookingStepsProvider({
     validationError: null,
   });
 
-  const getStepDefinition = useCallback((step: BookingStep) => {
-    return STEP_DEFINITIONS.find(def => def.step === step);
-  }, []);
+  const getStepDefinition = useCallback((step: StepNumber) => {
+    return stepDefinitions.find(def => def.step === step);
+  }, [stepDefinitions]);
 
-  const getNextAvailableStep = useCallback((): BookingStep => {
+  const getNextAvailableStep = useCallback((): StepNumber => {
     // Find the first step that isn't completed
-      for (const stepDef of STEP_DEFINITIONS) {
-        if (!stepState.completedSteps.has(stepDef.step)) {
-          return stepDef.step;
-        }
+    for (const stepDef of stepDefinitions) {
+      if (!stepState.completedSteps.has(stepDef.step)) {
+        return stepDef.step;
       }
-      // If all steps are completed, return the flow finished sentinel
-      return -1;
-  }, [stepState.completedSteps]);
+    }
+    // If all steps are completed, return the flow finished sentinel
+    return flowCompleteSentinel;
+  }, [stepState.completedSteps, stepDefinitions]);
 
-  const getStepStatus = useCallback((stepNumber: BookingStep): StepStatus => {
+  const getStepStatus = useCallback((stepNumber: StepNumber): StepStatus => {
     const isCompleted = stepState.completedSteps.has(stepNumber);
     const isActive = stepState.currentStep === stepNumber;
-    const isFlowFinished = stepState.currentStep === -1;
+    const isFlowFinished = stepState.currentStep === flowCompleteSentinel;
 
     // If flow is finished, all defined steps are completed
-    if (isFlowFinished && stepNumber !== -1) return 'completed';
+    if (isFlowFinished && stepNumber !== flowCompleteSentinel) return 'completed';
     
     // If currently revisiting a completed step
     if (isCompleted && isActive) return 'revisited';
@@ -135,10 +113,9 @@ export function BookingStepsProvider({
     return 'pending';
   }, [stepState.currentStep, stepState.completedSteps, getNextAvailableStep]);
 
-  const canGoToStep = useCallback((step: BookingStep) => {
-
+  const canGoToStep = useCallback((step: StepNumber) => {
     // Block step navigation when flow is finished
-    if (stepState.currentStep === -1 ) return false;
+    if (stepState.currentStep === flowCompleteSentinel) return false;
 
     // Block navigating back to login step
     if (step === 1) return false;
@@ -148,9 +125,8 @@ export function BookingStepsProvider({
     return status === 'completed' || status === 'open';
   }, [getStepStatus, stepState.currentStep]);
 
-  const goToStep = useCallback((step: BookingStep) => {
+  const goToStep = useCallback((step: StepNumber) => {
     setStepState(prev => {
-      // Allow going to first step or any step that's completed or open
       if (canGoToStep(step)) {
         return { ...prev, currentStep: step };
       }
@@ -160,7 +136,7 @@ export function BookingStepsProvider({
 
   const goToNextStep = useCallback(() => {
     setStepState(prev => {
-      const currentIndex = STEP_DEFINITIONS.findIndex(def => def.step === prev.currentStep);
+      const currentIndex = stepDefinitions.findIndex(def => def.step === prev.currentStep);
       
       // Check if current step is actually completed before advancing
       const isCurrentStepCompleted = prev.completedSteps.has(prev.currentStep);
@@ -169,28 +145,28 @@ export function BookingStepsProvider({
         return prev;
       }
 
-      const nextStep = STEP_DEFINITIONS[currentIndex + 1]?.step ?? -1; // Sentinel value when no next step exists
+      const nextStep = stepDefinitions[currentIndex + 1]?.step ?? flowCompleteSentinel; // Sentinel value when no next step exists
       console.log("Advanced from step:", prev.currentStep, "to step:", nextStep);
       return { ...prev, currentStep: nextStep };
     });
-  }, []);
+  }, [stepDefinitions]);
 
   const goToPreviousStep = useCallback(() => {
     setStepState(prev => {
-      if (prev.currentStep === -1) {
-        const lastStep = STEP_DEFINITIONS[STEP_DEFINITIONS.length - 1].step;
+      if (prev.currentStep === flowCompleteSentinel) {
+        const lastStep = stepDefinitions[stepDefinitions.length - 1].step;
         return { ...prev, currentStep: lastStep };
       }
-      const prevStep = Math.max(prev.currentStep - 1, STEP_DEFINITIONS[0].step) as BookingStep;
+      const prevStep = Math.max(prev.currentStep - 1, stepDefinitions[0].step) as StepNumber;
       console.log("Went back from step:", prev.currentStep, "to step:", prevStep);
       return { ...prev, currentStep: prevStep };
     });
-  }, []);
+  }, [stepDefinitions]);
 
-  const markStepComplete = useCallback((step: BookingStep) => {
-    if (step === -1) return; // Don't mark sentinel step as completed
+  const markStepComplete = useCallback((step: StepNumber) => {
+    if (step === flowCompleteSentinel) return; // Don't mark sentinel step as completed
 
-    const stepExists = STEP_DEFINITIONS.some(def => def.step === step); // Don't mark invalid step as complete
+    const stepExists = stepDefinitions.some(def => def.step === step); // Don't mark invalid step as complete
     if (!stepExists) {
       console.error(`Attempted to complete invalid step: ${step}`);
       return;
@@ -202,7 +178,7 @@ export function BookingStepsProvider({
       console.log(`Step: ${step} completed`);
       return { ...prev, completedSteps: newCompleted };
     });
-  }, []);
+  }, [stepDefinitions]);
 
   const setIsValid = useCallback((isValid: boolean) => {
     setStepState(prev => ({ ...prev, isValid }));
@@ -214,21 +190,22 @@ export function BookingStepsProvider({
 
   const resetSteps = useCallback(() => {
     setStepState({
-      currentStep: STEP_DEFINITIONS[0].step,
+      currentStep: initialStep,
       completedSteps: new Set(),
       isValid: true,
       validationError: null,
     });
-    console.log("Booking steps reset to initial state");
-  }, []);
+    console.log("Steps reset to initial state");
+  }, [initialStep]);
 
-  const value: BookingStepsContextType = {
+  const value: StepContextType = useMemo(() => ({
     currentStep: stepState.currentStep,
     completedSteps: stepState.completedSteps,
     isValid: stepState.isValid,
     validationError: stepState.validationError,
 
-    steps: STEP_DEFINITIONS,
+    steps: stepDefinitions,
+    flowCompleteSentinel,
     getStepDefinition,
 
     canGoToStep,
@@ -241,19 +218,32 @@ export function BookingStepsProvider({
     setValidationError,
 
     resetSteps,
-  };
+  }), [
+    stepState,
+    stepDefinitions,
+    getStepDefinition,
+    canGoToStep,
+    goToStep,
+    goToNextStep,
+    goToPreviousStep,
+    markStepComplete,
+    getStepStatus,
+    setIsValid,
+    setValidationError,
+    resetSteps,
+  ]);
 
   return (
-    <BookingStepsContext.Provider value={value}>
+    <StepContext.Provider value={value}>
       {children}
-    </BookingStepsContext.Provider>
+    </StepContext.Provider>
   );
 }
 
-export const useBookingSteps = () => {
-  const context = useContext(BookingStepsContext);
+export const useSteps = () => {
+  const context = useContext(StepContext);
   if (!context) {
-    throw new Error('useBookingSteps must be used within a BookingStepsProvider');
+    throw new Error('useSteps must be used within a StepProvider');
   }
   return context;
 };

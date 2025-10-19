@@ -1,5 +1,5 @@
 import { useExperienceSlots } from "@/hooks/useExperienceSlots";
-import { useBookingSteps } from "@/context/BookingStepsContext";
+import { useSteps } from "@/context/BookingStepsContext";
 import { useBooking } from "@/context/BookingContext";
 import { Check, X } from "lucide-react";
 import { format, parseISO } from "date-fns";
@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 export function SlotSelector() {
   const { cartExperience, bookingState, setSelectedSlot } = useBooking();
-  const { setIsValid, setValidationError } = useBookingSteps();
+  const { setIsValid, setValidationError } = useSteps();
   const { 
     availableSlots,
     unavailableSlots,
