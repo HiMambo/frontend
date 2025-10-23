@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import { useSteps } from "@/context/StepContext";
-import { InputForm } from "../AuthFlow/AuthTabs/InputForm";
+import { BrandInputForm } from "../brand/BrandInputForm";
 import { BrandCheckbox } from "../brand/BrandCheckBox";
 import { ArrowRight, Mail, Phone, User } from "lucide-react";
 import { BrandDropdownMenu } from "../brand/BrandDropdownMenu";
@@ -66,7 +66,7 @@ export default function CreateAccountForm() {
 
       <form onSubmit={submit} className="flex flex-col gap-600">
         <section className="grid grid-cols-2 gap-800 relative">
-          <InputForm
+          <BrandInputForm
             width="w-full"
             formLabel="Full Name *"
             formLabelClassName="body-s text-tertiary"
@@ -74,7 +74,7 @@ export default function CreateAccountForm() {
             onChange={(e) => updateFormData("fullName", e)}
             icon={<User/>}
           />
-          <InputForm
+          <BrandInputForm
             width="w-full"
             formLabel="Phone Number *"
             formLabelClassName="body-s text-tertiary"
@@ -82,7 +82,7 @@ export default function CreateAccountForm() {
             onChange={(e) => updateFormData("phone", e)}
             icon={<Phone/>}
           />
-          <InputForm
+          <BrandInputForm
             width="w-full"
             formLabel="Email *"
             formLabelClassName="body-s text-tertiary"
@@ -97,7 +97,7 @@ export default function CreateAccountForm() {
             value={formData.role}
             onChange={(e) => updateFormData("role", e as string)}
           />
-          <InputForm
+          <BrandInputForm
             contentHidden
             width="w-full"
             formLabel="Password *"
@@ -105,7 +105,7 @@ export default function CreateAccountForm() {
             value={formData.password}
             onChange={(e) => updateFormData("password", e)}
           />
-          <InputForm
+          <BrandInputForm
             contentHidden
             width="w-full"
             formLabel="Confirm Password *"

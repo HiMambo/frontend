@@ -3,7 +3,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { GoogleIcon } from "../../shared/IconComponents";
-import { InputForm } from "./InputForm";
+import { BrandInputForm } from "../../brand/BrandInputForm";
 import { FaApple } from "react-icons/fa";
 import { useGoogleAuth } from "@/hooks/auth/useGoogleAuth";
 import { useAuth } from "@/context/AuthContext";
@@ -22,12 +22,12 @@ export const Login: React.FC = () => {
 
       {/* Form fields */}
       <div className="flex flex-col gap-[var(--spacing-800)] items-center w-full">
-        <InputForm 
+        <BrandInputForm 
           formLabel="Login" 
           value={formData.login.email}
           onChange={(val) => updateFormData("login", "email", val)}
         />
-        <InputForm 
+        <BrandInputForm 
           formLabel="Password" 
           contentHidden 
           value={formData.login.password}

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { InputForm } from "./InputForm";
+import { BrandInputForm } from "../../brand/BrandInputForm";
 import { useAuth } from "@/context/AuthContext";
 
 export const ResetPassword: React.FC = () => {
@@ -23,13 +23,13 @@ export const ResetPassword: React.FC = () => {
 
       {/* Input Forms */}
       <div className="flex flex-col gap-[var(--spacing-800)] items-center w-full">
-        <InputForm 
+        <BrandInputForm 
           formLabel="New password"
           contentHidden 
           value={formData.reset.password}
           onChange={(val) => updateFormData("reset", "password", val)}
         />
-        <InputForm 
+        <BrandInputForm 
           formLabel="Confirm new password" 
           contentHidden 
           value={formData.reset.confirm}

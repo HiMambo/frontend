@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { InputForm } from "./InputForm";
+import { BrandInputForm } from "../../brand/BrandInputForm";
 import { useAuth } from "@/context/AuthContext";
 
 export const ForgotPassword: React.FC = () => {
@@ -22,7 +22,7 @@ export const ForgotPassword: React.FC = () => {
       </p>
 
       {/* Form */}
-      <InputForm 
+      <BrandInputForm 
         formLabel="Email"
         value={formData.forgot.email}
         onChange={(val) => updateFormData("forgot", "email", val)}

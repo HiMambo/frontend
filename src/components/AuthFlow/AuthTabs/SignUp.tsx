@@ -3,7 +3,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { CheckedIcon, GoogleIcon, NotCheckedIcon } from "@/components/shared/IconComponents"
-import { InputForm } from "./InputForm";
+import { BrandInputForm } from "../../brand/BrandInputForm";
 import { FaApple } from "react-icons/fa";
 import { ChevronDown } from "lucide-react";
 import { useGoogleAuth } from "@/hooks/auth/useGoogleAuth";
@@ -24,24 +24,24 @@ export const SignUp: React.FC = () => {
       {/* Form fields */}
       <div className="grid grid-cols-2 gap-[var(--spacing-800)] w-full">
         {/* Row 1 */}
-        <InputForm 
+        <BrandInputForm 
           formLabel="First Name *" 
           value={formData.signup.firstName}
           onChange={(val) => updateFormData("signup", "firstName", val)}
         />
-        <InputForm 
+        <BrandInputForm 
           formLabel="Last Name *" 
           value={formData.signup.lastName}
           onChange={(val) => updateFormData("signup", "lastName", val)}
         />
 
         {/* Row 2 */}
-        <InputForm 
+        <BrandInputForm 
           formLabel="Email *" 
           value={formData.signup.email}
           onChange={(val) => updateFormData("signup", "email", val)}
         />
-        <InputForm 
+        <BrandInputForm 
           formLabel="Set password *"
           contentHidden 
           value={formData.signup.password}

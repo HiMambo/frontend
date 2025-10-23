@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-interface InputFormProps {
+interface BrandInputFormProps {
   formLabel: string;
   formLabelClassName?: string;
   width?: string;
@@ -15,7 +15,7 @@ interface InputFormProps {
   placeholder?: string;
 }
 
-export const InputForm: React.FC<InputFormProps> = ({
+export const BrandInputForm: React.FC<BrandInputFormProps> = ({
   formLabel,
   formLabelClassName = "body-s text-disabled",
   width = "w-full max-w-[var(--width-authforms)]",

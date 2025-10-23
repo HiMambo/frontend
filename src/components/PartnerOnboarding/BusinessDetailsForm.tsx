@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useSteps } from "@/context/StepContext";
 import { useState } from "react";
-import { InputForm } from "../AuthFlow/AuthTabs/InputForm";
+import { BrandInputForm } from "../brand/BrandInputForm";
 import { ArrowRight, CalendarCheck2, Globe, MapPin, Store } from "lucide-react";
 import { BrandMultiLineInput } from "../brand/BrandMultiLineInput";
 import { BrandDropdownFlags } from "../brand/BrandDropdownFlags";
@@ -47,7 +47,7 @@ export default function BusinessDetailsForm() {
 
       <form onSubmit={submit} className="flex flex-col gap-600">
         <section className="grid grid-cols-2 gap-800 relative">
-          <InputForm
+          <BrandInputForm
             width="w-full"
             formLabel="Business Name *"
             formLabelClassName="body-s text-tertiary"
@@ -55,7 +55,7 @@ export default function BusinessDetailsForm() {
             onChange={(e) => updateFormData("businessName", e)}
             icon={<Store/>}
           />
-          <InputForm
+          <BrandInputForm
             width="w-full"
             formLabel="Business Website or Social Media link *"
             formLabelClassName="body-s text-tertiary"
@@ -63,7 +63,7 @@ export default function BusinessDetailsForm() {
             onChange={(e) => updateFormData("website", e)}
             icon={<Globe/>}
           />
-          <InputForm
+          <BrandInputForm
             width="w-full"
             formLabel="Business Address *"
             formLabelClassName="body-s text-tertiary"
@@ -78,7 +78,7 @@ export default function BusinessDetailsForm() {
             value={formData.country}
             onChange={(e) => updateFormData("country", e as string)}
           />
-          <InputForm
+          <BrandInputForm
             width="w-full"
             formLabel="Year Founded *"
             formLabelClassName="body-s text-tertiary"
