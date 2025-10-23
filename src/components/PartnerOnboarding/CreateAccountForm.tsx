@@ -1,192 +1,171 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Eye, EyeOff } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { useSteps } from "@/context/StepContext";
+import { InputForm } from "../AuthFlow/AuthTabs/InputForm";
+import { BrandCheckbox } from "../brand/BrandCheckBox";
+import { ArrowRight, Mail, Phone, User } from "lucide-react";
+import { BrandDropdownMenu } from "../brand/BrandDropdownMenu";
+import { BrandDropdownFlags } from "../brand/BrandDropdownFlags";
 
 export default function CreateAccountForm() {
-  const router = useRouter();
+  const { markStepComplete, routeToStep } = useSteps();
 
-  const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [language, setLanguage] = useState("spanish");
-  const [role, setRole] = useState<string | undefined>();
-  const [password, setPassword] = useState("");
-  const [showPwd, setShowPwd] = useState(false);
-  const [accepted, setAccepted] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    phone: "",
+    email: "",
+    languages: [] as string[],
+    role: "",
+    password: "",
+    confirmPassword: "",
+    acceptedTerms1: false,
+    acceptedTerms2: false,
+    acceptedTerms3: false,
+  });
 
+  function updateFormData<K extends keyof typeof formData>(key: K, value: (typeof formData)[K]) {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+  }
+
+  // Compute initials
   const initials = useMemo(() => {
-    const parts = fullName.trim().split(/\s+/);
+    const parts = formData.fullName.trim().split(/\s+/);
     return (
       parts
         .slice(0, 2)
         .map((p) => p[0]?.toUpperCase() ?? "")
-        .join("") || "EM"
+        .join("") || "HM"
     );
-  }, [fullName]);
+  }, [formData.fullName]);
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    // TODO: call signup API later; for now, go to verify step
-    // If you want to pass the email to the verify page:
-    // router.push(`/register-experience/verify?email=${encodeURIComponent(email)}`);
-    router.push("/register-experience/verify");
+    console.log("Submitting form:", formData);
+    markStepComplete(1);
+    routeToStep(2);
   }
 
   return (
-    <form onSubmit={submit} className="grid md:grid-cols-2 gap-400 relative">
-      {/* badge avatar */}
-      <div className="hidden md:block absolute right-400 -top-200">
-        <div className="w-1200 h-1200 rounded-1000 bg-neutral-100 grid place-items-center text-terracotta-900 font-semibold text-400">
+    <main className="flex flex-col gap-600">
+      <header className="flex flex-row justify-between items-center">
+        <div className="flex flex-col gap-300 text-primary">
+          <span className="body-xxl-label">Create Free Account</span>
+          <span className="body-l">
+            Please provide your contact details below & start your registration
+          </span>
+        </div>
+
+        {/* User Badge */}
+        <div
+          className="badge-size-l rounded-full grid text-center items-center heading-h3 transition-colors duration-300 bg-teal-500/15 text-teal-500">
           {initials}
         </div>
-      </div>
+      </header>
 
-      <div className="md:col-span-2">
-        <h3 className="text-2xl font-semibold text-primary">
-          Create Free Account
-        </h3>
-        <p className="text-sm text-neutral-600 mt-050">
-          Please provide your contact details below & start your registration.
-        </p>
-      </div>
-
-      <div>
-        <Label htmlFor="fullName">Full Name *</Label>
-        <Input
-          id="fullName"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          placeholder="Enrique Maldonado"
-          className="mt-150"
-          required
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="phone">Phone Number *</Label>
-        <Input
-          id="phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          placeholder="+49 234 338 76 984"
-          className="mt-150"
-          required
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="email">Email *</Label>
-        <Input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="enrique@himambo.com"
-          className="mt-150"
-          required
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="password">Password *</Label>
-        <div className="relative mt-150">
-          <Input
-            id="password"
-            type={showPwd ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-            required
+      <form onSubmit={submit} className="flex flex-col gap-600">
+        <section className="grid grid-cols-2 gap-800 relative">
+          <InputForm
+            width="w-full"
+            formLabel="Full Name *"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.fullName}
+            onChange={(e) => updateFormData("fullName", e)}
+            icon={<User/>}
           />
-          <button
-            type="button"
-            onClick={() => setShowPwd((v) => !v)}
-            className="absolute right-200 top-1/2 -translate-y-1/2 text-neutral-500"
-            aria-label={showPwd ? "Hide password" : "Show password"}
+          <InputForm
+            width="w-full"
+            formLabel="Phone Number *"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.phone}
+            onChange={(e) => updateFormData("phone", e)}
+            icon={<Phone/>}
+          />
+          <InputForm
+            width="w-full"
+            formLabel="Email *"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.email}
+            onChange={(e) => updateFormData("email", e)}
+            icon={<Mail/>}
+          />
+          <BrandDropdownMenu
+            items={["Owner", "Employee", "Other"]}
+            formLabel="What is your role? *"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.role}
+            onChange={(e) => updateFormData("role", e as string)}
+          />
+          <InputForm
+            contentHidden
+            width="w-full"
+            formLabel="Password *"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.password}
+            onChange={(e) => updateFormData("password", e)}
+          />
+          <InputForm
+            contentHidden
+            width="w-full"
+            formLabel="Confirm Password *"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.confirmPassword}
+            onChange={(e) => updateFormData("confirmPassword", e)}
+          />
+          <BrandDropdownFlags
+            items={["Spanish", "English", "German", "French"]}
+            formLabel="Languages"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.languages}
+            onChange={(val) => updateFormData("languages", val as string[])}
+            multiSelect
+          />
+        </section>
+
+        <div className="flex flex-col gap-300">
+          <BrandCheckbox
+            value={formData.acceptedTerms1}
+            onChange={(val) => updateFormData("acceptedTerms1", val)}
           >
-            {showPwd ? (
-              <EyeOff className="w-5 h-5" />
-            ) : (
-              <Eye className="w-5 h-5" />
-            )}
-          </button>
+            I have read & accept the{" "}
+            <a href="#" className="underline hover:text-[var(--text-primary)] transition-colors">
+              Terms of Service
+            </a>{" "}
+            and the{" "}
+            <a href="#" className="underline hover:text-[var(--text-primary)] transition-colors">
+              Privacy Policy
+            </a>
+            . *
+          </BrandCheckbox>
+
+          <BrandCheckbox
+            value={formData.acceptedTerms2}
+            onChange={(val) => updateFormData("acceptedTerms2", val)}
+          >
+            I have read and understood HiMambo’s{" "}
+            <a href="#" className="underline hover:text-[var(--text-primary)] transition-colors">
+              Privacy Policy
+            </a>
+            , and I consent to the processing of my personal data as described
+            therein. *
+          </BrandCheckbox>
+
+          <BrandCheckbox
+            value={formData.acceptedTerms3}
+            onChange={(val) => updateFormData("acceptedTerms3", val)}
+          >
+            I agree to receive occasional news, updates, and marketing
+            communications from HiMambo by email, including information about
+            sustainable travel experiences, Partner offers, and company news.
+          </BrandCheckbox>
         </div>
-      </div>
 
-      <div>
-        <Label>Languages</Label>
-        <Select value={language} onValueChange={setLanguage}>
-          <SelectTrigger className="mt-150">
-            <SelectValue placeholder="Select language" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="spanish">Spanish</SelectItem>
-            <SelectItem value="english">English</SelectItem>
-            <SelectItem value="german">German</SelectItem>
-            <SelectItem value="french">French</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div>
-        <Label>What is your role *</Label>
-        <Select value={role} onValueChange={setRole}>
-          <SelectTrigger className="mt-150">
-            <SelectValue placeholder="Select Role" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="owner">Owner</SelectItem>
-            <SelectItem value="manager">Manager</SelectItem>
-            <SelectItem value="marketer">Marketer</SelectItem>
-            <SelectItem value="guide">Guide</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="md:col-span-2 flex items-start gap-200">
-        <Checkbox
-          id="terms"
-          checked={accepted}
-          onCheckedChange={(v) => setAccepted(!!v)}
-        />
-        <label
-          htmlFor="terms"
-          className="text-sm text-neutral-700 leading-snug"
-        >
-          I have read & accept the{" "}
-          <a className="underline" href="#">
-            Terms of Service
-          </a>{" "}
-          and the{" "}
-          <a className="underline" href="#">
-            Privacy Policy
-          </a>
-          .
-        </label>
-      </div>
-
-      <div className="md:col-span-2">
-        <Button
-          type="submit"
-          disabled={!accepted || !role}
-          className="w-full bg-yellow-500 hover:bg-yellow-400 text-white rounded-300 h-1200"
-        >
+        <Button type="submit" className="w-[var(--width-authforms)]">
           Sign Up
+          <ArrowRight className="icon-size-s" />
         </Button>
-      </div>
-    </form>
+      </form>
+    </main>
   );
 }

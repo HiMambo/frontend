@@ -146,6 +146,8 @@
   --icon-l: clamp(28px, 2.4vw + 3px, 48px);
   --icon-xl: clamp(36px, 3.2vw + 4px, 64px);
 
+  --badge-l: clamp(64px, 6vw + 6px, 120px);
+
   /* ---- Spacing scale - fluid scaling ---- */
   --spacing-0: 0px;
   --spacing-050: clamp(0.8px, 0.08vw + 0.16px, 2px);
@@ -209,6 +211,7 @@
   --width-authbuttons: clamp(240px, 13vw + 94px, 344px);
   --width-authscreen: clamp(640px, 47.6vw + 92px, 915px);
 
+  --onboarding-step-card-width: clamp(340px, 52.1vw, 1000px);
 }
 
 /* ===== RESPONSIVE BREAKPOINT OVERRIDES ===== */
@@ -234,6 +237,8 @@
     --icon-m: 32px;
     --icon-l: 48px;
     --icon-xl: 64px;
+
+    --badge-l: 120px;
   }
 }
 

@@ -1,5 +1,3 @@
-// Booking step definitions
-
 // Future? Define all steps from all different flows in here, and conditionally pass steptype to stepcontext?
 
 export const BOOKING_STEP_DEFINITIONS = [
@@ -9,6 +7,7 @@ export const BOOKING_STEP_DEFINITIONS = [
     title: 'Step 1: Log In',
     completedTitle: 'Logged In',
     component: 'AuthFlow',
+    route: '',
     showBackButton: false,
     showNextButton: false,
   },
@@ -18,6 +17,7 @@ export const BOOKING_STEP_DEFINITIONS = [
     title: 'Step 2: Select Time Slot',
     completedTitle: 'Time Slot Selected',
     component: 'SlotSelector',
+    route: '',
     showBackButton: false,
     showNextButton: true,
     backButtonText: '',
@@ -29,6 +29,7 @@ export const BOOKING_STEP_DEFINITIONS = [
     title: 'Step 3: Payment',
     completedTitle: 'Payment Successful',
     component: 'PaymentForm',
+    route: '',
     showBackButton: false,
     showNextButton: false,
   },

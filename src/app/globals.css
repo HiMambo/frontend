@@ -431,6 +431,11 @@
     height: var(--icon-xl);
   }
 
+  .badge-size-l {
+    width: var(--badge-l);
+    height: var(--badge-l);
+  }
+
   /* ===== BORDER RADIUS UTILITIES ===== */
   .rounded-100 { border-radius: var(--radius-100); }
   .rounded-200 { border-radius: var(--radius-200); }

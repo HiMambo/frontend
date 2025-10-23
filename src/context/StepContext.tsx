@@ -6,6 +6,7 @@ Future considerations:
 
 "use client";
 
+import { useRouter } from 'next/navigation';
 import { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react';
 
 const flowCompleteSentinel = -1;
@@ -19,6 +20,7 @@ export interface StepDefinition {
   title: string;
   completedTitle: string;
   component: string;
+  route: string;
   showBackButton?: boolean;
   showNextButton?: boolean;
   backButtonText?: string;
@@ -46,6 +48,7 @@ interface StepContextType {
   goToStep: (step: StepNumber) => void;
   goToNextStep: () => void;
   goToPreviousStep: () => void;
+  routeToStep: (step: StepNumber) => void;
   markStepComplete: (step: StepNumber) => void;
   getStepStatus: (stepNumber: StepNumber) => StepStatus;
   setIsValid: (isValid: boolean) => void;
@@ -65,6 +68,7 @@ export function StepProvider({
   children, 
   stepDefinitions,
 }: StepProviderProps) {
+  const router = useRouter();
   const initialStep = stepDefinitions[0].step;
 
   const [stepState, setStepState] = useState<StepState>({
@@ -118,9 +122,6 @@ export function StepProvider({
     // Block step navigation when flow is finished
     if (stepState.currentStep === flowCompleteSentinel) return false;
 
-    // Block navigating back to login step
-    if (step === 1) return false;
-
     // Allow navigation to open or completed steps
     const status = getStepStatus(step);
     return status === 'completed' || status === 'open';
@@ -128,6 +129,10 @@ export function StepProvider({
 
   const goToStep = useCallback((step: StepNumber) => {
     setStepState(prev => {
+      if (step === prev.currentStep) {
+        console.log("Attempting to go to the same step")
+        return prev;
+      }
       if (canGoToStep(step)) {
         return { ...prev, currentStep: step };
       }
@@ -163,6 +168,14 @@ export function StepProvider({
       return { ...prev, currentStep: prevStep };
     });
   }, [stepDefinitions]);
+
+  const routeToStep = useCallback((step: number) => {
+    const def = stepDefinitions.find(s => s.step === step);
+    if (def?.route) {
+      console.log("Routing to step:", step)
+      router.push(def.route);
+    }
+  }, [router, stepDefinitions]);
 
   const markStepComplete = useCallback((step: StepNumber) => {
     if (step === flowCompleteSentinel) return; // Don't mark sentinel step as completed
@@ -213,6 +226,7 @@ export function StepProvider({
     goToStep,
     goToNextStep,
     goToPreviousStep,
+    routeToStep,
     markStepComplete,
     getStepStatus,
     setIsValid,
@@ -227,6 +241,7 @@ export function StepProvider({
     goToStep,
     goToNextStep,
     goToPreviousStep,
+    routeToStep,
     markStepComplete,
     getStepStatus,
     setIsValid,

@@ -25,6 +25,7 @@ export default function Header() {
               <button
                 aria-label="Toggle menu"
                 className="p-2 rounded-md text-gray-800 hover:bg-gray-100 transition-colors"
+                suppressHydrationWarning
               >
                 <Menu className="w-6 h-6" />
               </button>

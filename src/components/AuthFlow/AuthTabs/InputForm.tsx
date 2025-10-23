@@ -11,6 +11,8 @@ interface InputFormProps {
   className?: string;
   value: string;
   onChange: (value: string) => void;
+  icon?: React.ReactNode;
+  placeholder?: string;
 }
 
 export const InputForm: React.FC<InputFormProps> = ({
@@ -21,6 +23,8 @@ export const InputForm: React.FC<InputFormProps> = ({
   className = "",
   value,
   onChange,
+  icon,
+  placeholder,
 }) => {
   const [showContent, setShowContent] = useState(!contentHidden);
 
@@ -31,11 +35,23 @@ export const InputForm: React.FC<InputFormProps> = ({
 
       {/* Input wrapper */}
       <div className="relative">
+        {/* Optional left icon */}
+        {icon && (
+          <div className="absolute left-600 top-1/2 -translate-y-1/2 text-disabled">
+            <div className="icon-size-s">{icon}</div>
+          </div>
+        )}
+
         <input
           type={showContent ? "text" : "password"}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`w-full bg-white body-m text-tertiary h-[var(--height-input)] px-[var(--spacing-600)] py-[var(--spacing-400)] rounded-300 focus:outline-none`}
+          placeholder={placeholder} // <-- added here
+          className={`
+            w-full bg-white body-m text-tertiary h-[var(--height-input)]
+            px-[var(--spacing-600)] py-[var(--spacing-400)] rounded-300 focus:outline-none
+            ${icon ? "pl-[calc(var(--spacing-600)*2+var(--spacing-250))]" : ""}
+          `}
         />
 
         {/* Toggle visibility if contentHidden */}

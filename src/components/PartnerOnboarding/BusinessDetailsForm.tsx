@@ -1,186 +1,120 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useRouter } from "next/navigation";
+import { useSteps } from "@/context/StepContext";
 import { useState } from "react";
-
-// const NEXT_STEP = "/register-experience/documents";
-
-const COUNTRIES = [
-  { code: "DE", name: "Germany", flag: "🇩🇪" },
-  { code: "ES", name: "Spain", flag: "🇪🇸" },
-  { code: "IT", name: "Italy", flag: "🇮🇹" },
-  { code: "FR", name: "France", flag: "🇫🇷" },
-  { code: "PT", name: "Portugal", flag: "🇵🇹" },
-  { code: "US", name: "United States", flag: "🇺🇸" },
-  { code: "KE", name: "Kenya", flag: "🇰🇪" },
-  { code: "TZ", name: "Tanzania", flag: "🇹🇿" },
-  { code: "MA", name: "Morocco", flag: "🇲🇦" },
-  { code: "ZA", name: "South Africa", flag: "🇿🇦" },
-];
-
-const CATEGORIES = [
-  "Nature & Wildlife",
-  "Cultural Immersion",
-  "Adventure & Outdoor",
-  "Social Impact",
-  "Food & Gastronomy",
-  "Wellness",
-  "Arts & Crafts",
-  "Water Sports",
-  "City Tours",
-];
+import { InputForm } from "../AuthFlow/AuthTabs/InputForm";
+import { ArrowRight, CalendarCheck2, Globe, MapPin, Store } from "lucide-react";
+import { BrandMultiLineInput } from "../brand/BrandMultiLineInput";
+import { BrandDropdownFlags } from "../brand/BrandDropdownFlags";
+import { ALL_COUNTRIES } from "@/lib/countries";
+import { BrandDropdownMenu } from "../brand/BrandDropdownMenu";
 
 export default function BusinessDetailsForm() {
-  const router = useRouter();
+  const { markStepComplete, routeToStep } = useSteps();
 
-  const [businessName, setBusinessName] = useState("");
-  const [website, setWebsite] = useState("");
-  const [country, setCountry] = useState<string>("DE");
-  const [address, setAddress] = useState("");
-  const [yearFounded, setYearFounded] = useState<string>(
-    new Date().getFullYear().toString()
-  );
-  const [category, setCategory] = useState<string | undefined>();
+  const [formData, setFormData] = useState({
+    businessName: "",
+    website: "",
+    country: "",
+    address: "",
+    yearFounded: "",
+    category: "",
+    description: ""
+  });
 
-  // Decorative initials badge (like your mock)
-  // const initials = useMemo(() => {
-  //   const parts = businessName.trim().split(/\s+/);
-  //   return (
-  //     parts
-  //       .slice(0, 2)
-  //       .map((p) => p[0]?.toUpperCase() ?? "")
-  //       .join("") || "EM"
-  //   );
-  // }, [businessName]);
+  function updateFormData<K extends keyof typeof formData>(key: K, value: (typeof formData)[K]) {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+  }
 
-  function onSubmit(e: React.FormEvent) {
+  function submit(e: React.FormEvent) {
     e.preventDefault();
-    // TODO: persist to API later
-
-    router.push("/register-experience/documents");
+    console.log("Submitting form:", formData);
+    markStepComplete(2);
+    routeToStep(3);
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid md:grid-cols-2 gap-400 relative">
-      {/* Badge */}
-      {/* <div className="hidden md:block absolute right-400 -top-100">
-        <div className="w-1200 h-1200 rounded-1000 bg-neutral-100 grid place-items-center text-terracotta-900 font-semibold text-400">
-          {initials}
+    <main className="flex flex-col gap-600">
+      <header className="flex flex-row justify-start items-center">
+        <div className="flex flex-col gap-300 text-primary">
+          <span className="body-xxl-label">Business Details</span>
+          <span className="body-l">
+            Please provide your business details below & start your registration
+          </span>
         </div>
-      </div> */}
+      </header>
 
-      {/* Business Name */}
-      <div>
-        <Label htmlFor="businessName">Business Name *</Label>
-        <Input
-          id="businessName"
-          placeholder="HiMambo"
-          value={businessName}
-          onChange={(e) => setBusinessName(e.target.value)}
-          required
-          className="mt-150"
+      <form onSubmit={submit} className="flex flex-col gap-600">
+        <section className="grid grid-cols-2 gap-800 relative">
+          <InputForm
+            width="w-full"
+            formLabel="Business Name *"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.businessName}
+            onChange={(e) => updateFormData("businessName", e)}
+            icon={<Store/>}
+          />
+          <InputForm
+            width="w-full"
+            formLabel="Business Website or Social Media link *"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.website}
+            onChange={(e) => updateFormData("website", e)}
+            icon={<Globe/>}
+          />
+          <InputForm
+            width="w-full"
+            formLabel="Business Address *"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.address}
+            onChange={(e) => updateFormData("address", e)}
+            icon={<MapPin/>}
+          />
+          <BrandDropdownFlags
+            items={ALL_COUNTRIES}
+            formLabel="Main country of operation *"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.country}
+            onChange={(e) => updateFormData("country", e as string)}
+          />
+          <InputForm
+            width="w-full"
+            formLabel="Year Founded *"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.yearFounded}
+            onChange={(e) => updateFormData("yearFounded", e)}
+            icon={<CalendarCheck2/>}
+          />
+          <BrandDropdownMenu
+            items={[
+              "Nature & Wildlife",
+              "Cultural Immersion",
+              "Adventure & Outdoor",
+              "Wellness & Retreats",
+              "Social Impact",
+              "Food & Gastronomy",
+            ]}
+            formLabel="Select Category *"
+            formLabelClassName="body-s text-tertiary"
+            value={formData.category}
+            onChange={(e) => updateFormData("category", e as string)}
+          />
+        </section>
+
+        <BrandMultiLineInput
+          lines={3}
+          formLabel="Description (250 characters max) *"
+          formLabelClassName="body-s text-tertiary"
+          value={formData.description}
+          onChange={(e) => updateFormData("description", e)}
         />
-      </div>
 
-      {/* Website / Social */}
-      <div>
-        <Label htmlFor="website">Business Website / Social Media</Label>
-        <Input
-          id="website"
-          placeholder="www.himambo.com"
-          value={website}
-          onChange={(e) => setWebsite(e.target.value)}
-          className="mt-150"
-          inputMode="url"
-        />
-      </div>
-
-      {/* Country */}
-      <div>
-        <Label>Main country of operation *</Label>
-        <Select value={country} onValueChange={setCountry}>
-          <SelectTrigger className="mt-150">
-            <SelectValue placeholder="Select a country" />
-          </SelectTrigger>
-          <SelectContent>
-            {COUNTRIES.map((c) => (
-              <SelectItem key={c.code} value={c.code}>
-                <span className="mr-200">{c.flag}</span>
-                {c.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Address */}
-      <div>
-        <Label htmlFor="address">Business Address *</Label>
-        <Input
-          id="address"
-          placeholder="Somewhere over the rainbow 33"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          required
-          className="mt-150"
-        />
-      </div>
-
-      {/* Year Founded */}
-      <div>
-        <Label htmlFor="yearFounded">Year Founded *</Label>
-        <Input
-          id="yearFounded"
-          type="number"
-          inputMode="numeric"
-          min={1800}
-          max={new Date().getFullYear()}
-          value={yearFounded}
-          onChange={(e) => setYearFounded(e.target.value)}
-          required
-          className="mt-150 no-spinner"
-        />
-      </div>
-
-      {/* Category */}
-      <div>
-        <Label>Select Category *</Label>
-        <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger className="mt-150">
-            <SelectValue placeholder="Business Category" />
-          </SelectTrigger>
-          <SelectContent>
-            {CATEGORIES.map((cat) => (
-              <SelectItem key={cat} value={cat}>
-                {cat}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Submit */}
-      <div className="md:col-span-2">
-        <Button
-          type="submit"
-          disabled={
-            !businessName || !address || !yearFounded || !country || !category
-          }
-          className="w-full bg-yellow-500 hover:bg-yellow-400 text-white rounded-300 h-1200"
-        >
-          Register Business
+        <Button type="submit" className="w-[var(--width-authforms)]">
+          Save and Continue
+          <ArrowRight className="icon-size-s" />
         </Button>
-      </div>
-    </form>
+      </form>
+    </main>
   );
 }
