@@ -7,6 +7,7 @@ import { FAQ } from "@/components/shared/FAQ";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { PARTNER_ONBOARDING_FAQS } from "@/lib/FAQDefinitions";
+import Link from "next/link";
 
 export default function PartnerProgramPage() {
   return (
@@ -33,16 +34,17 @@ export default function PartnerProgramPage() {
             support communities, and protect culture.
           </p>
           <div>
-            <Button 
-                variant="teal" 
-                size="custom" 
-                className="px-800 py-400"
-                asChild
+
+            <Button
+              variant="teal"
+              size="custom"
+              className="px-800 py-400"
+              asChild
             >
-                <a href="/register-experience">
+              <Link href="/register-experience">
                 List your experience
                 <ArrowRight className="icon-size-s" />
-                </a>
+              </Link>
             </Button>
           </div>
         </div>

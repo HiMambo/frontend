@@ -65,8 +65,8 @@ export const PARTNER_ONBOARDING_FAQS = [
       question: 'What Makes an Experience "Sustainable" on our platform?',
       answer: (
         <div>
-          <p className="mb-800">Sustainable means doing good for the planet and the people who live here! Don't worry if you don't have a "green" certificate or fancy title. If you're honest and caring, we'll help you show travelers all the good you do.</p>
-          <p className="mb-800">When you sign up with HiMambo, we'll ask you questions like:</p>
+          <p className="mb-800">Sustainable means doing good for the planet and the people who live here! Don`&apos;`t worry if you don`&apos;`t have a &quot;green&quot; certificate or fancy title. If you`&apos;`re honest and caring, we`&apos;`ll help you show travelers all the good you do.</p>
+          <p className="mb-800">When you sign up with HiMambo, we`&apos;`ll ask you questions like:</p>
           <ul className="list-disc pl-800 space-y-200">
             <li>How do you help local families or communities?</li>
             <li>What do you do to protect nature (trees, water, animals)?</li>
