@@ -146,6 +146,7 @@
   --icon-l: clamp(28px, 2.4vw + 3px, 48px);
   --icon-xl: clamp(36px, 3.2vw + 4px, 64px);
 
+  --badge-m: clamp(48px, 4.17vw, 80px);
   --badge-l: clamp(64px, 6vw + 6px, 120px);
 
   /* ---- Spacing scale - fluid scaling ---- */
@@ -212,6 +213,7 @@
   --width-authscreen: clamp(640px, 47.6vw + 92px, 915px);
 
   --onboarding-step-card-width: clamp(340px, 52.1vw, 1000px);
+  --partner-hero-height: clamp(320px, 42.2vw, 811px); /* 811px @1920px */
 }
 
 /* ===== RESPONSIVE BREAKPOINT OVERRIDES ===== */
@@ -238,6 +240,7 @@
     --icon-l: 48px;
     --icon-xl: 64px;
 
+    --badge-m: 80px;
     --badge-l: 120px;
   }
 }

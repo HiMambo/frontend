@@ -14,6 +14,7 @@ import { BOOKING_STEP_DEFINITIONS } from "@/lib/bookingSteps";
 import { Button } from '@/components/ui/button';
 import { ChevronLeftDuo } from '@/components/shared/IconComponents';
 import { FAQ } from '@/components/shared/FAQ';
+import { PAYMENT_PAGE_FAQS } from '@/lib/FAQDefinitions';
 
 export default function PaymentPage() {
   const { data: session } = useSession();
@@ -59,7 +60,7 @@ return (
         </section>
 
         {/* === FAQ Section === */}
-        <FAQ />
+        <FAQ faqs={PAYMENT_PAGE_FAQS}/>
       </main>
     </StepProvider>
     <Footer />

@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AuthModal } from "@/components/AuthFlow/AuthModal";
+import type { HeaderProps } from "./Header"; // for variant type consistency
 
-export default function AuthButtons() {
+export default function AuthButtons({ variant = "default" }: HeaderProps) {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authView, setAuthView] = useState<"login" | "signup">("login");
 
@@ -13,34 +14,51 @@ export default function AuthButtons() {
     setShowAuthModal(false);
   };
 
+  const handleOpenAuth = (view: "login" | "signup") => {
+    setAuthView(view);
+    setShowAuthModal(true);
+  };
+
   return (
     <>
-      <div className="flex items-center gap-[var(--spacing-600)]">
-        {/* LOGIN */}
-        <Button
-          variant="outline"
-          size="custom"
-          className="px-[var(--spacing-400)] py-[var(--spacing-300)]"
-          onClick={() => {
-            setAuthView("login");
-            setShowAuthModal(true);
-          }}
-        >
-          Login
-        </Button>
+      {/* DEFAULT VARIANT */}
+      {variant === "default" && (
+        <div className="flex items-center gap-[var(--spacing-600)]">
+          {/* LOGIN */}
+          <Button
+            variant="outline"
+            size="custom"
+            className="px-[var(--spacing-400)] py-[var(--spacing-300)]"
+            onClick={() => handleOpenAuth("login")}
+          >
+            Login
+          </Button>
 
-        {/* SIGN UP */}
-        <Button
-          className="px-[var(--spacing-1200)] py-[var(--spacing-300)]"
-          size="custom"
-          onClick={() => {
-            setAuthView("signup");
-            setShowAuthModal(true);
-          }}
-        >
-          Sign up
-        </Button>
-      </div>
+          {/* SIGN UP */}
+          <Button
+            className="px-[var(--spacing-1200)] py-[var(--spacing-300)]"
+            size="custom"
+            onClick={() => handleOpenAuth("signup")}
+          >
+            Sign up
+          </Button>
+        </div>
+      )}
+
+      {/* PARTNER VARIANT */}
+      {variant === "partner" && (
+        <div className="flex items-center gap-[var(--spacing-400)] body-l text-primary">
+          <span>Already a partner?</span>
+          <Button
+            variant="teal"
+            size="custom"
+            className="px-[var(--spacing-1000)] py-[var(--spacing-300)]"
+            onClick={() => handleOpenAuth("login")}
+          >
+            Login
+          </Button>
+        </div>
+      )}
 
       {/* AUTH MODAL */}
       <AuthModal

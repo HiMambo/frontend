@@ -6,17 +6,39 @@ import Link from "next/link";
 import { LogoHeader } from "../IconComponents";
 import { NavLink } from "../NavLink";
 import HeaderRight from "./HeaderRight";
+import { cn } from "@/lib/utils";
 
-const NAV_LINKS = [
+type HeaderVariant = "default" | "partner";
+
+const DEFAULT_NAV_LINKS = [
   { href: "/about", label: "About us" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact us" },
-  { href: "/partner-dashboard", label: "Partner Program" },
+  { href: "/partner-program", label: "Partner Program" },
 ];
 
-export default function Header() {
+const PARTNER_NAV_LINKS = [
+  { href: "/about", label: "About us" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact us" },
+  { href: "/register-experience", label: "Register your Experience" },
+];
+
+export interface HeaderProps {
+  variant?: HeaderVariant;
+}
+
+export default function Header({ variant = "default" }: HeaderProps) {
+  const isPartner = variant === "partner";
+  const navLinks = isPartner ? PARTNER_NAV_LINKS : DEFAULT_NAV_LINKS;
+
   return (
-    <header className="bg-surface px-[var(--spacing-2400)] py-[var(--spacing-600)]">
+    <header
+      className={cn(
+        "px-[var(--spacing-2400)] py-[var(--spacing-600)]",
+        isPartner ? "bg-white" : "bg-surface"
+      )}
+    >
       <div className="flex items-center justify-between relative gap-[var(--spacing-2400)]">
         {/* Mobile: Menu toggle */}
         <div className="lg:hidden">
@@ -35,7 +57,7 @@ export default function Header() {
               sideOffset={10}
               className="backdrop-blur-md bg-white/90 rounded-xl shadow-xl px-6 py-4 flex flex-col items-center text-center space-y-4 w-auto max-w-[90vw]"
             >
-              {NAV_LINKS.map(({ href, label }) => (
+              {navLinks.map(({ href, label }) => (
                 <NavLink key={href} href={href}>
                   {label}
                 </NavLink>
@@ -52,7 +74,7 @@ export default function Header() {
           </Link>
           {/* Nav right-aligned */}
           <nav className="flex gap-[var(--spacing-1600)] body-l text-primary">
-            {NAV_LINKS.map(({ href, label }) => (
+            {navLinks.map(({ href, label }) => (
               <NavLink
                 key={href}
                 href={href}
@@ -65,7 +87,7 @@ export default function Header() {
         </div>
 
         {/* Desktop: Auth and Notifications */}
-        <HeaderRight />
+        <HeaderRight variant={variant}/>
       </div>
     </header>
   );

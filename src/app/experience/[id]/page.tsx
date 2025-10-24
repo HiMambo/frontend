@@ -9,6 +9,7 @@ import { ChevronLeftDuo } from "@/components/shared/IconComponents";
 import ExperienceCard from "@/components/ExperienceCard/ExperienceCard";
 import ExperienceDetailsTabs from "@/components/ExperienceDetails/ExperienceDetailsTabs";
 import { FAQ } from "@/components/shared/FAQ";
+import { PAYMENT_PAGE_FAQS } from "@/lib/FAQDefinitions";
 
 export default async function ExperiencePage({ params }: { params: Promise<{ id: string }> }) {
   const { id: idParam } = await params;
@@ -46,7 +47,7 @@ export default async function ExperiencePage({ params }: { params: Promise<{ id:
         <ExperienceDetailsTabs experience={experience} />
 
         {/* === FAQ Section === */}
-        <FAQ />
+        <FAQ faqs={PAYMENT_PAGE_FAQS}/>
       </main>
     <Footer />
     </>

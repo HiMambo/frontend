@@ -248,6 +248,14 @@
     letter-spacing: var(--tracking-h5);
   }
 
+  .heading-h5-normal {
+    font-family: var(--font-parkinsans);
+    font-weight: 400; /* Normal */
+    font-size: var(--text-h5);
+    line-height: var(--leading-h5);
+    letter-spacing: var(--tracking-h5);
+  }
+
   .heading-h5-light {
     font-family: var(--font-parkinsans);
     font-weight: 300; /* Light */
@@ -429,6 +437,11 @@
   .icon-size-xl {
     width: var(--icon-xl);
     height: var(--icon-xl);
+  }
+
+  .badge-size-m {
+    width: var(--badge-m);
+    height: var(--badge-m);
   }
 
   .badge-size-l {

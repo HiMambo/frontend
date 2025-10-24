@@ -1,29 +1,44 @@
-"use client";
+"use client"
 
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { OctagonHelp } from "@/components/shared/IconComponents";
+import { OctagonHelp } from "./IconComponents";
 
-export const FAQ: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+// Type definitions
+type SimpleFAQ = {
+  question: string;
+  answer: string | React.ReactNode;
+};
 
-  const faqs = [
-    {
-      question: "What is included in my booking?",
-      answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum."
-    },
-    {
-      question: "Can I cancel or reschedule?",
-      answer:
-        "Cras ultricies ligula sed magna dictum porta. Donec rutrum congue leo eget malesuada."
-    },
-    {
-      question: "Do I need to bring anything?",
-      answer:
-        "Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
-    }
-  ];
+type IconFAQ = {
+  icon: React.ReactNode;
+  question: string;
+  answer: string | React.ReactNode;
+};
+
+type FAQItem = SimpleFAQ | IconFAQ;
+
+interface FAQProps {
+  faqs: FAQItem[];
+  title?: string;
+  defaultOpen?: boolean;
+  questionClassName?: string;
+  answerClassName?: string;
+}
+
+// Type guard to check if FAQ has an icon
+const hasIcon = (faq: FAQItem): faq is IconFAQ => {
+  return 'icon' in faq;
+};
+
+export const FAQ: React.FC<FAQProps> = ({ 
+  faqs, 
+  title = "Your questions answered",
+  defaultOpen = false,
+  questionClassName = "body-xl-label text-tertiary",
+  answerClassName = "body-l text-disabled"
+}) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
     <section className="flex flex-col">
@@ -34,7 +49,7 @@ export const FAQ: React.FC = () => {
       >
         <div className="flex items-center gap-[var(--spacing-200)]">
           <OctagonHelp className="icon-size-l text-disabled" />
-          Your questions answered
+          {title}
         </div>
         {isOpen ? (
           <ChevronUp className="text-disabled icon-size-l" />
@@ -45,11 +60,27 @@ export const FAQ: React.FC = () => {
 
       {/* Expandable Content */}
       {isOpen && (
-        <div className="flex flex-col gap-[var(--spacing-600)] px-[var(--spacing-1600)] pb-[var(--spacing-800)] text-primary body-l">
+        <div className="flex flex-col gap-800 px-1600 pb-800 text-primary body-l">
           {faqs.map((faq, index) => (
-            <div key={index} className="flex flex-col gap-[var(--spacing-200)]">
-              <span className="body-xl-label text-tertiary">{faq.question}</span>
-              <span className="body-l text-disabled">{faq.answer}</span>
+            <div key={index} className="flex flex-col gap-600">
+              {/* Question with optional icon */}
+              <div className="flex items-center gap-250">
+                {hasIcon(faq) && (
+                  <span className="icon-size-l text-disabled flex-shrink-0 [&>svg]:w-full [&>svg]:h-full">
+                    {faq.icon}
+                  </span>
+                )}
+                <span className={questionClassName}>{faq.question}</span>
+              </div>
+              
+              {/* Answer - can be string or React component */}
+              <div className={answerClassName}>
+                {typeof faq.answer === 'string' ? (
+                  <span>{faq.answer}</span>
+                ) : (
+                  faq.answer
+                )}
+              </div>
             </div>
           ))}
         </div>

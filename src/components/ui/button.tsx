@@ -11,6 +11,8 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-primary body-l-button text-inverted text-center hover:bg-[var(--terracotta-900)] hover:text-yellow-500",
+        teal:
+          "bg-teal-500 hover:bg-[var(--teal-600)] body-l-button text-inverted text-center",
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:

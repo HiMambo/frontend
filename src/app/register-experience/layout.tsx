@@ -27,7 +27,7 @@ function OnboardingCoordinator({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Header />
+      <Header variant="partner"/>
       <main className="bg-[var(--neutral-100)] p-4000 flex flex-col gap-2400 items-center">
 
         {(currentStep === 1) && (!completedSteps.has(1)) &&

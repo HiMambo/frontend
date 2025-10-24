@@ -6,8 +6,9 @@ import UserBadge from "./UserBadge";
 import AuthButtons from "./AuthButtons";
 import NotificationBadge from "./NotificationBadge";
 import { SkeletonCard } from "../SkeletonCard";
+import type { HeaderProps } from "./Header";
 
-export default function HeaderRight() {
+export default function HeaderRight({ variant = "default" }: HeaderProps) {
   const { data: session, status } = useSession();
   const pathname = usePathname();
 
@@ -29,8 +30,8 @@ export default function HeaderRight() {
 
   return (
     <div className="flex items-center gap-[var(--spacing-2400)]">
-      {!isPaymentPage && <AuthButtons />}
-      <NotificationBadge />
+      {!isPaymentPage && <AuthButtons variant={variant}/>}
+      {variant !== "partner" && <NotificationBadge />}
     </div>
   );
 }
