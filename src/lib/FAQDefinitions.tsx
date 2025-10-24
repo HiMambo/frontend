@@ -1,5 +1,6 @@
 import { SDGFilterIcon } from "@/components/shared/IconComponents";
 import { Clock, Leaf, PuzzleIcon, Sun, Tag, Wallet } from "lucide-react";
+import Image from "next/image";
 
 export const PAYMENT_PAGE_FAQS = [
   {
@@ -90,16 +91,24 @@ export const PARTNER_ONBOARDING_FAQS = [
           </p>
           <div className="grid grid-cols-2 gap-x-1600 gap-y-600">
             {SDG_DATA.map(({ goal, description }) => (
-              <div key={goal} className="flex items-center gap-600">
-                <a href={`https://sdgs.un.org/goals/goal${goal}`} target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
-                  <img
-                    src={`/assets/sdg/E-WEB-Goal-${goal.toString().padStart(2, '0')}.png`}
+            <div key={goal} className="flex items-center gap-600">
+              <div className="icon-size-l relative flex-shrink-0">
+                <a
+                  href={`https://sdgs.un.org/goals/goal${goal}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-shrink-0"
+                >
+                  <Image
+                    src={`/assets/sdg/E-WEB-Goal-${goal.toString().padStart(2, "0")}.png`}
                     alt={`SDG ${goal}`}
-                    className="icon-size-l rounded-100 flex-shrink-0"
+                    fill
+                    className="object-contain rounded-100 cursor-pointer"
                   />
                 </a>
-                <span className="body-xl text-tertiary">{description}</span>
               </div>
+              <span className="body-xl text-tertiary">{description}</span>
+            </div>
             ))}
           </div>
         </div>
