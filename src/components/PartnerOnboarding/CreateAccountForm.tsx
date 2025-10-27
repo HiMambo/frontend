@@ -2,17 +2,28 @@
 
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
-import { useSteps } from "@/context/StepContext";
 import { BrandInputForm } from "../brand/BrandInputForm";
 import { BrandCheckbox } from "../brand/BrandCheckBox";
 import { ArrowRight, Mail, Phone, User } from "lucide-react";
 import { BrandDropdownMenu } from "../brand/BrandDropdownMenu";
 import { BrandDropdownFlags } from "../brand/BrandDropdownFlags";
+import { StepComponentProps } from "@/app/register-experience/[step]/page";
 
-export default function CreateAccountForm() {
-  const { markStepComplete, routeToStep } = useSteps();
+export interface CreateAccountFormData {
+  fullName: string;
+  phone: string;
+  email: string;
+  languages: string[];
+  role: string;
+  password: string;
+  confirmPassword: string;
+  acceptedTerms1: boolean;
+  acceptedTerms2: boolean;
+  acceptedTerms3: boolean;
+}
 
-  const [formData, setFormData] = useState({
+export default function CreateAccountForm({ onComplete }: StepComponentProps) {
+  const [formData, setFormData] = useState<CreateAccountFormData>({
     fullName: "",
     phone: "",
     email: "",
@@ -40,11 +51,12 @@ export default function CreateAccountForm() {
     );
   }, [formData.fullName]);
 
-  function submit(e: React.FormEvent) {
+  function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    // Validation placeholder
     console.log("Submitting form:", formData);
-    markStepComplete(1);
-    routeToStep(2);
+    onComplete();
   }
 
   return (
@@ -64,7 +76,7 @@ export default function CreateAccountForm() {
         </div>
       </header>
 
-      <form onSubmit={submit} className="flex flex-col gap-600">
+      <form onSubmit={onSubmit} className="flex flex-col gap-600">
         <section className="grid grid-cols-2 gap-800 relative">
           <BrandInputForm
             width="w-full"
@@ -114,7 +126,7 @@ export default function CreateAccountForm() {
             onChange={(e) => updateFormData("confirmPassword", e)}
           />
           <BrandDropdownFlags
-            items={["Spanish", "English", "German", "French"]}
+            items={["Spanish", "English", "Portuguese (Brazil)", "Portuguese (Portugal)", "German", "French"]}
             formLabel="Languages"
             formLabelClassName="body-s text-tertiary"
             value={formData.languages}

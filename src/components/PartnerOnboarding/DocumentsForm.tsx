@@ -1,11 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useSteps } from "@/context/StepContext";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { BrandDropdownMenu } from "../brand/BrandDropdownMenu";
 import { BrandUploadForm } from "../brand/BrandUploadForm";
+import { StepComponentProps } from "@/app/register-experience/[step]/page";
 
 const DOC_TYPES = [
   "Tax ID / VAT Number",
@@ -15,16 +15,15 @@ const DOC_TYPES = [
   "Insurance Certificate",
 ];
 
-export default function DocumentsForm() {
-  const { markStepComplete, routeToStep } = useSteps();
-
+export default function DocumentsForm({ onComplete }: StepComponentProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    markStepComplete(3);
-    routeToStep(4);
+    // Validation placeholder
+    console.log("Submitting documents...")
+    onComplete();
   };
 
   return (
@@ -52,7 +51,6 @@ export default function DocumentsForm() {
           formLabelClassName="body-s text-tertiary"
           value={selectedTypes}
           onChange={(val) => setSelectedTypes(val as string[])}
-          multiSelect
         />
       </div>
 

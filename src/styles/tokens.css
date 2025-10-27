@@ -201,7 +201,6 @@
 
   --homepage-card-width: clamp(240px, 27.3vw, 525px); /* 525px @1920px */
 
-  /* BookingSummary component tokens */
   --bookingsummary-width: clamp(320px, 30vw, 589px);
   --bookingsummary-image-height: clamp(180px, 14.5vw, 278px);
 
@@ -214,6 +213,8 @@
 
   --onboarding-step-card-width: clamp(340px, 52.1vw, 1000px);
   --partner-hero-height: clamp(320px, 42.2vw, 811px); /* 811px @1920px */
+
+  --width-progress-bar: clamp(320px, 44.58vw, 854px); /* 854px @1920px */
 }
 
 /* ===== RESPONSIVE BREAKPOINT OVERRIDES ===== */

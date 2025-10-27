@@ -37,7 +37,7 @@ export const ONBOARDING_STEP_DEFINITIONS = [
     label: 'Experience Info',
     title: 'Experience Information',
     completedTitle: 'Experience Added',
-    component: 'ExperienceForm',
+    component: 'ExperienceInfoForm',
     route: '/register-experience/experience-info',
     showBackButton: true,
     showNextButton: true,
@@ -57,7 +57,7 @@ export const ONBOARDING_STEP_DEFINITIONS = [
     label: 'Final Submission',
     title: '',
     completedTitle: '',
-    component: 'GoOnlineForm',
+    component: 'RegistrationSuccess',
     route: '/register-experience/success',
     showBackButton: true,
     showNextButton: false,
@@ -78,27 +78,27 @@ import {
 
 export const ONBOARDING_STEP_ICONS = [
   {
-    incomplete: <User className="icon-size-m" />,
-    completed: <UserCheck className="icon-size-m" />,
+    incomplete: <User />,
+    completed: <UserCheck />,
   },
   {
-    incomplete: <Store className="icon-size-m" />,
-    completed: <Store className="icon-size-m" />,
+    incomplete: <Store />,
+    completed: <Store />,
   },
   {
-    incomplete: <FileQuestion className="icon-size-m" />,
-    completed: <FileCheck className="icon-size-m" />,
+    incomplete: <FileQuestion />,
+    completed: <FileCheck />,
   },
   {
-    incomplete: <CircleAlert className="icon-size-m" />,
-    completed: <CircleAlert className="icon-size-m" />,
+    incomplete: <CircleAlert />,
+    completed: <CircleAlert />,
   },
   {
-    incomplete: <Leaf className="icon-size-m" />,
-    completed: <Leaf className="icon-size-m" />,
+    incomplete: <Leaf />,
+    completed: <Leaf />,
   },
   {
-    incomplete: <ToggleLeft className="icon-size-m" />,
-    completed: <ToggleRight className="icon-size-m" />,
+    incomplete: <ToggleLeft />,
+    completed: <ToggleRight />,
   },
 ];

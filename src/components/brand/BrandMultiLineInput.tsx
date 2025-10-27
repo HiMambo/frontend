@@ -11,6 +11,8 @@ interface BrandMultiLineInputProps {
   onChange: (value: string) => void;
   lines: number;
   placeholder?: string;
+  description?: string;
+  descriptionClassName?: string;
 }
 
 export const BrandMultiLineInput: React.FC<BrandMultiLineInputProps> = ({
@@ -22,12 +24,17 @@ export const BrandMultiLineInput: React.FC<BrandMultiLineInputProps> = ({
   onChange,
   lines,
   placeholder = "",
+  description = "",
+  descriptionClassName = "",
 }) => {
   return (
     <div className={`flex flex-col gap-[var(--spacing-300)] ${width} ${className}`}>
       {/* Label */}
       <label className={formLabelClassName}>{formLabel}</label>
-
+      {/* Description (optional) */}
+      {description && (
+        <label className={descriptionClassName}>{description}</label>
+      )}
       {/* Textarea */}
       <textarea
         rows={lines}

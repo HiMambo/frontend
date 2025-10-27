@@ -62,18 +62,20 @@ const StepContext = createContext<StepContextType | undefined>(undefined);
 interface StepProviderProps {
   children: ReactNode;
   stepDefinitions: readonly StepDefinition[];
+  initialCompletedSteps?: Set<StepNumber>;
 }
 
 export function StepProvider({ 
   children, 
   stepDefinitions,
+  initialCompletedSteps,
 }: StepProviderProps) {
   const router = useRouter();
   const initialStep = stepDefinitions[0].step;
 
   const [stepState, setStepState] = useState<StepState>({
     currentStep: initialStep,
-    completedSteps: new Set(),
+    completedSteps: initialCompletedSteps ? initialCompletedSteps : new Set(),
     isValid: true,
     validationError: null,
   });

@@ -36,12 +36,13 @@ export default function ProgressBar({ icons }: ProgressBarProps) {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 pt-10">
+    <div className="w-[var(--width-progress-bar)] mx-auto px-1200 py-600">
       <div className="relative flex items-center justify-between">
         {/* Track */}
         <div
-          className="absolute top-6 h-1 bg-[var(--text-disabled)] z-0 rounded"
+          className="absolute h-1 bg-[var(--text-disabled)] z-0 rounded"
           style={{
+            top: `34%`,
             left: `${100 / (2 * totalSteps)}%`,
             width: `${totalWidth * 100}%`,
           }}
@@ -49,8 +50,9 @@ export default function ProgressBar({ icons }: ProgressBarProps) {
 
         {/* Filled progress */}
         <div
-          className="absolute top-6 h-1 bg-surface-accent-2 z-10 rounded transition-all duration-500"
+          className="absolute h-1 bg-surface-accent-2 z-10 rounded transition-all duration-500"
           style={{
+            top: `34%`,
             left: `${100 / (2 * totalSteps)}%`,
             width: `${progressPercentage * totalWidth}%`,
           }}
@@ -64,16 +66,18 @@ export default function ProgressBar({ icons }: ProgressBarProps) {
           const icon = isCompleted ? icons[index].completed : icons[index].incomplete;
 
           return (
-            <div key={step} className="relative z-20 flex flex-col items-center flex-1">
+            <div key={step} className="relative z-20 flex flex-col items-center gap-100">
               <div
                 onClick={() => isClickable && routeToStep(step)}
                 className={`icon-size-l rounded-full flex items-center justify-center font-semibold
                   ${getStepStyles(status)}
                   ${isClickable ? "hover:scale-[1.05] cursor-pointer" : "cursor-default"}`}
               >
-                {icon}
+                <span className="icon-size-m [&>svg]:w-full [&>svg]:h-full">
+                  {icon}
+                </span>
               </div>
-              <span className="mt-2 body-xxs-light text-tertiary">{label}</span>
+              <span className="body-xxs-light text-tertiary">{label}</span>
             </div>
           );
         })}

@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useSteps } from "@/context/StepContext";
 import { useState } from "react";
 import { BrandInputForm } from "../brand/BrandInputForm";
 import { ArrowRight, CalendarCheck2, Globe, MapPin, Store } from "lucide-react";
@@ -9,11 +8,20 @@ import { BrandMultiLineInput } from "../brand/BrandMultiLineInput";
 import { BrandDropdownFlags } from "../brand/BrandDropdownFlags";
 import { ALL_COUNTRIES } from "@/lib/countries";
 import { BrandDropdownMenu } from "../brand/BrandDropdownMenu";
+import { StepComponentProps } from "@/app/register-experience/[step]/page";
 
-export default function BusinessDetailsForm() {
-  const { markStepComplete, routeToStep } = useSteps();
+export interface BusinessDetailsFormData {
+  businessName: string,
+  website: string,
+  country: string,
+  address: string,
+  yearFounded: string,
+  category: string,
+  description: string
+}
 
-  const [formData, setFormData] = useState({
+export default function BusinessDetailsForm({ onComplete }: StepComponentProps) {
+  const [formData, setFormData] = useState<BusinessDetailsFormData>({
     businessName: "",
     website: "",
     country: "",
@@ -27,11 +35,14 @@ export default function BusinessDetailsForm() {
     setFormData((prev) => ({ ...prev, [key]: value }));
   }
 
-  function submit(e: React.FormEvent) {
+  function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    // Validation placeholder
     console.log("Submitting form:", formData);
-    markStepComplete(2);
-    routeToStep(3);
+
+    // Let parent handle completion
+    onComplete();
   }
 
   return (
@@ -45,7 +56,7 @@ export default function BusinessDetailsForm() {
         </div>
       </header>
 
-      <form onSubmit={submit} className="flex flex-col gap-600">
+      <form onSubmit={onSubmit} className="flex flex-col gap-600">
         <section className="grid grid-cols-2 gap-800 relative">
           <BrandInputForm
             width="w-full"

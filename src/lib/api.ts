@@ -192,3 +192,14 @@ export async function createOrUpdateUser(userData: CreateUserData) {
     return false;
   }
 }
+
+/**
+ * Fetches the user's onboarding progress from the backend
+ * Returns an array of completed step numbers
+ */
+export async function fetchOnboardingProgress(): Promise<number[]> {
+  // Simulate API call with a 1.5 second delay
+  await new Promise(resolve => setTimeout(resolve, 2500));
+  //throw new Error(`Failed to fetch experience with ID`);
+  return [1, 2];
+}
