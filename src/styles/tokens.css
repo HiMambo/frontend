@@ -1,0 +1,270 @@
+/* Design tokens: colors, semantics, typography hooks */
+:root {
+  /* ---- Semantic text ---- */
+  --text-primary: var(--terracotta-950);
+  --text-secondary: var(--terracotta-900);
+  --text-tertiary: #676767;
+  --text-disabled: var(--neutral-300);
+  --text-inverted: #fffaf5;
+
+  /* ---- Surfaces / accents ---- */
+  --surface: #fffaf5; /* light canvas */
+  --surface-accent: var(--yellow-500);
+  --surface-accent-2: var(--green-300);
+
+  /* ---- Homepage + footer tokens ---- */
+  --color-home-searchbox: var(--green-100);
+  --color-home-button: var(--teal-600);
+
+  /* --- Color Palette from Design System --- */
+  /* Warm Neutral Scale */
+  --neutral-50: #f7f6f5;
+  --neutral-100: #edebe7;
+  --neutral-200: #dad6ce;
+  --neutral-300: #c2bdaf;
+  --neutral-400: #a49a87;
+  --neutral-500: #988c77;
+  --neutral-600: #8b7d6b;
+  --neutral-700: #74675a;
+  --neutral-800: #60554c;
+  --neutral-900: #4f463f;
+  --neutral-950: #292521;
+
+  /* Terracotta-Warning Scale */
+  --terracotta-50: #fdf5f3;
+  --terracotta-100: #fbe9e5;
+  --terracotta-200: #f9d6cf;
+  --terracotta-300: #f4b9ad;
+  --terracotta-400: #ec907d;
+  --terracotta-500: #df6951;
+  --terracotta-600: #cb5037;
+  --terracotta-700: #ab402a;
+  --terracotta-800: #8e3826;
+  --terracotta-900: #763426;
+  --terracotta-950: #40170f;
+
+  /* Yellow-Positive Scale */
+  --yellow-50: #fffcea;
+  --yellow-100: #fff7c5;
+  --yellow-200: #fff086;
+  --yellow-300: #ffe146;
+  --yellow-400: #ffd01c;
+  --yellow-500: #f1a501;
+  --yellow-600: #e18400;
+  --yellow-700: #bb5c02;
+  --yellow-800: #974709;
+  --yellow-900: #7c3a0b;
+  --yellow-950: #481d00;
+
+  /* Green-Primary Scale */
+  --green-50: #f4f8ed;
+  --green-100: #e6f0d7;
+  --green-200: #c6dea6;
+  --green-300: #afd086;
+  --green-400: #92bb60;
+  --green-500: #73a042;
+  --green-600: #597f31;
+  --green-700: #446229;
+  --green-800: #3a4f25;
+  --green-900: #324423;
+  --green-950: #18240f;
+
+  /* Teal Scale */
+  --teal-50: #effefa;
+  --teal-100: #cafdf1;
+  --teal-200: #95fae5;
+  --teal-300: #58f0d5;
+  --teal-400: #26dbc0;
+  --teal-500: #0dbfa8;
+  --teal-600: #079a8a;
+  --teal-700: #0a7b6f;
+  --teal-800: #0d5d56;
+  --teal-900: #10514b;
+  --teal-950: #02312f;
+
+  /* Font family hook (used by next/font) */
+  --font-sans: --font-parkinsans, Helvetica, Arial, ui-sans-serif, system-ui;
+/* ===== FLUID TYPOGRAPHY SYSTEM =====
+ * Based on Figma design at 1920px viewport
+ * Formula: clamp(min-mobile, preferred-vw, max-desktop)
+ */
+
+  /* ---- Typography (Headings) - fluid scaling ---- */
+  --text-h1: clamp(48px, 4.8vw + 6px, 96px);
+  --leading-h1: clamp(58px, 5.8vw + 8px, 115px);
+  --tracking-h1: 0.1px;
+
+  --text-h2: clamp(36px, 3.6vw + 4px, 72px);
+  --leading-h2: clamp(43px, 4.2vw + 6px, 85px);
+  --tracking-h2: 0.1px;
+
+  --text-h3: clamp(28px, 2.7vw + 3px, 54px);
+  --leading-h3: clamp(34px, 3.2vw + 4px, 65px);
+  --tracking-h3: 0.1px;
+
+  --text-h4: clamp(24px, 2.4vw + 2px, 48px);
+  --leading-h4: clamp(30px, 2.9vw + 3px, 60px);
+  --tracking-h4: 0.1px;
+
+  --text-h5: clamp(18px, 1.8vw + 2px, 36px);
+  --leading-h5: clamp(22px, 2.0vw + 2px, 40px);
+  --tracking-h5: 0.1px;
+
+  /* ---- Typography (Body) - fluid scaling ---- */
+  --text-body-xxl: clamp(18px, 1.6vw + 2px, 32px);
+  --leading-body-xxl: 1.5;
+  --tracking-body-xxl: 0.1px;
+
+  --text-body-xl: clamp(14px, 1.2vw + 1px, 24px);
+  --leading-body-xl: 1.5;
+  --tracking-body-xl: 0.1px;
+
+  --text-body-l: clamp(12px, 0.9vw + 1px, 18px);
+  --leading-body-l: 1.5;
+  --tracking-body-l: 0px;
+
+  --text-body-m: clamp(11px, 0.8vw + 0.5px, 16px);
+  --leading-body-m: 1.5;
+  --tracking-body-m: 0.1px;
+
+  --text-body-s: clamp(10px, 0.7vw + 0.5px, 14px);
+  --leading-body-s: 1.5;
+  --tracking-body-s: 0.1px;
+
+  --text-body-xs: clamp(9px, 0.6vw + 0.3px, 12px);
+  --leading-body-xs: 1.5;
+  --tracking-body-xs: 0.1px;
+
+  --text-body-xxs: clamp(8px, 0.5vw + 0.2px, 10px);
+  --leading-body-xxs: 1.5;
+  --tracking-body-xxs: 0.1px;
+
+  /* ---- Icon sizing tokens - fluid ---- */
+  --icon-xs: clamp(12px, 0.8vw + 0.5px, 16px);
+  --icon-s: clamp(16px, 1.2vw + 1px, 24px);
+  --icon-m: clamp(20px, 1.6vw + 2px, 32px);
+  --icon-l: clamp(28px, 2.4vw + 3px, 48px);
+  --icon-xl: clamp(36px, 3.2vw + 4px, 64px);
+
+  /* ---- Spacing scale - fluid scaling ---- */
+  --spacing-0: 0px;
+  --spacing-050: clamp(0.8px, 0.08vw + 0.16px, 2px);
+  --spacing-100: clamp(1.6px, 0.16vw + 0.4px, 4px);
+  --spacing-150: clamp(2.4px, 0.24vw + 0.56px, 6px);
+  --spacing-200: clamp(3.6px, 0.36vw + 0.88px, 8px);
+  --spacing-250: clamp(4.4px, 0.44vw + 1.12px, 10px);
+  --spacing-300: clamp(5.2px, 0.52vw + 1.36px, 12px);
+  --spacing-400: clamp(8px, 0.8vw + 2.16px, 16px);
+  --spacing-600: clamp(12px, 1.2vw + 3.36px, 24px);
+  --spacing-800: clamp(16px, 1.6vw + 4.48px, 32px);
+  --spacing-1000: clamp(20px, 2vw + 5.6px, 40px);
+  --spacing-1200: clamp(24px, 2.4vw + 6.64px, 48px);
+  --spacing-1600: clamp(32px, 3.2vw + 8.88px, 64px);
+  --spacing-2400: clamp(48px, 4.8vw + 13.36px, 96px);
+  --spacing-4000: clamp(80px, 8.0vw + 22.24px, 160px);
+  --spacing-6000: clamp(112px, 11.2vw + 31.12px, 224px);
+
+  /* ---- Border radius scale - fluid ---- */
+  --radius-100: clamp(2px, 0.16vw + 0.67px, 4px);
+  --radius-200: clamp(4px, 0.32vw + 1.33px, 8px);
+  --radius-300: clamp(6px, 0.48vw + 2px, 12px);
+  --radius-600: clamp(12px, 0.96vw + 4px, 24px);
+  --radius-800: clamp(16px, 1.28vw + 5.33px, 32px);
+  --radius-1200: clamp(24px, 1.92vw + 8px, 48px);
+  --radius-1000: 9999px;
+
+  /* Elevation token */
+  --elevation-1: 14px 14px 12px 0px rgba(118, 52, 38, 0.15);
+
+  --height-input: clamp(36px, 2.5vw + 10px, 56px);  /* ~40px at 1440px, ~56px at 1920px */
+  --height-searchbox-py: clamp(12px, 1vw + 4px, 24px);  /* padding-y for searchbox */
+  --height-searchbox-px: clamp(16px, 1.2vw + 6px, 32px);  /* padding-x for searchbox */
+  --gap-searchbox-main: clamp(32px, 2.5vw + 10px, 64px);  /* main gap between sections */
+  --gap-searchbox-params: clamp(20px, 1.6vw + 6px, 40px);  /* gap between parameters */
+
+  /* ---- Search parameter widths - fluid ---- */
+  --width-search-travellers: clamp(80px, 6.25vw, 120px);   /* 120px @1920px */
+  --width-search-date: clamp(133px, 11vw, 200px);  /* 200px @1920px */
+  --width-search-experience:       clamp(160px, 12.5vw, 240px);  /* 240px @1920px */
+
+  --width-search-controls: clamp(640px, 60.6vw, 1164px); /* 1164px @1920px */
+
+  --card-height: clamp(360px, 23.96vw, 460px); /* 460px @1920px */
+
+  --width-filtersidebar: clamp(220px, 15.15vw, 291px); /* 291px @1920px */
+
+  --width-experience-gridcard: clamp(300px, 31.6vw, 607px); /* 607px @1920px */
+  --height-image-gridcard: clamp(220px, 23.4vw, 450px); /* 450px @1920px */
+
+  --homepage-card-width: clamp(240px, 27.3vw, 525px); /* 525px @1920px */
+
+  /* BookingSummary component tokens */
+  --bookingsummary-width: clamp(320px, 30vw, 589px);
+  --bookingsummary-image-height: clamp(180px, 14.5vw, 278px);
+
+  --experiencedetails-image-width: clamp(320px, 43.75vw, 840px); /* 840px @1920px */
+  --experiencedetails-image-height: clamp(240px, 29.1vw, 559px); /* 559px @1920px */
+
+  --width-authforms: clamp(280px, 20.8vw + 40px, 400px);
+  --width-authbuttons: clamp(240px, 13vw + 94px, 344px);
+  --width-authscreen: clamp(640px, 47.6vw + 92px, 915px);
+
+}
+
+/* ===== RESPONSIVE BREAKPOINT OVERRIDES ===== */
+
+/* Cap growth on very large screens (above 1920px) */
+@media (min-width: 1921px) {
+  :root {
+    --text-h1: 96px;
+    --text-h2: 72px;
+    --text-h3: 54px;
+    --text-h4: 48px;
+    --text-h5: 36px;
+    --text-body-xxl: 32px;
+    --text-body-xl: 24px;
+    --text-body-l: 18px;
+    --text-body-m: 16px;
+    --text-body-s: 14px;
+    --text-body-xs: 12px;
+    --text-body-xxs: 10px;
+    
+    --icon-xs: 16px;
+    --icon-s: 24px;
+    --icon-m: 32px;
+    --icon-l: 48px;
+    --icon-xl: 64px;
+  }
+}
+
+/* Optional dark theme: override only what you need */
+.dark {
+  --text-primary: #ffffff;
+  --text-secondary: #e6e6e6;
+  --text-disabled: #9aa0a6;
+  --surface: #121212;
+  /* keep brand accents if you like the pop */
+}
+
+/* Utility classes for fluid heights */
+.h-input-fluid {
+  height: var(--height-input);
+}
+
+.py-searchbox-fluid {
+  padding-top: var(--height-searchbox-py);
+  padding-bottom: var(--height-searchbox-py);
+}
+
+.px-searchbox-fluid {
+  padding-left: var(--height-searchbox-px);
+  padding-right: var(--height-searchbox-px);
+}
+
+.gap-searchbox-main {
+  gap: var(--gap-searchbox-main);
+}
+
+.gap-searchbox-params {
+  gap: var(--gap-searchbox-params);
+}
