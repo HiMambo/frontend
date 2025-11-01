@@ -6,9 +6,9 @@ import { BrandInputForm } from "../brand/BrandInputForm";
 import { ArrowRight, CalendarCheck2, Globe, MapPin, Store } from "lucide-react";
 import { BrandMultiLineInput } from "../brand/BrandMultiLineInput";
 import { BrandDropdownFlags } from "../brand/BrandDropdownFlags";
-import { ALL_COUNTRIES } from "@/lib/countries";
 import { BrandDropdownMenu } from "../brand/BrandDropdownMenu";
 import { StepComponentProps } from "@/app/register-experience/[step]/page";
+import { OPERATING_COUNTRIES } from "@/lib/brandStandardizedDefinitions";
 
 export interface BusinessDetailsFormData {
   businessName: string,
@@ -61,41 +61,36 @@ export default function BusinessDetailsForm({ onComplete }: StepComponentProps) 
           <BrandInputForm
             width="w-full"
             formLabel="Business Name *"
-            formLabelClassName="body-s text-tertiary"
             value={formData.businessName}
             onChange={(e) => updateFormData("businessName", e)}
-            icon={<Store/>}
+            icon={Store}
           />
           <BrandInputForm
             width="w-full"
             formLabel="Business Website or Social Media link *"
-            formLabelClassName="body-s text-tertiary"
             value={formData.website}
             onChange={(e) => updateFormData("website", e)}
-            icon={<Globe/>}
+            icon={Globe}
           />
           <BrandInputForm
             width="w-full"
             formLabel="Business Address *"
-            formLabelClassName="body-s text-tertiary"
             value={formData.address}
             onChange={(e) => updateFormData("address", e)}
-            icon={<MapPin/>}
+            icon={MapPin}
           />
           <BrandDropdownFlags
-            items={ALL_COUNTRIES}
+            items={OPERATING_COUNTRIES}
             formLabel="Main country of operation *"
-            formLabelClassName="body-s text-tertiary"
             value={formData.country}
             onChange={(e) => updateFormData("country", e as string)}
           />
           <BrandInputForm
             width="w-full"
             formLabel="Year Founded *"
-            formLabelClassName="body-s text-tertiary"
             value={formData.yearFounded}
             onChange={(e) => updateFormData("yearFounded", e)}
-            icon={<CalendarCheck2/>}
+            icon={CalendarCheck2}
           />
           <BrandDropdownMenu
             items={[
@@ -107,7 +102,6 @@ export default function BusinessDetailsForm({ onComplete }: StepComponentProps) 
               "Food & Gastronomy",
             ]}
             formLabel="Select Category *"
-            formLabelClassName="body-s text-tertiary"
             value={formData.category}
             onChange={(e) => updateFormData("category", e as string)}
           />

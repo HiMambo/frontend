@@ -6,6 +6,7 @@ import ProgressBar from "@/components/shared/ProgressBar";
 import { useSteps } from "@/context/StepContext";
 import { useRouteValidation } from "@/hooks/useRouteValidation";
 import { ONBOARDING_STEP_ICONS } from "@/lib/onboardingSteps";
+import { cn } from "@/lib/utils";
 
 interface PartnerOnboardingFlowProps {
   children: React.ReactNode;
@@ -13,7 +14,9 @@ interface PartnerOnboardingFlowProps {
 
 export function PartnerOnboardingFlow({ children }: PartnerOnboardingFlowProps) {
   useRouteValidation(); // Validates route → updates context
-  const { completedSteps } = useSteps();
+  const { completedSteps, currentStep, getStepDefinition } = useSteps();
+
+  const isExperienceInfoStep = getStepDefinition(currentStep)?.component === "ExperienceInfoForm";
 
   return (
     <>
@@ -31,7 +34,13 @@ export function PartnerOnboardingFlow({ children }: PartnerOnboardingFlowProps) 
         )}
         <ProgressBar icons={ONBOARDING_STEP_ICONS} />
         {/* Card */}
-        <div className="bg-[var(--surface)]/50 rounded-600 px-1200 py-800 w-[var(--onboarding-step-card-width)]">
+        <div
+          className={cn(//Future: Move the widths to each component, not here
+            "bg-[var(--surface)]/50 rounded-600 px-1200 py-800",
+            isExperienceInfoStep
+              ? "w-[var(--onboarding-experienceinfo-step-card-width)]"
+              : "w-[var(--onboarding-step-card-width)]"
+        )}>
           {children}
         </div>
       </main>

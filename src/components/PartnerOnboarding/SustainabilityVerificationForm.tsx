@@ -43,16 +43,14 @@ export default function SustainabilityVerificationForm({ onComplete }: StepCompo
 
   return (
     <main className="flex flex-col gap-600">
-      <header className="flex flex-row justify-between items-center">
-        <div className="flex flex-col gap-300 text-primary">
-          <div className="flex flex-row gap-300 justify-center">
-            <BadgeCheckIcon className="icon-size-l text-[var(--surface-accent-2)]"/>
-            <span className="body-xxl-label">Sustainability Verification</span>
-          </div>
-          <span className="body-l">
-            Here you will provide detailed information about the sustainability of your experience
-          </span>
+      <header className="flex flex-col gap-300 text-primary">
+        <div className="flex flex-row gap-300 justify-center">
+          <BadgeCheckIcon className="icon-size-l text-[var(--surface-accent-2)]"/>
+          <span className="body-xxl-label">Sustainability Verification</span>
         </div>
+        <span className="body-l">
+          Here you will provide detailed information about the sustainability of your experience.
+        </span>
       </header>
 
       <form onSubmit={submit} className="flex flex-col pt-600 gap-600">

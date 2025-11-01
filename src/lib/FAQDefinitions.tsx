@@ -42,27 +42,27 @@ const SDG_DATA = [
 
 export const PARTNER_ONBOARDING_FAQS = [
     {
-      icon: <PuzzleIcon />,
+      icon: PuzzleIcon,
       question: 'What does it mean to be a "HiMambo Partner"?',
       answer: "Being a HiMambo Partner means you can showcase your tourism experiences or services to a global audience seeking authentic, sustainable options. You'll get tools to manage your profile, bookings, and communicate with travelers — all in one place."
     },
     {
-      icon: <Tag />,
+      icon: Tag,
       question: "Do you have to pay to join the platform or is there a cut on bookings?",
       answer: "Signing up and creating your profile is FREE. HiMambo may charge a small commission on bookings or premium features — all details are clearly shown before you commit. There are no hidden fees."
     },
     {
-      icon: <Leaf />,
+      icon: Leaf,
       question: 'What does "sustainable" mean at HiMambo?',
       answer: "Being sustainable means your business or activity is not just fun or comfortable, but also kind to nature, helps local people, and supports the places and cultures you work in. At HiMambo, we help travelers find these responsible experiences by checking that they are truly making a positive difference."
     },
     {
-      icon: <Wallet />,
+      icon: Wallet,
       question: "How do payments work?",
       answer: 'All payments from bookings go to your secure MamboWallet. You can transfer funds directly to your bank account or crypto wallet, track your earnings, and see a clear history of all transactions. Details are found in the "MamboWallet" section of your dashboard.'
     },
     {
-      icon: <Sun />,
+      icon: Sun,
       question: 'What Makes an Experience "Sustainable" on our platform?',
       answer: (
         <div>
@@ -77,12 +77,12 @@ export const PARTNER_ONBOARDING_FAQS = [
       )
     },
     {
-      icon: <Clock />,
+      icon: Clock,
       question: "How long does it take to get approved?",
       answer: "After submitting your application, our team will review your documents and responses within about 1 week. We'll notify you by email as soon as you're approved or if we need more info."
     },
     {
-      icon: <SDGFilterIcon />,
+      icon: SDGFilterIcon,
       question: "What are SDGs?",
       answer: (
         <div>

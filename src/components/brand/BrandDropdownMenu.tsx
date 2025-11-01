@@ -4,11 +4,12 @@ import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp, Check } from "lucide-react";
 
 interface BrandDropdownMenuProps {
-  formLabel: string;
+  formLabel?: string;
   items: string[];
   formLabelClassName?: string;
   width?: string;
   className?: string;
+  placeholder?: string;
   value: string | string[];
   onChange: (value: string | string[]) => void;
   multiSelect?: boolean;
@@ -17,9 +18,10 @@ interface BrandDropdownMenuProps {
 export const BrandDropdownMenu: React.FC<BrandDropdownMenuProps> = ({
   formLabel,
   items,
-  formLabelClassName = "body-s text-disabled",
+  formLabelClassName = "body-s text-tertiary",
   width = "w-full",
   className = "",
+  placeholder = "",
   value,
   onChange,
   multiSelect = false,
@@ -66,7 +68,7 @@ export const BrandDropdownMenu: React.FC<BrandDropdownMenuProps> = ({
       className={`flex flex-col gap-[var(--spacing-300)] relative ${width} ${className}`}
     >
       {/* Label */}
-      <label className={formLabelClassName}>{formLabel}</label>
+      {formLabel && <label className={formLabelClassName}>{formLabel}</label>}
 
       {/* Dropdown input */}
       <div
@@ -86,7 +88,7 @@ export const BrandDropdownMenu: React.FC<BrandDropdownMenuProps> = ({
               displayValue ? "text-tertiary" : "text-disabled"
             }`}
           >
-            {displayValue || "Select..."}
+            {displayValue || placeholder}
           </span>
 
           {isOpen ? (
@@ -101,7 +103,7 @@ export const BrandDropdownMenu: React.FC<BrandDropdownMenuProps> = ({
           <div
             className="
               absolute z-10 mt-200 w-full bg-white 
-              rounded-300 px-400 overflow-hidden
+              rounded-300 px-400 overflow-hidden shadow-elevation-1
             "
           >
             {items.map((item, index) => {
@@ -126,7 +128,7 @@ export const BrandDropdownMenu: React.FC<BrandDropdownMenuProps> = ({
                   `}
                 >
                   <span>{item}</span>
-                  {selected && <Check className="icon-size-s text-primary stroke-[1.5]" />}
+                  {selected && <Check className="icon-size-s text-primary" />}
                 </div>
               );
             })}

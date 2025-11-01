@@ -1,8 +1,9 @@
 import { type StepStatus, useSteps } from "@/context/StepContext";
+import { LucideIcon } from "lucide-react";
 
 interface StepIconPair {
-  incomplete: React.ReactNode;
-  completed: React.ReactNode;
+  incomplete: LucideIcon;
+  completed: LucideIcon;
 }
 
 interface ProgressBarProps {
@@ -63,19 +64,20 @@ export default function ProgressBar({ icons }: ProgressBarProps) {
           const status = getStepStatus(step);
           const isCompleted = status === "completed" || status === "revisited";
           const isClickable = canGoToStep(step);
-          const icon = isCompleted ? icons[index].completed : icons[index].incomplete;
+
+          const Icon = isCompleted
+            ? icons[index].completed
+            : icons[index].incomplete;
 
           return (
             <div key={step} className="relative z-20 flex flex-col items-center gap-100">
               <div
                 onClick={() => isClickable && routeToStep(step)}
-                className={`icon-size-l rounded-full flex items-center justify-center font-semibold
+                className={`icon-size-l rounded-full flex items-center justify-center
                   ${getStepStyles(status)}
                   ${isClickable ? "hover:scale-[1.05] cursor-pointer" : "cursor-default"}`}
               >
-                <span className="icon-size-m [&>svg]:w-full [&>svg]:h-full">
-                  {icon}
-                </span>
+                <Icon className="icon-size-m" />
               </div>
               <span className="body-xxs-light text-tertiary">{label}</span>
             </div>

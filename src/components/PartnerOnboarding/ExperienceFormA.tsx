@@ -1,310 +1,208 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Minus, Plus, Save, Trash2, Upload } from "lucide-react";
-import { useState } from "react";
+import { Save, Trash2, AlertCircle, CheckSquare, FileCheck2 } from "lucide-react";
+import { ExperienceFormData } from "./ExperienceInfoForm";
+import { BrandInputForm } from "../brand/BrandInputForm";
+import { BrandDropdownMenu } from "../brand/BrandDropdownMenu";
+import { EXPERIENCE_CATEGORIES, EXPERIENCE_SPECIAL_FEATURES, OPERATING_COUNTRIES, STANDARD_SYMBOLS, SUPPORTED_CURRENCIES } from "@/lib/brandStandardizedDefinitions";
+import { BrandDropdownFlags } from "../brand/BrandDropdownFlags";
+import { SDGFilterIcon } from "../shared/IconComponents";
+import { BrandMultiLineInput } from "../brand/BrandMultiLineInput";
+import { BrandUploadForm } from "../brand/BrandUploadForm";
+import { BrandNumberInput } from "../brand/BrandNumberInput";
+import { SDGDropdown } from "../shared/SDGDropdown";
+import { BrandSymbolInput } from "../brand/BrandSymbolInput";
+import { BrandRangeInput } from "../brand/BrandRangeInput";
+import { BrandDurationInput } from "../brand/BrandDurationInput";
 
-/* ───────── helpers ───────── */
-
-function GuestsStepper({
-  value,
-  onChange,
-}: {
-  value: number;
-  onChange: (n: number) => void;
-}) {
-  return (
-    <div className="inline-flex items-center border border-neutral-300 rounded-md overflow-hidden">
-      <button
-        type="button"
-        className="w-9 h-9 grid place-items-center hover:bg-neutral-100"
-        onClick={() => onChange(Math.max(1, value - 1))}
-      >
-        <Minus className="w-4 h-4" />
-      </button>
-      <div className="px-3 h-9 grid place-items-center text-sm font-medium w-10">
-        {value}
-      </div>
-      <button
-        type="button"
-        className="w-9 h-9 grid place-items-center hover:bg-neutral-100"
-        onClick={() => onChange(value + 1)}
-      >
-        <Plus className="w-4 h-4" />
-      </button>
-    </div>
-  );
+interface ExperienceFormAProps {
+  data: ExperienceFormData;
+  onChange: (data: ExperienceFormData) => void;
+  onDelete: () => void;
+  canDelete: boolean;
 }
 
-/* ───────── form ───────── */
+export function ExperienceFormA({
+  data,
+  onChange,
+  onDelete,
+  canDelete,
+}: ExperienceFormAProps) {
+  const handleFieldChange = <K extends keyof ExperienceFormData>(
+    field: K,
+    value: ExperienceFormData[K]
+  ) => {
+    onChange({ ...data, [field]: value });
+  };
 
-export function ExperienceFormA() {
-  const [guests, setGuests] = useState(1);
-  const [refundable, setRefundable] = useState("yes");
+  const handleSaveChanges = () => {
+    // Placeholder - to be defined with Enrique
+    console.log("Save changes clicked", data);
+  };
 
   return (
-    <form className="space-y-12 text-neutral-800">
-      {/* ───────── Basic Info + Description ───────── */}
-      <div className="grid md:grid-cols-2 gap-10">
-        {/* LEFT: Basic Info */}
-        <div className="space-y-4">
-          <h3 className="flex items-center gap-2 font-semibold text-primary text-lg">
-            <span>📝</span> Basic Information
-          </h3>
-
-          <div>
-            <Label className="text-sm text-neutral-700">
-              Select the experience Category
-            </Label>
-            <select className="mt-1 block w-full rounded-lg border border-neutral-200 bg-neutral-50 p-2 text-sm focus:ring-2 focus:ring-primary">
-              <option>Nature & Wildlife</option>
-              <option>Culture & Heritage</option>
-              <option>Food & Drink</option>
-              <option>Adventure</option>
-            </select>
-          </div>
-
-          <div>
-            <Label className="text-sm text-neutral-700">
-              Heading (max 50 characters)
-            </Label>
-            <Input
-              placeholder="Traditional Indigo Weaving with Artisans"
-              maxLength={50}
-              className="bg-neutral-50"
-            />
-          </div>
-
-          <div>
-            <Label className="text-sm text-neutral-700">Country</Label>
-            <select className="mt-1 block w-full rounded-lg border border-neutral-200 bg-neutral-50 p-2 text-sm focus:ring-2 focus:ring-primary">
-              <option>Select one</option>
-              <option>Vietnam</option>
-              <option>Germany</option>
-              <option>Italy</option>
-            </select>
-          </div>
-
-          <div>
-            <Label className="text-sm text-neutral-700">Location</Label>
-            <Input placeholder="Sapa, Vietnam" className="bg-neutral-50" />
-          </div>
-        </div>
-
-        {/* RIGHT: Description */}
-        <div className="space-y-4">
-          <h3 className="flex items-center gap-2 font-semibold text-primary text-lg">
-            <span>📄</span> Description
-          </h3>
-
-          <div>
-            <Label className="text-sm text-neutral-700">
-              Long Description (max 400 characters)
-            </Label>
-            <Textarea
-              rows={6}
-              maxLength={400}
-              className="bg-neutral-50"
-              placeholder="Join local artisans in a vibrant village..."
-            />
-          </div>
-
-          <h3 className="font-semibold text-primary">Additional Details</h3>
-
-          <div className="flex items-center justify-between">
-            <Label className="text-sm text-neutral-700">Max # of Guests</Label>
-            <GuestsStepper value={guests} onChange={setGuests} />
-          </div>
-
-          <div>
-            <Label className="text-sm text-neutral-700">Refundable</Label>
-            <div className="flex gap-6 mt-2">
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="radio"
-                  checked={refundable === "yes"}
-                  onChange={() => setRefundable("yes")}
-                />
-                Yes
-              </label>
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="radio"
-                  checked={refundable === "no"}
-                  onChange={() => setRefundable("no")}
-                />
-                No
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ───────── Pricing + Other Sections in 2 Columns ───────── */}
-      <div className="grid md:grid-cols-2 gap-10">
+    <form className="flex flex-col gap-800">
+      <div className="flex flex-row py-250 gap-800">
         {/* LEFT COLUMN */}
-        <div className="space-y-4">
-          <div>
-            <Label className="text-sm text-neutral-700">Price per person</Label>
-            <div className="flex items-center border rounded-lg bg-neutral-50 px-3 py-2">
-              <span className="text-sm text-neutral-600 mr-1">€</span>
-              <Input
-                type="number"
-                placeholder="80.00"
-                className="border-none bg-neutral-50 flex-1"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <Label className="text-sm text-neutral-700">Weeks</Label>
-              <Input type="number" defaultValue={3} className="bg-neutral-50" />
-            </div>
-            <div>
-              <Label className="text-sm text-neutral-700">Days per week</Label>
-              <Input type="number" defaultValue={4} className="bg-neutral-50" />
-            </div>
-            <div>
-              <Label className="text-sm text-neutral-700">Hours per Day</Label>
-              <Input
-                type="number"
-                defaultValue={4.5}
-                step={0.5}
-                className="bg-neutral-50"
-              />
-            </div>
-          </div>
-
-          <div>
-            <Label className="text-sm text-neutral-700">
-              Short Description (max 150 characters)
-            </Label>
-            <Input
-              maxLength={150}
-              placeholder="Step into a world of color and tradition..."
-              className="bg-neutral-50"
+        <div className="flex flex-col px-600 py-800 gap-600 flex-1">
+          <span className="flex flex-row items-center gap-200 text-primary">
+            <AlertCircle className="icon-size-s" />
+            <span className="body-l">Basic Information</span>
+          </span>
+          <BrandDropdownMenu
+            formLabel="Experience Category"
+            formLabelClassName="body-s text-tertiary"
+            value={data.category}   
+            onChange={(val) => handleFieldChange("category", val as string)}
+            items={EXPERIENCE_CATEGORIES}
+          />
+          <BrandDropdownFlags
+            formLabel="Country"
+            value={data.country}   
+            onChange={(val) => handleFieldChange("country", val as string)}
+            items={OPERATING_COUNTRIES}
+          />
+          <BrandInputForm
+            width="w-full"
+            formLabel="Location"
+            value={data.location}
+            onChange={(val) => handleFieldChange("location", val as string)}
+          />
+          <BrandRangeInput
+            formLabel="Price range per person"
+            value={data.pricePerPerson}
+            onChange={(val) => handleFieldChange("pricePerPerson", val as ExperienceFormData["pricePerPerson"])}
+            items={SUPPORTED_CURRENCIES}
+          />
+          <BrandDurationInput
+            formLabel="Duration"
+            value={data.duration}
+            onChange={(val) => handleFieldChange("duration", val as ExperienceFormData["duration"])}
+            items={["Hours", "Days", "Weeks"]}
+          />
+          <BrandDropdownMenu
+            formLabel="Special Features"
+            formLabelClassName="body-s text-tertiary"
+            value={data.specialFeatures}
+            onChange={(val) => handleFieldChange("specialFeatures", val as string)}
+            items={EXPERIENCE_SPECIAL_FEATURES}
+            multiSelect
+          />
+          {/* Additional info section */}
+          <span className="flex flex-row items-center gap-200 text-primary">
+            <CheckSquare className="icon-size-s" />
+            <span className="body-l">Additional Information</span>
+          </span>
+          <BrandSymbolInput
+            symbols={STANDARD_SYMBOLS}
+            value={data.highlights[0]}
+            onChange={(updatedHighlight) => handleFieldChange("highlights", [updatedHighlight, data.highlights[1]])}
+            placeholder="Highlight 1"
+          />
+          <BrandSymbolInput
+            symbols={STANDARD_SYMBOLS}
+            value={data.highlights[1]}
+            onChange={(updatedHighlight) => handleFieldChange("highlights", [data.highlights[0], updatedHighlight])}
+            placeholder="Highlight 2"
+          />
+          <div className="flex flex-col gap-400">
+            <span className="flex flex-row items-center gap-200 text-primary">
+              <SDGFilterIcon className="icon-size-s" />
+              <span className="body-l">SDGs the experience meets</span>
+            </span>
+            <span className="body-xs text-tertiary">
+              If you are not sure of what SDGs your experience meets, please visit the UN SDGs website. <br/>
+              <br/>And don&apos;t worry! This is only for an initial screening. HiMambo will help you refine this.
+            </span>
+            <SDGDropdown
+              value={data.sdgs}
+              onChange={(val) => handleFieldChange("sdgs", val as string[])}
             />
-          </div>
-
-          <div>
-            <Label className="text-sm text-neutral-700">
-              SDGs the experience meets
-            </Label>
-            <select
-              multiple
-              className="mt-1 block w-full rounded-lg border border-neutral-200 bg-neutral-50 p-2 text-sm focus:ring-2 focus:ring-primary"
-            >
-              <option>Climate Action</option>
-              <option>Life on Land</option>
-              <option>Responsible Consumption</option>
-              <option>Gender Equality</option>
-            </select>
-          </div>
-
-          <div>
-            <Label className="text-sm text-neutral-700">Special Feature</Label>
-            <Input
-              placeholder="Take your DIY woven item home"
-              className="bg-neutral-50"
-            />
-          </div>
-
-          <div>
-            <Label className="text-sm text-neutral-700">
-              Hero Image (4:3 ratio / 1280x960 px)
-            </Label>
-            <div className="flex items-center gap-2 border-2 border-dashed border-neutral-300 rounded-lg p-3 bg-neutral-50">
-              <Upload className="w-4 h-4 text-neutral-500" />
-              <span className="text-sm text-neutral-500">
-                Imageplaceholder.png
-              </span>
-            </div>
           </div>
         </div>
 
         {/* RIGHT COLUMN */}
-        <div className="space-y-4">
-          <div>
-            <Label className="text-sm text-neutral-700">
-              How long does it take?
-            </Label>
-            <select className="mt-1 block w-full rounded-lg border border-neutral-200 bg-neutral-50 p-2 text-sm focus:ring-2 focus:ring-primary">
-              <option>Select one</option>
-              <option>1 hour</option>
-              <option>Half day</option>
-              <option>Full day</option>
-              <option>Multiple days</option>
-            </select>
-          </div>
+        <div className="flex flex-col px-600 py-800 gap-600 flex-1">
+          {/* Header */}
+          <span className="flex flex-row items-center gap-200 text-primary">
+            <FileCheck2 className="icon-size-s" />
+            <span className="body-l">Description</span>
+          </span>
 
-          <div>
-            <Label className="text-sm text-neutral-700">Special Features</Label>
-            <div className="border rounded-lg bg-neutral-50 p-2">
-              <select className="w-full bg-neutral-50 text-sm">
-                <option>Pet Friendly</option>
-                <option>Family Friendly</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <Label className="text-sm text-neutral-700">
-              Gallery images (4:3 ratio / 1280x960 px)
-            </Label>
-            <Button
-              variant="outline"
-              type="button"
-              className="bg-neutral-50 border-neutral-300 w-full"
-            >
-              Upload max 10 PNGs / JPEGs
-            </Button>
-          </div>
-
-          <div>
-            <Label className="text-sm text-neutral-700">
-              Video (max 5 min)
-            </Label>
-            <div className="flex items-center gap-2 border rounded-lg p-3 bg-neutral-50">
-              <Upload className="w-4 h-4 text-neutral-500" />
-              <span className="text-sm text-neutral-500">
-                Imageplaceholder.mp4
-              </span>
-            </div>
-          </div>
-
-          <div>
-            <Label className="text-sm text-neutral-700">
-              About your Business
-            </Label>
-            <Textarea
-              rows={5}
-              className="bg-neutral-50"
-              placeholder="The heart of this experience lies with the Hmong community..."
-            />
-          </div>
+          {/* Description + Details */}
+          <BrandInputForm 
+            width="w-full"
+            formLabel="Heading (max  50 characters)"
+            value={data.title}
+            onChange={(val) => handleFieldChange("title", val as string)}
+          />
+          <BrandMultiLineInput
+            lines={7}
+            formLabel="Long description (max 400 characters)"
+            formLabelClassName="body-s text-tertiary"
+            value={data.longDescription}
+            onChange={(val) => handleFieldChange("longDescription", val as string)}
+          />
+          <BrandNumberInput
+            formLabel="Max # of Guests"
+            min={1}
+            max={12}
+            numberOfDigits={2}
+            value={data.maxGuests}
+            onChange={(val) => handleFieldChange("maxGuests", val as number)}
+          />
+          <BrandDropdownMenu
+            formLabel="Refundable?"
+            items={["Yes", "No"]}
+            value={data.refundable}
+            onChange={(val) => handleFieldChange("refundable", val as ExperienceFormData["refundable"])}
+          />
+          <BrandUploadForm
+            label="Hero image (4:3 ratio / 1280 x 960 px)"
+            value={data.heroImage ? [data.heroImage] : []}
+            onChange={(files) => handleFieldChange("heroImage", files[0] || null)}
+            multiple={false}
+          />
+          <BrandUploadForm
+            label="Gallery (max 10 images)"
+            value={data.galleryImages}
+            onChange={(files) => handleFieldChange("galleryImages", files)}
+          />
+          <BrandInputForm 
+            width="w-full"
+            formLabel="Video Link"
+            value={data.videoLink}
+            onChange={(val) => handleFieldChange("videoLink", val as string)}
+            placeholder="Enter YouTube or Google Drive link here"
+          />
         </div>
       </div>
-      {/* Actions */}
-      {/* Actions */}
-      <div className="flex justify-between items-center w-full mt-6">
+
+      {/* Buttons */}
+      <div className="flex flex-row justify-between items-center w-full px-800">
         <Button
+          variant="outlineDestructive"
+          size="custom"
+          className="px-600 py-400"
           type="button"
-          className="flex items-center gap-2 border border-[#c4c0b5] text-[#7c786d] bg-transparent hover:bg-[#f5f3ef] rounded-lg px-6 py-2"
+          onClick={onDelete}
+          disabled={!canDelete}
         >
           Delete Experience
-          <Trash2 className="w-4 h-4" />
+          <Trash2 className="icon-size-s" />
         </Button>
-
         <Button
-          type="submit"
-          className="flex items-center gap-2 bg-[#a9c97d] hover:bg-[#99b86d] text-white rounded-lg px-6 py-2"
+          variant="green"
+          size="custom"
+          className="px-600 py-400"
+          type="button"
+          onClick={handleSaveChanges}
         >
-          Save changes
-          <Save className="w-4 h-4" />
+          <span className="px-1600 flex gap-250">
+            Save changes
+            <Save className="icon-size-s" />
+          </span>
         </Button>
       </div>
     </form>

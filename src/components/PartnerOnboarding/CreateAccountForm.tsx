@@ -81,31 +81,27 @@ export default function CreateAccountForm({ onComplete }: StepComponentProps) {
           <BrandInputForm
             width="w-full"
             formLabel="Full Name *"
-            formLabelClassName="body-s text-tertiary"
             value={formData.fullName}
             onChange={(e) => updateFormData("fullName", e)}
-            icon={<User/>}
+            icon={User}
           />
           <BrandInputForm
             width="w-full"
             formLabel="Phone Number *"
-            formLabelClassName="body-s text-tertiary"
             value={formData.phone}
             onChange={(e) => updateFormData("phone", e)}
-            icon={<Phone/>}
+            icon={Phone}
           />
           <BrandInputForm
             width="w-full"
             formLabel="Email *"
-            formLabelClassName="body-s text-tertiary"
             value={formData.email}
             onChange={(e) => updateFormData("email", e)}
-            icon={<Mail/>}
+            icon={Mail}
           />
           <BrandDropdownMenu
             items={["Owner", "Employee", "Other"]}
             formLabel="What is your role? *"
-            formLabelClassName="body-s text-tertiary"
             value={formData.role}
             onChange={(e) => updateFormData("role", e as string)}
           />
@@ -113,7 +109,6 @@ export default function CreateAccountForm({ onComplete }: StepComponentProps) {
             contentHidden
             width="w-full"
             formLabel="Password *"
-            formLabelClassName="body-s text-tertiary"
             value={formData.password}
             onChange={(e) => updateFormData("password", e)}
           />
@@ -121,14 +116,12 @@ export default function CreateAccountForm({ onComplete }: StepComponentProps) {
             contentHidden
             width="w-full"
             formLabel="Confirm Password *"
-            formLabelClassName="body-s text-tertiary"
             value={formData.confirmPassword}
             onChange={(e) => updateFormData("confirmPassword", e)}
           />
           <BrandDropdownFlags
             items={["Spanish", "English", "Portuguese (Brazil)", "Portuguese (Portugal)", "German", "French"]}
             formLabel="Languages"
-            formLabelClassName="body-s text-tertiary"
             value={formData.languages}
             onChange={(val) => updateFormData("languages", val as string[])}
             multiSelect

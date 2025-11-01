@@ -112,47 +112,47 @@ const BookingSummary: React.FC = () => {
           />
           <div className="flex justify-between items-center border-b-2 border-[var(--text-disabled)] pb-[var(--spacing-200)]">
             <div className="flex items-center gap-[var(--spacing-250)]">
-              <Users className="icon-s text-disabled" />
+              <Users className="icon-size-s text-disabled" />
               <span>Travellers</span>
             </div>
             <div className="flex items-center justify-center h-[var(--spacing-1200)] px-[var(--spacing-300)] gap-[var(--spacing-300)]">
               <Minus
-                className={`icon-s ${canDecrement ? "text-yellow-500 cursor-pointer" : "text-disabled cursor-not-allowed"}`}
+                className={`icon-size-s ${canDecrement ? "text-yellow-500 cursor-pointer" : "text-disabled cursor-not-allowed"}`}
                 onClick={() => canDecrement && handleGuestChange(false)}
               />
               <span className="tabular-nums min-w-[2ch] text-center">
                 {guests}
               </span>
               <Plus
-                className={`icon-s ${canIncrement ? "text-yellow-500 cursor-pointer" : "text-disabled cursor-not-allowed"}`}
+                className={`icon-size-s ${canIncrement ? "text-yellow-500 cursor-pointer" : "text-disabled cursor-not-allowed"}`}
                 onClick={() => canIncrement && handleGuestChange(true)}
               />
             </div>
           </div>
           <div className="flex justify-between">
             <div className="flex items-center gap-[var(--spacing-250)]">
-              <CalendarCheck className="icon-s text-disabled" />
+              <CalendarCheck className="icon-size-s text-disabled" />
               <span>Travel Date</span>
             </div>
             <span>{travelDate}</span>
           </div>
           <div className="flex justify-between">
             <div className="flex items-center gap-[var(--spacing-250)]">
-              <Clock className="icon-s text-disabled" />
+              <Clock className="icon-size-s text-disabled" />
               <span>Departure</span>
             </div>
             <span>{departure}</span>
           </div>
           <div className="flex justify-between">
             <div className="flex items-center gap-[var(--spacing-250)]">
-              <Timer className="icon-s text-disabled" />
+              <Timer className="icon-size-s text-disabled" />
               <span>Duration</span>
             </div>
             <span>{duration}</span>
           </div>
           <div className="flex justify-between">
             <div className="flex items-center gap-[var(--spacing-250)]">
-              <BadgeCheck className="icon-s text-disabled" />
+              <BadgeCheck className="icon-size-s text-disabled" />
               <span>Refundable</span>
             </div>
             <span>{cartExperience.refundable || "N/A"}</span>

@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, LucideIcon } from "lucide-react";
 import { OctagonHelp } from "./IconComponents";
 
 // Type definitions
@@ -11,7 +11,7 @@ type SimpleFAQ = {
 };
 
 type IconFAQ = {
-  icon: React.ReactNode;
+  icon: LucideIcon;
   question: string;
   answer: string | React.ReactNode;
 };
@@ -28,15 +28,15 @@ interface FAQProps {
 
 // Type guard to check if FAQ has an icon
 const hasIcon = (faq: FAQItem): faq is IconFAQ => {
-  return 'icon' in faq;
+  return "icon" in faq;
 };
 
-export const FAQ: React.FC<FAQProps> = ({ 
-  faqs, 
+export const FAQ: React.FC<FAQProps> = ({
+  faqs,
   title = "Your questions answered",
   defaultOpen = false,
   questionClassName = "body-xl-label text-tertiary",
-  answerClassName = "body-l text-disabled"
+  answerClassName = "body-l text-disabled",
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
@@ -61,30 +61,32 @@ export const FAQ: React.FC<FAQProps> = ({
       {/* Expandable Content */}
       {isOpen && (
         <div className="flex flex-col gap-800 px-1600 pb-800 text-primary body-l">
-          {faqs.map((faq, index) => (
-            <div key={index} className="flex flex-col gap-600">
-              {/* Question with optional icon */}
-              <div className="flex items-center gap-250">
-                {hasIcon(faq) && (
-                  <span className="icon-size-l text-disabled flex-shrink-0 [&>svg]:w-full [&>svg]:h-full">
-                    {faq.icon}
-                  </span>
-                )}
-                <span className={questionClassName}>{faq.question}</span>
+          {faqs.map((faq, index) => {
+            const Icon = hasIcon(faq) ? faq.icon : null;
+
+            return (
+              <div key={index} className="flex flex-col gap-600">
+                {/* Question with optional icon */}
+                <div className="flex items-center gap-250">
+                  {Icon && (
+                    <Icon className="icon-size-l text-disabled flex-shrink-0" />
+                  )}
+                  <span className={questionClassName}>{faq.question}</span>
+                </div>
+
+                {/* Answer - can be string or React component */}
+                <div className={answerClassName}>
+                  {typeof faq.answer === "string" ? (
+                    <span>{faq.answer}</span>
+                  ) : (
+                    faq.answer
+                  )}
+                </div>
               </div>
-              
-              {/* Answer - can be string or React component */}
-              <div className={answerClassName}>
-                {typeof faq.answer === 'string' ? (
-                  <span>{faq.answer}</span>
-                ) : (
-                  faq.answer
-                )}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </section>
   );
-};
+}

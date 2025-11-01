@@ -6,6 +6,7 @@ import PriceFilter from "./PriceFilter";
 import { FilterSection } from "./FilterSection";
 import { Button } from "../ui/button";
 import { CategoriesFilterIcon, BudgetFilterIcon, RatingFilterIcon, SpecialFeaturesFilterIcon, DiscountFilterIcon, SDGFilterIcon } from "../shared/IconComponents";
+import { SDG_LABELS } from "../ExperienceCard/SDGIcons";
 
 const FilterSidebar: React.FC = () => {
   const {
@@ -126,25 +127,7 @@ const FilterSidebar: React.FC = () => {
       {/* Filter By SDG */}
       <FilterSection
         title="Filter by SDG"
-        options={[
-          { value: "1", label: "1: No Poverty" },
-          { value: "2", label: "2: Zero Hunger" },
-          { value: "3", label: "3: Good Health And Well-Being" },
-          { value: "4", label: "4: Quality Education" },
-          { value: "5", label: "5: Gender Equality" },
-          { value: "6", label: "6: Clean Water And Sanitation" },
-          { value: "7", label: "7: Affordable And Clean Energy" },
-          { value: "8", label: "8: Decent Work And Economic Growth" },
-          { value: "9", label: "9: Industry, Innovation And Infrastructure" },
-          { value: "10", label: "10: Reduced Inequalities" },
-          { value: "11", label: "11: Sustainable Cities And Communities" },
-          { value: "12", label: "12: Responsible Consumption And Production" },
-          { value: "13", label: "13: Climate Action" },
-          { value: "14", label: "14: Life Below Water" },
-          { value: "15", label: "15: Life On Land" },
-          { value: "16", label: "16: Peace, Justice And Strong Institutions" },
-          { value: "17", label: "17: Partnerships For The Goals" },
-        ]}
+        options={SDG_LABELS}
         selected={selectedSDG}
         onToggle={toggleSDG}
         dropdown={true}

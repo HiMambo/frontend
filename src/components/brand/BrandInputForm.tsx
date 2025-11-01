@@ -1,29 +1,29 @@
 "use client";
 
 import React, { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { type LucideIcon, Eye, EyeOff } from "lucide-react";
 
 interface BrandInputFormProps {
-  formLabel: string;
+  formLabel?: string;
   formLabelClassName?: string;
   width?: string;
   contentHidden?: boolean;
   className?: string;
   value: string;
   onChange: (value: string) => void;
-  icon?: React.ReactNode;
+  icon?: LucideIcon;
   placeholder?: string;
 }
 
 export const BrandInputForm: React.FC<BrandInputFormProps> = ({
   formLabel,
-  formLabelClassName = "body-s text-disabled",
+  formLabelClassName = "body-s text-tertiary",
   width = "w-full max-w-[var(--width-authforms)]",
   contentHidden = false,
   className = "",
   value,
   onChange,
-  icon,
+  icon: Icon,
   placeholder,
 }) => {
   const [showContent, setShowContent] = useState(!contentHidden);
@@ -31,14 +31,14 @@ export const BrandInputForm: React.FC<BrandInputFormProps> = ({
   return (
     <div className={`flex flex-col gap-[var(--spacing-300)] ${width} ${className}`}>
       {/* Label */}
-      <label className={formLabelClassName}>{formLabel}</label>
+      {formLabel && <label className={formLabelClassName}>{formLabel}</label>}
 
       {/* Input wrapper */}
       <div className="relative">
         {/* Optional left icon */}
-        {icon && (
+        {Icon && (
           <div className="absolute left-600 top-1/2 -translate-y-1/2 text-disabled">
-            <div className="icon-size-s">{icon}</div>
+            <Icon className="icon-size-s" />
           </div>
         )}
 
@@ -46,11 +46,11 @@ export const BrandInputForm: React.FC<BrandInputFormProps> = ({
           type={showContent ? "text" : "password"}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder} // <-- added here
+          placeholder={placeholder}
           className={`
             w-full bg-white body-m text-tertiary h-[var(--height-input)]
             px-[var(--spacing-600)] py-[var(--spacing-400)] rounded-300 focus:outline-none
-            ${icon ? "pl-[calc(var(--spacing-600)*2+var(--spacing-250))]" : ""}
+            ${Icon ? "pl-[calc(var(--spacing-600)*2+var(--spacing-250))]" : ""}
           `}
         />
 

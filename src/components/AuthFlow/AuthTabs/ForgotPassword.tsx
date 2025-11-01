@@ -24,6 +24,7 @@ export const ForgotPassword: React.FC = () => {
       {/* Form */}
       <BrandInputForm 
         formLabel="Email"
+        formLabelClassName="body-s text-disabled"
         value={formData.forgot.email}
         onChange={(val) => updateFormData("forgot", "email", val)}
       />

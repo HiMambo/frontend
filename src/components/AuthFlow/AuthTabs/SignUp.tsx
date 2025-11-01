@@ -26,11 +26,13 @@ export const SignUp: React.FC = () => {
         {/* Row 1 */}
         <BrandInputForm 
           formLabel="First Name *" 
+          formLabelClassName="body-s text-disabled"
           value={formData.signup.firstName}
           onChange={(val) => updateFormData("signup", "firstName", val)}
         />
         <BrandInputForm 
           formLabel="Last Name *" 
+          formLabelClassName="body-s text-disabled"
           value={formData.signup.lastName}
           onChange={(val) => updateFormData("signup", "lastName", val)}
         />
@@ -38,11 +40,13 @@ export const SignUp: React.FC = () => {
         {/* Row 2 */}
         <BrandInputForm 
           formLabel="Email *" 
+          formLabelClassName="body-s text-disabled"
           value={formData.signup.email}
           onChange={(val) => updateFormData("signup", "email", val)}
         />
         <BrandInputForm 
           formLabel="Set password *"
+          formLabelClassName="body-s text-disabled"
           contentHidden 
           value={formData.signup.password}
           onChange={(val) => updateFormData("signup", "password", val)}

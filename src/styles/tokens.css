@@ -212,6 +212,8 @@
   --width-authscreen: clamp(640px, 47.6vw + 92px, 915px);
 
   --onboarding-step-card-width: clamp(340px, 52.1vw, 1000px);
+  --onboarding-experienceinfo-step-card-width: clamp(340px, 62.5vw, 1200px); /* 1200px @1920px */
+
   --partner-hero-height: clamp(320px, 42.2vw, 811px); /* 811px @1920px */
 
   --width-progress-bar: clamp(320px, 44.58vw, 854px); /* 854px @1920px */

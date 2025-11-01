@@ -48,7 +48,6 @@ export default function DocumentsForm({ onComplete }: StepComponentProps) {
         <BrandDropdownMenu
           items={DOC_TYPES}
           formLabel="Choose one or more from the dropdown menu *"
-          formLabelClassName="body-s text-tertiary"
           value={selectedTypes}
           onChange={(val) => setSelectedTypes(val as string[])}
         />

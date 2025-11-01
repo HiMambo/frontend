@@ -8,7 +8,7 @@ export const ONBOARDING_STEP_DEFINITIONS = [
     title: 'Create Free Account',
     completedTitle: 'Account Details',
     component: 'CreateAccountForm',
-    route: '/register-experience/create-account',
+    route: '/register-experience/account-details',
     showBackButton: false,
     showNextButton: true,
   },
@@ -78,27 +78,27 @@ import {
 
 export const ONBOARDING_STEP_ICONS = [
   {
-    incomplete: <User />,
-    completed: <UserCheck />,
+    incomplete: User,
+    completed: UserCheck,
   },
   {
-    incomplete: <Store />,
-    completed: <Store />,
+    incomplete: Store,
+    completed: Store,
   },
   {
-    incomplete: <FileQuestion />,
-    completed: <FileCheck />,
+    incomplete: FileQuestion,
+    completed: FileCheck,
   },
   {
-    incomplete: <CircleAlert />,
-    completed: <CircleAlert />,
+    incomplete: CircleAlert,
+    completed: CircleAlert,
   },
   {
-    incomplete: <Leaf />,
-    completed: <Leaf />,
+    incomplete: Leaf,
+    completed: Leaf,
   },
   {
-    incomplete: <ToggleLeft />,
-    completed: <ToggleRight />,
+    incomplete: ToggleLeft,
+    completed: ToggleRight,
   },
 ];

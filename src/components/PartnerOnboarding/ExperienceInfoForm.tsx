@@ -2,161 +2,177 @@
 
 import { ExperienceFormA } from "@/components/PartnerOnboarding/ExperienceFormA";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { ArrowRight, ChevronDown, ChevronUp, Minus, Plus } from "lucide-react";
-import { useMemo, useState } from "react";
-import { useSteps } from "@/context/StepContext";
+import { ArrowRight, PlusIcon } from "lucide-react";
+import { useState } from "react";
+import { StepComponentProps } from "@/app/register-experience/[step]/page";
+import { AccordionDisplay } from "./AccordionDisplay";
+import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
 
-/* ───────── helpers ───────── */
-
-function NumberStepper({
-  value,
-  onChange,
-  min = 1,
-  max = 3,
-}: {
-  value: number;
-  onChange: (n: number) => void;
-  min?: number;
-  max?: number;
-}) {
-  return (
-    <div className="inline-flex items-center border border-neutral-300 rounded-lg overflow-hidden bg-white">
-      <button
-        type="button"
-        className="w-9 h-10 grid place-items-center hover:bg-neutral-100"
-        onClick={() => onChange(Math.max(min, value - 1))}
-        aria-label="decrease"
-      >
-        <Minus className="w-4 h-4" />
-      </button>
-      <div className="px-3 h-10 grid place-items-center text-sm font-medium w-12">
-        {value}
-      </div>
-      <button
-        type="button"
-        className="w-9 h-10 grid place-items-center hover:bg-neutral-100"
-        onClick={() => onChange(Math.min(max, value + 1))}
-        aria-label="increase"
-      >
-        <Plus className="w-4 h-4" />
-      </button>
-    </div>
-  );
-}
-
-function ExpandRow({
-  title,
-  defaultOpen = false,
-  children,
-}: {
+export interface ExperienceFormData { //Future: Should eventually be merged with the existing experience interface, as they should be the same
   title: string;
-  defaultOpen?: boolean;
-  children?: React.ReactNode;
-}) {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <div className="bg-white rounded-xl shadow-sm ring-1 ring-black/5">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        aria-expanded={open}
-        className="w-full h-14 px-4 flex items-center justify-between"
-      >
-        <span className="text-lg font-semibold text-[#4B2C20]">{title}</span>
-        {open ? (
-          <ChevronUp className="w-5 h-5 text-neutral-600" />
-        ) : (
-          <ChevronDown className="w-5 h-5 text-neutral-600" />
-        )}
-      </button>
-
-      {open ? (
-        <div className="px-4 pb-4 text-sm text-neutral-700">{children}</div>
-      ) : null}
-    </div>
-  );
+  category: string;
+  country: string;
+  location: string;
+  pricePerPerson: {
+    min: number | "";
+    max: number | "";
+    unit: string;
+  };
+  duration: {
+    number: number | "";
+    units: string;
+  };
+  highlights: { symbolId: string; input: string }[];
+  specialFeatures: string;
+  sdgs: string[];
+  longDescription: string;
+  maxGuests: number;
+  refundable: "Yes" | "No" | "";
+  heroImage: File | null;
+  galleryImages: File[];
+  videoLink: string;
 }
 
-/* ───────── page ───────── */
+// Initial empty experience data
+const createEmptyExperience = (): ExperienceFormData => ({
+  title: "",
+  category: "",
+  country: "",
+  location: "",
+  pricePerPerson: { min: "", max: "", unit: "" },
+  duration: { number: "", units: "" },
+  highlights: [
+    { symbolId: "", input: "" },
+    { symbolId: "", input: "" },
+  ],
+  specialFeatures: "",
+  sdgs: [],
+  longDescription: "",
+  maxGuests: 1,
+  refundable: "",
+  heroImage: null,
+  galleryImages: [],
+  videoLink: "",
+});
 
-export default function ExperienceInfoForm() {
-  const [count, setCount] = useState(3);
-  const label = useMemo(
-    () => (count === 1 ? "experience" : "experiences"),
-    [count]
-  );
-  const { markStepComplete, routeToStep } = useSteps();
-  function onComplete (e: React.FormEvent) {
+export default function ExperienceInfoForm({ onComplete }: StepComponentProps) {
+  const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
+  const [experiences, setExperiences] = useState<ExperienceFormData[]>([
+    createEmptyExperience(),
+  ]);
+  const [openIndex, setOpenIndex] = useState(0);
+
+  const experienceLabels = ["A", "B", "C"];
+
+  const handleAddExperience = () => {
+    if (experiences.length < 3) {
+      setExperiences([...experiences, createEmptyExperience()]);
+      setOpenIndex(experiences.length); // open the newly added one
+    }
+  };
+
+  const handleDeleteExperience = (index: number) => {
+    if (experiences.length <= 1) return;
+    setDeleteIndex(index);
+  };
+
+  const confirmDelete = () => {
+    if (deleteIndex === null) return;
+
+    const newExperiences = experiences.filter((_, i) => i !== deleteIndex);
+    setExperiences(newExperiences);
+
+    if (openIndex === deleteIndex) setOpenIndex(0);
+    else if (openIndex > deleteIndex) setOpenIndex(openIndex - 1);
+
+    setDeleteIndex(null);
+  };
+
+  const handleExperienceChange = (index: number, data: ExperienceFormData) => {
+    const newExperiences = [...experiences];
+    newExperiences[index] = data;
+    setExperiences(newExperiences);
+  };
+
+  function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    markStepComplete(4);
-    routeToStep(5);
+
+    // Validation placeholder
+    console.log("Submitting experiences:", experiences);
+
+    onComplete();
   }
 
   return (
-    <>
-      <section className="bg-neutral-50">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-10">
-          {/* top card */}
-          <div className="bg-[#FAF8F5] rounded-2xl shadow-sm ring-1 ring-black/5 p-6 max-w-4xl mx-auto">
-            <header className="space-y-3">
-              <h2 className="text-2xl md:text-3xl font-bold text-[#4B2C20] leading-tight">
-                Experience Registration
-              </h2>
-              <p className="text-sm md:text-base text-neutral-800">
-                Please provide details about the tourism experiences or services
-                your business offers. This information helps us showcase your
-                offerings accurately on the HiMambo platform and connect you
-                with the right customers.
-              </p>
-            </header>
+    <main className="flex flex-col gap-800">
+      {/* header */}
+      <header className="flex flex-col gap-300 text-primary">
+        <span className="body-xxl-label">Experience Registration</span>
+        <span className="body-l">
+          Please provide details about the tourism experiences or services your
+          business offers. This information helps us showcase your offerings
+          accurately on the Himambo platform and connect you with the right
+          customers.
+        </span>
+      </header>
 
-            <div className="mt-6 space-y-2">
-              <p className="text-lg font-semibold text-[#4B2C20]">
-                Do you want to get HiMambo Certified?
-              </p>
-              <p className="text-sm text-neutral-800">
-                Add at least 3 experiences and you will be automatically
-                verified if all of them meet our internal sustainability
-                standards. Our HiMambo Certification is free of charge.
-              </p>
-            </div>
-
-            {/* stepper BELOW as in design */}
-            <div className="mt-6">
-              <Label className="block text-xs text-neutral-600 mb-1">
-                How many experiences would you like to register?
-              </Label>
-              <NumberStepper
-                value={count}
-                onChange={setCount}
-                min={1}
-                max={3}
-              />
-              <div className="text-[11px] text-neutral-600 mt-1">
-                {count} {label}
-              </div>
-            </div>
-          </div>
-
-          {/* accordions */}
-          <div className="mt-6 space-y-4 max-w-4xl mx-auto">
-            <ExpandRow title="Experience A" defaultOpen>
-              <ExperienceFormA />
-            </ExpandRow>
-            <ExpandRow title="Experience B" />
-            <ExpandRow title="Experience C" />
-          </div>
-
-          {/* submit button */}
-          <div className="mt-6 flex justify-between gap-300 max-w-4xl mx-auto">
-            <Button onClick={onComplete} className="w-[var(--width-authforms)]">
-            Save and Continue
-            <ArrowRight className="icon-size-s" />
-            </Button>
-          </div>
-        </div>
+      {/* intro */}
+      <section className="flex flex-col gap-400">
+        <span className="body-xl text-secondary">
+          Do you want to get HiMambo Certified?
+        </span>
+        <span className="body-m text-primary">
+          Add up to three experiences and you will be automatically verified if
+          all of them meet our internal sustainability Standards. Our HiMambo
+          Certification is free of charge.
+        </span>
       </section>
-    </>
+
+      {/* add experience button */}
+      <div className="flex justify-end">
+        <Button
+          variant="outlineYellow"
+          size="custom"
+          className="px-600 py-400 gap-200"
+          onClick={handleAddExperience}
+          disabled={experiences.length >= 3}
+        >
+          Add experience
+          <PlusIcon className="icon-size-s" />
+        </Button>
+      </div>
+
+      {/* Accordions */}
+      <div className="flex flex-col gap-800 rounded-600">
+        {experiences.map((experience, i) => (
+          <AccordionDisplay
+            key={i}
+            title={`Experience ${experienceLabels[i]}`}
+            open={openIndex === i}
+            onToggle={() => setOpenIndex((prev) => (prev === i ? -1 : i))}
+            className="bg-[var(--surface)]/50 p-800 rounded-600"
+          >
+            <ExperienceFormA
+              data={experience}
+              onChange={(data) => handleExperienceChange(i, data)}
+              onDelete={() => handleDeleteExperience(i)}
+              canDelete={experiences.length > 1}
+            />
+          </AccordionDisplay>
+        ))}
+      </div>
+
+      {/* submit button */}
+      <Button onClick={onSubmit}>
+        Save and Continue
+        <ArrowRight className="icon-size-s" />
+      </Button>
+
+      <ConfirmDeleteModal
+        open={deleteIndex !== null}
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteIndex(null)}
+      />
+    </main>
   );
 }

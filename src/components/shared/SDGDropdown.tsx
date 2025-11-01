@@ -1,78 +1,56 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { ChevronDown, ChevronUp, Check } from "lucide-react";
-import { getCountryFlag } from "@/lib/countries";
 import Image from "next/image";
+import { ChevronDown, ChevronUp, Check } from "lucide-react";
+import { SDG_LABELS } from "../ExperienceCard/SDGIcons";
 
-interface BrandDropdownFlagsProps {
+interface SDGDropdownProps {
   formLabel?: string;
-  items: string[]; // country names
   formLabelClassName?: string;
   width?: string;
   className?: string;
-  value: string | string[];
-  onChange: (value: string | string[]) => void;
-  multiSelect?: boolean;
-  placeholder?: string;
+  value: string[]; // multiple SDGs allowed
+  onChange: (value: string[]) => void;
 }
 
-export const BrandDropdownFlags: React.FC<BrandDropdownFlagsProps> = ({
+export const SDGDropdown: React.FC<SDGDropdownProps> = ({
   formLabel,
-  items,
   formLabelClassName = "body-s text-tertiary",
   width = "w-full",
   className = "",
   value,
   onChange,
-  multiSelect = false,
-  placeholder,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
+  // Close when clicking outside
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
-    }
+    };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSelect = (item: string) => {
-    if (multiSelect) {
-      const currentValues = Array.isArray(value) ? value : [];
-      const updated = currentValues.includes(item)
-        ? currentValues.filter((v) => v !== item)
-        : [...currentValues, item];
-      onChange(updated);
-    } else {
-      onChange(item);
-      setIsOpen(false);
-    }
+  const handleSelect = (sdgValue: string) => {
+    const updated = value.includes(sdgValue)
+      ? value.filter((v) => v !== sdgValue)
+      : [...value, sdgValue];
+    onChange(updated);
   };
 
-  const isSelected = (item: string) =>
-    multiSelect ? Array.isArray(value) && value.includes(item) : value === item;
+  const isSelected = (sdgValue: string) => value.includes(sdgValue);
 
-  const displayValue = multiSelect
-    ? Array.isArray(value) && value.length > 0
-      ? value.join(", ")
-      : ""
-    : (value as string);
-
-  const renderFlag = (countryName?: string) => {
-    const flagSrc = getCountryFlag(countryName);
-    if (!flagSrc) return null;
-    return (
-      <div className="icon-size-s relative shrink-0 mr-[var(--spacing-250)]">
-        <Image src={flagSrc} alt={`${countryName} flag`} fill className="object-cover" />
-      </div>
-    );
-  };
+  const displayValue =
+    value.length > 0
+      ? value
+          .map((v) => SDG_LABELS.find((sdg) => sdg.value === v)?.label.split(":")[0])
+          .join(", ")
+      : "";
 
   return (
     <div
@@ -81,11 +59,9 @@ export const BrandDropdownFlags: React.FC<BrandDropdownFlagsProps> = ({
     >
       {/* Label */}
       {formLabel && <label className={formLabelClassName}>{formLabel}</label>}
+
       {/* Dropdown input */}
-      <div
-        className="relative cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <div className="relative cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         <div
           className={`
             w-full bg-white body-s text-tertiary 
@@ -94,16 +70,9 @@ export const BrandDropdownFlags: React.FC<BrandDropdownFlagsProps> = ({
             focus:outline-none
           `}
         >
-          <div className="flex items-center truncate">
-            {multiSelect && Array.isArray(value)
-            ? value.map((v) => (
-                <React.Fragment key={v}>
-                    {renderFlag(v)}
-                </React.Fragment>
-                ))
-            : renderFlag(value as string)}
+          <div className="flex items-center gap-250 overflow-hidden">
             <span className={`truncate ${displayValue ? "text-tertiary" : "text-disabled"}`}>
-              {displayValue || placeholder}
+              {displayValue || "Select Sustainable Development Goals"}
             </span>
           </div>
 
@@ -117,15 +86,17 @@ export const BrandDropdownFlags: React.FC<BrandDropdownFlagsProps> = ({
         {/* Dropdown menu */}
         {isOpen && (
           <div className="absolute z-10 mt-200 w-full bg-white rounded-300 px-400 overflow-y-auto max-h-[300px] shadow-elevation-1">
-            {items.map((item, index) => {
-              const selected = isSelected(item);
-              const isLast = index === items.length - 1;
+            {SDG_LABELS.map((sdg, index) => {
+              const selected = isSelected(sdg.value);
+              const isLast = index === SDG_LABELS.length - 1;
+              const imagePath = `/assets/sdg/E-WEB-Goal-${sdg.value.padStart(2, "0")}.png`;
+
               return (
                 <div
-                  key={item}
+                  key={sdg.value}
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleSelect(item);
+                    handleSelect(sdg.value);
                   }}
                   className={`
                     flex justify-between items-center body-s
@@ -134,15 +105,22 @@ export const BrandDropdownFlags: React.FC<BrandDropdownFlagsProps> = ({
                     ${!isLast ? "border-b border-[var(--neutral-200)]" : ""}
                   `}
                 >
-                  <div className="flex items-center">
-                    {renderFlag(item)}
-                    <span>{item}</span>
+                  <div className="flex items-center gap-[var(--spacing-250)]">
+                    <div className="icon-size-s relative shrink-0">
+                      <Image
+                        src={imagePath}
+                        alt={sdg.label}
+                        fill
+                        className="object-cover rounded-[2px]"
+                      />
+                    </div>
+                    <span>{sdg.label}</span>
                   </div>
-                  {selected && <Check className="icon-size-s text-primary" />}
+                  {selected && <Check className="icon-size-s text-primary stroke-[1.5]" />}
                 </div>
               );
             })}
-        </div>
+          </div>
         )}
       </div>
     </div>

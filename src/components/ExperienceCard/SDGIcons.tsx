@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const SDG_LABELS = [
+export const SDG_LABELS = [
   { value: "1", label: "SDG 1: No Poverty", color: "#e5243b" },
   { value: "2", label: "SDG 2: Zero Hunger", color: "#dda63a" },
   { value: "3", label: "SDG 3: Good Health And Well-Being", color: "#4c9f38" },

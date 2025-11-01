@@ -11,6 +11,8 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-primary body-l-button text-inverted text-center hover:bg-[var(--terracotta-900)] hover:text-yellow-500",
+        green:
+          "bg-[var(--green-300)] hover:bg-[var(--green-400)] body-l-button text-inverted text-center",
         teal:
           "bg-teal-500 hover:bg-[var(--teal-600)] body-l-button text-inverted text-center",
         destructive:
@@ -19,6 +21,8 @@ const buttonVariants = cva(
           "bg-none body-l-button text-tertiary shadow-[inset_0_0_0_3px_var(--text-tertiary)] hover:bg-[var(--text-tertiary)] hover:text-[var(--text-inverted)] dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
         outlineYellow:
           "bg-none body-l-button text-yellow-500 shadow-[inset_0_0_0_3px_theme(colors.yellow.500)] hover:bg-yellow-500 hover:text-[var(--text-inverted)] hover:shadow-[inset_0_0_0_3px_theme(colors.yellow.500)]",
+        outlineDestructive:
+          "bg-none body-l-button text-destructive shadow-[inset_0_0_0_3px_theme(colors.destructive)] hover:bg-destructive hover:text-[var(--text-inverted)] hover:shadow-[inset_0_0_0_3px_theme(colors.destructive)]",
         secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
         ghost:

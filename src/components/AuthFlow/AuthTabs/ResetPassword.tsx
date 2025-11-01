@@ -25,12 +25,14 @@ export const ResetPassword: React.FC = () => {
       <div className="flex flex-col gap-[var(--spacing-800)] items-center w-full">
         <BrandInputForm 
           formLabel="New password"
+          formLabelClassName="body-s text-disabled"
           contentHidden 
           value={formData.reset.password}
           onChange={(val) => updateFormData("reset", "password", val)}
         />
         <BrandInputForm 
           formLabel="Confirm new password" 
+          formLabelClassName="body-s text-disabled"
           contentHidden 
           value={formData.reset.confirm}
           onChange={(val) => updateFormData("reset", "confirm", val)}
