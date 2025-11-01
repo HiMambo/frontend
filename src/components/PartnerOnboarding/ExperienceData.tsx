@@ -16,19 +16,19 @@ import { BrandSymbolInput } from "../brand/BrandSymbolInput";
 import { BrandRangeInput } from "../brand/BrandRangeInput";
 import { BrandDurationInput } from "../brand/BrandDurationInput";
 
-interface ExperienceFormAProps {
+interface ExperienceDataProps {
   data: ExperienceFormData;
   onChange: (data: ExperienceFormData) => void;
   onDelete: () => void;
   canDelete: boolean;
 }
 
-export function ExperienceFormA({
+export function ExperienceData({
   data,
   onChange,
   onDelete,
   canDelete,
-}: ExperienceFormAProps) {
+}: ExperienceDataProps) {
   const handleFieldChange = <K extends keyof ExperienceFormData>(
     field: K,
     value: ExperienceFormData[K]

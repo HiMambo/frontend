@@ -1,6 +1,6 @@
 "use client";
 
-import { ExperienceFormA } from "@/components/PartnerOnboarding/ExperienceFormA";
+import { ExperienceData } from "@/components/PartnerOnboarding/ExperienceData";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, PlusIcon } from "lucide-react";
 import { useState } from "react";
@@ -152,7 +152,7 @@ export default function ExperienceInfoForm({ onComplete }: StepComponentProps) {
             onToggle={() => setOpenIndex((prev) => (prev === i ? -1 : i))}
             className="bg-[var(--surface)]/50 p-800 rounded-600"
           >
-            <ExperienceFormA
+            <ExperienceData
               data={experience}
               onChange={(data) => handleExperienceChange(i, data)}
               onDelete={() => handleDeleteExperience(i)}
