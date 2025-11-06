@@ -1,7 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { BrandInputForm } from "../brand/BrandInputForm";
 import { ArrowRight, CalendarCheck2, Globe, MapPin, Store } from "lucide-react";
 import { BrandMultiLineInput } from "../brand/BrandMultiLineInput";
@@ -9,41 +11,38 @@ import { BrandDropdownFlags } from "../brand/BrandDropdownFlags";
 import { BrandDropdownMenu } from "../brand/BrandDropdownMenu";
 import { StepComponentProps } from "@/app/register-experience/[step]/page";
 import { OPERATING_COUNTRIES } from "@/lib/brandStandardizedDefinitions";
-
-export interface BusinessDetailsFormData {
-  businessName: string,
-  website: string,
-  country: string,
-  address: string,
-  yearFounded: string,
-  category: string,
-  description: string
-}
+import { defaultBusinessDetailsData, useOnboardingData } from "@/context/PartnerOnboardingContext";
+import { businessDetailsSchema, BusinessDetailsFormData } from "@/lib/validation/onboarding";
 
 export default function BusinessDetailsForm({ onComplete }: StepComponentProps) {
-  const [formData, setFormData] = useState<BusinessDetailsFormData>({
-    businessName: "",
-    website: "",
-    country: "",
-    address: "",
-    yearFounded: "",
-    category: "",
-    description: ""
+  const { formData, updateStep2 } = useOnboardingData();
+
+  const {
+    handleSubmit,
+    control,
+    formState: { isSubmitting },
+    reset,
+  } = useForm<BusinessDetailsFormData>({
+    resolver: zodResolver(businessDetailsSchema),
+    mode: "onTouched",
+    defaultValues: formData.step2 || defaultBusinessDetailsData,
   });
 
-  function updateFormData<K extends keyof typeof formData>(key: K, value: (typeof formData)[K]) {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  }
+  // Rehydrate from context if formData changes
+  useEffect(() => {
+    if (formData.step2) {
+      reset(formData.step2);
+    }
+  }, [formData.step2, reset]);
 
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
-    // Validation placeholder
-    console.log("Submitting form:", formData);
-
-    // Let parent handle completion
+  const onSubmit = async (data: BusinessDetailsFormData) => {
+    // Save to context
+    updateStep2(data);
+    // Future: Backend save
+    console.log("Submitting form:", data);
+    // Proceed to next step
     onComplete();
-  }
+  };
 
   return (
     <main className="flex flex-col gap-600">
@@ -56,67 +55,121 @@ export default function BusinessDetailsForm({ onComplete }: StepComponentProps) 
         </div>
       </header>
 
-      <form onSubmit={onSubmit} className="flex flex-col gap-600">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-600">
         <section className="grid grid-cols-2 gap-800 relative">
-          <BrandInputForm
-            width="w-full"
-            formLabel="Business Name *"
-            value={formData.businessName}
-            onChange={(e) => updateFormData("businessName", e)}
-            icon={Store}
+          {/* Business Name */}
+          <Controller
+            name="businessName"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandInputForm
+                {...field}
+                formLabel="Business Name *"
+                icon={Store}
+                error={fieldState.error?.message}
+              />
+            )}
           />
-          <BrandInputForm
-            width="w-full"
-            formLabel="Business Website or Social Media link *"
-            value={formData.website}
-            onChange={(e) => updateFormData("website", e)}
-            icon={Globe}
+
+          {/* Website / Social Link */}
+          <Controller
+            name="website"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandInputForm
+                {...field}
+                formLabel="Business Website or Social Media link *"
+                icon={Globe}
+                error={fieldState.error?.message}
+              />
+            )}
           />
-          <BrandInputForm
-            width="w-full"
-            formLabel="Business Address *"
-            value={formData.address}
-            onChange={(e) => updateFormData("address", e)}
-            icon={MapPin}
+
+          {/* Address */}
+          <Controller
+            name="address"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandInputForm
+                {...field}
+                formLabel="Business Address *"
+                icon={MapPin}
+                error={fieldState.error?.message}
+              />
+            )}
           />
-          <BrandDropdownFlags
-            items={OPERATING_COUNTRIES}
-            formLabel="Main country of operation *"
-            value={formData.country}
-            onChange={(e) => updateFormData("country", e as string)}
+
+          {/* Country */}
+          <Controller
+            name="country"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandDropdownFlags
+                {...field}
+                items={OPERATING_COUNTRIES}
+                formLabel="Main country of operation *"
+                error={fieldState.error?.message}
+              />
+            )}
           />
-          <BrandInputForm
-            width="w-full"
-            formLabel="Year Founded *"
-            value={formData.yearFounded}
-            onChange={(e) => updateFormData("yearFounded", e)}
-            icon={CalendarCheck2}
+
+          {/* Year Founded */}
+          <Controller
+            name="yearFounded"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandInputForm
+                {...field}
+                formLabel="Year Founded *"
+                icon={CalendarCheck2}
+                error={fieldState.error?.message}
+              />
+            )}
           />
-          <BrandDropdownMenu
-            items={[
-              "Nature & Wildlife",
-              "Cultural Immersion",
-              "Adventure & Outdoor",
-              "Wellness & Retreats",
-              "Social Impact",
-              "Food & Gastronomy",
-            ]}
-            formLabel="Select Category *"
-            value={formData.category}
-            onChange={(e) => updateFormData("category", e as string)}
+
+          {/* Category */}
+          <Controller
+            name="category"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandDropdownMenu
+                {...field}
+                items={[
+                  "Nature & Wildlife",
+                  "Cultural Immersion",
+                  "Adventure & Outdoor",
+                  "Wellness & Retreats",
+                  "Social Impact",
+                  "Food & Gastronomy",
+                ]}
+                formLabel="Select Category *"
+                error={fieldState.error?.message}
+              />
+            )}
           />
         </section>
 
-        <BrandMultiLineInput
-          lines={3}
-          formLabel="Description (250 characters max) *"
-          formLabelClassName="body-s text-tertiary"
-          value={formData.description}
-          onChange={(e) => updateFormData("description", e)}
+        {/* Description */}
+        <Controller
+          name="description"
+          control={control}
+          render={({ field, fieldState }) => (
+            <BrandMultiLineInput
+              {...field}
+              lines={3}
+              formLabel="Description (250 characters max) *"
+              formLabelClassName="body-s text-tertiary"
+              error={fieldState.error?.message}
+            />
+          )}
         />
 
-        <Button type="submit" className="w-[var(--width-authforms)]">
-          Save and Continue
+        <Button 
+          type="submit" 
+          className="w-[var(--width-authforms)]"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Saving..." : "Save and Continue"}
           <ArrowRight className="icon-size-s" />
         </Button>
       </form>

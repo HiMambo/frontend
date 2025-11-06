@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useSteps } from "@/context/StepContext";
+import { flowCompleteSentinel, useSteps } from "@/context/StepContext";
+import { FLOW_COMPLETE_ROUTE } from "@/lib/onboardingSteps";
 
 export function useRouteValidation() {
   const pathname = usePathname();
@@ -12,21 +13,45 @@ export function useRouteValidation() {
     currentStep, 
     getStepStatus, 
     goToStep, 
-    getStepDefinition 
+    getStepDefinition,
+    allStepsComplete
   } = useSteps();
 
   useEffect(() => {
-    const currentStepDef = getStepDefinition(currentStep);
-
-    // Route matches context, nothing to do
-    if (currentStepDef?.route === pathname) {
+    // Case 1: Flow is complete - redirect to status page
+    if (currentStep === flowCompleteSentinel) {
+      if (pathname !== FLOW_COMPLETE_ROUTE) {
+        console.log("Flow complete - redirecting to status page");
+        router.replace(FLOW_COMPLETE_ROUTE);
+      }
       return;
     }
 
-    // Route doesn't match context - validate the requested route
+    // Case 2: User trying to access status page but flow isn't complete
+    if (pathname === FLOW_COMPLETE_ROUTE && !allStepsComplete) {
+      console.warn("Status page accessed but flow incomplete - redirecting to first open step");
+      const firstOpenStep = steps.find(
+        s => ["open", "active"].includes(getStepStatus(s.step))
+      );
+      if (firstOpenStep) {
+        router.replace(firstOpenStep.route);
+      }
+      return;
+    }
+
+    // Case 3: Status page is correctly loaded
+    if (pathname === FLOW_COMPLETE_ROUTE && allStepsComplete) {
+      return;
+    }
+
+    const currentStepDef = getStepDefinition(currentStep);
+    
+    // Case 4: Route matches context, nothing to do
+    if (currentStepDef?.route === pathname) return;
+
+    // Case 5: Handle normal step navigation
     const requestedStepDef = steps.find(step => step.route === pathname);
 
-    // Helper function to redirect to first open step
     const redirectToFirstOpen = () => {
       const firstOpenStep = steps.find(
         s => ["open", "active"].includes(getStepStatus(s.step))
@@ -38,7 +63,7 @@ export function useRouteValidation() {
 
     // Invalid route - redirect
     if (!requestedStepDef) {
-      console.log("Step requested is invalid. Redirecting to first open step");
+      console.warn("Invalid route — redirecting to first open step");
       redirectToFirstOpen();
       return;
     }
@@ -47,15 +72,14 @@ export function useRouteValidation() {
 
     // Pending step - redirect
     if (status === "pending") {
-      console.log("Step requested is not allowed. Redirecting to first open step");
+      console.warn("Pending step requested — redirecting to first open step");
       redirectToFirstOpen();
       return;
     }
 
     // Valid and allowed - update current step if different
     if (requestedStepDef.step !== currentStep) {
-      console.log("Step requested is allowed. Going to step:", requestedStepDef.step);
       goToStep(requestedStepDef.step);
     }
-  }, [pathname, steps, getStepStatus, goToStep, getStepDefinition, router]);
+  }, [pathname, steps, getStepStatus, goToStep, getStepDefinition, router, currentStep, allStepsComplete]);
 }

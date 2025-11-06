@@ -16,7 +16,8 @@ interface BrandDurationInputProps {
   };
   onChange: (value: { number: string; units: string }) => void;
   items: string[];
-  error?: string;
+  errorNumber?: string;
+  errorUnits?: string;
 }
 
 export const BrandDurationInput: React.FC<BrandDurationInputProps> = ({
@@ -27,7 +28,8 @@ export const BrandDurationInput: React.FC<BrandDurationInputProps> = ({
   value,
   onChange,
   items,
-  error,
+  errorNumber,
+  errorUnits,
 }) => {
   const numberStr = value.number.toString();
 
@@ -58,6 +60,8 @@ export const BrandDurationInput: React.FC<BrandDurationInputProps> = ({
           icon={Timer}
           value={numberStr}
           onChange={(val) => handleNumberChange(val)}
+          error={errorNumber}
+          showErrorMessage={false}
         />
 
         <BrandDropdownMenu
@@ -66,11 +70,16 @@ export const BrandDurationInput: React.FC<BrandDurationInputProps> = ({
           onChange={(val) => onChange({ number: numberStr, units: val as string })}
           placeholder="Time Frame"
           items={items}
+          error={errorUnits}
+          showErrorMessage={false}
         />
       </div>
 
-      {/* Optional error message */}
-      {error && <span className="body-s text-destructive">{error}</span>}
+      {/* Error message */}
+      <div className="flex flex-col gap-100">
+        {errorNumber && <p className="body-s text-destructive">{errorNumber}</p>}
+        {errorUnits && <p className="body-s text-destructive">{errorUnits}</p>}
+      </div>
     </div>
   );
 };

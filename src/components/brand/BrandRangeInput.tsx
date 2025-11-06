@@ -16,7 +16,9 @@ interface BrandRangeInputProps {
   };
   onChange: (value: { min: string; max: string; unit: string }) => void;
   items: string[];
-  error?: string;
+  errorMin?: string;
+  errorMax?: string;
+  errorUnit?: string;
 }
 
 export const BrandRangeInput: React.FC<BrandRangeInputProps> = ({
@@ -27,7 +29,9 @@ export const BrandRangeInput: React.FC<BrandRangeInputProps> = ({
   value,
   onChange,
   items,
-  error,
+  errorMin,
+  errorMax,
+  errorUnit,
 }) => {
   // Convert to strings for consistency
   const minStr = value.min.toString();
@@ -60,14 +64,11 @@ export const BrandRangeInput: React.FC<BrandRangeInputProps> = ({
   const netEarnings = useMemo(() => {
     const min = parseFloat(minStr);
     const max = parseFloat(maxStr);
-    
-    if (isNaN(min) || isNaN(max) || min === 0 && max === 0) {
-      return null;
-    }
 
     const netMin = (min * 0.8).toFixed(2);
     const netMax = (max * 0.8).toFixed(2);
-    return `${netMin} – ${netMax}`;
+    if (netMin === netMax) return `${netMin}`
+    else return `${netMin} – ${netMax}`;
   }, [minStr, maxStr]);
 
   return (
@@ -81,6 +82,8 @@ export const BrandRangeInput: React.FC<BrandRangeInputProps> = ({
           value={minStr}
           onChange={(val) => handleNumberChange("min", val)}
           placeholder="Min"
+          error={errorMin}
+          showErrorMessage={false}
         />
         <span className="body-s text-tertiary">-</span>
         <BrandInputForm
@@ -89,6 +92,8 @@ export const BrandRangeInput: React.FC<BrandRangeInputProps> = ({
           value={maxStr}
           onChange={(val) => handleNumberChange("max", val)}
           placeholder="Max"
+          error={errorMax}
+          showErrorMessage={false}
         />
         <BrandDropdownMenu
           formLabel=""
@@ -97,12 +102,18 @@ export const BrandRangeInput: React.FC<BrandRangeInputProps> = ({
           onChange={(val) => onChange({ min: minStr, max: maxStr, unit: val as string })}
           width="flex-1"
           placeholder="Currency"
+          error={errorUnit}
+          showErrorMessage={false}
         />
       </div>
 
       {/* Error message from parent validation */}
-      {error ? (
-        <span className="body-s text-destructive">{error}</span>
+      {(errorMin || errorMax || errorUnit) ? (
+        <div className="flex flex-col gap-100">
+          {errorMin && <p className="body-s text-destructive">{errorMin}</p>}
+          {errorMax && <p className="body-s text-destructive">{errorMax}</p>}
+          {errorUnit && <p className="body-s text-destructive">{errorUnit}</p>}
+        </div>
       ) : (
         <span className="body-s text-tertiary">
           {netEarnings && value.unit

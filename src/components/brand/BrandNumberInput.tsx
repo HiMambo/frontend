@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Minus, Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface BrandNumberInputProps {
   formLabel?: string;
@@ -13,6 +14,7 @@ interface BrandNumberInputProps {
   numberOfDigits?: number;
   min?: number;
   max?: number;
+  error?: string;
 }
 
 export const BrandNumberInput: React.FC<BrandNumberInputProps> = ({
@@ -25,6 +27,7 @@ export const BrandNumberInput: React.FC<BrandNumberInputProps> = ({
   numberOfDigits = 2,
   min,
   max,
+  error,
 }) => {
   const canIncrement = max === undefined || value < max;
   const canDecrement = min === undefined || value > min;
@@ -48,11 +51,12 @@ export const BrandNumberInput: React.FC<BrandNumberInputProps> = ({
 
       {/* Input Row */}
       <div
-        className={`
-          px-300 text-primary gap-300 bg-white 
-          flex flex-row items-center
-          h-[var(--height-input)] rounded-300 
-        `}
+        className={cn(
+          "px-300 text-primary gap-300 bg-white",
+          "flex flex-row items-center",
+          "h-[var(--height-input)] rounded-300",
+          error ? "border border-[3px] border-destructive" : ""
+        )}
       >
         {/* Minus button */}
         <button
@@ -80,6 +84,9 @@ export const BrandNumberInput: React.FC<BrandNumberInputProps> = ({
           <Plus className="icon-size-s" />
         </button>
       </div>
+
+      {/* Error Message */}
+      {error && <p className="body-s text-destructive">{error}</p>}
     </div>
   );
 };

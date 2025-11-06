@@ -1,11 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { BrandDropdownMenu } from "../brand/BrandDropdownMenu";
 import { BrandUploadForm } from "../brand/BrandUploadForm";
 import { StepComponentProps } from "@/app/register-experience/[step]/page";
+import { useOnboardingData, defaultDocumentsData } from "@/context/PartnerOnboardingContext";
+import { documentsSchema, DocumentsFormData } from "@/lib/validation/onboarding";
+import { useEffect } from "react";
 
 const DOC_TYPES = [
   "Tax ID / VAT Number",
@@ -16,45 +20,76 @@ const DOC_TYPES = [
 ];
 
 export default function DocumentsForm({ onComplete }: StepComponentProps) {
-  const [files, setFiles] = useState<File[]>([]);
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const { formData, updateStep3 } = useOnboardingData();
 
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Validation placeholder
-    console.log("Submitting documents...")
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<DocumentsFormData>({
+    resolver: zodResolver(documentsSchema),
+    mode: "onBlur",
+    defaultValues: formData.step3 || defaultDocumentsData,
+  });
+
+  // Rehydrate when returning to this step
+  useEffect(() => {
+    if (formData.step3) reset(formData.step3);
+  }, [formData.step3, reset]);
+
+  const onSubmit = async (data: DocumentsFormData) => {
+    // Save to context
+    updateStep3(data);
+    // Future: post to backend
+    console.log("Submitting form:", data);
+    // Proceed to next step
     onComplete();
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-600">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-600">
       <header className="flex flex-col gap-300 text-primary pr-6000">
         <span className="body-xxl-label">Business Legal Documents</span>
         <span className="body-l">
-          These documents help us verify your business legitimacy to ensure eligibility for the Himambo Partner Program.
+          These documents help us verify your business legitimacy to ensure eligibility
+          for the HiMambo Partner Program.
         </span>
       </header>
 
       <div className="grid grid-cols-2 gap-600">
-        {/* Left column: Upload input + uploaded files */}
-        <BrandUploadForm
-          label="Upload documents (max 1 MB)"
-          labelClassName="body-s text-tertiary"
-          value={files}
-          onChange={setFiles}
+        {/* Upload documents */}
+        <Controller
+          name="files"
+          control={control}
+          render={({ field, fieldState }) => (
+            <BrandUploadForm
+              {...field}
+              label="Upload documents (max 1 MB)"
+              labelClassName="body-s text-tertiary"
+              error={fieldState.error?.message}
+            />
+          )}
         />
 
-        {/* Right column: Document types dropdown */}
-        <BrandDropdownMenu
-          items={DOC_TYPES}
-          formLabel="Choose one or more from the dropdown menu *"
-          value={selectedTypes}
-          onChange={(val) => setSelectedTypes(val as string[])}
+        {/* Document types */}
+        <Controller
+          name="selectedTypes"
+          control={control}
+          render={({ field, fieldState }) => (
+            <BrandDropdownMenu
+              {...field}
+              items={DOC_TYPES}
+              formLabel="Choose one or more from the dropdown menu *"
+              multiSelect
+              error={fieldState.error?.message}
+            />
+          )}
         />
       </div>
 
-      <Button type="submit" className="w-[var(--width-authforms)]">
-        Save and Continue
+      <Button type="submit" className="w-[var(--width-authforms)]" disabled={isSubmitting}>
+        {isSubmitting ? "Saving..." : "Save and Continue"}
         <ArrowRight className="icon-size-s" />
       </Button>
     </form>

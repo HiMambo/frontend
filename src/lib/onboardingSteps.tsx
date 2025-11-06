@@ -1,6 +1,8 @@
 //showNext and showBack will be removed when step dependencies are implemented in the context, as the dependencies will handle this on their own
 //eg. if step 1 is locked, step 2 won't show back button
 
+export const FLOW_COMPLETE_ROUTE = "/register-experience/status";
+
 export const ONBOARDING_STEP_DEFINITIONS = [
   {
     step: 1,
@@ -57,8 +59,8 @@ export const ONBOARDING_STEP_DEFINITIONS = [
     label: 'Final Submission',
     title: '',
     completedTitle: '',
-    component: 'RegistrationSuccess',
-    route: '/register-experience/success',
+    component: 'SubmitForm',
+    route: '/register-experience/submit',
     showBackButton: true,
     showNextButton: false,
   },

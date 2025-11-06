@@ -15,6 +15,7 @@ interface BrandDropdownFlagsProps {
   onChange: (value: string | string[]) => void;
   multiSelect?: boolean;
   placeholder?: string;
+  error?: string;
 }
 
 export const BrandDropdownFlags: React.FC<BrandDropdownFlagsProps> = ({
@@ -27,6 +28,7 @@ export const BrandDropdownFlags: React.FC<BrandDropdownFlagsProps> = ({
   onChange,
   multiSelect = false,
   placeholder,
+  error,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -82,16 +84,13 @@ export const BrandDropdownFlags: React.FC<BrandDropdownFlagsProps> = ({
       {/* Label */}
       {formLabel && <label className={formLabelClassName}>{formLabel}</label>}
       {/* Dropdown input */}
-      <div
-        className="relative cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <div className="relative cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         <div
           className={`
-            w-full bg-white body-s text-tertiary 
-            h-[var(--height-input)] px-600 py-400
-            rounded-300 flex items-center justify-between 
-            focus:outline-none
+            w-full bg-white body-s h-[var(--height-input)] 
+            px-600 py-400 rounded-300 flex items-center justify-between 
+            focus:outline-none transition-colors
+            ${error ? "border-[3px] border-destructive" : ""}
           `}
         >
           <div className="flex items-center truncate">
@@ -145,6 +144,9 @@ export const BrandDropdownFlags: React.FC<BrandDropdownFlagsProps> = ({
         </div>
         )}
       </div>
+
+      {/* Error Message */}
+      {error && <p className="body-s text-destructive">{error}</p>}
     </div>
   );
 };

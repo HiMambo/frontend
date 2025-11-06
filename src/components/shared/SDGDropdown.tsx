@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { ChevronDown, ChevronUp, Check } from "lucide-react";
 import { SDG_LABELS } from "../ExperienceCard/SDGIcons";
+import { cn } from "@/lib/utils";
 
 interface SDGDropdownProps {
   formLabel?: string;
@@ -12,6 +13,7 @@ interface SDGDropdownProps {
   className?: string;
   value: string[]; // multiple SDGs allowed
   onChange: (value: string[]) => void;
+  error?: string;
 }
 
 export const SDGDropdown: React.FC<SDGDropdownProps> = ({
@@ -21,6 +23,7 @@ export const SDGDropdown: React.FC<SDGDropdownProps> = ({
   className = "",
   value,
   onChange,
+  error
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -63,12 +66,13 @@ export const SDGDropdown: React.FC<SDGDropdownProps> = ({
       {/* Dropdown input */}
       <div className="relative cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         <div
-          className={`
-            w-full bg-white body-s text-tertiary 
-            h-[var(--height-input)] px-600 py-400
-            rounded-300 flex items-center justify-between 
-            focus:outline-none
-          `}
+          className={cn(
+            "w-full bg-white body-s text-tertiary",
+            "h-[var(--height-input)] px-600 py-400",
+            "rounded-300 flex items-center justify-between",
+            "focus:outline-none",
+             error ? "border-[3px] border-destructive" : ""
+          )}
         >
           <div className="flex items-center gap-250 overflow-hidden">
             <span className={`truncate ${displayValue ? "text-tertiary" : "text-disabled"}`}>
@@ -98,12 +102,12 @@ export const SDGDropdown: React.FC<SDGDropdownProps> = ({
                     e.stopPropagation();
                     handleSelect(sdg.value);
                   }}
-                  className={`
-                    flex justify-between items-center body-s
-                    py-[var(--spacing-300)] cursor-pointer transition-colors hover:bg-[var(--neutral-50)]
-                    ${selected ? "text-primary" : "text-tertiary"}
-                    ${!isLast ? "border-b border-[var(--neutral-200)]" : ""}
-                  `}
+                  className={cn(
+                    "flex justify-between items-center body-s",
+                    "py-[var(--spacing-300)] cursor-pointer transition-colors hover:bg-[var(--neutral-50)]",
+                    selected ? "text-primary" : "text-tertiary",
+                    !isLast ? "border-b border-[var(--neutral-200)]" : ""
+                  )}
                 >
                   <div className="flex items-center gap-[var(--spacing-250)]">
                     <div className="icon-size-s relative shrink-0">
@@ -123,6 +127,9 @@ export const SDGDropdown: React.FC<SDGDropdownProps> = ({
           </div>
         )}
       </div>
+
+      {/* Error Message */}
+      {error && <p className="body-s text-destructive">{error}</p>}
     </div>
   );
 };

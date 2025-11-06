@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { type LucideIcon, Eye, EyeOff } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface BrandInputFormProps {
   formLabel?: string;
@@ -11,20 +12,26 @@ interface BrandInputFormProps {
   className?: string;
   value: string;
   onChange: (value: string) => void;
+  onBlur?: () => void;
   icon?: LucideIcon;
   placeholder?: string;
+  error?: string;
+  showErrorMessage?: boolean;
 }
 
 export const BrandInputForm: React.FC<BrandInputFormProps> = ({
   formLabel,
   formLabelClassName = "body-s text-tertiary",
-  width = "w-full max-w-[var(--width-authforms)]",
+  width = "w-full",
   contentHidden = false,
   className = "",
   value,
   onChange,
+  onBlur,
   icon: Icon,
   placeholder,
+  error,
+  showErrorMessage = true,
 }) => {
   const [showContent, setShowContent] = useState(!contentHidden);
 
@@ -47,11 +54,13 @@ export const BrandInputForm: React.FC<BrandInputFormProps> = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={`
-            w-full bg-white body-m text-tertiary h-[var(--height-input)]
-            px-[var(--spacing-600)] py-[var(--spacing-400)] rounded-300 focus:outline-none
-            ${Icon ? "pl-[calc(var(--spacing-600)*2+var(--spacing-250))]" : ""}
-          `}
+          className={cn(
+            "w-full bg-white body-m text-tertiary h-[var(--height-input)]",
+            "px-[var(--spacing-600)] py-[var(--spacing-400)] rounded-300 focus:outline-none",
+            Icon ? "pl-[calc(var(--spacing-600)*2+var(--spacing-250))]" : "",
+            error ? "border border-[3px] border-destructive" : ""
+          )}
+          onBlur={onBlur}
         />
 
         {/* Toggle visibility if contentHidden */}
@@ -69,6 +78,9 @@ export const BrandInputForm: React.FC<BrandInputFormProps> = ({
           </button>
         )}
       </div>
+
+      {/* Error message */}
+      {error && showErrorMessage && <p className="body-s text-destructive">{error}</p>}
     </div>
   );
-};
+}

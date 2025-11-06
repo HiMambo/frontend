@@ -24,6 +24,7 @@ export const ResetPassword: React.FC = () => {
       {/* Input Forms */}
       <div className="flex flex-col gap-[var(--spacing-800)] items-center w-full">
         <BrandInputForm 
+          width="w-full max-w-[var(--width-authforms)]"
           formLabel="New password"
           formLabelClassName="body-s text-disabled"
           contentHidden 
@@ -31,6 +32,7 @@ export const ResetPassword: React.FC = () => {
           onChange={(val) => updateFormData("reset", "password", val)}
         />
         <BrandInputForm 
+          width="w-full max-w-[var(--width-authforms)]"
           formLabel="Confirm new password" 
           formLabelClassName="body-s text-disabled"
           contentHidden 

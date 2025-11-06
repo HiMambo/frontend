@@ -1,63 +1,57 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useMemo, useState } from "react";
+import { useMemo, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { BrandInputForm } from "../brand/BrandInputForm";
 import { BrandCheckbox } from "../brand/BrandCheckBox";
 import { ArrowRight, Mail, Phone, User } from "lucide-react";
 import { BrandDropdownMenu } from "../brand/BrandDropdownMenu";
 import { BrandDropdownFlags } from "../brand/BrandDropdownFlags";
 import { StepComponentProps } from "@/app/register-experience/[step]/page";
-
-export interface CreateAccountFormData {
-  fullName: string;
-  phone: string;
-  email: string;
-  languages: string[];
-  role: string;
-  password: string;
-  confirmPassword: string;
-  acceptedTerms1: boolean;
-  acceptedTerms2: boolean;
-  acceptedTerms3: boolean;
-}
+import { defaultCreateAccountData, useOnboardingData } from "@/context/PartnerOnboardingContext";
+import { createAccountSchema, CreateAccountFormData } from "@/lib/validation/onboarding";
 
 export default function CreateAccountForm({ onComplete }: StepComponentProps) {
-  const [formData, setFormData] = useState<CreateAccountFormData>({
-    fullName: "",
-    phone: "",
-    email: "",
-    languages: [] as string[],
-    role: "",
-    password: "",
-    confirmPassword: "",
-    acceptedTerms1: false,
-    acceptedTerms2: false,
-    acceptedTerms3: false,
+  const { formData, updateStep1 } = useOnboardingData();
+
+  // Initialize react-hook-form with context data
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { isSubmitting },
+  } = useForm<CreateAccountFormData>({
+    resolver: zodResolver(createAccountSchema),
+    mode: "onTouched",
+    defaultValues: formData.step1 || defaultCreateAccountData,
   });
 
-  function updateFormData<K extends keyof typeof formData>(key: K, value: (typeof formData)[K]) {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  }
+  // Hydrate from context if changed (e.g., backend sync)
+  useEffect(() => {
+    if (formData.step1) {
+      Object.entries(formData.step1).forEach(([key, val]) => {
+        control._formValues[key as keyof CreateAccountFormData] = val;
+      });
+    }
+  }, [formData.step1, control]);
 
-  // Compute initials
-  const initials = useMemo(() => {
-    const parts = formData.fullName.trim().split(/\s+/);
-    return (
-      parts
-        .slice(0, 2)
-        .map((p) => p[0]?.toUpperCase() ?? "")
-        .join("") || "HM"
-    );
-  }, [formData.fullName]);
-
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
-    // Validation placeholder
-    console.log("Submitting form:", formData);
+  const onSubmit = async (data: CreateAccountFormData) => {
+    // Save to context
+    updateStep1(data);
+    // Future: post to backend
+    console.log("Submitting form:", data);
+    // Proceed to next step
     onComplete();
-  }
+  };
+
+  // Compute initials dynamically
+  const fullName = watch("fullName");
+  const initials = useMemo(() => {
+    const parts = (fullName || "").trim().split(/\s+/);
+    return parts.slice(0, 2).map((p) => p[0]?.toUpperCase() ?? "").join("") || "HM";
+  }, [fullName]);
 
   return (
     <main className="flex flex-col gap-600">
@@ -69,105 +63,171 @@ export default function CreateAccountForm({ onComplete }: StepComponentProps) {
           </span>
         </div>
 
-        {/* User Badge */}
-        <div
-          className="badge-size-l rounded-full grid text-center items-center heading-h3 transition-colors duration-300 bg-teal-500/15 text-teal-500">
+        <div className="badge-size-l rounded-full grid text-center items-center heading-h3 bg-teal-500/15 text-teal-500">
           {initials}
         </div>
       </header>
 
-      <form onSubmit={onSubmit} className="flex flex-col gap-600">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-600">
         <section className="grid grid-cols-2 gap-800 relative">
-          <BrandInputForm
-            width="w-full"
-            formLabel="Full Name *"
-            value={formData.fullName}
-            onChange={(e) => updateFormData("fullName", e)}
-            icon={User}
+          {/* Full Name */}
+          <Controller
+            name="fullName"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandInputForm
+                formLabel="Full Name *"
+                icon={User}
+                {...field}
+                error={fieldState.error?.message}
+              />
+            )}
           />
-          <BrandInputForm
-            width="w-full"
-            formLabel="Phone Number *"
-            value={formData.phone}
-            onChange={(e) => updateFormData("phone", e)}
-            icon={Phone}
+
+          {/* Phone */}
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandInputForm
+                formLabel="Phone Number *"
+                icon={Phone}
+                {...field}
+                error={fieldState.error?.message}
+              />
+            )}
           />
-          <BrandInputForm
-            width="w-full"
-            formLabel="Email *"
-            value={formData.email}
-            onChange={(e) => updateFormData("email", e)}
-            icon={Mail}
+
+          {/* Email */}
+          <Controller
+            name="email"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandInputForm
+                formLabel="Email *"
+                icon={Mail}
+                {...field}
+                error={fieldState.error?.message}
+              />
+            )}
           />
-          <BrandDropdownMenu
-            items={["Owner", "Employee", "Other"]}
-            formLabel="What is your role? *"
-            value={formData.role}
-            onChange={(e) => updateFormData("role", e as string)}
+
+          {/* Role */}
+          <Controller
+            name="role"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandDropdownMenu
+                formLabel="What is your role? *"
+                items={["Owner", "Employee", "Other"]}
+                {...field}
+                error={fieldState.error?.message}
+              />
+            )}
           />
-          <BrandInputForm
-            contentHidden
-            width="w-full"
-            formLabel="Password *"
-            value={formData.password}
-            onChange={(e) => updateFormData("password", e)}
+
+          {/* Password */}
+          <Controller
+            name="password"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandInputForm
+                formLabel="Password *"
+                contentHidden
+                {...field}
+                error={fieldState.error?.message}
+              />
+            )}
           />
-          <BrandInputForm
-            contentHidden
-            width="w-full"
-            formLabel="Confirm Password *"
-            value={formData.confirmPassword}
-            onChange={(e) => updateFormData("confirmPassword", e)}
+
+          {/* Confirm Password */}
+          <Controller
+            name="confirmPassword"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandInputForm
+                formLabel="Confirm Password *"
+                contentHidden
+                {...field}
+                error={fieldState.error?.message}
+              />
+            )}
           />
-          <BrandDropdownFlags
-            items={["Spanish", "English", "Portuguese (Brazil)", "Portuguese (Portugal)", "German", "French"]}
-            formLabel="Languages"
-            value={formData.languages}
-            onChange={(val) => updateFormData("languages", val as string[])}
-            multiSelect
+
+          {/* Languages */}
+          <Controller
+            name="languages"
+            control={control}
+            render={({ field, fieldState }) => (
+              <BrandDropdownFlags
+                formLabel="Languages"
+                items={[
+                  "Spanish",
+                  "English",
+                  "Portuguese (Brazil)",
+                  "Portuguese (Portugal)",
+                  "German",
+                  "French",
+                ]}
+                multiSelect
+                {...field}
+                error={fieldState.error?.message}
+              />
+            )}
           />
         </section>
 
-        <div className="flex flex-col gap-300">
-          <BrandCheckbox
-            value={formData.acceptedTerms1}
-            onChange={(val) => updateFormData("acceptedTerms1", val)}
-          >
-            I have read & accept the{" "}
-            <a href="#" className="underline hover:text-[var(--text-primary)] transition-colors">
-              Terms of Service
-            </a>{" "}
-            and the{" "}
-            <a href="#" className="underline hover:text-[var(--text-primary)] transition-colors">
-              Privacy Policy
-            </a>
-            . *
-          </BrandCheckbox>
+        {/* Terms checkboxes */}
+        <Controller
+          name="acceptedTerms1"
+          control={control}
+          render={({ field, fieldState }) => (
+            <BrandCheckbox {...field} error={fieldState.error?.message}>
+              I have read & accept the{" "}
+              <a href="#" className="underline hover:text-[var(--text-primary)] transition-colors">
+                Terms of Service
+              </a>{" "}
+              and the{" "}
+              <a href="#" className="underline hover:text-[var(--text-primary)] transition-colors">
+                Privacy Policy
+              </a>
+              . *
+            </BrandCheckbox>
+          )}
+        />
 
-          <BrandCheckbox
-            value={formData.acceptedTerms2}
-            onChange={(val) => updateFormData("acceptedTerms2", val)}
-          >
-            I have read and understood HiMambo’s{" "}
-            <a href="#" className="underline hover:text-[var(--text-primary)] transition-colors">
-              Privacy Policy
-            </a>
-            , and I consent to the processing of my personal data as described
-            therein. *
-          </BrandCheckbox>
+        <Controller
+          name="acceptedTerms2"
+          control={control}
+          render={({ field, fieldState }) => (
+            <BrandCheckbox {...field} error={fieldState.error?.message}>
+              I have read and understood HiMambo’s{" "}
+              <a href="#" className="underline hover:text-[var(--text-primary)] transition-colors">
+                Privacy Policy
+              </a>
+              , and I consent to the processing of my personal data as described therein. *
+            </BrandCheckbox>
+          )}
+        />
 
-          <BrandCheckbox
-            value={formData.acceptedTerms3}
-            onChange={(val) => updateFormData("acceptedTerms3", val)}
-          >
-            I agree to receive occasional news, updates, and marketing
+        <Controller
+          name="acceptedTerms3"
+          control={control}
+          render={({ field }) => (
+            <BrandCheckbox {...field}>
+              I agree to receive occasional news, updates, and marketing communications from HiMambo by email.
             communications from HiMambo by email, including information about
             sustainable travel experiences, Partner offers, and company news.
-          </BrandCheckbox>
-        </div>
+            </BrandCheckbox>
+          )}
+        />
 
-        <Button type="submit" className="w-[var(--width-authforms)]">
-          Sign Up
+        <Button 
+          type="submit" 
+          className="w-[var(--width-authforms)]"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Submitting..." : "Sign Up"}
           <ArrowRight className="icon-size-s" />
         </Button>
       </form>

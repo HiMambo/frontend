@@ -23,6 +23,7 @@ export const ForgotPassword: React.FC = () => {
 
       {/* Form */}
       <BrandInputForm 
+        width="w-full max-w-[var(--width-authforms)]"
         formLabel="Email"
         formLabelClassName="body-s text-disabled"
         value={formData.forgot.email}

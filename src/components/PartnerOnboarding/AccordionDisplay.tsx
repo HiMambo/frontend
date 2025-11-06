@@ -16,7 +16,7 @@ export function AccordionDisplay({
   className?: string;
 }) {
   return (
-    <div className={`${className}`}>
+    <div className={className}>
       <button
         type="button"
         onClick={onToggle}

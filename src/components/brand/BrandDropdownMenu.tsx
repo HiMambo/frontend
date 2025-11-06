@@ -13,6 +13,8 @@ interface BrandDropdownMenuProps {
   value: string | string[];
   onChange: (value: string | string[]) => void;
   multiSelect?: boolean;
+  error?: string;
+  showErrorMessage?: boolean;
 }
 
 export const BrandDropdownMenu: React.FC<BrandDropdownMenuProps> = ({
@@ -25,6 +27,8 @@ export const BrandDropdownMenu: React.FC<BrandDropdownMenuProps> = ({
   value,
   onChange,
   multiSelect = false,
+  error,
+  showErrorMessage = true,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -71,16 +75,13 @@ export const BrandDropdownMenu: React.FC<BrandDropdownMenuProps> = ({
       {formLabel && <label className={formLabelClassName}>{formLabel}</label>}
 
       {/* Dropdown input */}
-      <div
-        className="relative cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <div className="relative cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         <div
           className={`
-            w-full bg-white body-s text-tertiary 
-            h-[var(--height-input)] px-600 py-400
-            rounded-300 flex items-center justify-between 
-            focus:outline-none
+            w-full bg-white body-s h-[var(--height-input)] 
+            px-600 py-400 rounded-300 flex items-center justify-between 
+            focus:outline-none transition-colors
+            ${error ? "border-[3px] border-destructive" : ""}
           `}
         >
           <span
@@ -119,11 +120,7 @@ export const BrandDropdownMenu: React.FC<BrandDropdownMenuProps> = ({
                   className={`
                     flex justify-between items-center body-s
                     py-[var(--spacing-300)] cursor-pointer transition-colors hover:bg-[var(--neutral-50)]
-                    ${
-                      selected
-                        ? "text-primary"
-                        : "text-tertiary"
-                    }
+                    ${selected ? "text-primary" : "text-tertiary"}
                     ${!isLast ? "border-b border-[var(--neutral-200)]" : ""}
                   `}
                 >
@@ -135,6 +132,9 @@ export const BrandDropdownMenu: React.FC<BrandDropdownMenuProps> = ({
           </div>
         )}
       </div>
+
+      {/* Error Message */}
+      {error && showErrorMessage && <p className="body-s text-destructive">{error}</p>}
     </div>
   );
 };

@@ -7,9 +7,9 @@ Future considerations:
 "use client";
 
 import { useRouter } from 'next/navigation';
-import { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react';
+import { createContext, useContext, useState, useCallback, ReactNode, useMemo, useEffect } from 'react';
 
-const flowCompleteSentinel = -1;
+export const flowCompleteSentinel = -1;
 
 export type StepNumber = number;
 export type StepStatus = 'completed' | 'active' | 'open' | 'revisited' | 'pending';
@@ -35,6 +35,8 @@ interface StepState {
 }
 
 interface StepContextType {
+  allStepsComplete: boolean;
+  
   currentStep: StepNumber;
   completedSteps: Set<StepNumber>;
   isValid: boolean;
@@ -182,7 +184,7 @@ export function StepProvider({
   const markStepComplete = useCallback((step: StepNumber) => {
     if (step === flowCompleteSentinel) return; // Don't mark sentinel step as completed
 
-    const stepExists = stepDefinitions.some(def => def.step === step); // Don't mark invalid step as complete
+    const stepExists = stepDefinitions.some(def => def.step === step);
     if (!stepExists) {
       console.error(`Attempted to complete invalid step: ${step}`);
       return;
@@ -214,7 +216,19 @@ export function StepProvider({
     console.log("Steps reset to initial state");
   }, [initialStep]);
 
+  const allStepsComplete = stepDefinitions.every(s => getStepStatus(s.step) === "completed" || getStepStatus(s.step) === "revisited");
+
+  // Auto-advance to flowCompleteSentinel when all steps are completed
+  useEffect(() => {
+    if (allStepsComplete && stepState.currentStep !== flowCompleteSentinel) {
+      console.log("All steps completed - advancing to flow complete sentinel");
+      setStepState(prev => ({ ...prev, currentStep: flowCompleteSentinel }));
+    }
+  }, [allStepsComplete, stepState.currentStep]);
+
   const value: StepContextType = useMemo(() => ({
+    allStepsComplete,
+
     currentStep: stepState.currentStep,
     completedSteps: stepState.completedSteps,
     isValid: stepState.isValid,
@@ -236,6 +250,7 @@ export function StepProvider({
 
     resetSteps,
   }), [
+    allStepsComplete,
     stepState,
     stepDefinitions,
     getStepDefinition,

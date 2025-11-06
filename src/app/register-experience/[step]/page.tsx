@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
-import { ONBOARDING_STEP_DEFINITIONS } from "@/lib/onboardingSteps";
+import { ONBOARDING_STEP_DEFINITIONS, FLOW_COMPLETE_ROUTE } from "@/lib/onboardingSteps";
 import { useSteps } from "@/context/StepContext";
 
 export interface StepComponentProps {
@@ -26,8 +26,11 @@ const componentMap = {
   SustainabilityVerificationForm: dynamic<StepComponentProps>(
     () => import("@/components/PartnerOnboarding/SustainabilityVerificationForm")
   ),
-  RegistrationSuccess: dynamic<StepComponentProps>(
-    () => import("@/components/PartnerOnboarding/RegistrationSuccess")
+  SubmitForm: dynamic<StepComponentProps>(
+    () => import("@/components/PartnerOnboarding/SubmitForm")
+  ),
+  StatusForm: dynamic(
+    () => import("@/components/PartnerOnboarding/StatusForm")
   ),
 } as const;
 
@@ -35,9 +38,15 @@ export default function StepPage() {
   const { step } = useParams();
   const { markStepComplete, routeToStep } = useSteps();
 
+  // Handle flow complete page
+  if (`/register-experience/${step}` === FLOW_COMPLETE_ROUTE) {
+    const StatusComponent = componentMap.StatusForm;
+    return <StatusComponent/>;
+  }
+
   // Find the step definition by matching the current route slug
   const stepDefinition = ONBOARDING_STEP_DEFINITIONS.find(
-    (def) => def.route.endsWith(`/${step}`)
+    (def) => (def.route === `/register-experience/${step}`)
   );
 
   if (!stepDefinition) {
@@ -50,24 +59,23 @@ export default function StepPage() {
   }
 
   const StepComponent = componentMap[stepDefinition.component as keyof typeof componentMap];
+
   if (!StepComponent) {
     console.error(`No component found for step ${stepDefinition.component}`);
     return <div>Component not found for this step.</div>;
   }
 
   const handleComplete = () => {
-    console.log("Step completed:", stepDefinition.step);
     markStepComplete(stepDefinition.step);
-
     // Navigate to next step (Future: delegate to context)
     const nextStep = stepDefinition.step + 1;
     const nextDef = ONBOARDING_STEP_DEFINITIONS.find((d) => d.step === nextStep);
-    
     if (nextDef) {
       routeToStep(nextStep);
     } else {
-      //Route to success
-      console.log("Onboarding complete!");
+      // Flow is complete - context will auto-advance to flowCompleteSentinel
+      // and useRouteValidation will redirect to FLOW_COMPLETE_ROUTE
+      console.log("Last step completed - flow finishing");
     }
   };
 

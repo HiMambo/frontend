@@ -23,12 +23,14 @@ export const Login: React.FC = () => {
       {/* Form fields */}
       <div className="flex flex-col gap-[var(--spacing-800)] items-center w-full">
         <BrandInputForm 
+          width="w-full max-w-[var(--width-authforms)]"
           formLabel="Login" 
           formLabelClassName="body-s text-disabled"
           value={formData.login.email}
           onChange={(val) => updateFormData("login", "email", val)}
         />
         <BrandInputForm 
+          width="w-full max-w-[var(--width-authforms)]"
           formLabel="Password" 
           formLabelClassName="body-s text-disabled"
           contentHidden 

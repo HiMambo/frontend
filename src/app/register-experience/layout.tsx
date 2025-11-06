@@ -1,18 +1,17 @@
 "use client";
 
 import { StepProvider } from "@/context/StepContext";
+import { OnboardingProvider } from "@/context/PartnerOnboardingContext";
 import { ONBOARDING_STEP_DEFINITIONS } from "@/lib/onboardingSteps";
 import { useOnboardingProgress } from "@/hooks/useOnboardingProgress";
 import { PartnerOnboardingFlow } from "@/components/PartnerOnboarding/PartnerOnboardingFlow";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 
 export default function PartnerOnboardingLayout({ children }: { children: React.ReactNode }) {
-  const {error, loading, initialCompletedSteps } = useOnboardingProgress();
+  const { error, loading, initialCompletedSteps } = useOnboardingProgress();
 
   if (error) {
-    return (
-      <ErrorMessage message={error}/>
-    );
+    return <ErrorMessage message={error} />;
   } else if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--neutral-100)]">
@@ -23,13 +22,15 @@ export default function PartnerOnboardingLayout({ children }: { children: React.
       </div>
     );
   } else {
-      return (
-        <StepProvider 
+    return (
+      <OnboardingProvider>
+        <StepProvider
           stepDefinitions={ONBOARDING_STEP_DEFINITIONS}
           initialCompletedSteps={new Set(initialCompletedSteps)}
         >
           <PartnerOnboardingFlow>{children}</PartnerOnboardingFlow>
         </StepProvider>
-      );
-    };
-  };
+      </OnboardingProvider>
+    );
+  }
+}

@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { Upload, Trash2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface BrandUploadFormProps {
   label?: string;
@@ -11,6 +12,7 @@ interface BrandUploadFormProps {
   accept?: string;
   multiple?: boolean;
   maxSizeMB?: number;
+  error?: string;
 }
 
 export function BrandUploadForm({
@@ -21,6 +23,7 @@ export function BrandUploadForm({
   accept = ".pdf,.jpg,.jpeg,.png,.webp,.heic,.doc,.docx",
   multiple = true,
   maxSizeMB = 1,
+  error,
 }: BrandUploadFormProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -70,12 +73,13 @@ export function BrandUploadForm({
         tabIndex={0}
         onClick={openPicker}
         onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && openPicker()}
-        className={`
-          w-full bg-white body-m text-tertiary
-          rounded-300 px-[var(--spacing-600)] py-[var(--spacing-400)]
-          cursor-pointer flex items-center gap-300
-          min-h-[calc(var(--spacing-400)*3)]
-        `}
+        className={cn(
+          "w-full bg-white body-m text-tertiary",
+          "rounded-300 px-600 py-400",
+          "cursor-pointer flex items-center gap-300",
+          "h-[var(--height-input)]",
+          error ? "border border-[3px] border-destructive" : ""
+        )}
       >
         {showFileInline ? (
           <>
@@ -120,11 +124,12 @@ export function BrandUploadForm({
       {/* Uploaded files list - only shown when not in single mode */}
       {multiple && (
         <div
-          className={`
-            flex flex-col gap-200 mt-200
-            min-h-[calc(var(--spacing-400)*3)]
-            bg-white rounded-300 px-600 py-400
-          `}
+          className={cn(
+            "flex flex-col gap-200 mt-200",
+            "min-h-[var(--height-input)]",
+            "bg-white rounded-300 px-600 py-400",
+            error ? "border border-[3px] border-destructive" : ""
+          )}
         >
           {value.length === 0 ? (
             <span className="body-s text-tertiary opacity-50">
@@ -149,6 +154,9 @@ export function BrandUploadForm({
           )}
         </div>
       )}
+
+      {/* Error Message */}
+      {error && <p className="body-s text-destructive">{error}</p>}
     </div>
   );
 }

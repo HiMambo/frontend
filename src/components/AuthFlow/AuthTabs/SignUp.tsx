@@ -25,12 +25,14 @@ export const SignUp: React.FC = () => {
       <div className="grid grid-cols-2 gap-[var(--spacing-800)] w-full">
         {/* Row 1 */}
         <BrandInputForm 
+          width="w-full max-w-[var(--width-authforms)]"
           formLabel="First Name *" 
           formLabelClassName="body-s text-disabled"
           value={formData.signup.firstName}
           onChange={(val) => updateFormData("signup", "firstName", val)}
         />
         <BrandInputForm 
+          width="w-full max-w-[var(--width-authforms)]"
           formLabel="Last Name *" 
           formLabelClassName="body-s text-disabled"
           value={formData.signup.lastName}
@@ -39,12 +41,14 @@ export const SignUp: React.FC = () => {
 
         {/* Row 2 */}
         <BrandInputForm 
+          width="w-full max-w-[var(--width-authforms)]"
           formLabel="Email *" 
           formLabelClassName="body-s text-disabled"
           value={formData.signup.email}
           onChange={(val) => updateFormData("signup", "email", val)}
         />
         <BrandInputForm 
+          width="w-full max-w-[var(--width-authforms)]"
           formLabel="Set password *"
           formLabelClassName="body-s text-disabled"
           contentHidden 
