@@ -12,25 +12,25 @@ export interface StepComponentProps {
 // Dynamically import all step components
 const componentMap = {
   CreateAccountForm: dynamic<StepComponentProps>(
-    () => import("@/components/PartnerOnboarding/CreateAccountForm")
+    () => import("@/components/PartnerOnboarding/FormComponents/CreateAccountForm")
   ),
   BusinessDetailsForm: dynamic<StepComponentProps>(
-    () => import("@/components/PartnerOnboarding/BusinessDetailsForm")
+    () => import("@/components/PartnerOnboarding/FormComponents/BusinessDetailsForm")
   ),
   DocumentsForm: dynamic<StepComponentProps>(
-    () => import("@/components/PartnerOnboarding/DocumentsForm")
+    () => import("@/components/PartnerOnboarding/FormComponents/DocumentsForm")
   ),
   ExperienceInfoForm: dynamic<StepComponentProps>(
-    () => import("@/components/PartnerOnboarding/ExperienceInfoForm")
+    () => import("@/components/PartnerOnboarding/FormComponents/ExperienceInfoForm")
   ),
   SustainabilityVerificationForm: dynamic<StepComponentProps>(
-    () => import("@/components/PartnerOnboarding/SustainabilityVerificationForm")
+    () => import("@/components/PartnerOnboarding/FormComponents/SustainabilityVerificationForm")
   ),
   SubmitForm: dynamic<StepComponentProps>(
-    () => import("@/components/PartnerOnboarding/SubmitForm")
+    () => import("@/components/PartnerOnboarding/FormComponents/SubmitForm")
   ),
   StatusForm: dynamic(
-    () => import("@/components/PartnerOnboarding/StatusForm")
+    () => import("@/components/PartnerOnboarding/FormComponents/StatusForm")
   ),
 } as const;
 

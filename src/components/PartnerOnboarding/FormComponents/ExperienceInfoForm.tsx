@@ -1,14 +1,14 @@
 "use client";
 
-import { ExperienceData } from "@/components/PartnerOnboarding/ExperienceData";
+import { ExperienceData } from "@/components/PartnerOnboarding/FormComponents/ExperienceData";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StepComponentProps } from "@/app/register-experience/[step]/page";
-import { AccordionDisplay } from "./AccordionDisplay";
-import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
+import { AccordionDisplay } from "../AccordionDisplay";
+import { ConfirmDeleteModal } from "../ConfirmDeleteModal";
 import { experiencesArraySchema } from "@/lib/validation/onboarding";
 import { defaultExperienceData, useOnboardingData } from "@/context/PartnerOnboardingContext";
 import { cn } from "@/lib/utils";

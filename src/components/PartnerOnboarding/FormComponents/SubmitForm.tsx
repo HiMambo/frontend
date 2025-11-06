@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, Sparkles } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BrandCheckbox } from "../brand/BrandCheckBox";
+import { BrandCheckbox } from "../../brand/BrandCheckBox";
 import { StepComponentProps } from "@/app/register-experience/[step]/page";
 import { useOnboardingData } from "@/context/PartnerOnboardingContext";
 import { submitSchema, SubmitFormData } from "@/lib/validation/onboarding";
