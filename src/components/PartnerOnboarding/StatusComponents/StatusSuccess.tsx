@@ -1,23 +1,30 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { BadgeCheckIcon } from "lucide-react";
 import { Button } from "../../ui/button";
 
 export function StatusSuccess() {
+  const router = useRouter();
+
   return (
     <main className="flex flex-col px-2400 py-800 gap-600 bg-[var(--surface)]/50 rounded-600">
       <header className="flex flex-row gap-300 justify-center">
-        <BadgeCheckIcon className="icon-size-l text-[var(--surface-accent-2)]"/>
+        <BadgeCheckIcon className="icon-size-l text-[var(--surface-accent-2)]" />
         <span className="body-xxl-label text-secondary">
           Registration Successful!
         </span>
       </header>
 
       <p className="body-l text-primary">
-        Congratulations! You are now an official HiMambo partner. 
+        Congratulations! You are now an official HiMambo partner.
       </p>
-      
-      <Button size="custom" className="w-full px-600 py-400">
+
+      <Button
+        size="custom"
+        className="w-full px-600 py-400"
+        onClick={() => router.push("/partner-dashboard")}
+      >
         Continue to Dashboard
       </Button>
     </main>
