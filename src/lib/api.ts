@@ -198,8 +198,22 @@ export async function createOrUpdateUser(userData: CreateUserData) {
  * Returns an array of completed step numbers
  */
 export async function fetchOnboardingProgress(): Promise<number[]> {
-  // Simulate API call with a 1.5 second delay
+  // Simulate API call
   await new Promise(resolve => setTimeout(resolve, 2500));
   //throw new Error(`Failed to fetch experience with ID`);
-  return [1, 2];
+  return [1, 2, 3, 4, 5];
+}
+
+export type ApplicationStatus = "pending" | "success" | "rejected";
+
+// Mock API call to simulate fetching status from backend
+export async function fetchOnboardingApplicationStatus(): Promise<ApplicationStatus> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // Randomized mock response for demo
+      const statuses: ApplicationStatus[] = ["pending", "success", "rejected"];
+      const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+      resolve(randomStatus);
+    }, 1200); // simulate network delay
+  });
 }
