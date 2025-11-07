@@ -5,6 +5,7 @@ import { fetchOnboardingApplicationStatus, ApplicationStatus } from "@/lib/api";
 import { StatusSuccess } from "./StatusSuccess";
 import { StatusPending } from "./StatusPending";
 import { StatusRejected } from "./StatusRejected";
+import LoadingMessage from "@/components/shared/LoadingMessage";
 
 export default function StatusForm() {
   const [status, setStatus] = useState<ApplicationStatus | null>(null);
@@ -18,11 +19,7 @@ export default function StatusForm() {
   }, []);
 
   if (!status) {
-    return (
-      <main className="flex justify-center items-center h-full">
-        <span className="body-xl-label text-secondary">Loading status...</span>
-      </main>
-    );
+    return <LoadingMessage message="Loading application status..." />
   }
 
   switch (status) {

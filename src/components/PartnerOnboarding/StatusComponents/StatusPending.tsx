@@ -29,7 +29,7 @@ export function StatusPending() {
   return (
     <main className="flex flex-col gap-800">
       <div className="flex flex-col px-1600 py-800 gap-600 bg-[var(--surface)]/50 rounded-600">
-        <header className="flex flex-row gap-300 justify-center">
+        <header className="flex flex-row gap-300 items-center justify-center">
           <Clock className="icon-size-l text-[var(--yellow-500)]"/>
           <span className="body-xxl-label text-secondary">
             Application Under Review!

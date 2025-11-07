@@ -6,6 +6,7 @@ import { ONBOARDING_STEP_DEFINITIONS } from "@/lib/onboardingSteps";
 import { useOnboardingProgress } from "@/hooks/useOnboardingProgress";
 import { PartnerOnboardingFlow } from "@/components/PartnerOnboarding/PartnerOnboardingFlow";
 import ErrorMessage from "@/components/shared/ErrorMessage";
+import LoadingMessage from "@/components/shared/LoadingMessage";
 
 export default function PartnerOnboardingLayout({ children }: { children: React.ReactNode }) {
   const { error, loading, initialCompletedSteps } = useOnboardingProgress();
@@ -13,14 +14,7 @@ export default function PartnerOnboardingLayout({ children }: { children: React.
   if (error) {
     return <ErrorMessage message={error} />;
   } else if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--neutral-100)]">
-        <div className="flex flex-col items-center gap-400">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-          <span className="body-l text-secondary">Loading your progress...</span>
-        </div>
-      </div>
-    );
+    return <LoadingMessage message="Loading your progress..." />;
   } else {
     return (
       <OnboardingProvider>

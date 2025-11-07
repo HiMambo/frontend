@@ -1,6 +1,6 @@
+// useRouteValidation.ts
 "use client";
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { flowCompleteSentinel, useSteps } from "@/context/StepContext";
 import { FLOW_COMPLETE_ROUTE } from "@/lib/onboardingSteps";
@@ -8,6 +8,8 @@ import { FLOW_COMPLETE_ROUTE } from "@/lib/onboardingSteps";
 export function useRouteValidation() {
   const pathname = usePathname();
   const router = useRouter();
+  const [isValidating, setIsValidating] = useState(true);
+  
   const { 
     steps, 
     currentStep, 
@@ -18,12 +20,16 @@ export function useRouteValidation() {
   } = useSteps();
 
   useEffect(() => {
+    setIsValidating(true);
+    
     // Case 1: Flow is complete - redirect to status page
     if (currentStep === flowCompleteSentinel) {
       if (pathname !== FLOW_COMPLETE_ROUTE) {
         console.log("Flow complete - redirecting to status page");
         router.replace(FLOW_COMPLETE_ROUTE);
+        return;
       }
+      setIsValidating(false);
       return;
     }
 
@@ -41,13 +47,17 @@ export function useRouteValidation() {
 
     // Case 3: Status page is correctly loaded
     if (pathname === FLOW_COMPLETE_ROUTE && allStepsComplete) {
+      setIsValidating(false);
       return;
     }
 
     const currentStepDef = getStepDefinition(currentStep);
-    
+
     // Case 4: Route matches context, nothing to do
-    if (currentStepDef?.route === pathname) return;
+    if (currentStepDef?.route === pathname) {
+      setIsValidating(false);
+      return;
+    }
 
     // Case 5: Handle normal step navigation
     const requestedStepDef = steps.find(step => step.route === pathname);
@@ -81,5 +91,9 @@ export function useRouteValidation() {
     if (requestedStepDef.step !== currentStep) {
       goToStep(requestedStepDef.step);
     }
+    
+    setIsValidating(false);
   }, [pathname, steps, getStepStatus, goToStep, getStepDefinition, router, currentStep, allStepsComplete]);
+
+  return { isValidating };
 }

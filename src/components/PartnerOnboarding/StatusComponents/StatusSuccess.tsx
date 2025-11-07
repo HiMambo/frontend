@@ -9,7 +9,7 @@ export function StatusSuccess() {
 
   return (
     <main className="flex flex-col px-2400 py-800 gap-600 bg-[var(--surface)]/50 rounded-600">
-      <header className="flex flex-row gap-300 justify-center">
+      <header className="flex flex-row gap-300 items-center justify-center">
         <BadgeCheckIcon className="icon-size-l text-[var(--surface-accent-2)]" />
         <span className="body-xxl-label text-secondary">
           Registration Successful!
