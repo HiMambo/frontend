@@ -38,7 +38,7 @@ export function StatusRejected() {
         </header>
         <p className="body-l text-primary text-left">
           Thank you for applying to become a HiMambo Partner. 
-          After careful review of your application and experiences, at this time your application does not meet HiMambo's Partner Program policies.
+          After careful review of your application and experiences, at this time your application does not meet HiMambo&apos;s Partner Program policies.
         </p>
         <p className="body-l text-tertiary text-left">
           We truly appreciate your commitment to tourism and your effort to join HiMambo. While it’s not the right fit right now, 
