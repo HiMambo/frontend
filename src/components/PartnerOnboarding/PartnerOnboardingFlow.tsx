@@ -40,12 +40,12 @@ export function PartnerOnboardingFlow({ children }: PartnerOnboardingFlowProps) 
         {/* Card */}
         <div
           className={cn(
-            "bg-[var(--surface)]/50 rounded-600 px-1200 py-800",
             isFlowComplete 
               ? "w-[var(--onboarding-step-card-width)]"
-              : isExperienceInfoStep
-              ? "w-[var(--onboarding-experienceinfo-step-card-width)]"
-              : "w-[var(--onboarding-step-card-width)]"
+              : "bg-[var(--surface)]/50 rounded-600 px-1200 py-800",
+              isExperienceInfoStep
+                ? "w-[var(--onboarding-experienceinfo-step-card-width)]"
+                : "w-[var(--onboarding-step-card-width)]"
           )}
         >
           {children}

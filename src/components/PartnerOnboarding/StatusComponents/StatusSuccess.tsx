@@ -3,13 +3,13 @@
 import { BadgeCheckIcon } from "lucide-react";
 import { Button } from "../../ui/button";
 
-export default function StatusForm() {
+export function StatusSuccess() {
   return (
-    <main className="flex flex-col px-2400 py-800 gap-600">
+    <main className="flex flex-col px-2400 py-800 gap-600 bg-[var(--surface)]/50 rounded-600">
       <header className="flex flex-row gap-300 justify-center">
         <BadgeCheckIcon className="icon-size-l text-[var(--surface-accent-2)]"/>
         <span className="body-xxl-label text-secondary">
-            Registration Successful!
+          Registration Successful!
         </span>
       </header>
 
@@ -17,10 +17,7 @@ export default function StatusForm() {
         Congratulations! You are now an official HiMambo partner. 
       </p>
       
-      <Button
-        size={"custom"}
-        className="w-full px-600 py-400"
-      >
+      <Button size="custom" className="w-full px-600 py-400">
         Continue to Dashboard
       </Button>
     </main>

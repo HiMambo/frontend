@@ -1,6 +1,6 @@
 "use client";
 
-import { ExperienceData } from "@/components/PartnerOnboarding/FormComponents/ExperienceData";
+import { ExperienceData } from "@/components/PartnerOnboarding/StepComponents/ExperienceData";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, PlusIcon } from "lucide-react";
 import { useState } from "react";
