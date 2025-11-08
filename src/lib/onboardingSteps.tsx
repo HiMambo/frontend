@@ -7,7 +7,7 @@ export const ONBOARDING_STEP_DEFINITIONS = [
   {
     step: 1,
     label: 'Account Details',
-    title: 'Create Free Account',
+    title: 'Account Details',
     completedTitle: 'Account Details',
     component: 'CreateAccountForm',
     route: '/register-experience/account-details',
@@ -27,7 +27,7 @@ export const ONBOARDING_STEP_DEFINITIONS = [
   {
     step: 3,
     label: 'Documents',
-    title: 'Upload Documents',
+    title: 'Business Legal Documents',
     completedTitle: 'Documents Uploaded',
     component: 'DocumentsForm',
     route: '/register-experience/documents',
@@ -37,7 +37,7 @@ export const ONBOARDING_STEP_DEFINITIONS = [
   {
     step: 4,
     label: 'Experience Info',
-    title: 'Experience Information',
+    title: 'Experience Registration',
     completedTitle: 'Experience Added',
     component: 'ExperienceInfoForm',
     route: '/register-experience/experience-info',
@@ -47,7 +47,7 @@ export const ONBOARDING_STEP_DEFINITIONS = [
   {
     step: 5,
     label: 'Sustainability',
-    title: '',
+    title: 'Sustainability Verification',
     completedTitle: '',
     component: 'SustainabilityVerificationForm',
     route: '/register-experience/sustainability-verification',

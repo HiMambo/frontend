@@ -70,7 +70,7 @@ export default function SubmitForm({ onComplete }: StepComponentProps) {
               <div className="flex flex-row justify-between items-center">
                 <div className="flex flex-row gap-600 items-center">
                   <Icon className="icon-size-l text-tertiary" />
-                  <span className="body-xl-bold text-tertiary">{section.label}</span>
+                  <span className="body-xl-bold text-tertiary">{section.title}</span>
                 </div>
                 <ChevronRight className="icon-size-l text-disabled" />
               </div>
