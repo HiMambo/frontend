@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { StepComponentProps } from "@/app/register-experience/[step]/page";
 import { AccordionDisplay } from "../AccordionDisplay";
 import { ConfirmDeleteModal } from "../ConfirmDeleteModal";
-import { experiencesArraySchema } from "@/lib/validation/onboarding";
+import { ExperienceFormData, experiencesArraySchema } from "@/lib/validation/onboarding";
 import { defaultExperienceData, useOnboardingData } from "@/context/PartnerOnboardingContext";
 import { cn } from "@/lib/utils";
 
@@ -35,7 +35,7 @@ export default function ExperienceInfoForm({ onComplete }: StepComponentProps) {
   const experiences = watch("experiences");
 
   // Helper function to check if experience data equals default
-  const isDefaultData = (experience: any) => {
+  const isDefaultData = (experience: ExperienceFormData) => {
     return JSON.stringify(experience) === JSON.stringify(defaultExperienceData);
   };
 
