@@ -1,3 +1,4 @@
+//Future: Show unsaved changes warning if data!== defaultdata
 "use client";
 
 import { ExperienceData } from "@/components/PartnerOnboarding/StepComponents/ExperienceData";
@@ -33,6 +34,24 @@ export default function ExperienceInfoForm({ onComplete }: StepComponentProps) {
 
   const experiences = watch("experiences");
 
+  // Helper function to check if experience data equals default
+  const isDefaultData = (experience: any) => {
+    return JSON.stringify(experience) === JSON.stringify(defaultExperienceData);
+  };
+
+  const deleteExperience = (index: number) => {
+    const current = getValues("experiences");
+    if (current.length <= 1) return;
+
+    const newExperiences = current.filter((_, i) => i !== index);
+    setValue("experiences", newExperiences);
+    updateStep4(newExperiences);
+    
+    // Adjust openIndex after deletion
+    if (openIndex === index) setOpenIndex(0);
+    else if (openIndex > index) setOpenIndex(openIndex - 1);
+  };
+
   const handleAddExperience = () => {
     const current = getValues("experiences");
     if (current.length < 3) {
@@ -44,21 +63,19 @@ export default function ExperienceInfoForm({ onComplete }: StepComponentProps) {
   const handleDeleteExperience = (index: number) => {
     const current = getValues("experiences");
     if (current.length <= 1) return;
-    setDeleteIndex(index);
+
+    // If data is unchanged (default), delete directly without warning
+    if (isDefaultData(current[index])) {
+      deleteExperience(index);
+    } else {
+      // Show confirmation modal for changed data
+      setDeleteIndex(index);
+    }
   };
 
   const confirmDelete = () => {
     if (deleteIndex === null) return;
-
-    const current = getValues("experiences");
-    const newExperiences = current.filter((_, i) => i !== deleteIndex);
-    setValue("experiences", newExperiences);
-
-    updateStep4(newExperiences);
-
-    if (openIndex === deleteIndex) setOpenIndex(0);
-    else if (openIndex > deleteIndex) setOpenIndex(openIndex - 1);
-
+    deleteExperience(deleteIndex);
     setDeleteIndex(null);
   };
 
