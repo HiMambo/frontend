@@ -133,11 +133,16 @@ export default function ExperienceInfoForm({ onComplete }: StepComponentProps) {
         <div className="flex flex-col gap-800 rounded-600">
           {experiences.map((_, i) => {
             const hasErrors = errors.experiences?.[i] !== undefined;
+            const experienceTitle = experiences[i]?.title?.trim();
+
+            const label = experienceTitle
+              ? experienceTitle
+              : `Experience ${experienceLabels[i]}`;
 
             return (
               <AccordionDisplay
                 key={i}
-                title={`Experience ${experienceLabels[i]}`}
+                title={label}
                 open={openIndex === i}
                 onToggle={() => setOpenIndex((prev) => (prev === i ? -1 : i))}
                 className={cn(

@@ -48,7 +48,7 @@ export default function UserBadge({ user }: UserBadgeProps) {
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild className="cursor-pointer">
         <button
-          className={`flex items-center rounded-200 min-w-[var(--spacing-4000)] gap-[var(--spacing-200)] px-[var(--spacing-200)] py-[var(--spacing-100)] transition-colors ${
+          className={`flex items-center bg-surface rounded-200 min-w-[var(--spacing-4000)] gap-[var(--spacing-200)] px-[var(--spacing-200)] py-[var(--spacing-100)] transition-colors ${
             isOpen ? "shadow-elevation-1" : "hover:shadow-elevation-1"
           }`}
         >

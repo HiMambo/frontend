@@ -439,6 +439,11 @@
     height: var(--icon-xl);
   }
 
+  .badge-size-s {
+    width: var(--badge-s);
+    height: var(--badge-s);
+  }
+
   .badge-size-m {
     width: var(--badge-m);
     height: var(--badge-m);
@@ -453,6 +458,7 @@
   .rounded-100 { border-radius: var(--radius-100); }
   .rounded-200 { border-radius: var(--radius-200); }
   .rounded-300 { border-radius: var(--radius-300); }
+  .rounded-400 { border-radius: var(--radius-400); }
   .rounded-600 { border-radius: var(--radius-600); }
   .rounded-800 { border-radius: var(--radius-800); }
   .rounded-1200 { border-radius: var(--radius-1200); }

@@ -95,6 +95,7 @@ export default function BusinessDetailsForm({ onComplete }: StepComponentProps) 
                 formLabel="Business Address *"
                 icon={MapPin}
                 error={fieldState.error?.message}
+                placeholder="Somewhere over the rainbow"
               />
             )}
           />

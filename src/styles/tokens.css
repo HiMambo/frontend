@@ -146,6 +146,7 @@
   --icon-l: clamp(28px, 2.4vw + 3px, 48px);
   --icon-xl: clamp(36px, 3.2vw + 4px, 64px);
 
+  --badge-s: clamp(40px, 3.75vw, 72px);
   --badge-m: clamp(48px, 4.17vw, 80px);
   --badge-l: clamp(64px, 6vw + 6px, 120px);
 
@@ -171,6 +172,7 @@
   --radius-100: clamp(2px, 0.16vw + 0.67px, 4px);
   --radius-200: clamp(4px, 0.32vw + 1.33px, 8px);
   --radius-300: clamp(6px, 0.48vw + 2px, 12px);
+  --radius-400: clamp(8px, 0.64vw + 2.67px, 16px);
   --radius-600: clamp(12px, 0.96vw + 4px, 24px);
   --radius-800: clamp(16px, 1.28vw + 5.33px, 32px);
   --radius-1200: clamp(24px, 1.92vw + 8px, 48px);

@@ -1,124 +1,82 @@
 "use client";
-
-import Image from "next/image";
-import {
-	FaBullhorn,
-	FaGraduationCap,
-	FaRobot,
-	FaStore,
-	FaUserTie,
-	FaWallet,
-} from "react-icons/fa";
+import { useState } from "react";
+import { LogoBusinessPage, SmallLogoSidebar } from "../shared/IconComponents";
+import { Calendar, GraduationCap, Inbox, Megaphone, PanelLeft, PanelRight, Store, Sun, Wallet } from "lucide-react";
 
 interface SidebarProps {
   selectedSection: string;
   setSelectedSection: (section: string) => void;
 }
 
+const menuItems = [
+  { id: "business-page", label: "Business Page", icon: Store },
+  { id: "experiences", label: "Experiences", icon: Sun },
+  { id: "mambo-wallet", label: "Mambo Wallet", icon: Wallet },
+  { id: "calendar", label: "Calendar", icon: Calendar },
+  { id: "inbox", label: "Inbox", icon: Inbox },
+  { id: "marketing-tools", label: "Marketing Tools", icon: Megaphone },
+  { id: "profile", label: "Profile", icon: GraduationCap },
+];
+
 export default function Sidebar({
   selectedSection,
   setSelectedSection,
 }: SidebarProps) {
-  const linkClass = (id: string) =>
-    `text-xs font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2 p-2 rounded-lg ${
-      selectedSection === id
-        ? 'text-white bg-orange-400 shadow-sm' : 'text-white-700 hover:text-orange-600 hover:bg-orange-50'
-    }`;
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <aside className="fixed top-0 left-0 h-full w-64 bg-white shadow-md p-6 overflow-y-auto flex flex-col">
-      <div>
-        <div className="mb-8 flex items-center space-x-4">
-          <Image
-            src="/logo.png"
-            alt="HiMambo Logo"
-            width={40}
-            height={40}
-          />
-          <a
-            href="/partner-dashboard"
-            className="px-4 py-1.5 text-lg font-semibold text-orange-400 bg-orange-100 hover:bg-orange-200 rounded-lg transition-colors"
+    <aside
+      className={`
+        min-h-screen flex flex-col py-600 bg-white shadow-md overflow-y-auto justify-between shrink-0
+        ${collapsed ? "w-fit px-800 gap-1200" : "w-[var(--width-authbuttons)] px-800 gap-0"}
+      `}
+    >
+      {/* Top: Dashboard menu */}
+      <div className={`flex flex-col ${collapsed ? "gap-800" : "gap-800"}`}>
+
+        {/* Logo row */}
+        <div className={`flex ${collapsed ? "flex-col gap-800 items-center" : "flex-row justify-between items-center"}`}>
+          {collapsed
+            ? <SmallLogoSidebar width={44} height={34} />
+            : <LogoBusinessPage width={216} height={34} />
+          }
+          <button
+            onClick={() => setCollapsed((c) => !c)}
+            className="text-disabled cursor-pointer p-1 rounded hover:bg-gray-100 transition-colors"
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            Home
-          </a>
+            {collapsed
+              ? <PanelRight className="icon-size-s" />
+              : <PanelLeft className="icon-size-s" />
+            }
+          </button>
         </div>
 
-        <nav className="space-y-1">
-          <div className="mb-3">
-            <div>
-              <h2
-                onClick={() => setSelectedSection("business-page")}
-                className={linkClass("business-page")}
+        {/* Nav items */}
+        <nav className="flex flex-col gap-400">
+          {menuItems.map(({ id, label, icon: Icon }) => {
+            const isSelected = selectedSection === id;
+            return (
+              <button
+                key={id}
+                onClick={() => setSelectedSection(id)}
+                className={`
+                  flex flex-row items-center rounded-300 text-left w-full
+                  px-600 py-400 transition-colors duration-150
+                  ${collapsed ? "" : "gap-250"}
+                  ${isSelected
+                    ? "bg-teal-500 text-inverted"
+                    : "bg-none text-secondary hover:bg-teal-50 hover:text-teal-700"
+                  }
+                `}
               >
-                <FaStore className="w-3.5 h-3.5" />
-                Business Page
-              </h2>
-            </div>
-
-            <div>
-              <h2
-                onClick={() => setSelectedSection("marketing-tools")}
-                className={linkClass("marketing-tools")}
-              >
-                <FaBullhorn className="w-3.5 h-3.5" />
-                Marketing Tools
-              </h2>
-            </div>
-
-            <div>
-              <h2
-                onClick={() => setSelectedSection("education-hub")}
-                className={linkClass("education-hub")}
-              >
-                <FaGraduationCap className="w-3.5 h-3.5" />
-                Education Hub
-              </h2>
-            </div>
-
-            <div>
-              <h2
-                onClick={() => setSelectedSection("mambo-wallet")}
-                className={linkClass("mambo-wallet")}
-              >
-                <FaWallet className="w-3.5 h-3.5" />
-                MamboWallet
-              </h2>
-            </div>
-          </div>
+                <Icon className="icon-size-s flex-shrink-0" />
+                {!collapsed && <span className="body-l-button">{label}</span>}
+              </button>
+            );
+          })}
         </nav>
 
-        <div className="relative">
-          <div className="border-t border-gray-200 my-3"></div>
-          <div className="bg-orange-50 p-2 rounded-xl border border-orange-200">
-            <h3 className="text-xs font-medium text-orange-600 mb-1.5">
-              Need help?
-            </h3>
-            <div className="space-y-1.5">
-              <button className="w-full flex items-center gap-1.5 px-2 py-1 text-left text-xs bg-green-50 text-green-700 rounded-md hover:bg-green-100 transition-colors">
-                <FaRobot className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>Talk to MamboAI</span>
-              </button>
-
-              <div className="relative group">
-                <button className="w-full flex items-center gap-1.5 px-2 py-1 text-left text-xs bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100 transition-colors">
-                  <FaUserTie className="w-3.5 h-3.5 flex-shrink-0" />
-                  <span>Talk to HiMambo Team</span>
-                </button>
-
-                <div className="absolute top-full left-0 mt-1 p-2.5 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[60] border border-gray-100 w-48">
-                  <h4 className="font-medium text-gray-900 mb-1 text-xs">
-                    Your Account Manager
-                  </h4>
-                  <div className="space-y-0.5 text-xs text-gray-600">
-                    <p>John Smith</p>
-                    <p>john.smith@himambo.com</p>
-                    <p>+1 (555) 123-4567</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </aside>
   );

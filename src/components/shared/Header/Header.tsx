@@ -8,7 +8,7 @@ import { NavLink } from "../NavLink";
 import HeaderRight from "./HeaderRight";
 import { cn } from "@/lib/utils";
 
-type HeaderVariant = "default" | "partner";
+type HeaderVariant = "default" | "partner" | "partner-dashboard";
 
 const DEFAULT_NAV_LINKS = [
   { href: "/about", label: "About us" },
