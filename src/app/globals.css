@@ -1,25 +1,54 @@
+@import "../styles/tokens.css";
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Tailwind v4 theme mappings */
 @custom-variant dark (&:is(.dark *));
 @theme {
-  --color-midnight: #121063;
-  --color-tahiti: #3ab7bf;
-  --color-bermuda: #78dcca;
+  /* Homepage + footer color mappings */
+  --tw-home-button: var(--color-home-button);
+  --color-home-button: var(--tw-home-button);
+  --tw-home-searchbox: var(--color-home-searchbox);
+  --color-home-searchbox: var(--tw-home-searchbox);
 
-  /* Footer */
-  --color-footer-background: #FFCC2E;
-  --color-footer-text: #722856;
-  --color-footer-inputBackground: #ffffff;
-  --color-footer-inputPlaceholder: #9A9AB0;
-  --color-footer-button: #FA9439;
-  --color-footer-socialIcon: #573E3E;
+  /* Brand color samples */
+  --tw-teal-600: var(--teal-600);
+  --color-teal-600: var(--tw-teal-600);
+  --tw-yellow-500: var(--yellow-500);
+  --color-yellow-500: var(--tw-yellow-500);
+  --tw-terracotta-600: var(--terracotta-600);
+  --color-terracotta-600: var(--tw-terracotta-600);
+  --tw-terracotta-800: var(--terracotta-800);
+  --color-terracotta-800: var(--tw-terracotta-800);
+  --tw-teal-500: var(--teal-500);
+  --color-teal-500: var(--tw-teal-500);
+
+  /* Font family */
+  --font-sans: var(--font-parkinsans, ui-sans-serif, system-ui, sans-serif);
+
+  /* Spacing scale */
+  --spacing-0: var(--spacing-0);
+  --spacing-50: var(--spacing-050);
+  --spacing-100: var(--spacing-100);
+  --spacing-150: var(--spacing-150);
+  --spacing-200: var(--spacing-200);
+  --spacing-250: var(--spacing-250);
+  --spacing-300: var(--spacing-300);
+  --spacing-400: var(--spacing-400);
+  --spacing-600: var(--spacing-600);
+  --spacing-800: var(--spacing-800);
+  --spacing-1000: var(--spacing-1000);
+  --spacing-1200: var(--spacing-1200);
+  --spacing-1600: var(--spacing-1600);
+  --spacing-2400: var(--spacing-2400);
+  --spacing-4000: var(--spacing-4000);
+  --spacing-6000: var(--spacing-6000);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-parkinsans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -56,10 +85,6 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-body {
-  font-family: Montserrat, Helvetica, sans-serif;
-}
-
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -68,7 +93,7 @@ body {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #FA9439; /* Custom color for primary buttons */
+  --primary: var(--yellow-500);
   --primary-foreground: #ffffff;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -76,7 +101,7 @@ body {
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
+  --destructive: var(--terracotta-600);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
@@ -135,5 +160,291 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes wave {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-wave {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-wave::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: wave 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  z-index: 1.6;
+}
+
+/* ===== INPUT UTILITIES ===== */
+/* Hide spinners in Chrome, Safari, Edge */
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide spinners in Firefox */
+.no-spinner[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ===== FLUID TYPOGRAPHY UTILITIES ===== */
+@layer utilities {
+  /* ========================================
+     FLUID TYPOGRAPHY CLASSES
+     Now automatically responsive using CSS variables
+     ======================================== */
+  
+  /* Heading Classes - Now Fluid */
+  .heading-h1 {
+    font-family: var(--font-parkinsans);
+    font-weight: 700; /* Bold */
+    font-size: var(--text-h1);
+    line-height: var(--leading-h1);
+    letter-spacing: var(--tracking-h1);
+  }
+  
+  .heading-h2 {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-h2);
+    line-height: var(--leading-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+  
+  .heading-h3 {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-h3);
+    line-height: var(--leading-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+  
+  .heading-h4 {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-h4);
+    line-height: var(--leading-h4);
+    letter-spacing: var(--tracking-h4);
+  }
+  
+  .heading-h5 {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-h5);
+    line-height: var(--leading-h5);
+    letter-spacing: var(--tracking-h5);
+  }
+
+  .heading-h5-light {
+    font-family: var(--font-parkinsans);
+    font-weight: 300; /* Light */
+    font-size: var(--text-h5);
+    line-height: var(--leading-h5);
+    letter-spacing: var(--tracking-h5);
+  }
+
+  /* Body Typography Classes - Now Fluid */
+  .body-xxl-label {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-body-xxl);
+    line-height: var(--leading-body-xxl);
+    letter-spacing: var(--tracking-body-xxl);
+  }
+
+  .body-xxl {
+    font-family: var(--font-parkinsans);
+    font-weight: 500; /* Medium */
+    font-size: var(--text-body-xxl);
+    line-height: var(--leading-body-xxl);
+    letter-spacing: var(--tracking-body-xxl);
+  }
+
+  .body-xl-bold {
+    font-family: var(--font-parkinsans);
+    font-weight: 700; /* Bold */
+    font-size: var(--text-body-xl);
+    line-height: var(--leading-body-xl);
+    letter-spacing: var(--tracking-body-xl);
+  }
+
+  .body-xl-label {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-body-xl);
+    line-height: var(--leading-body-xl);
+    letter-spacing: var(--tracking-body-xl);
+  }
+
+  .body-xl {
+    font-family: var(--font-parkinsans);
+    font-weight: 500; /* Medium */
+    font-size: var(--text-body-xl);
+    line-height: var(--leading-body-xl);
+    letter-spacing: var(--tracking-body-xl);
+  }
+
+  .body-xl-light {
+    font-family: var(--font-parkinsans);
+    font-weight: 300; /* Light */
+    font-size: var(--text-body-xl);
+    line-height: var(--leading-body-xl);
+    letter-spacing: var(--tracking-body-xl);
+  }
+  
+  .body-l-button {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-body-l);
+    line-height: var(--leading-body-l);
+    letter-spacing: var(--tracking-body-l);
+  }
+
+  .body-l {
+    font-family: var(--font-parkinsans);
+    font-weight: 500; /* Medium */
+    font-size: var(--text-body-l);
+    line-height: var(--leading-body-l);
+    letter-spacing: var(--tracking-body-l);
+  }
+
+  .body-l-light {
+    font-family: var(--font-parkinsans);
+    font-weight: 300; /* Light */
+    font-size: var(--text-body-l);
+    line-height: var(--leading-body-l);
+    letter-spacing: var(--tracking-body-l);
+  }
+  
+  .body-m-button {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-body-m);
+    line-height: var(--leading-body-m);
+    letter-spacing: var(--tracking-body-m);
+  }
+
+  .body-m {
+    font-family: var(--font-parkinsans);
+    font-weight: 500; /* Medium */
+    font-size: var(--text-body-m);
+    line-height: var(--leading-body-m);
+    letter-spacing: var(--tracking-body-m);
+  }
+  
+  .body-s {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-body-s);
+    line-height: var(--leading-body-s);
+    letter-spacing: var(--tracking-body-s);
+  }
+  
+  .body-xs {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-body-xs);
+    line-height: var(--leading-body-xs);
+    letter-spacing: var(--tracking-body-xs);
+  }
+
+    .body-xxs {
+    font-family: var(--font-parkinsans);
+    font-weight: 600; /* Semibold */
+    font-size: var(--text-body-xxs);
+    line-height: var(--leading-body-xxs);
+    letter-spacing: var(--tracking-body-xxs);
+  }
+
+    .body-xxs-light {
+    font-family: var(--font-parkinsans);
+    font-weight: 500; /* Regular */
+    font-size: var(--text-body-xxs);
+    line-height: var(--leading-body-xxs);
+    letter-spacing: var(--tracking-body-xxs);
+  }
+
+  /* ===== SEMANTIC TEXT UTILITIES ===== */
+  .text-primary {
+    color: var(--text-primary);
+  }
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+  .text-tertiary {
+    color: var(--text-tertiary);
+  }
+  .text-disabled {
+    color: var(--text-disabled);
+  }
+  .text-inverted {
+    color: var(--text-inverted);
+  }
+
+  /* ===== SURFACE UTILITIES ===== */
+  .bg-surface {
+    background-color: var(--surface);
+  }
+  .bg-surface-accent {
+    background-color: var(--surface-accent);
+  }
+  .bg-surface-accent-2 {
+    background-color: var(--surface-accent-2);
+  }
+
+  /* ===== ICON UTILITIES ===== */
+  .icon-size-xs {
+    width: var(--icon-xs);
+    height: var(--icon-xs);
+  }
+
+  .icon-size-s {
+    width: var(--icon-s);
+    height: var(--icon-s);
+  }
+
+  .icon-size-m {
+    width: var(--icon-m);
+    height: var(--icon-m);
+  }
+
+  .icon-size-l {
+    width: var(--icon-l);
+    height: var(--icon-l);
+  }
+
+  .icon-size-xl {
+    width: var(--icon-xl);
+    height: var(--icon-xl);
+  }
+
+  /* ===== BORDER RADIUS UTILITIES ===== */
+  .rounded-100 { border-radius: var(--radius-100); }
+  .rounded-200 { border-radius: var(--radius-200); }
+  .rounded-300 { border-radius: var(--radius-300); }
+  .rounded-600 { border-radius: var(--radius-600); }
+  .rounded-800 { border-radius: var(--radius-800); }
+  .rounded-1200 { border-radius: var(--radius-1200); }
+
+  /* ===== ELEVATION UTILITIES ===== */
+  .shadow-elevation-1 {
+    box-shadow: var(--elevation-1);
+  }
+
+  .hover\:shadow-elevation-1:hover {
+    box-shadow: var(--elevation-1);
   }
 }

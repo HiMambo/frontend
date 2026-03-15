@@ -1,0 +1,194 @@
+// src/lib/api.ts
+// Define the base URL for the API
+// const API_BASE_URL = "https://backend-production-97ab.up.railway.app"; // For Trung deployment
+const API_BASE_URL = "https://backend-production-f498.up.railway.app"; // For HiMambo deployment
+// const API_BASE_URL = "http://0.0.0.0:8000";
+
+export interface Experience {
+  id: number;
+  name: string;
+  experience_description: string;
+  experience_price: string;
+  experience_promo_image: string;
+  experience_city: string;
+  experience_country: string;
+  rating_avg: number;
+  sustainability_goal: string[];
+  created_at: string;
+  updated_at: string;
+  refundable?: boolean; // Must eventually come from backend
+}
+
+export async function fetchExperiences(): Promise<Experience[]> {
+  console.log("API URL for fetching experiences:");
+  console.log(`${API_BASE_URL}/experiences/`); // Added trailing slash
+  const res = await fetch(`${API_BASE_URL}/experiences/`, { // Added trailing slash
+    next: { revalidate: 60 }, // Optional: caching for SSR
+  });
+  
+  if (!res.ok) {
+    throw new Error("Failed to fetch experiences");
+  }
+  
+  return res.json();
+}
+
+export async function fetchExperienceById(id: number): Promise<Experience> {
+  console.log(`${API_BASE_URL}/experiences/${id}/`); // Added trailing slash
+  const res = await fetch(`${API_BASE_URL}/experiences/${id}/`, { // Added trailing slash
+    next: { revalidate: 60 }, // Optional: caching for SSR
+  });
+  
+  if (!res.ok) {
+    throw new Error(`Failed to fetch experience with ID: ${id}`);
+  }
+  
+  return res.json();
+}
+
+export interface APISearchParams {
+  searchQuery?: string;
+  destination?: string;
+  date_from?: string;
+  date_to?: string;
+  travellers?: number;
+  experience_type?: string;
+  limit?: number;
+}
+
+export async function fetchFilteredExperiences(params: APISearchParams): Promise<Experience[]> {
+  const url = new URL(`${API_BASE_URL}/experiences/filter`);
+  
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      url.searchParams.append(key, value.toString());
+    }
+  });
+
+  console.log("URL: ", url)
+  const response = await fetch(url.toString());
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch filtered experiences');
+  }
+  
+  return response.json();
+}
+
+// Experience Slot interface
+export interface ExperienceSlot {
+  id: number;
+  experience_id: number;
+  start_datetime: string;
+  end_datetime: string;
+  max_spots: number;
+  booked_spots: number;
+  status: "open" | "full" | "canceled" | "past";
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export async function fetchExperienceSlots(experienceId: number): Promise<ExperienceSlot[]> {
+  console.log(`${API_BASE_URL}/slots/experience/${experienceId}`);
+  const res = await fetch(`${API_BASE_URL}/slots/experience/${experienceId}`, {
+    next: { revalidate: 60 }, // Optional: caching for SSR
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch slots for experience ID: ${experienceId}`);
+  }
+  return res.json();
+}
+
+// Define the type for booking data
+export interface BookingData {
+  experience_id: number;
+  slot_id: number;
+  booking_date: string;
+  client_id: number;
+  duration_days: number;
+  number_of_people: number;
+  total_price: number;
+  created_at: string;
+  updated_at: string;
+  baseDiscount: number; // To be reviewed
+  discount: number; // To be reviewed
+  currency: string;
+  experience_date: string; //To be reviewed
+  payment_type: string;
+  confirmation_code: string;
+  status: string;
+}
+
+export async function createBooking(bookingData: BookingData) {
+  console.log(`${API_BASE_URL}/bookings/new/`); // Added trailing slash
+  const response = await fetch(`${API_BASE_URL}/bookings/new/`, { // Added trailing slash
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bookingData),
+  })
+  
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.message || 'Booking creation failed')
+  }
+  
+  return response.json()
+}
+
+
+// Define the partner finance info
+export interface PartnerFinanceInfo {
+  experience_id:  number;
+  total_payments_USDC: number;
+  total_payments_SOL: number;
+}
+
+export async function fetchTotalPaymentPartnerById(id: number): Promise<PartnerFinanceInfo> {
+  const URL_CALL = `${API_BASE_URL}/partners/${id}/get_total_payments`
+  console.log(URL_CALL);
+
+  const res = await fetch(URL_CALL, {
+    next: { revalidate: 60 }, // Optional: caching for SSR
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch experience with ID: ${id}`);
+  }
+
+  return res.json();
+}
+
+// Define the interface for user creation API
+export interface CreateUserData {
+  user_email: string;
+  login_type: 'google' | 'credentials';
+  user_type: 'client' | 'partner';
+}
+
+// Function to create user in backend
+export async function createOrUpdateUser(userData: CreateUserData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (!response.ok) {
+      console.error('Failed to create/update user:', response.statusText);
+      return false;
+    }
+
+    const result = await response.json();
+    console.log('User created/updated successfully:', result);
+    return true;
+  } catch (error) {
+    console.error('Error creating/updating user:', error);
+    return false;
+  }
+}
